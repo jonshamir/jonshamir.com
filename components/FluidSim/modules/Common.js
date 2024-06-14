@@ -22,7 +22,7 @@ class Common {
 
     this.resize();
 
-    this.renderer = new THREE.WebGL1Renderer({
+    this.renderer = new THREE.WebGLRenderer({
       alpha: true,
     });
 

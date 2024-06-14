@@ -13,7 +13,7 @@ export default class ShaderPass {
 
     if (this.uniforms) {
       this.material = new THREE.RawShaderMaterial(this.props.material);
-      this.geometry = new THREE.PlaneBufferGeometry(2.0, 2.0);
+      this.geometry = new THREE.PlaneGeometry(2.0, 2.0);
       this.plane = new THREE.Mesh(this.geometry, this.material);
       this.scene.add(this.plane);
     }

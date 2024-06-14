@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useColorTheme } from "../DarkModeToggle/useColorTheme";
+// import { useColorTheme } from "../DarkModeToggle/useColorTheme";
 import WebGL from "./modules/WebGL";
-import "./FluidSim.scss";
+import style from "./FluidSim.module.scss";
 
 let container, webglMng;
 
-export const FluidSim = () => {
-  const { isDark } = useColorTheme();
+export function FluidSim() {
+  // const { isDark } = useColorTheme();
+  const { isDark } = false;
   const canvasRef = useRef();
 
   const [didInit, setDidInit] = useState(false);
@@ -30,7 +31,5 @@ export const FluidSim = () => {
     webglMng.setDarkTheme(isDark ? 1 : 0);
   }, [isDark]);
 
-  return <div className="FluidSim" ref={canvasRef}></div>;
-};
-
-export default FluidSim;
+  return <div className={style.FluidSim} ref={canvasRef}></div>;
+}
