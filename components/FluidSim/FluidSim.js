@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 // import { useColorTheme } from "../DarkModeToggle/useColorTheme";
 import WebGL from "./modules/WebGL";
 import style from "./FluidSim.module.scss";
@@ -19,7 +19,6 @@ export function FluidSim() {
     }
   }, [didInit, initScene]);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   function initScene() {
     container = canvasRef.current;
     webglMng = new WebGL({

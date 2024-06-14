@@ -1,7 +1,5 @@
-import Mouse from "./Mouse";
 import Common from "./Common";
 import * as THREE from "three";
-import Controls from "./Controls";
 
 import Advection from "./Advection";
 import ExternalForce from "./ExternalForce";

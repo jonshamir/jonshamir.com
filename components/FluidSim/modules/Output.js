@@ -3,7 +3,7 @@ import * as THREE from "three";
 
 import Simulation from "./Simulation";
 import face_vert from "./glsl/sim/face.vert";
-import color_frag from "./glsl/sim/color.frag";
+// import color_frag from "./glsl/sim/color.frag";
 import grid_frag from "./glsl/sim/grid.frag";
 
 export default class Output {
