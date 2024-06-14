@@ -1,0 +1,115 @@
+$size: 4px;
+$width: 5 * $size;
+$colors-light: #ddd, #bbb, #ddd, #fff, #bbb, #fff;
+$colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
+
+@function pow($number, $exponent) {
+  $value: 1;
+
+  @if $exponent > 0 {
+    @for $i from 1 through $exponent {
+      $value: $value * $number;
+    }
+  } @else if $exponent < 0 {
+    @for $i from 1 through -$exponent {
+      $value: $value / $number;
+    }
+  }
+
+  @return $value;
+}
+
+.container {
+  height: 180px;
+  width: 180px;
+  perspective: 5000px;
+  opacity: 0;
+  transition: opacity 300ms ease-out;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  & * {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-style: preserve-3d;
+  }
+  &:hover .rotate {
+    transform: rotateY(45deg);
+  }
+}
+
+@mixin box($width, $height, $colors) {
+  .face {
+    position: absolute;
+    margin: (-0.5 * $height) (-0.5 * $width);
+    width: $width;
+    height: $height;
+  }
+
+  .face:nth-child(n + 5) {
+    margin-top: -0.5 * $width;
+    height: $width;
+  }
+
+  @for $i from 0 to 6 {
+    .face:nth-child(#{$i + 1}) {
+      transform: if($i < 4, rotateY($i * 90deg), rotateX(pow(-1, $i) * 90deg))
+        translateZ(0.5 * if($i < 4, $width, $height));
+      background-color: nth($colors, $i + 1);
+      transition: background-color 300ms ease;
+    }
+  }
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateY(90deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+.logo {
+  transform: rotateZ(45deg);
+}
+
+.rotate {
+  animation: rotate 1s ease-out;
+  transition: transform 200ms ease;
+}
+
+.top {
+  transform: rotateZ(90deg) translate(-10 * $size, 5 * $size);
+  @include box($width, 12 * $size, $colors-dark);
+}
+.dark .top {
+  @include box($width, 12 * $size, $colors-light);
+}
+
+.bottom {
+  transform: rotateZ(90deg) translate3d(10 * $size, -5 * $size, 0);
+  @include box($width, 12 * $size, $colors-dark);
+}
+.dark .bottom {
+  @include box($width, 12 * $size, $colors-light);
+}
+
+.middle {
+  transform: rotateZ(90deg);
+  @include box($width, 22 * $size, $colors-dark);
+}
+.dark .middle {
+  @include box($width, 22 * $size, $colors-light);
+}
+
+.side {
+  transform: translate3d(8.5 * $size, 5 * $size, 0);
+  @include box($width, 6 * $size, $colors-dark);
+}
+.dark .side {
+  @include box($width, 6 * $size, $colors-light);
+}

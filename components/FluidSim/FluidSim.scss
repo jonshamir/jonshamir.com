@@ -1,0 +1,18 @@
+.FluidSim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 100vw;
+  height: 80vh;
+  box-sizing: border-box;
+
+  canvas {
+    transition: opacity 500ms ease;
+    width: 100%;
+  }
+
+  &.hidden > canvas {
+    opacity: 0;
+  }
+}
