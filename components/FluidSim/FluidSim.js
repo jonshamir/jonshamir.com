@@ -1,33 +1,27 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 // import { useColorTheme } from "../DarkModeToggle/useColorTheme";
 import WebGL from "./modules/WebGL";
 import style from "./FluidSim.module.scss";
 
-let container, webglMng;
+let webglManager = null;
 
 export function FluidSim() {
   // const { isDark } = useColorTheme();
   const { isDark } = false;
-  const canvasRef = useRef();
-
-  const [didInit, setDidInit] = useState(false);
+  const canvasRef = useRef(null);
 
   useEffect(() => {
-    if (!didInit) {
-      initScene();
-      setDidInit(true);
+    if (canvasRef.current && webglManager === null) {
+      console.log("canvasRef.currenst", canvasRef.current);
+      webglManager = new WebGL({
+        $wrapper: canvasRef.current,
+      });
     }
-  }, [didInit, initScene]);
-
-  function initScene() {
-    container = canvasRef.current;
-    webglMng = new WebGL({
-      $wrapper: container,
-    });
-  }
+    console.log("webglManager", webglManager);
+  }, []);
 
   useEffect(() => {
-    webglMng.setDarkTheme(isDark ? 1 : 0);
+    webglManager.setDarkTheme(isDark ? 1 : 0);
   }, [isDark]);
 
   return <div className={style.FluidSim} ref={canvasRef}></div>;

@@ -37,15 +37,7 @@ function HeadingLink({
   ...props
 }: ComponentProps<"h2"> & { tag: `h${2 | 3 | 4 | 5 | 6}` }): ReactElement {
   return (
-    <Tag
-      className={
-        // can be added by footnotes
-        className === "sr-only"
-          ? "nx-sr-only"
-          : `nx-not-prose subheading-${Tag}`
-      }
-      {...props}
-    >
+    <Tag {...props}>
       {children}
       {id && (
         <a
@@ -87,14 +79,14 @@ const useComponents = (): Components => {
     h6: (props) => <HeadingLink tag="h6" {...props} />,
     a: A,
     pre: ({ children, ...props }) => (
-      <div className="nx-not-prose">
+      <div>
         <Pre {...props}>{children}</Pre>
       </div>
     ),
     tr: Tr,
     th: Th,
     td: Td,
-    table: (props) => <Table className="nx-not-prose" {...props} />,
+    table: (props) => <Table {...props} />,
     code: Code,
     ...config.components,
   };

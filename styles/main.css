@@ -74,3 +74,9 @@ a {
     opacity: 1;
   }
 }
+
+article {
+  max-width: 1600px;
+  margin: auto;
+  padding: 2em 10em;
+}
