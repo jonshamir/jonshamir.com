@@ -39,26 +39,21 @@ export function PostsLayout({
       <div key={post.route} className="post-item">
         <h3>
           <Link href={post.route} passHref legacyBehavior>
-            <a className="!nx-no-underline">{postTitle}</a>
+            <a>{postTitle}</a>
           </Link>
         </h3>
         {description && (
-          <p className="nx-mb-2 dark:nx-text-gray-400 nx-text-gray-600">
+          <p>
             {description}
             {config.readMore && (
               <Link href={post.route} passHref legacyBehavior>
-                <a className="post-item-more nx-ml-2">{config.readMore}</a>
+                <a>{config.readMore}</a>
               </Link>
             )}
           </p>
         )}
         {date && (
-          <time
-            className="nx-text-sm dark:nx-text-gray-400 nx-text-gray-600"
-            dateTime={date.toISOString()}
-          >
-            {date.toDateString()}
-          </time>
+          <time dateTime={date.toISOString()}>{date.toDateString()}</time>
         )}
       </div>
     );

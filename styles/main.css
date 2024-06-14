@@ -34,6 +34,34 @@ nav {
 
   a,
   span {
+    display: inline-block;
     padding: 0.4em;
+    vertical-align: middle;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Satoshi", sans-serif;
+}
+
+footer {
+  width: 100%;
+  padding: 3rem;
+  opacity: 0.5;
+}
+
+a {
+  color: var(--color-text);
+  transition: color var(--transition-defaults);
+  opacity: 0.7;
+
+  &:hover {
+    text-decoration: none;
+    opacity: 1;
   }
 }

@@ -4,10 +4,8 @@ export default {
   darkMode: true,
   footer: (
     <footer>
-      <small>
-        <time>{YEAR}</time>
-        <a href="/feed.xml">RSS</a>
-      </small>
+      <time>{YEAR}</time>
+      {/* <a href="/feed.xml">RSS</a> */}
     </footer>
   ),
 };
