@@ -80,3 +80,8 @@ article {
   margin: auto;
   padding: 2em 10em;
 }
+
+p {
+  max-width: 40em;
+  margin: 1em 0;
+}

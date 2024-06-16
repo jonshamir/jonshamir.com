@@ -9,8 +9,6 @@ const float M_PI = 3.14159265358979323846264338327950288;
 // M_PI / 3
 const float M_PI_3 = 2.0943951024;
 
-const float margin = 2.0;
-
 float sdCircle(in vec2 p, in float r) 
 {
     return length(p) - r;
@@ -48,10 +46,12 @@ void main(){
     vec2 offset = vel * 0.006 * n;
     float strength = length(offset) * 10.0;
 
+    float padding = n.x > 20.0 ? 2.0 : 1.0;
+
     vec2 uvGridIndex = ceil(uv * n) / n;
-    uvGridIndex *= step(uvGridIndex, vec2((n-margin)/n));
-    uvGridIndex *= 1.0 - step(uvGridIndex, vec2((margin + 0.1)/n));
-    float marginMask = 1.0 - step(min(uvGridIndex.x, uvGridIndex.y), 0.0);
+    uvGridIndex *= step(uvGridIndex, vec2((n - padding)/n));
+    uvGridIndex *= 1.0 - step(uvGridIndex, vec2((padding + 0.1)/n));
+    float paddingMask = 1.0 - step(min(uvGridIndex.x, uvGridIndex.y), 0.0);
     
     float r = circle(
         uv0 + offset,
@@ -68,5 +68,5 @@ void main(){
     vec3 color = sqrt(clamp(vec3(r,g,b), 0.0, 1.0));
     color = darkTheme == 1.0 ? color + 0.1 : 1.0 - color + 0.15;
 
-    gl_FragColor = vec4(color, marginMask * clamp(r+g+b, 0.0, 0.5));
+    gl_FragColor = vec4(color, paddingMask * clamp(r+g+b, 0.0, 0.5));
 }
