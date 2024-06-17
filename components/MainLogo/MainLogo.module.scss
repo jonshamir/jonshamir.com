@@ -86,7 +86,7 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
   transform: rotateZ(90deg) translate(-10 * $size, 5 * $size);
   @include box($width, 12 * $size, $colors-dark);
 }
-.dark .top {
+:global(.dark) .top {
   @include box($width, 12 * $size, $colors-light);
 }
 
@@ -94,7 +94,7 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
   transform: rotateZ(90deg) translate3d(10 * $size, -5 * $size, 0);
   @include box($width, 12 * $size, $colors-dark);
 }
-.dark .bottom {
+:global(.dark) .bottom {
   @include box($width, 12 * $size, $colors-light);
 }
 
@@ -102,7 +102,7 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
   transform: rotateZ(90deg);
   @include box($width, 22 * $size, $colors-dark);
 }
-.dark .middle {
+:global(.dark) .middle {
   @include box($width, 22 * $size, $colors-light);
 }
 
@@ -110,6 +110,6 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
   transform: translate3d(8.5 * $size, 5 * $size, 0);
   @include box($width, 6 * $size, $colors-dark);
 }
-.dark .side {
+:global(.dark) .side {
   @include box($width, 6 * $size, $colors-light);
 }
