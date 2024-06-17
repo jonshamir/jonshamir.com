@@ -43,9 +43,12 @@ void main(){
 
     // ====================================
 
+    vec2 uv0 = uv;
+    uv0.y = 1.0 - uv.y;
+
     // grid size
     vec2 n = resolution.xy * 0.025;
-    vec2 uv0 = vec2(fract(uv.x * n.x), fract(uv.y * n.y));
+    vec2 uv1 = vec2(fract(uv0.x * n.x), fract(uv0.y * n.y));
 
     // grid dots
     vec2 offset = vel * 0.006 * n;
@@ -53,21 +56,21 @@ void main(){
 
     float padding = n.x > 20.0 ? 2.0 : 1.0;
 
-    vec2 uvGridIndex = ceil(uv * n) / n;
+    vec2 uvGridIndex = ceil(uv0 * n) / n;
     uvGridIndex *= step(uvGridIndex, vec2((n - padding)/n));
     uvGridIndex *= 1.0 - step(uvGridIndex, vec2((padding + 0.1)/n));
     float paddingMask = 1.0 - step(min(uvGridIndex.x, uvGridIndex.y), 0.0);
     
     float r = circle(
-        uv0 + offset,
+        uv1 + offset,
         strength
     );
     float g = circle(
-        uv0 + rotate(offset, M_PI_3),
+        uv1 + rotate(offset, M_PI_3),
         strength
     );
     float b = circle(
-        uv0 + rotate(offset, -M_PI_3),
+        uv1 + rotate(offset, -M_PI_3),
         strength
     );
     vec3 color = sqrt(clamp(vec3(r,g,b), 0.0, 1.0));
