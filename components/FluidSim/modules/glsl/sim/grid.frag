@@ -21,7 +21,12 @@ float circle(in vec2 p, in float strength)
     float radius = max(baseRadius, minRadius);
     float d = sdCircle(p - vec2(0.5, 0.5), radius);
 	// return (1.0 - smoothstep(-fwidth(d), fwidth(d), d)) * (baseRadius / radius);
-	return (1.0 - smoothstep(-0.01, 0.01, d)) * (baseRadius / radius);
+    float s =
+        darkTheme == 1.0 
+        ? max(pow((baseRadius / radius), 4.0), 0.1)
+        : (baseRadius / radius);
+
+	return (1.0 - smoothstep(-0.01, 0.01, d)) * s;
 }
 
 vec2 rotate(vec2 v, float a) {
@@ -44,7 +49,7 @@ void main(){
 
     // grid dots
     vec2 offset = vel * 0.006 * n;
-    float strength = length(offset) * 10.0;
+    float strength = length(offset) * 9.0;
 
     float padding = n.x > 20.0 ? 2.0 : 1.0;
 
@@ -67,6 +72,7 @@ void main(){
     );
     vec3 color = sqrt(clamp(vec3(r,g,b), 0.0, 1.0));
     color = darkTheme == 1.0 ? color + 0.1 : 1.0 - color + 0.15;
+    // color = darkTheme == 1.0 ? color + 0.1 : 1.15 - max(color, 0.5);
 
     gl_FragColor = vec4(color, paddingMask * clamp(r+g+b, 0.0, 0.5));
 }

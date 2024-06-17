@@ -39,6 +39,10 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
   &:hover .rotate {
     transform: rotateY(45deg);
   }
+  &:active .rotate {
+    // transform: rotateY(20deg);
+    transform: rotateY(45deg) scaleZ(0.5);
+  }
 }
 
 @mixin box($width, $height, $colors) {
