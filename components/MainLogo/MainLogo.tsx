@@ -1,6 +1,6 @@
 import styles from "./MainLogo.module.scss";
 
-export function MainLogo({ isHidden }: { isHidden: boolean }) {
+export function MainLogo({ isHidden }: { isHidden?: boolean }) {
   return (
     <div className={styles.container + " " + styles.visible}>
       <div className={!isHidden && styles.rotate}>
