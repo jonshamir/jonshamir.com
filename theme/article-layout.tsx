@@ -6,12 +6,13 @@ import Meta from "./meta";
 import Nav from "./nav";
 
 export const ArticleLayout = ({ children }: { children: ReactNode }) => {
-  const { config } = useBlogContext();
+  const { config, opts } = useBlogContext();
   return (
     <BasicLayout>
       <Nav />
-      <Meta />
       <MDXTheme>
+        {<h1>{opts.title}</h1>}
+        <Meta />
         {children}
         {config.postFooter}
         {config.comments}
