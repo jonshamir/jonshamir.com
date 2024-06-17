@@ -2,7 +2,7 @@ import Common from "./Common";
 import Output from "./Output";
 import Mouse from "./Mouse";
 
-export default class Webgl {
+export default class FluidSimManager {
   constructor(props) {
     this.props = props;
 
@@ -15,8 +15,20 @@ export default class Webgl {
     window.addEventListener("resize", this.resize.bind(this));
   }
 
+  static getInstance(props) {
+    if (!this.instance) {
+      this.instance = new FluidSimManager(props);
+    }
+    this.instance.setWrapper(props.$wrapper);
+    return this.instance;
+  }
+
+  setWrapper(wrapper) {
+    wrapper.prepend(Common.renderer.domElement);
+  }
+
   init() {
-    this.props.$wrapper.prepend(Common.renderer.domElement);
+    this.setWrapper(this.props.$wrapper);
     this.output = new Output();
   }
 
