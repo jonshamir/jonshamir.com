@@ -7,6 +7,7 @@ import { MDXTheme } from "../mdx-theme";
 import Nav from "../nav";
 import { collectPostsAndNavs } from "../utils/collect";
 import getTags from "../utils/get-tags";
+import { MainLogo } from "../../components/Logo/MainLogo";
 
 export function PostsLayout({
   children,
@@ -60,7 +61,6 @@ export function PostsLayout({
   });
   return (
     <BasicLayout>
-      <Nav />
       <MDXTheme>{children}</MDXTheme>
       {postList}
     </BasicLayout>

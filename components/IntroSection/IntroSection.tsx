@@ -1,4 +1,4 @@
-import { MainLogo } from "../MainLogo/MainLogo";
+import { InlineLogoPlaceholder } from "../Logo/InlineLogoPlaceholder";
 import { FluidSim } from "../FluidSim/FluidSim";
 
 import styles from "./IntroSection.module.scss";
@@ -8,7 +8,7 @@ export function IntroSection() {
     <>
       <FluidSim />
       <div className={styles.IntroSection}>
-        <MainLogo />
+        <InlineLogoPlaceholder />
         <h1>Hi, I&apos;m Jon Shamir</h1>
         <p>
           I&apos;m a designer & developer. My interests include interaction

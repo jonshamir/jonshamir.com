@@ -3,23 +3,29 @@ import type { ReactNode } from "react";
 import { useRef } from "react";
 import { useBlogContext } from "../blog-context";
 import { HeadingContext } from "../mdx-theme";
+import Nav from "../nav";
+import { MainLogo } from "../../components/Logo/MainLogo";
 
 export const BasicLayout = ({ children }: { children: ReactNode }) => {
   const { config, opts } = useBlogContext();
   const title = `${opts.title}${config.titleSuffix || ""}`;
   const ref = useRef<HTMLHeadingElement>(null);
   return (
-    <article dir="ltr">
-      <Head>
-        <title>{title}</title>
-        {config.head?.({ title, meta: opts.frontMatter })}
-      </Head>
-      <HeadingContext.Provider value={ref}>
-        {/* {opts.hasJsxInH1 ? <h1 ref={ref} /> : null}
+    <>
+      <MainLogo />
+      <Nav />
+      <article dir="ltr">
+        <Head>
+          <title>{title}</title>
+          {config.head?.({ title, meta: opts.frontMatter })}
+        </Head>
+        <HeadingContext.Provider value={ref}>
+          {/* {opts.hasJsxInH1 ? <h1 ref={ref} /> : null}
         {opts.hasJsxInH1 ? null : <h1>{opts.title}</h1>} */}
-        {children}
-        {config.footer}
-      </HeadingContext.Provider>
-    </article>
+          {children}
+          {config.footer}
+        </HeadingContext.Provider>
+      </article>
+    </>
   );
 };

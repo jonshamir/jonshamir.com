@@ -22,7 +22,6 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
 .container {
   height: 160px;
   width: 100px;
-  margin-bottom: 2em;
   perspective: 5000px;
   opacity: 0;
   transition: opacity 300ms ease-out;
@@ -41,7 +40,6 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
     transform: rotateY(45deg);
   }
   &:active .rotate {
-    // transform: rotateY(20deg);
     transform: rotateY(45deg) scaleZ(0.5);
   }
 }

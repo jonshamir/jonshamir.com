@@ -1,0 +1,8 @@
+.container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform var(--transition-defaults);
+  transform: translate(0, 0) scale(0.5);
+  z-index: 100;
+}
