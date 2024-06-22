@@ -8,8 +8,10 @@ html {
   --color-bg-rgb: 238, 238, 238;
 
   --transition-defaults: 250ms ease;
+  /* --breakpoint-small: 600px; */
+  /* --breakpoint-medium: 11000px; */
 
-  padding: 2rem 4rem;
+  padding: 2rem 5rem;
   font-family: "Work Sans Variable", sans-serif;
   font-size: 1.1em;
 
@@ -25,6 +27,10 @@ html {
 
     --color-text-rgb: 250, 250, 250;
     --color-bg-rgb: 34, 34, 34;
+  }
+
+  @media screen and (max-width: 600px) {
+    padding: 5em 0em;
   }
 }
 

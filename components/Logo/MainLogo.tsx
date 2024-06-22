@@ -37,7 +37,7 @@ export function MainLogo() {
 
           logoRef.current.style.transform = `translate(${transformX}px, ${transformY}px) scale(1)`;
         } else {
-          logoRef.current.style.transform = "translate(0, 0) scale(0.5)";
+          logoRef.current.style.transform = "translate(1rem, 0) scale(0.5)";
         }
       };
 
