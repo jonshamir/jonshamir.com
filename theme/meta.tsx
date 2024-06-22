@@ -1,13 +1,12 @@
 import Link from "next/link";
 import type { ReactElement } from "react";
 import { useBlogContext } from "./blog-context";
-import ThemeSwitch from "./theme-switch";
 import { split } from "./utils/get-tags";
 import { getParent } from "./utils/parent";
 
 export default function Meta(): ReactElement {
   const { opts, config } = useBlogContext();
-  const { author, date, tag } = opts.frontMatter;
+  const { author, date, tag, description } = opts.frontMatter;
   const { back } = getParent({ opts, config });
   const tags = tag ? split(tag) : [];
 
@@ -23,6 +22,7 @@ export default function Meta(): ReactElement {
     <div>
       <div>
         <div>
+          <span className="description">{description}</span>
           {author}
           {author && date && ","}
           {dateObj && (
@@ -43,7 +43,6 @@ export default function Meta(): ReactElement {
             <a>Back</a>
           </Link>
         )}
-        {config.darkMode && <ThemeSwitch />}
       </div>
     </div>
   );

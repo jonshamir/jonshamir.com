@@ -1,0 +1,17 @@
+---
+type: project
+title: Leaf Map
+description: Interactive map of leaf shapes
+---
+
+I used machine learning techniques to organize tree species according to their leaf shape. The idea was to create a more intuitive and friendly way to recognize plant species.
+
+Leaf Features
+Using the Shape Context Algorithm I generated a "fingerprint" vector representing each leaf, which is then used to asses the similarity of shapes. Finally the dimension of this vector is reduced to 2D using PCA and t-SNE, and the leaves are displayed in an interactive interface I created using D3.js.
+
+The project was inspired by this Font Map, all data and images were taken from the Leaf Snap dataset.
+
+## Tools Used
+
+- JavaScript (interface)
+- Python (data proccessing)

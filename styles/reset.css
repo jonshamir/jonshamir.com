@@ -54,6 +54,7 @@ h4,
 h5,
 h6 {
   overflow-wrap: break-word;
+  margin: 0.5rem 0;
 }
 /*
   8. Create a root stacking context

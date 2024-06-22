@@ -9,7 +9,7 @@ export function ProjectSection() {
       <div>
         {projectData.map((project) => (
           <a
-            href={`/projects/${project.slug}`}
+            href={`site/projects/${project.slug}`}
             className={styles.ProjectTile}
             key={project.slug}
           >

@@ -71,7 +71,7 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
 
 @keyframes rotate {
   0% {
-    transform: rotateY(90deg);
+    transform: rotateY(45deg);
   }
   100% {
     transform: rotateY(0deg);

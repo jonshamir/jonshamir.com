@@ -11,11 +11,11 @@ export function IntroSection() {
         <MainLogo />
         <h1>Hi, I'm Jon Shamir</h1>
         <p>
-          I'm a designer & developer. My interests include computer graphics,
-          data visualization, web technologies and machine learning.
+          I'm a designer & developer. My interests include interaction design,
+          3D graphics, data visualization and machine learning.
         </p>
         <p>
-          Currently building spatial UI at{" "}
+          Currently building spatial interfaces at{" "}
           <a href="https://www.sightful.com/">Sightful</a>.
         </p>
       </div>
