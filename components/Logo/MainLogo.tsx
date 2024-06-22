@@ -41,7 +41,12 @@ export function MainLogo() {
         }
       };
 
+      window.addEventListener("resize", updatePosition);
       updatePosition();
+
+      return () => {
+        window.removeEventListener("scroll", updatePosition);
+      };
     }
   }, [isAtTop]);
 

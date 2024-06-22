@@ -19,6 +19,10 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
   @return $value;
 }
 
+.placeholder {
+  pointer-events: none;
+}
+
 .container {
   height: 160px;
   width: 100px;
@@ -69,7 +73,7 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
 
 @keyframes rotate {
   0% {
-    transform: rotateY(0deg);
+    transform: rotateY(45deg);
   }
   100% {
     transform: rotateY(0deg);
@@ -81,7 +85,7 @@ $colors-dark: #2d2d2d, #000, #2d2d2d, #444, #000, #444;
 }
 
 .rotate {
-  animation: rotate 1s ease-out;
+  // animation: rotate 1s ease-out;
   transition: transform 200ms ease;
 }
 
