@@ -9,13 +9,13 @@ export function IntroSection() {
       <FluidSim />
       <div className={styles.IntroSection}>
         <MainLogo />
-        <h1>Hi, I'm Jon Shamir</h1>
+        <h1>Hi, I&apos;m Jon Shamir</h1>
         <p>
-          I'm a designer & developer. My interests include interaction design,
-          3D graphics, data visualization and machine learning.
+          I&apos;m a designer & developer. My interests include interaction
+          design, 3D graphics, data visualization and machine learning.
         </p>
         <p>
-          Currently building spatial interfaces at{" "}
+          Currently building spatial interfaces at&nbsp;
           <a href="https://www.sightful.com/">Sightful</a>.
         </p>
       </div>
