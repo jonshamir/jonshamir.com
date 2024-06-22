@@ -5,19 +5,16 @@ import { useEffect, useRef, useState } from "react";
 export function MainLogo() {
   const logoRef = useRef(null);
 
-  const [isAtTop, setIsAtTop] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(false);
 
   // Scroll listeners
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY === 0) {
-        setIsAtTop(true);
-      } else {
-        setIsAtTop(false);
-      }
+      setIsAtTop(window.scrollY === 0);
     };
 
     window.addEventListener("scroll", handleScroll);
+    handleScroll();
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
