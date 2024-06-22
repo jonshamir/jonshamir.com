@@ -33,8 +33,6 @@ export function MainLogo() {
           const transformX = placeholderRect.left;
           const transformY = placeholderRect.top;
 
-          console.log(transformX, transformY);
-
           logoRef.current.style.transform = `translate(${transformX}px, ${transformY}px) scale(1)`;
         } else {
           logoRef.current.style.transform = "translate(1rem, 0) scale(0.5)";
@@ -45,7 +43,7 @@ export function MainLogo() {
       updatePosition();
 
       return () => {
-        window.removeEventListener("scroll", updatePosition);
+        window.removeEventListener("resize", updatePosition);
       };
     }
   }, [isAtTop]);
