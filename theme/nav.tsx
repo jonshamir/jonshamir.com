@@ -3,6 +3,7 @@ import type { ReactElement } from "react";
 import { useBlogContext } from "./blog-context";
 import ThemeSwitch from "./theme-switch";
 import { collectPostsAndNavs } from "./utils/collect";
+import { MainLogo } from "../components/Logo/MainLogo";
 
 export default function Nav(): ReactElement {
   const { opts, config } = useBlogContext();
@@ -13,11 +14,21 @@ export default function Nav(): ReactElement {
       {navPages.map((page) => {
         const name = page.frontMatter?.title || page.name;
         if (page.active) {
-          return <span key={page.route}>{name}</span>;
+          return (
+            <span key={page.route}>
+              {page.route === "/" ? <MainLogo /> : name}
+            </span>
+          );
         }
         return (
           <Link key={page.route} href={page.route} passHref legacyBehavior>
-            <a>{name}</a>
+            {page.route === "/" ? (
+              <a>
+                <MainLogo />
+              </a>
+            ) : (
+              <a>{name}</a>
+            )}
           </Link>
         );
       })}

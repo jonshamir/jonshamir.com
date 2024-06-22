@@ -49,7 +49,7 @@ export function MainLogo() {
   }, [isAtTop]);
 
   return (
-    <div ref={logoRef} className={`${styles.container}`}>
+    <div ref={logoRef} className={styles.container}>
       <JonLogo />
     </div>
   );

@@ -4,7 +4,6 @@ import { useRef } from "react";
 import { useBlogContext } from "../blog-context";
 import { HeadingContext } from "../mdx-theme";
 import Nav from "../nav";
-import { MainLogo } from "../../components/Logo/MainLogo";
 
 export const BasicLayout = ({ children }: { children: ReactNode }) => {
   const { config, opts } = useBlogContext();
@@ -12,7 +11,6 @@ export const BasicLayout = ({ children }: { children: ReactNode }) => {
   const ref = useRef<HTMLHeadingElement>(null);
   return (
     <>
-      <MainLogo />
       <Nav />
       <article dir="ltr">
         <Head>
