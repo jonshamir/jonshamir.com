@@ -17,7 +17,9 @@ export default function ThemeSwitch() {
   };
 
   useEffect(() => {
-    const favicon = document.querySelector('link[rel="icon"]');
+    const favicon = document.querySelector(
+      'link[rel="icon"]'
+    ) as HTMLLinkElement;
     if (favicon === null) return;
     if (isDark) {
       document.body.classList.add("dark");
