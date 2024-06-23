@@ -1,6 +1,10 @@
 import { useTheme } from "next-themes";
 import { useMounted } from "nextra/hooks";
 import { MoonIcon, SunIcon } from "nextra/icons";
+import { useEffect } from "react";
+
+import faviconDark from "../public/favicon-dark.png";
+import faviconLight from "../public/favicon-light.png";
 
 export default function ThemeSwitch() {
   const { setTheme, resolvedTheme } = useTheme();
@@ -11,6 +15,18 @@ export default function ThemeSwitch() {
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");
   };
+
+  useEffect(() => {
+    const favicon = document.querySelector('link[rel="icon"]');
+    if (favicon === null) return;
+    if (isDark) {
+      document.body.classList.add("dark");
+      favicon.href = faviconDark.src;
+    } else {
+      document.body.classList.remove("dark");
+      favicon.href = faviconLight.src;
+    }
+  }, [isDark]);
 
   return (
     <span

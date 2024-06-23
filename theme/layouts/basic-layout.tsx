@@ -4,6 +4,7 @@ import { useRef } from "react";
 import { useBlogContext } from "../blog-context";
 import { HeadingContext } from "../mdx-theme";
 import Nav from "../nav";
+import favicon from "../../public/favicon-dark.png";
 
 export const BasicLayout = ({ children }: { children: ReactNode }) => {
   const { config, opts } = useBlogContext();
@@ -15,6 +16,7 @@ export const BasicLayout = ({ children }: { children: ReactNode }) => {
       <article dir="ltr">
         <Head>
           <title>{title}</title>
+          <link rel="icon" href={favicon.src} />
           {config.head?.({ title, meta: opts.frontMatter })}
         </Head>
         <HeadingContext.Provider value={ref}>
