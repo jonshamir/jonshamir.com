@@ -19,11 +19,17 @@
     margin: 1.2em;
   }
 
+  :global(.ThemeSwitch) {
+    cursor: pointer;
+    padding: 0.6rem;
+  }
+
   .item {
     display: block;
     text-align: right;
     position: relative;
     padding: 0.6rem;
+    user-select: none;
 
     img {
       width: 1.2em;
@@ -38,7 +44,8 @@
       color: var(--color-text) !important;
       // text-shadow: 0px 4px 7px rgba(0, 0, 0, 0.45);
       display: inline-block;
-      transition: all var(--transition-defaults);
+      transition: transform var(--transition-defaults),
+        opacity var(--transition-defaults);
       opacity: 0;
       transform: translate(-2em, -50%);
       position: absolute;

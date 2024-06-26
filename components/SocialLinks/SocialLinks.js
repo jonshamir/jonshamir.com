@@ -4,17 +4,17 @@ import iconInstagram from "../../public/ui/instagram.svg";
 import iconGithub from "../../public/ui/github.svg";
 import iconTwitter from "../../public/ui/twitterx.svg";
 import iconLinkedin from "../../public/ui/linkedin.svg";
-
-// import { DarkModeToggle } from "../DarkModeToggle/DarkModeToggle";
-// import { useColorTheme } from "../DarkModeToggle/useColorTheme";
+import ThemeSwitch from "../../theme/theme-switch";
+import { useTheme } from "next-themes";
 
 export function SocialLinks() {
-  const { isDark } = true;
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme === "dark";
   return (
     <div className={styles.SocialLinks}>
-      <span className={styles.item}>
-        <span>{isDark ? "Light" : "Dark"} Mode</span>
-        {/* <DarkModeToggle /> */}
+      <span className={styles.item} style={{ padding: "0.2rem" }}>
+        <span suppressHydrationWarning>{isDark ? "Light" : "Dark"} Mode</span>
+        <ThemeSwitch />
       </span>
       <a
         className={styles.item}

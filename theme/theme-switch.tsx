@@ -31,8 +31,9 @@ export default function ThemeSwitch() {
   }, [isDark]);
 
   return (
-    <span
+    <div
       role="button"
+      className="ThemeSwitch"
       aria-label="Toggle Dark Mode"
       tabIndex={0}
       onClick={toggleTheme}
@@ -41,6 +42,6 @@ export default function ThemeSwitch() {
       }}
     >
       {mounted && isDark ? <MoonIcon /> : <SunIcon />}
-    </span>
+    </div>
   );
 }
