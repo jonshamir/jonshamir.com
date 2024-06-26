@@ -13,7 +13,7 @@ export default function Nav(): ReactElement {
   return (
     <>
       <nav>
-        {/* {navPages.map((page) => {
+        {navPages.map((page) => {
           const name = page.frontMatter?.title || page.name;
           if (page.active) {
             return (
@@ -29,7 +29,7 @@ export default function Nav(): ReactElement {
                   <MainLogo />
                 </a>
               ) : (
-                <a>{name}</a>
+                <a style={{ display: "none" }}>{name}</a>
               )}
             </Link>
           );
@@ -38,7 +38,7 @@ export default function Nav(): ReactElement {
           <Link key={nav.url} href={nav.url} passHref legacyBehavior>
             <a>{nav.name}</a>
           </Link>
-        ))} */}
+        ))}
       </nav>
       <SocialLinks />
     </>
