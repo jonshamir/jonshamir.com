@@ -53,7 +53,7 @@ export function ThemeToggle() {
         id={styles.ThemeToggle}
         type="checkbox"
         checked={isDark}
-        onClick={toggleTheme}
+        onChange={toggleTheme}
         onKeyDown={(e) => {
           if (e.key === "Enter") toggleTheme();
         }}
