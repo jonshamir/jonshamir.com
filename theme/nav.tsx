@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { ReactElement } from "react";
 import { useBlogContext } from "./blog-context";
-import ThemeSwitch from "./theme-switch";
 import { collectPostsAndNavs } from "./utils/collect";
 import { MainLogo } from "../components/Logo/MainLogo";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";

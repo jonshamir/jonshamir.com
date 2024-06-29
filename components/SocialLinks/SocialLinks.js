@@ -4,7 +4,7 @@ import iconInstagram from "../../public/ui/instagram.svg";
 import iconGithub from "../../public/ui/github.svg";
 import iconTwitter from "../../public/ui/twitterx.svg";
 import iconLinkedin from "../../public/ui/linkedin.svg";
-import ThemeSwitch from "../../theme/theme-switch";
+import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import { useTheme } from "next-themes";
 
 export function SocialLinks() {
@@ -14,7 +14,7 @@ export function SocialLinks() {
     <div className={styles.SocialLinks}>
       <span className={styles.item} style={{ padding: "0.2rem" }}>
         <span suppressHydrationWarning>{isDark ? "Light" : "Dark"} Mode</span>
-        <ThemeSwitch />
+        <ThemeToggle />
       </span>
       <a
         className={styles.item}
