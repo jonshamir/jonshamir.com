@@ -39,6 +39,7 @@ export type BlogFrontMatter = {
   description?: string;
   tag?: string | string[];
   title?: string;
+  link?: string;
   type?: "post" | "page" | "posts" | "tag" | "project";
 };
 
