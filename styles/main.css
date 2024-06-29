@@ -116,3 +116,38 @@ figure {
     font-style: italic;
   }
 }
+
+.button {
+  display: inline-block;
+  text-decoration: none;
+  padding: 0.2em 0.8em;
+  margin: 0.5em;
+  border-radius: 100px;
+  background-color: rgba(var(--color-text-rgb), 0.8);
+  color: var(--color-bg);
+  font-size: 0.9em;
+  font-weight: 500;
+
+  transition: background-color var(--transition-defaults),
+    color var(--transition-defaults);
+
+  &:hover {
+    background-color: rgba(var(--color-text-rgb), 0.7);
+  }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 1);
+  }
+}
+
+.dark .button {
+  background-color: rgba(var(--color-text-rgb), 0.8);
+
+  &:hover {
+    background-color: rgba(var(--color-text-rgb), 1);
+  }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 0.7);
+  }
+}

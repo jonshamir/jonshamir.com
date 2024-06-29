@@ -6,7 +6,7 @@ import { getParent } from "./utils/parent";
 
 export default function Meta(): ReactElement {
   const { opts, config } = useBlogContext();
-  const { author, date, tag, description } = opts.frontMatter;
+  const { author, date, tag, description, link } = opts.frontMatter;
   const { back } = getParent({ opts, config });
   const tags = tag ? split(tag) : [];
 
@@ -19,8 +19,19 @@ export default function Meta(): ReactElement {
   const readingTime = opts.readingTime?.text;
   const dateObj = date ? new Date(date) : null;
   return (
-    <div>
+    <div style={{ position: "relative" }}>
       <div>
+        {link && (
+          <a
+            href={link}
+            target="_blank"
+            className="button"
+            style={{ position: "absolute", right: 0, bottom: 0 }}
+          >
+            Open{" "}
+            <span style={{ fontFamily: "Satoshi", fontWeight: 600 }}>↗</span>
+          </a>
+        )}
         <div>
           <span className="description">{description}</span>
           {author}
