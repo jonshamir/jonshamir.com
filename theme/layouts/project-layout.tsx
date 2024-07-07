@@ -6,9 +6,11 @@ import { BasicLayout } from "./basic-layout";
 
 export const ProjectLayout = ({ children }: { children: ReactNode }) => {
   const { config, opts } = useBlogContext();
+  const { heroImage } = opts.frontMatter;
   return (
     <BasicLayout>
       <MDXTheme>
+        {heroImage && <img src={heroImage} className="hero" />}
         {<h1>{opts.title}</h1>}
         <Meta />
         {children}

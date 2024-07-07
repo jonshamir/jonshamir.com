@@ -20,8 +20,6 @@ export const BasicLayout = ({ children }: { children: ReactNode }) => {
           {config.head?.({ title, meta: opts.frontMatter })}
         </Head>
         <HeadingContext.Provider value={ref}>
-          {/* {opts.hasJsxInH1 ? <h1 ref={ref} /> : null}
-        {opts.hasJsxInH1 ? null : <h1>{opts.title}</h1>} */}
           {children}
           {config.footer}
         </HeadingContext.Provider>

@@ -40,6 +40,7 @@ export type BlogFrontMatter = {
   tag?: string | string[];
   title?: string;
   link?: string;
+  heroImage?: string;
   type?: "post" | "page" | "posts" | "tag" | "project";
 };
 

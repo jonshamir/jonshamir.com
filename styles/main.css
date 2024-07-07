@@ -18,6 +18,8 @@ html {
     --color-bg-rgb: 34, 34, 34;
   }
 
+  background-color: var(--color-bg);
+
   @media (prefers-color-scheme: light) {
     background-color: var(--color-bg);
   }
@@ -157,4 +159,15 @@ figure {
   &:active {
     background-color: rgba(var(--color-text-rgb), 0.7);
   }
+}
+
+.hero {
+  object-fit: cover;
+  width: 100%;
+  margin: -100px auto auto;
+  border-radius: 1rem;
+  max-width: 1600px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  --aspect-ratio: (1.95);
 }
