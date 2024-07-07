@@ -95,7 +95,11 @@ a {
 article {
   max-width: 1100px;
   margin: auto;
-  padding: 2em;
+  padding: 2rem;
+
+  @media screen and (max-width: 600px) {
+    padding: 0 1.5rem;
+  }
 }
 
 p {
@@ -170,4 +174,10 @@ figure {
   overflow: hidden;
   margin-bottom: 2rem;
   --aspect-ratio: (1.95);
+
+  @media screen and (max-width: 600px) {
+    border-radius: 0;
+    margin-left: -1.5rem;
+    width: 100vw;
+  }
 }
