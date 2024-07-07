@@ -32,21 +32,6 @@ export function ThemeToggle() {
     }
   }, [isDark]);
 
-  // return (
-  //   <div
-  //     role="button"
-  //     className="ThemeSwitch"
-  //     aria-label="Toggle Dark Mode"
-  //     tabIndex={0}
-  //     onClick={toggleTheme}
-  //     onKeyDown={(e) => {
-  //       if (e.key === "Enter") toggleTheme();
-  //     }}
-  //   >
-  //     {mounted && isDark ? <MoonIcon /> : <SunIcon />}
-  //   </div>
-  // );
-
   return (
     <label htmlFor={styles.ThemeToggle} className={styles.ThemeToggleContainer}>
       <input
