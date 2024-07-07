@@ -10,6 +10,8 @@
   "dependencies": {
     "@fontsource-variable/work-sans": "^5.0.19",
     "@napi-rs/simple-git-linux-x64-gnu": "^0.1.16",
+    "@react-three/drei": "^9.108.3",
+    "@react-three/fiber": "^8.16.8",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/three": "^0.166.0",
     "gray-matter": "^4.0.3",
@@ -23,7 +25,7 @@
     "react-dom": "^18.2.0",
     "rss": "^1.2.2",
     "sass": "^1.77.5",
-    "three": "^0.165.0"
+    "three": "^0.166.1"
   },
   "devDependencies": {
     "@types/node": "^18.0.0",
