@@ -9,18 +9,6 @@ html {
   --color-bg-rgb: 238, 238, 238;
 
   --transition-defaults: 250ms ease;
-  /* --breakpoint-small: 600px; */
-  /* --breakpoint-medium: 11000px; */
-
-  padding: 2rem 5rem;
-  font-family: "Work Sans Variable", sans-serif;
-  font-size: 1.1em;
-
-  /* Color Scheme */
-  background-color: var(--color-bg);
-  color: var(--color-text);
-  transition: color var(--transition-defaults),
-    background-color var(--transition-defaults);
 
   &.dark {
     --color-text: #fafafa;
@@ -29,6 +17,25 @@ html {
     --color-text-rgb: 250, 250, 250;
     --color-bg-rgb: 34, 34, 34;
   }
+
+  @media (prefers-color-scheme: light) {
+    background-color: var(--color-bg);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    background-color: var(--color-bg);
+  }
+
+  /* --breakpoint-small: 600px; */
+  /* --breakpoint-medium: 11000px; */
+
+  padding: 2rem 5rem;
+  font-family: "Work Sans Variable", sans-serif;
+  font-size: 1.1em;
+
+  color: var(--color-text);
+  transition: color var(--transition-defaults),
+    background-color var(--transition-defaults);
 
   @media screen and (max-width: 600px) {
     padding: 5em 0em;
