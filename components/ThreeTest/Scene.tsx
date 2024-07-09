@@ -1,52 +1,69 @@
 import { OrbitControls } from "@react-three/drei";
-import { useMemo } from "react";
-import {
-  MeshBasicNodeMaterial,
-  mix,
-  modelWorldMatrix,
-  positionLocal,
-  sin,
-  timerLocal,
-  uniform,
-  uv,
-  vec3,
-  vec4,
-} from "three/nodes";
+import { extend, ThreeElements, useFrame } from "@react-three/fiber";
+import { MeshLineGeometry, MeshLineMaterial } from "meshline";
+import { useRef, useState } from "react";
+import * as THREE from "three";
+
+import { MaterialNode, Object3DNode } from "@react-three/fiber";
+
+declare module "@react-three/fiber" {
+  interface ThreeElements {
+    meshLineGeometry: Object3DNode<MeshLineGeometry, typeof MeshLineGeometry>;
+    meshLineMaterial: MaterialNode<MeshLineMaterial, typeof MeshLineMaterial>;
+  }
+}
+
+extend({ MeshLineGeometry, MeshLineMaterial });
+
+function Globe(props: ThreeElements["mesh"]) {
+  const ref = useRef<THREE.Mesh>(null!);
+  const [hovered, hover] = useState(false);
+  useFrame((state, delta) => (ref.current.rotation.z += delta));
+  return (
+    <mesh
+      {...props}
+      ref={ref}
+      onPointerOver={(event) => hover(true)}
+      onPointerOut={(event) => hover(false)}
+    >
+      <sphereGeometry args={[1, 32, 32]} />
+      <meshStandardMaterial color={hovered ? "hotpink" : "orange"} />
+    </mesh>
+  );
+}
+
+function Circle(props: ThreeElements["mesh"]) {
+  const points = [];
+  const r = 1;
+  const n = 8;
+
+  for (let i = 0; i < n + 1; i++) {
+    const theta = (i / n) * Math.PI * 2;
+    points.push([r * Math.cos(theta), r * Math.sin(theta), 0]);
+  }
+
+  return (
+    <mesh {...props}>
+      <meshLineGeometry points={points} />
+      <meshLineMaterial lineWidth={0.1} color="white" sizeAttenuation={0} />
+    </mesh>
+  );
+}
 
 export function Scene() {
-  const uniforms = useMemo(
-    () => ({
-      frequencyX: uniform(10),
-      frequencyY: uniform(5),
-    }),
-    []
-  );
-
-  const customMaterial = useMemo(() => {
-    const material = new MeshBasicNodeMaterial();
-    const time = timerLocal(1);
-
-    // vertex
-    const modelPosition = modelWorldMatrix.mul(vec4(positionLocal, 1));
-    const elevation = sin(modelPosition.x.mul(uniforms.frequencyX).sub(time))
-      .mul(0.1)
-      .add(sin(modelPosition.z.mul(uniforms.frequencyY).sub(time)).mul(0.1));
-    material.positionNode = positionLocal.add(vec3(0, 0, elevation));
-
-    // fragment
-    const color1 = vec3(uv(), 1.0);
-    const color2 = vec3(1.0, uv());
-    material.colorNode = mix(color1, color2, sin(time).mul(0.5).add(0.5));
-
-    return material;
-  }, [uniforms]);
-
   return (
     <>
       <OrbitControls />
-      <mesh material={customMaterial} rotation-x={-Math.PI * 0.5}>
-        <planeGeometry args={[1, 1, 512, 512]} />
-      </mesh>
+      <ambientLight intensity={Math.PI / 2} />
+      <spotLight
+        position={[10, 10, 10]}
+        angle={0.15}
+        penumbra={1}
+        decay={0}
+        intensity={Math.PI}
+      />
+      <pointLight position={[-10, -5, -3]} decay={0} intensity={Math.PI} />
+      <Circle position={[0, 0, 0]} />
     </>
   );
 }
