@@ -1,12 +1,14 @@
 .ProjectSection {
   padding-bottom: 8em;
+  display: flex;
+  flex-direction: column;
 }
 
 .ProjectTile {
-  box-sizing: border-box;
-  width: 100%;
+  flex: 1;
+  max-width: 100%;
   margin: 0;
-  display: inline-block;
+  display: block;
   cursor: pointer;
   vertical-align: bottom;
   text-decoration: none;
@@ -19,13 +21,18 @@
     background-color: rgba(var(--color-text-rgb), 0.1);
 
     .info {
-      transform: translateX(0.5em);
-      h3,
-      h4 {
-        transform: translateX(0);
-      }
+      transform: translateX(0.6em);
     }
   }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 0.05);
+
+    .info {
+      transform: translateX(0.5em);
+    }
+  }
+
   .imageWrapper {
     border-radius: 1rem;
     overflow: hidden;
@@ -42,8 +49,6 @@
     box-sizing: border-box;
     padding: 1em;
     transition: transform var(--transition-defaults);
-    // background-color: var(--color-bg);
-    // text-shadow: 0px 4px 7px rgba(0, 0, 0, 0.3);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -63,6 +68,7 @@
     // }
 
     h3 {
+      font-weight: 500;
       margin: 0;
       margin-bottom: 0.3em;
       font-size: 1.2em;
