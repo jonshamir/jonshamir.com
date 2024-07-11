@@ -1,0 +1,7 @@
+.Moon {
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+}
