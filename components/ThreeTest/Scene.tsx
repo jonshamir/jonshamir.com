@@ -23,9 +23,14 @@ const RADIUS = 1;
 const MOON_RADIUS = 1737;
 const SCALE_RATIO = RADIUS / MOON_RADIUS;
 
-function Quad(props: ThreeElements["mesh"]) {
+type QuadProps = ThreeElements["mesh"] & {
+  color?: THREE.Color;
+};
+
+function Quad(props: QuadProps) {
+  const { color = new THREE.Color(), ...rest } = props;
   return (
-    <mesh {...props}>
+    <mesh {...rest}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         fragmentShader={fragmentShader}
@@ -33,6 +38,9 @@ function Quad(props: ThreeElements["mesh"]) {
         depthTest={false}
         transparent={true}
         side={THREE.DoubleSide}
+        uniforms={{
+          uColor: { value: color },
+        }}
       />
     </mesh>
   );
@@ -64,6 +72,7 @@ export function Scene() {
             scale={craterRadius}
             rotation={rotation}
             position={position}
+            color={new THREE.Color(0xbbbbbb)}
           />
         );
       })}
