@@ -3,7 +3,7 @@ import { Scene } from "./Scene";
 
 import styles from "./Moon.module.scss";
 
-export function ThreeTest() {
+export function Moon() {
   return (
     <div style={{ width: "100%", height: "30rem" }} className={styles.Moon}>
       <Canvas
