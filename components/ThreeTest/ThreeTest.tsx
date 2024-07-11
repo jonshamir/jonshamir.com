@@ -7,7 +7,10 @@ import { Scene } from "./Scene";
 export function ThreeTest() {
   return (
     <div style={{ width: "100%", height: "30rem" }}>
-      <Canvas orthographic camera={{ zoom: 200, position: [0, 0, 10] }}>
+      <Canvas
+        orthographic
+        camera={{ zoom: 200, position: [0, 0, 10], far: 10 }}
+      >
         <Scene />
       </Canvas>
     </div>

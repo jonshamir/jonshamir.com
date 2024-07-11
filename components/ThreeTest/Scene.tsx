@@ -27,12 +27,12 @@ function Quad(props: ThreeElements["mesh"]) {
   return (
     <mesh {...props}>
       <planeGeometry args={[2, 2]} />
-      {/* <meshStandardMaterial wireframe /> */}
       <shaderMaterial
         fragmentShader={fragmentShader}
         vertexShader={vertexShader}
         depthTest={false}
         transparent={true}
+        side={THREE.DoubleSide}
       />
     </mesh>
   );
