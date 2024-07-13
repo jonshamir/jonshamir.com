@@ -49,10 +49,10 @@ function Quad(props: QuadProps) {
 export function Scene() {
   return (
     <>
-      <OrbitControls position={[0, 0, 0]} />
+      <OrbitControls position={[0, 0, 0]} enablePan={false} />
       <ambientLight intensity={Math.PI / 2} />
       <Billboard>
-        <Quad position={[0, 0, 0]} scale={RADIUS} />
+        <Quad position={[0, 0, 0]} scale={RADIUS} renderOrder={1} />
       </Billboard>
       {craters.map((crater, i) => {
         const craterRadius = (crater.diam / 2) * SCALE_RATIO;
