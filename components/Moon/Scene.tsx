@@ -2,13 +2,12 @@ import { Billboard, OrbitControls, Sphere } from "@react-three/drei";
 import { extend, ThreeElements } from "@react-three/fiber";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
-import fragmentShader from "./circle.frag";
-import vertexShader from "./circle.vert";
 import craters from "./craters.json";
 
 import { MaterialNode, Object3DNode } from "@react-three/fiber";
 import { Vector3 } from "three";
 import { DEG2RAD } from "three/src/math/MathUtils";
+import { circleFragmentShader, circleVertexShader } from "./circle.glsl";
 
 declare module "@react-three/fiber" {
   interface ThreeElements {
@@ -33,8 +32,8 @@ function Quad(props: QuadProps) {
     <mesh {...rest}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
-        fragmentShader={fragmentShader}
-        vertexShader={vertexShader}
+        vertexShader={circleVertexShader}
+        fragmentShader={circleFragmentShader}
         depthTest={false}
         transparent={true}
         side={THREE.DoubleSide}
