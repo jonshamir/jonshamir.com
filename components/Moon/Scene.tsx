@@ -1,4 +1,4 @@
-import { Billboard, OrbitControls } from "@react-three/drei";
+import { Billboard, OrbitControls, Sphere } from "@react-three/drei";
 import { extend, ThreeElements } from "@react-three/fiber";
 import { MeshLineGeometry, MeshLineMaterial } from "meshline";
 import * as THREE from "three";
@@ -50,10 +50,13 @@ export function Scene() {
   return (
     <>
       <OrbitControls position={[0, 0, 0]} enablePan={false} />
-      <ambientLight intensity={Math.PI / 2} />
       <Billboard>
         <Quad position={[0, 0, 0]} scale={RADIUS} renderOrder={1} />
       </Billboard>
+      <Sphere args={[RADIUS, 32, 32]}>
+        <meshStandardMaterial color="white" />
+      </Sphere>
+      <directionalLight position={[0, 0, 1]} intensity={0.5} />
       {craters.map((crater, i) => {
         const craterRadius = (crater.diam / 2) * SCALE_RATIO;
         const rotation = new THREE.Euler(
