@@ -7,7 +7,7 @@ export function Scene() {
   return (
     <>
       <OrbitControls position={[0, 0, 0]} enablePan={false} />
-      <MoonCraters />
+      <ProjectionMapping />
     </>
   );
 }
