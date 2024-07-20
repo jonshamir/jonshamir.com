@@ -11,13 +11,15 @@ export const ProjectionMappingMaterial = shaderMaterial(
     varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vVertex;
-    varying vec3 vViewPosition;
+    varying vec3 vCameraPosition;
+    varying vec3 vLightDirection;
 
     void main() {
         vUv = uv;
-        vViewPosition = (modelViewMatrix * vec4(position, 1.0)).xyz;
-        vNormal = normal;
+        vCameraPosition = cameraPosition;
+        vNormal = normal; (modelViewMatrix * vec4(position, 1.0)).xyz;
         vVertex = vec3(modelMatrix * vec4(position, 1.0));
+        vLightDirection = vec3(modelMatrix * vec4(1.0, 0.0, 0.0, 1.0));
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
 `,
@@ -25,9 +27,11 @@ export const ProjectionMappingMaterial = shaderMaterial(
     varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vVertex;
-    varying vec3 vViewPosition;
+    varying vec3 vCameraPosition;
+    varying vec3 vLightDirection;
 
     uniform sampler2D albedoMap;
+    uniform sampler2D specularMap;
 
     #define PI 3.141592653
 
@@ -63,14 +67,15 @@ export const ProjectionMappingMaterial = shaderMaterial(
 
     void main() {
         vec2 uv = getSphericalUV(vVertex);
-        vec4 texture = LinearTosRGB(texture2D(albedoMap, uv));
+        vec4 albedo = LinearTosRGB(texture2D(albedoMap, uv));
+        vec4 specular = texture2D(specularMap, uv);
         vec3 color = blinnPhong(
             normalize(vNormal),
-            normalize(vViewPosition - vVertex),
-            normalize(vec3(10.0, 4.0,10.0)),
+            normalize(vCameraPosition - vVertex),
+            normalize(vLightDirection),
             32.0,
-            texture.rgb,
-            1.0,
+            albedo.rgb,
+            specular.r,
             0.1);
 
         gl_FragColor = vec4(color, 1.0);
