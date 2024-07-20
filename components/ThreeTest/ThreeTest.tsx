@@ -1,7 +1,10 @@
 import { Canvas } from "@react-three/fiber";
 import { Scene } from "./Scene";
 
+import * as THREE from "three";
+
 import styles from "./ThreeTest.module.scss";
+import { WebGLRenderer } from "three";
 
 export function ThreeTest() {
   return (
@@ -10,8 +13,11 @@ export function ThreeTest() {
       className={styles.ThreeTest}
     >
       <Canvas
-        orthographic
-        camera={{ zoom: 200, position: [0, 0, 10], far: 10 }}
+        camera={{ position: [0, 0, 2] }}
+        onCreated={({ gl }) => {
+          // gl.toneMapping = THREE.ACESFilmicToneMapping;
+          // gl.outputColorSpace = THREE.SRGBColorSpace;
+        }}
       >
         <Scene />
       </Canvas>
