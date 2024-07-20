@@ -12,13 +12,7 @@ export function ThreeTest() {
       style={{ width: "100%", height: "30rem" }}
       className={styles.ThreeTest}
     >
-      <Canvas
-        camera={{ position: [0, 0, 2] }}
-        onCreated={({ gl }) => {
-          // gl.toneMapping = THREE.ACESFilmicToneMapping;
-          // gl.outputColorSpace = THREE.SRGBColorSpace;
-        }}
-      >
+      <Canvas camera={{ position: [0, 0, 10], zoom: 5 }}>
         <Scene />
       </Canvas>
     </div>

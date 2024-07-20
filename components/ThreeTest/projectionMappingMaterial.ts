@@ -6,6 +6,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
     albedoMap: null,
     specularMap: null,
     normalMap: null,
+    cloudMap: null,
   },
   /* glsl */ ` // Vertex shader
     varying vec2 vUv;
@@ -32,6 +33,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
 
     uniform sampler2D albedoMap;
     uniform sampler2D specularMap;
+    uniform sampler2D cloudMap;
 
     #define PI 3.141592653
 
@@ -67,16 +69,32 @@ export const ProjectionMappingMaterial = shaderMaterial(
 
     void main() {
         vec2 uv = getSphericalUV(vVertex);
+        vec3 normal = normalize(vNormal);
+        vec3 viewDirection = normalize(vCameraPosition - vVertex);
+        vec3 lightDirection = normalize(vLightDirection);
+
+        float ambientIntensity = 0.1;
+        vec3 atmosphereColor = vec3(0.53, 0.80, 1.00);
+
+        // Sample textures
         vec4 albedo = LinearTosRGB(texture2D(albedoMap, uv));
         vec4 specular = texture2D(specularMap, uv);
+
         vec3 color = blinnPhong(
-            normalize(vNormal),
-            normalize(vCameraPosition - vVertex),
-            normalize(vLightDirection),
+            normal,
+            viewDirection,
+            lightDirection,
             32.0,
             albedo.rgb,
             specular.r,
-            0.1);
+            ambientIntensity);
+
+        // Atmosphere
+        vec3 lambert = vec3(max(0.0, dot(normal, lightDirection)));
+        vec3 atmosphere = vec3(1.0 - max(0.0, dot(viewDirection, normal))) * sqrt(lambert) * atmosphereColor;
+        vec3 clouds = LinearTosRGB(texture2D(cloudMap, uv)).rgb * (sqrt(lambert) + ambientIntensity);
+        
+        color = color + atmosphere + clouds;
 
         gl_FragColor = vec4(color, 1.0);
     }

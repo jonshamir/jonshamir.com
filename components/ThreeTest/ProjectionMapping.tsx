@@ -16,7 +16,11 @@ export function ProjectionMapping() {
   return (
     <>
       <Sphere args={[1, 32, 32]}>
-        <projectionMappingMaterial albedoMap={albedo} specularMap={specular} />
+        <projectionMappingMaterial
+          albedoMap={albedo}
+          specularMap={specular}
+          cloudMap={clouds}
+        />
       </Sphere>
       <directionalLight position={[0, 0, 1]} intensity={1.5} />
     </>
