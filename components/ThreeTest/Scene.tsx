@@ -6,7 +6,11 @@ import { ProjectionMapping } from "./ProjectionMapping";
 export function Scene() {
   return (
     <>
-      <OrbitControls position={[0, 0, 0]} enablePan={false} />
+      <OrbitControls
+        position={[0, 0, 0]}
+        enablePan={false}
+        enableZoom={false}
+      />
       <ProjectionMapping />
     </>
   );

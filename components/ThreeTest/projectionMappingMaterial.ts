@@ -20,7 +20,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
         vCameraPosition = cameraPosition;
         vNormal = normal; (modelViewMatrix * vec4(position, 1.0)).xyz;
         vVertex = vec3(modelMatrix * vec4(position, 1.0));
-        vLightDirection = vec3(modelMatrix * vec4(1.0, 0.0, 0.0, 1.0));
+        vLightDirection = vec3(modelMatrix * vec4(1.0, -0.5, 0.0, 1.0));
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
 `,
@@ -73,7 +73,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
         vec3 viewDirection = normalize(vCameraPosition - vVertex);
         vec3 lightDirection = normalize(vLightDirection);
 
-        float ambientIntensity = 0.1;
+        float ambientIntensity = 0.15;
         vec3 atmosphereColor = vec3(0.53, 0.80, 1.00);
 
         // Sample textures

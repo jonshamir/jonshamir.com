@@ -12,6 +12,7 @@
     "@napi-rs/simple-git-linux-x64-gnu": "^0.1.16",
     "@react-three/drei": "^9.108.3",
     "@react-three/fiber": "^8.16.8",
+    "@react-three/postprocessing": "^2.16.2",
     "@sindresorhus/slugify": "^2.2.1",
     "@types/three": "^0.166.0",
     "gray-matter": "^4.0.3",
