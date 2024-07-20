@@ -1,11 +1,7 @@
 import { Sphere } from "@react-three/drei";
-import {
-  projectionFragmentShader,
-  projectionVertexShader,
-} from "./projectionMapping.glsl";
 import { extend, useLoader } from "@react-three/fiber";
 import { TextureLoader } from "three";
-import { ProjectionMappingMaterial } from "./projectionShaderMaterial";
+import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
 
 extend({ ProjectionMappingMaterial });
 
