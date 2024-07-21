@@ -18,9 +18,9 @@ export const ProjectionMappingMaterial = shaderMaterial(
     void main() {
         vUv = uv;
         vCameraPosition = cameraPosition;
-        vNormal = normal; (modelViewMatrix * vec4(position, 1.0)).xyz;
+        vNormal = vec3(modelMatrix * vec4(normal, 0.0));
         vVertex = vec3(modelMatrix * vec4(position, 1.0));
-        vLightDirection = vec3(modelMatrix * vec4(1.0, -0.5, 0.0, 1.0));
+        vLightDirection = vec3(2.5, 3.0, 2.0);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
 `,
