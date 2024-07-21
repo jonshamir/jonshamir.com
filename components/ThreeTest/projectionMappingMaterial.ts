@@ -1,5 +1,13 @@
 import { shaderMaterial } from "@react-three/drei";
-import { extend } from "@react-three/fiber";
+import { ReactThreeFiber } from "@react-three/fiber";
+import * as THREE from "three";
+
+interface ProjectionMappingMaterialProps {
+  albedoMap: THREE.Texture;
+  specularMap: THREE.Texture;
+  normalMap: THREE.Texture;
+  cloudMap: THREE.Texture;
+}
 
 export const ProjectionMappingMaterial = shaderMaterial(
   {
@@ -12,6 +20,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
     varying vec2 vUv;
     varying vec3 vNormal;
     varying vec3 vVertex;
+    varying vec3 vWorldVertex;
     varying vec3 vCameraPosition;
     varying vec3 vLightDirection;
 
@@ -19,7 +28,8 @@ export const ProjectionMappingMaterial = shaderMaterial(
         vUv = uv;
         vCameraPosition = cameraPosition;
         vNormal = vec3(modelMatrix * vec4(normal, 0.0));
-        vVertex = vec3(modelMatrix * vec4(position, 1.0));
+        vVertex = position;
+        vWorldVertex = vec3(modelMatrix * vec4(position, 1.0));
         vLightDirection = vec3(2.5, 3.0, 2.0);
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
@@ -100,3 +110,14 @@ export const ProjectionMappingMaterial = shaderMaterial(
     }
 `
 );
+
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      customMaterial: ReactThreeFiber.Object3DNode<
+        typeof ProjectionMappingMaterial,
+        ProjectionMappingMaterialProps
+      >;
+    }
+  }
+}

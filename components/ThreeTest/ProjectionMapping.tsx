@@ -1,29 +1,31 @@
 import { RoundedBox } from "@react-three/drei";
-import { extend, useLoader } from "@react-three/fiber";
+import { extend, useFrame, useLoader } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { TextureLoader } from "three";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
+import { group } from "console";
 
-extend({ ProjectionMappingMaterial });
+extend({ ProjectionMappingMaterial, RoundedBoxGeometry });
 
 export function ProjectionMapping() {
-  const meshRef = useRef<THREE.Mesh>(null);
+  const ref = useRef<THREE.Group>(null);
   const [albedo] = useLoader(TextureLoader, ["/textures/EarthAlbedo.jpg"]);
   const [specular] = useLoader(TextureLoader, ["/textures/EarthSpecular.jpg"]);
   const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
   const [clouds] = useLoader(TextureLoader, ["/textures/EarthClouds.jpg"]);
 
-  // useFrame(() => {
-  //   if (meshRef.current) {
-  //     meshRef.current.rotation.y += 0.001;
-  //   }
-  // });
+  useFrame(() => {
+    if (ref.current) {
+      ref.current.rotation.y += 0.001;
+    }
+  });
 
   albedo.colorSpace = THREE.SRGBColorSpace;
   return (
     <>
-      <RoundedBox
+      {/* <RoundedBox
         args={[2, 2, 2]}
         radius={0.2}
         rotation-x={-Math.PI * 0.25}
@@ -35,15 +37,17 @@ export function ProjectionMapping() {
           specularMap={specular}
           cloudMap={clouds}
         />
-      </RoundedBox>
-      {/* <mesh ref={meshRef}>
-        <torusKnotGeometry args={[0.8, 0.35, 120, 16, 2, 3]} />
-        <projectionMappingMaterial
-          albedoMap={albedo}
-          specularMap={specular}
-          cloudMap={clouds}
-        />
-      </mesh> */}
+      </RoundedBox> */}
+      <group ref={ref}>
+        <mesh rotation-x={-Math.PI * 0.25} rotation-y={-Math.PI * 0.25}>
+          <roundedBoxGeometry args={[2, 2, 2, 6, 0.2]} />
+          <projectionMappingMaterial
+            albedoMap={albedo}
+            specularMap={specular}
+            cloudMap={clouds}
+          />
+        </mesh>
+      </group>
       <directionalLight position={[0, 0, 1]} intensity={1.5} />
     </>
   );
