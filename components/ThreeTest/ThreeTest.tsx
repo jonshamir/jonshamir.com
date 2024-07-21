@@ -1,7 +1,5 @@
 import { Canvas } from "@react-three/fiber";
 
-import { Scene } from "./Scene";
-
 import styles from "./ThreeTest.module.scss";
 import { OrbitControls } from "@react-three/drei";
 import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
@@ -26,6 +24,7 @@ export function ThreeTest() {
         <option value="cube">Cube</option>
         <option value="dodecahedron">Dodecahedron</option>
         <option value="torus">Torus</option>
+        <option value="octahedron">Octahedron</option>
       </select>
     </>
   );

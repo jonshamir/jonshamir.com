@@ -21,6 +21,7 @@ export type BaseMesh =
   | "sphere"
   | "cube"
   | "dodecahedron"
+  | "octahedron"
   | "icosahedron"
   | "torus";
 
