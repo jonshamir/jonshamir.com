@@ -21,17 +21,20 @@ an attempt to improve the learning experience for the students, I created 12
 lectures with over 500 slides including custom illustrations & animations that
 visualize different concepts.
 
-<Slider Infinite={true} speed={500}>
-  {[...Array(9).keys()].map((i) => (
-    <div key={i}>
-      <img
-        src={`/projects/unity-cg/slide${i + 1}.png`}
-        alt={`Unity CG Slide ${i + 1}`}
-        style={{ width: "100%" }}
-      />
-    </div>
-  ))}
-</Slider>
+<figure>
+  <Slider Infinite={true} speed={500}>
+    {[...Array(9).keys()].map((i) => (
+      <div key={i}>
+        <img
+          src={`/projects/unity-cg/slide${i + 1}.png`}
+          alt={`Unity CG Slide ${i + 1}`}
+          style={{ width: "100%" }}
+        />
+      </div>
+    ))}
+  </Slider>
+  <figcaption>Some of the slides I created for the course</figcaption>
+</figure>
 
 I also created 5 coding exercises involving subjects such as Subdivision
 Surfaces, Ray-Tracing, Shading, Texturing and more. I taught the students
