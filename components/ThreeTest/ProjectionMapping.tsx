@@ -17,14 +17,25 @@ function Model({ url }: { url: string }) {
   return <primitive object={obj} ref={ref} />;
 }
 
-export function ProjectionMapping() {
+export type BaseMesh =
+  | "sphere"
+  | "cube"
+  | "dodecahedron"
+  | "icosahedron"
+  | "torus";
+
+export function ProjectionMapping({
+  baseMesh = "cube",
+}: {
+  baseMesh?: BaseMesh;
+}) {
   const ref = useRef<THREE.Group>(null);
   const [albedo] = useLoader(TextureLoader, ["/textures/EarthAlbedo.jpg"]);
   const [specular] = useLoader(TextureLoader, ["/textures/EarthSpecular.jpg"]);
   const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
   const [clouds] = useLoader(TextureLoader, ["/textures/EarthClouds.jpg"]);
 
-  const obj = useLoader(OBJLoader, "/models/icosahedron.obj");
+  const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
 
   // Assuming the first child of the loaded object is the mesh we want
   const geometry = obj.children[0].geometry as THREE.BufferGeometry;
