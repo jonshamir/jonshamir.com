@@ -20,11 +20,15 @@
     border-radius: 0.4em;
 
     &:hover {
-      background-color: rgba(var(--color-text-rgb), 0.1);
+      background-color: rgba(var(--color-text-rgb), 0.15);
     }
 
     &.selected {
-      background-color: rgba(var(--color-text-rgb), 0.9);
+      background-color: rgba(var(--color-text-rgb), 1);
+    }
+
+    :global(.dark) &.selected {
+      background-color: rgba(var(--color-text-rgb), 0.8);
     }
   }
 }

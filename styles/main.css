@@ -121,7 +121,7 @@ span.description {
 figure {
   width: 80%;
   max-width: 36em;
-  margin: 2em;
+  margin: 2em 1em;
   margin-left: 2em;
 
   img {
