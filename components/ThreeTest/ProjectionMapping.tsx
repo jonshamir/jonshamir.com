@@ -17,16 +17,17 @@ function Model({ url }: { url: string }) {
   return <primitive object={obj} ref={ref} />;
 }
 
-export type BaseMesh =
-  | "sphere"
-  | "cube"
-  | "dodecahedron"
-  | "octahedron"
-  | "icosahedron"
-  | "torus";
+export enum BaseMesh {
+  Sphere = "sphere",
+  Cube = "cube",
+  Dodecahedron = "dodecahedron",
+  Octahedron = "octahedron",
+  Icosahedron = "icosahedron",
+  Torus = "torus",
+}
 
 export function ProjectionMapping({
-  baseMesh = "cube",
+  baseMesh = BaseMesh.Cube,
 }: {
   baseMesh?: BaseMesh;
 }) {
