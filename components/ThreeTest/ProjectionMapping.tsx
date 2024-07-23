@@ -40,7 +40,8 @@ export function ProjectionMapping({
   const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
 
   // Assuming the first child of the loaded object is the mesh we want
-  const geometry = obj.children[0].geometry as THREE.BufferGeometry;
+  const geometry = (obj.children[0] as THREE.Mesh)
+    .geometry as THREE.BufferGeometry;
 
   useFrame(() => {
     if (ref.current) {
@@ -53,7 +54,8 @@ export function ProjectionMapping({
     <>
       <group ref={ref}>
         <mesh geometry={geometry}>
-          {/* <roundedBoxGeometry args={[2, 2, 2, 6, 0.2]} /> */}
+          {/* 
+          // @ts-ignore */}
           <projectionMappingMaterial
             albedoMap={albedo}
             specularMap={specular}
