@@ -35,12 +35,12 @@ export function ThreeTest() {
         style={{ width: "100%", height: "30rem" }}
         className={styles.ThreeTest}
       >
-        <Canvas camera={{ position: [0, 0, 10], zoom: 4 }}>
+        <MeshSelect value={baseMesh} onChange={setBaseMesh} />
+        <Canvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
           <OrbitControls enablePan={false} enableZoom={false} />
           <ProjectionMapping baseMesh={baseMesh} />
         </Canvas>
       </div>
-      <MeshSelect value={baseMesh} onChange={setBaseMesh} />
     </>
   );
 }
