@@ -1,9 +1,13 @@
 .ThemeToggleContainer {
   cursor: pointer;
-  padding: 0.5em;
+  padding: 8px;
   display: block;
   margin: 0;
   line-height: 0;
+  background-color: var(--color-bg);
+  transition: background-color var(--transition-defaults);
+
+  border-radius: 500px;
 }
 
 #ThemeToggle {

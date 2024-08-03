@@ -3,7 +3,7 @@ import { useEffect, useState, type ReactElement } from "react";
 import { useBlogContext } from "./blog-context";
 import { collectPostsAndNavs } from "./utils/collect";
 import { MainLogo } from "../components/Logo/MainLogo";
-import { SocialLinks } from "../components/SocialLinks/SocialLinks";
+import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
 
 export default function Nav(): ReactElement {
   const [isMounted, setIsMounted] = useState(false);
@@ -45,7 +45,7 @@ export default function Nav(): ReactElement {
           ))}
         </nav>
       )}
-      <SocialLinks />
+      <FloatingMenu />
     </>
   );
 }
