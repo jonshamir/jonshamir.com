@@ -1,6 +1,4 @@
 import { useTheme } from "next-themes";
-import { useMounted } from "nextra/hooks";
-import { MoonIcon, SunIcon } from "nextra/icons";
 import { useEffect } from "react";
 
 import styles from "./ThemeToggle.module.scss";
@@ -10,7 +8,6 @@ import faviconLight from "../../public/favicon-light.png";
 
 export function ThemeToggle() {
   const { setTheme, resolvedTheme } = useTheme();
-  const mounted = useMounted();
   const isDark = resolvedTheme === "dark";
 
   // @TODO: take system theme
