@@ -5,11 +5,35 @@
 .SocialLinks {
   display: flex;
   flex-direction: column;
+  min-width: 300px;
 
   .item {
     padding: 0.6rem;
     display: flex;
     align-items: center;
+    border-radius: 0.5rem;
+    background-color: rgba(var(--color-text-rgb), 0);
+    transition: background-color var(--transition-defaults);
+    text-decoration: none;
+    position: relative;
+
+    &::after {
+      font-family: "Satoshi", sans-serif;
+      font-weight: 600;
+      content: "↗";
+      display: inline-block;
+      position: absolute;
+      right: 1rem;
+      opacity: 0;
+      transition: opacity var(--transition-defaults);
+    }
+
+    &:hover {
+      background-color: rgba(var(--color-text-rgb), 0.1);
+      &::after {
+        opacity: 1;
+      }
+    }
 
     img {
       width: 1.2em;

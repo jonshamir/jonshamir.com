@@ -192,3 +192,13 @@ figcaption,
     width: 100vw;
   }
 }
+
+.MainPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  @media screen and (min-width: 1000px) {
+    flex-direction: row;
+  }
+}

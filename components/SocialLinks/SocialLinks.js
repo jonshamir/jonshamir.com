@@ -8,6 +8,7 @@ import iconLinkedin from "../../public/ui/linkedin.svg";
 export function SocialLinks() {
   return (
     <div className={styles.SocialLinks}>
+      <h2>Contact</h2>
       <a
         className={styles.item}
         key="instagram"
