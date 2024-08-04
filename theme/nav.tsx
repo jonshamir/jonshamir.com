@@ -3,7 +3,6 @@ import { useEffect, useState, type ReactElement } from "react";
 import { useBlogContext } from "./blog-context";
 import { collectPostsAndNavs } from "./utils/collect";
 import { MainLogo } from "../components/Logo/MainLogo";
-import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
 import { ThemeToggle } from "../components/ThemeToggle/ThemeToggle";
 
 export default function Nav(): ReactElement {
