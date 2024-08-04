@@ -3,22 +3,18 @@ import { useRouter } from "next/router";
 import type { ReactElement, ReactNode } from "react";
 import { useBlogContext } from "../blog-context";
 import { MDXTheme } from "../mdx-theme";
-import { collectPostsAndNavs } from "../utils/collect";
+import { collectExperiments } from "../utils/collect";
 import getTags from "../utils/get-tags";
 import { BasicLayout } from "./basic-layout";
 
-export function PostsLayout({
-  children,
-}: {
-  children: ReactNode;
-}): ReactElement {
+export function LabLayout({ children }: { children: ReactNode }): ReactElement {
   const { config, opts } = useBlogContext();
-  const { posts } = collectPostsAndNavs({ config, opts });
+  const { experiments } = collectExperiments({ config, opts });
   const router = useRouter();
   const { type } = opts.frontMatter;
   const tagName = type === "tag" ? router.query.tag : null;
 
-  const postList = posts.map((post) => {
+  const experimentList = experiments.map((post) => {
     if (tagName) {
       const tags = getTags(post);
       if (!Array.isArray(tagName) && !tags.includes(tagName)) {
@@ -60,7 +56,7 @@ export function PostsLayout({
   return (
     <BasicLayout>
       <MDXTheme>{children}</MDXTheme>
-      {postList}
+      {experimentList}
     </BasicLayout>
   );
 }

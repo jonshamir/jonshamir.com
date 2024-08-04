@@ -7,6 +7,7 @@ import { BlogProvider } from "./blog-context";
 import { DEFAULT_THEME } from "./constants";
 import { PageLayout } from "./layouts/page-layout";
 import { PostsLayout } from "./layouts/posts-layout";
+import { LabLayout } from "./layouts/lab-layout";
 import type { LayoutProps } from "./types";
 
 const layoutMap = {
@@ -15,6 +16,7 @@ const layoutMap = {
   page: PageLayout,
   posts: PostsLayout,
   tag: PostsLayout,
+  lab: LabLayout,
 };
 
 const BlogLayout = ({
