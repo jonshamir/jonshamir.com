@@ -21,9 +21,9 @@ export default function Nav(): ReactElement {
             const name = page.frontMatter?.title || page.name;
             if (page.active) {
               return (
-                <span key={page.route}>
+                <div key={page.route}>
                   {page.route === "/" ? <MainLogo /> : name}
-                </span>
+                </div>
               );
             }
             return (
