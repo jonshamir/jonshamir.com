@@ -33,6 +33,17 @@
       &::after {
         opacity: 1;
       }
+      span,
+      img {
+        transform: translateX(0.6em);
+      }
+    }
+
+    &:active {
+      span,
+      img {
+        transform: translateX(0.5em);
+      }
     }
 
     img {
@@ -40,13 +51,14 @@
       height: 1.2em;
       vertical-align: middle;
       opacity: 0.8;
-      transition: opacity var(--transition-defaults),
-        filter var(--transition-defaults);
+      transition: transform var(--transition-defaults),
+        opacity var(--transition-defaults), filter var(--transition-defaults);
       filter: invert(1);
     }
     span {
       color: var(--color-text) !important;
-      transition: color var(--transition-defaults);
+      transition: transform var(--transition-defaults),
+        color var(--transition-defaults);
       display: inline-block;
       opacity: 1;
       top: 50%;
