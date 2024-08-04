@@ -57,8 +57,14 @@ html {
 
 nav {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 100;
+
+  @media screen and (max-width: 600px) {
+    top: 1rem;
+    right: 1rem;
+  }
 
   a,
   span {
