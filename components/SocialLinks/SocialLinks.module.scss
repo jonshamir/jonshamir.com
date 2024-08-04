@@ -40,6 +40,8 @@
     }
 
     &:active {
+      background-color: rgba(var(--color-text-rgb), 0.05);
+
       span,
       img {
         transform: translateX(0.5em);
