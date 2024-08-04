@@ -62,6 +62,10 @@ nav {
   z-index: 100;
   display: flex;
   align-items: center;
+  background-color: var(--color-bg);
+  border-radius: 500px;
+  padding-left: 0.6rem;
+  transition: background-color var(--transition-defaults);
 
   @media screen and (max-width: 800px) {
     top: 1rem;
