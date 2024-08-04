@@ -1,0 +1,69 @@
+.FloatingMenu {
+  position: fixed;
+  z-index: 150;
+  right: 0;
+  top: 0;
+  box-sizing: border-box;
+  margin: 3em 2.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media screen and (max-width: 600px) {
+    bottom: auto;
+    top: 0;
+    margin: 1.2em;
+  }
+
+  :global(.ThemeSwitch) {
+    cursor: pointer;
+    padding: 0.6rem;
+  }
+
+  .item {
+    display: block;
+    text-align: right;
+    position: relative;
+    padding: 0.6rem;
+    user-select: none;
+
+    img {
+      width: 1.2em;
+      height: 1.2em;
+      vertical-align: middle;
+      opacity: 0.8;
+      transition: opacity var(--transition-defaults),
+        filter var(--transition-defaults);
+      filter: invert(1);
+    }
+    span {
+      color: var(--color-text) !important;
+      // text-shadow: 0px 4px 7px rgba(0, 0, 0, 0.45);
+      display: inline-block;
+      transition: transform var(--transition-defaults),
+        opacity var(--transition-defaults);
+      opacity: 0;
+      transform: translate(-2em, -50%);
+      position: absolute;
+      top: 50%;
+      right: 2.2em;
+      text-align: right;
+      pointer-events: none;
+      font-size: 0.9rem;
+      white-space: nowrap;
+      padding: 0.3rem 0.5rem;
+
+      // @include blur-bg;
+    }
+
+    &:hover {
+      img {
+        opacity: 0.8;
+      }
+      span {
+        opacity: 1;
+        transform: translate(0, -50%);
+      }
+    }
+  }
+}
