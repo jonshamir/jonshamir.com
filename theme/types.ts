@@ -41,7 +41,7 @@ export type BlogFrontMatter = {
   title?: string;
   link?: string;
   heroImage?: string;
-  type?: "post" | "page" | "posts" | "tag" | "project";
+  type?: "post" | "page" | "posts" | "tag" | "project" | "experiment";
 };
 
 export interface LayoutProps {

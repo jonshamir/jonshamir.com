@@ -1,6 +1,7 @@
 import { ThemeProvider } from "next-themes";
 import type { NextraThemeLayoutProps } from "nextra";
 import type { ReactElement, ReactNode } from "react";
+import { ExperimentLayout } from "./layouts/experiment-layout";
 import { ProjectLayout } from "./layouts/project-layout";
 import { ArticleLayout } from "./layouts/article-layout";
 import { BlogProvider } from "./blog-context";
@@ -17,6 +18,7 @@ const layoutMap = {
   posts: PostsLayout,
   tag: PostsLayout,
   lab: LabLayout,
+  experiment: ExperimentLayout,
 };
 
 const BlogLayout = ({
