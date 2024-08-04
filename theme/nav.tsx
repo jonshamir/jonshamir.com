@@ -4,6 +4,7 @@ import { useBlogContext } from "./blog-context";
 import { collectPostsAndNavs } from "./utils/collect";
 import { MainLogo } from "../components/Logo/MainLogo";
 import { FloatingMenu } from "../components/FloatingMenu/FloatingMenu";
+import { ThemeToggle } from "../components/ThemeToggle/ThemeToggle";
 
 export default function Nav(): ReactElement {
   const [isMounted, setIsMounted] = useState(false);
@@ -20,20 +21,22 @@ export default function Nav(): ReactElement {
           {navPages.map((page) => {
             const name = page.frontMatter?.title || page.name;
             if (page.active) {
+              if (page.route === "/") return <MainLogo key="/" />;
+
               return (
-                <div key={page.route}>
-                  {page.route === "/" ? <MainLogo /> : name}
+                <div key={page.route} className="link">
+                  {name}
                 </div>
               );
             }
             return (
               <Link key={page.route} href={page.route} passHref legacyBehavior>
                 {page.route === "/" ? (
-                  <a>
+                  <a style={{ padding: 0 }}>
                     <MainLogo />
                   </a>
                 ) : (
-                  <a style={{ display: "none" }}>{name}</a>
+                  <a>{name}</a>
                 )}
               </Link>
             );
@@ -43,9 +46,9 @@ export default function Nav(): ReactElement {
               <a>{nav.name}</a>
             </Link>
           ))}
+          <ThemeToggle />
         </nav>
       )}
-      <FloatingMenu />
     </>
   );
 }

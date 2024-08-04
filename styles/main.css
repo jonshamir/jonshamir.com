@@ -57,20 +57,28 @@ html {
 
 nav {
   position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 2rem;
+  right: 2rem;
   z-index: 100;
+  display: flex;
+  align-items: center;
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     top: 1rem;
     right: 1rem;
   }
 
   a,
-  span {
+  .link {
     display: inline-block;
-    padding: 0.4em;
+    padding: 8px;
     vertical-align: middle;
+    text-decoration: none;
+    font-size: 0.9em;
+  }
+
+  a:hover {
+    text-decoration: underline;
   }
 }
 
