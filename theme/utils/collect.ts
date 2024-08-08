@@ -31,7 +31,6 @@ export const collectPostsAndNavs = ({ opts }: LayoutProps) => {
     }
   });
   posts.sort(sortDate);
-  navPages.sort(sortDate);
   return { posts, navPages };
 };
 

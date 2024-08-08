@@ -20,8 +20,6 @@ export default function Nav(): ReactElement {
           {navPages.map((page) => {
             const name = page.frontMatter?.title || page.name;
             if (page.active) {
-              if (page.route === "/") return <MainLogo key="/" />;
-
               return (
                 <div key={page.route} className="link">
                   {name}
@@ -30,13 +28,7 @@ export default function Nav(): ReactElement {
             }
             return (
               <Link key={page.route} href={page.route} passHref legacyBehavior>
-                {page.route === "/" ? (
-                  <a style={{ padding: 0 }}>
-                    <MainLogo />
-                  </a>
-                ) : (
-                  <a>{name}</a>
-                )}
+                <a>{name}</a>
               </Link>
             );
           })}
@@ -45,6 +37,11 @@ export default function Nav(): ReactElement {
               <a>{nav.name}</a>
             </Link>
           ))}
+          <Link href="/" passHref legacyBehavior>
+            <a style={{ padding: 0 }}>
+              <MainLogo />
+            </a>
+          </Link>
           <ThemeToggle />
         </nav>
       )}
