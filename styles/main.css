@@ -64,7 +64,7 @@ nav {
   align-items: center;
   background-color: var(--color-bg);
   border-radius: 500px;
-  padding-left: 0.6rem;
+  padding: 0.1rem 0.3rem;
   transition: background-color var(--transition-defaults);
 
   @media screen and (max-width: 800px) {
@@ -73,12 +73,17 @@ nav {
   }
 
   a,
-  .link {
+  .active-link {
     display: inline-block;
-    padding: 8px;
+    padding: 6px 14px;
     vertical-align: middle;
     text-decoration: none;
     font-size: 0.9em;
+    border-radius: 500px;
+  }
+
+  .active-link {
+    background-color: rgba(var(--color-text-rgb), 0.1);
   }
 
   a:hover {

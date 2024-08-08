@@ -21,7 +21,7 @@ export default function Nav(): ReactElement {
             const name = page.frontMatter?.title || page.name;
             if (page.active) {
               return (
-                <div key={page.route} className="link">
+                <div key={page.route} className="active-link">
                   {name}
                 </div>
               );
