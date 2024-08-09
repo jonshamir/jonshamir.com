@@ -40,7 +40,7 @@
     width: 7px;
     background-color: var(--color-text);
     border-radius: 50px 0 0 50px;
-    animation: flipLight 0.15s step-end;
+    animation: flipLight 0s step-end;
     animation-fill-mode: forwards;
   }
 
@@ -48,7 +48,7 @@
     background-color: var(--color-bg);
     border-radius: 50px;
     transform: scale(0, 1);
-    animation: turnLight 0.3s ease-in-out;
+    animation: turnLight 0s ease-in-out;
     animation-fill-mode: forwards;
   }
 }
@@ -58,14 +58,23 @@
 
   &::before {
     background-color: var(--color-bg);
-    animation: flipDark 0.15s step-end;
+    animation: flipDark 0s step-end;
     animation-fill-mode: forwards;
   }
 
   &::after {
     background-color: var(--color-text);
-    animation: turnDark 0.3s ease-in-out;
+    animation: turnDark 0s ease-in-out;
     animation-fill-mode: forwards;
+  }
+}
+
+.loaded #ThemeToggle {
+  &::before {
+    animation-duration: 0.15s;
+  }
+  &::after {
+    animation-duration: 0.3s;
   }
 }
 

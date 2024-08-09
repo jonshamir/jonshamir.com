@@ -1,5 +1,5 @@
 import { useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./ThemeToggle.module.scss";
 
@@ -14,6 +14,12 @@ export function ThemeToggle() {
   const toggleTheme = () => {
     setTheme(isDark ? "light" : "dark");
   };
+
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 1000);
+  }, []);
 
   useEffect(() => {
     const favicon = document.querySelector(
@@ -30,7 +36,12 @@ export function ThemeToggle() {
   }, [isDark]);
 
   return (
-    <label htmlFor={styles.ThemeToggle} className={styles.ThemeToggleContainer}>
+    <label
+      htmlFor={styles.ThemeToggle}
+      className={`${styles.ThemeToggleContainer} ${
+        isLoaded ? styles.loaded : ""
+      }`}
+    >
       <input
         id={styles.ThemeToggle}
         type="checkbox"
