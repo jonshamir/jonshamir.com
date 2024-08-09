@@ -4,6 +4,11 @@
   &:active {
     cursor: grabbing;
   }
+
+  canvas {
+    background-color: #111;
+    border-radius: 1rem;
+  }
 }
 
 .MeshSelect {
@@ -11,6 +16,7 @@
   gap: 0.8rem;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 
   img {
     cursor: pointer;

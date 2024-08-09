@@ -31,10 +31,7 @@ export function ThreeTest() {
   const [baseMesh, setBaseMesh] = useState<BaseMesh>(BaseMesh.Icosahedron);
   return (
     <>
-      <div
-        style={{ width: "100%", height: "30rem" }}
-        className={styles.ThreeTest}
-      >
+      <div style={{ width: "100%" }} className={styles.ThreeTest}>
         <MeshSelect value={baseMesh} onChange={setBaseMesh} />
         <Canvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
           <OrbitControls enablePan={false} enableZoom={false} />
