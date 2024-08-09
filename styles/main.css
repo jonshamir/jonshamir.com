@@ -241,6 +241,8 @@ figcaption,
 
   img {
     border-radius: 1.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
   }
 
   &:hover {
