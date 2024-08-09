@@ -28,25 +28,18 @@ export function LabLayout({ children }: { children: ReactNode }): ReactElement {
     const date: Date | null = post.frontMatter?.date
       ? new Date(post.frontMatter.date)
       : null;
-    const description = post.frontMatter?.description;
+    const coverImage = post.frontMatter?.cover;
 
     return (
-      <div key={post.route} className="post-item">
+      <div key={post.route} className="lab-item">
         <h3>
           <Link href={post.route} passHref legacyBehavior>
-            <a>{postTitle}</a>
+            <a>
+              {coverImage && <img src={coverImage} />}
+              <span>{postTitle}</span>
+            </a>
           </Link>
         </h3>
-        {description && (
-          <p>
-            {description}
-            {config.readMore && (
-              <Link href={post.route} passHref legacyBehavior>
-                <a>{config.readMore}</a>
-              </Link>
-            )}
-          </p>
-        )}
         {date && (
           <time dateTime={date.toISOString()}>{date.toDateString()}</time>
         )}
@@ -55,6 +48,7 @@ export function LabLayout({ children }: { children: ReactNode }): ReactElement {
   });
   return (
     <BasicLayout>
+      <h1>{opts.title}</h1>
       <MDXTheme>{children}</MDXTheme>
       {experimentList}
     </BasicLayout>

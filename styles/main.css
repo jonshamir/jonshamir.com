@@ -231,3 +231,24 @@ figcaption,
     flex-direction: row;
   }
 }
+
+.lab-item {
+  transition: opacity var(--transition-defaults);
+
+  a {
+    text-decoration: none;
+  }
+
+  img {
+    border-radius: 1.5rem;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  span {
+    display: inline-block;
+    padding: 1rem;
+  }
+}
