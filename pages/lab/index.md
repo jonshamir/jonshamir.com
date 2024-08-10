@@ -3,4 +3,4 @@ type: lab
 title: Lab
 ---
 
-Experiments & stuff
+Small projects, experiments & stuff
