@@ -50,7 +50,7 @@ export function LabLayout({ children }: { children: ReactNode }): ReactElement {
     <BasicLayout>
       <h1>{opts.title}</h1>
       <MDXTheme>{children}</MDXTheme>
-      {experimentList}
+      <div className="experiments">{experimentList}</div>
     </BasicLayout>
   );
 }

@@ -234,6 +234,7 @@ figcaption,
 
 .lab-item {
   transition: opacity var(--transition-defaults);
+  width: 50%;
 
   a {
     text-decoration: none;
@@ -253,4 +254,9 @@ figcaption,
     display: inline-block;
     padding: 1rem;
   }
+}
+
+.experiments {
+  display: flex;
+  gap: 1rem;
 }
