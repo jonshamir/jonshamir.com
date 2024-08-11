@@ -5,12 +5,12 @@ import { useControls } from "leva";
 
 export function PlantCanvas() {
   const { currAge } = useControls({
-    currAge: { value: 3.5, min: 0, max: 200 },
+    currAge: { value: 35, min: 0, max: 200 },
   });
 
   return (
     <ThreeCanvas camera={{ fov: 15, position: [0, 4, -5] }}>
-      <OrbitControls position={[0, 0, 0]} />
+      <OrbitControls position={[0, 0, 0]} enableDamping={false} />
       <Plant age={currAge} position={[0, 0, 0]} />
     </ThreeCanvas>
   );

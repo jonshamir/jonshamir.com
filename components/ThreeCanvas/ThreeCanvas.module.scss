@@ -1,4 +1,4 @@
-.ThreeTest {
+.ThreeCanvas {
   cursor: grab;
 
   &:active {
@@ -9,33 +9,5 @@
     background-color: #111;
     border-radius: 1rem;
     min-height: 30rem;
-  }
-}
-
-.MeshSelect {
-  display: flex;
-  gap: 0.8rem;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-
-  img {
-    cursor: pointer;
-    width: 3rem;
-    transition: background-color var(--transition-defaults);
-    padding: 0.3em;
-    border-radius: 0.4em;
-
-    &:hover {
-      background-color: rgba(var(--color-text-rgb), 0.15);
-    }
-
-    &.selected {
-      background-color: rgba(var(--color-text-rgb), 1);
-    }
-
-    :global(.dark) &.selected {
-      background-color: rgba(var(--color-text-rgb), 0.8);
-    }
   }
 }

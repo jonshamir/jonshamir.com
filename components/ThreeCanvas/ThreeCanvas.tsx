@@ -9,11 +9,8 @@ export function ThreeCanvas({
   children: React.ReactNode;
 }) {
   return (
-    <div style={{ width: "100%" }} className={styles.ThreeTest}>
-      <Canvas {...rest}>
-        <OrbitControls enablePan={false} enableZoom={false} />
-        {children}
-      </Canvas>
+    <div style={{ width: "100%" }} className={styles.ThreeCanvas}>
+      <Canvas {...rest}>{children}</Canvas>
     </div>
   );
 }
