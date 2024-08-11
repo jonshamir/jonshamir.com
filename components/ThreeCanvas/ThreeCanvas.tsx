@@ -8,7 +8,7 @@ export function ThreeCanvas({
   children: React.ReactNode;
 }) {
   return (
-    <div className={styles.ThreeCanvas}>
+    <div className={`${styles.ThreeCanvas} ${styles.fullscreen}`}>
       <Canvas {...rest}>{children}</Canvas>
     </div>
   );
