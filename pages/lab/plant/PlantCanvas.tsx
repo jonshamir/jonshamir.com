@@ -1,0 +1,17 @@
+import { OrbitControls } from "@react-three/drei";
+import { Plant } from "./Plant";
+import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { useControls } from "leva";
+
+export function PlantCanvas() {
+  const { currAge } = useControls({
+    currAge: { value: 3.5, min: 0, max: 200 },
+  });
+
+  return (
+    <ThreeCanvas camera={{ fov: 15, position: [0, 4, -5] }}>
+      <OrbitControls position={[0, 0, 0]} />
+      <Plant age={currAge} position={[0, 0, 0]} />
+    </ThreeCanvas>
+  );
+}

@@ -1,6 +1,6 @@
 import { useControls } from "leva";
 import { Euler } from "three";
-import { pseudoRandom, range, saturate } from "../utils";
+import { pseudoRandom, range, saturate } from "./utils";
 import { CustomLeaf } from "./CustomLeaf";
 const { pow } = Math;
 

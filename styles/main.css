@@ -231,8 +231,3 @@ figcaption,
     flex-direction: row;
   }
 }
-
-.experiments {
-  display: flex;
-  gap: 1rem;
-}
