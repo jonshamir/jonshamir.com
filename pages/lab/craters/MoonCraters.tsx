@@ -49,7 +49,7 @@ export function MoonCraters() {
         />
       </Billboard>
       <Sphere args={[RADIUS * 0.99, 32, 32]}>
-        <meshToonMaterial color="gray" />
+        <meshBasicMaterial color={new THREE.Color(0x222222)} />
       </Sphere>
       <directionalLight position={[0, 0, 1]} intensity={0.5} />
       {craters.map((crater, i) => {
