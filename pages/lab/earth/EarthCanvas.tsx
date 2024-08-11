@@ -1,9 +1,9 @@
-import { Canvas } from "@react-three/fiber";
-
-import styles from "./ThreeTest.module.scss";
 import { OrbitControls } from "@react-three/drei";
 import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
 import { useState } from "react";
+import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+
+import styles from "./EarthCanvas.module.scss";
 
 function MeshSelect({
   value,
@@ -27,16 +27,16 @@ function MeshSelect({
   );
 }
 
-export function ThreeTest() {
+export function EarthCanvas() {
   const [baseMesh, setBaseMesh] = useState<BaseMesh>(BaseMesh.Icosahedron);
   return (
     <>
-      <div style={{ width: "100%" }} className={styles.ThreeTest}>
+      <div style={{ width: "100%" }}>
         <MeshSelect value={baseMesh} onChange={setBaseMesh} />
-        <Canvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
+        <ThreeCanvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
           <OrbitControls enablePan={false} enableZoom={false} />
           <ProjectionMapping baseMesh={baseMesh} />
-        </Canvas>
+        </ThreeCanvas>
       </div>
     </>
   );

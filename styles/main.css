@@ -2,7 +2,7 @@
 @import "muser.css";
 @import "satoshi.css";
 
-html {
+body {
   --color-text: #333333;
   --color-bg: #eee;
 
@@ -32,7 +32,7 @@ html {
   /* --breakpoint-small: 600px; */
   /* --breakpoint-medium: 11000px; */
 
-  padding: 2rem 5rem;
+  padding: 0rem 5rem;
   font-family: "Work Sans Variable", sans-serif;
   font-size: 1.1em;
 
@@ -41,7 +41,7 @@ html {
     background-color var(--transition-defaults);
 
   @media screen and (max-width: 600px) {
-    padding: 5em 0em;
+    padding: 6em 0em;
   }
 }
 
