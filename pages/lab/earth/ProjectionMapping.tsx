@@ -1,21 +1,12 @@
-import { RoundedBox } from "@react-three/drei";
 import { extend, useFrame, useLoader } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { TextureLoader } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
+import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
-import { group } from "console";
 
 extend({ ProjectionMappingMaterial, RoundedBoxGeometry });
-
-function Model({ url }: { url: string }) {
-  const obj = useLoader(OBJLoader, url);
-  const ref = useRef<THREE.Mesh>(null!);
-
-  return <primitive object={obj} ref={ref} />;
-}
 
 export enum BaseMesh {
   Sphere = "sphere",
@@ -34,7 +25,7 @@ export function ProjectionMapping({
   const ref = useRef<THREE.Group>(null);
   const [albedo] = useLoader(TextureLoader, ["/textures/EarthAlbedo.jpg"]);
   const [specular] = useLoader(TextureLoader, ["/textures/EarthSpecular.jpg"]);
-  const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
+  // const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
   const [clouds] = useLoader(TextureLoader, ["/textures/EarthClouds.jpg"]);
 
   const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);

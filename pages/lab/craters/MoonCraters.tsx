@@ -62,7 +62,7 @@ export function MoonCraters() {
         const zOffset = Math.sqrt(
           RADIUS * RADIUS - craterRadius * craterRadius
         );
-        let position = new Vector3(0, 0, zOffset).applyEuler(rotation);
+        const position = new Vector3(0, 0, zOffset).applyEuler(rotation);
 
         return (
           <Quad

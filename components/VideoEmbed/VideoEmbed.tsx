@@ -1,6 +1,6 @@
 import styles from "./VideoEmbed.module.scss";
 
-export function VideoEmbed(props) {
+export function VideoEmbed(props: { videoId: string }) {
   return (
     <div className={styles.VideoEmbed}>
       <iframe

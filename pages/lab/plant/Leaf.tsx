@@ -1,15 +1,6 @@
-import { useLoader } from "@react-three/fiber";
 import { useRef } from "react";
-import {
-  Euler,
-  Mesh,
-  QuadraticBezierCurve3,
-  Shape,
-  TextureLoader,
-  Vector3,
-} from "three";
-import { saturate } from "../utils";
-
+import { Euler, Mesh, QuadraticBezierCurve3, Shape, Vector3 } from "three";
+import { saturate } from "./utils";
 interface LeafProps {
   position: [number, number, number];
   age: number;
@@ -19,7 +10,7 @@ interface LeafProps {
 export function Leaf({ age, ...props }: LeafProps) {
   const meshRef = useRef<Mesh>(null!);
 
-  const matcap = useLoader(TextureLoader, "/src/assets/matcap0.png");
+  // const matcap = useLoader(TextureLoader, "/src/assets/matcap0.png");
 
   const length = age * 0.5;
   const width = age * 0.05;

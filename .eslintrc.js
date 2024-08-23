@@ -28,5 +28,9 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["@typescript-eslint", "react", "@react-three"],
-  rules: { "react/no-unknown-property": ["warn"] },
+  rules: {
+    "react/no-unknown-property": "warn",
+    "@typescript-eslint/no-namespace": "off",
+    "@typescript-eslint/ban-ts-comment": "off",
+  },
 };
