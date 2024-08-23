@@ -9,6 +9,7 @@ module.exports = {
     "plugin:mdx/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
+    "plugin:@react-three/recommended",
   ],
   overrides: [
     {
@@ -26,6 +27,6 @@ module.exports = {
     ecmaVersion: "latest",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "react"],
+  plugins: ["@typescript-eslint", "react", "@react-three"],
   rules: {},
 };
