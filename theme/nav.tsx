@@ -17,7 +17,7 @@ export default function Nav(): ReactElement {
     <>
       {isMounted && (
         <nav>
-          {navPages.map((page) => {
+          {/* {navPages.map((page) => {
             const name = page.frontMatter?.title || page.name;
             if (page.active) {
               return (
@@ -36,7 +36,7 @@ export default function Nav(): ReactElement {
             <Link key={nav.url} href={nav.url} passHref legacyBehavior>
               <a>{nav.name}</a>
             </Link>
-          ))}
+          ))} */}
           <Link href="/" passHref legacyBehavior>
             <a style={{ padding: 0 }}>
               <MainLogo />
