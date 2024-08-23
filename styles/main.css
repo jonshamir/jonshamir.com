@@ -2,7 +2,7 @@
 @import "muser.css";
 @import "satoshi.css";
 
-html {
+body {
   --color-text: #333333;
   --color-bg: #eee;
 
@@ -32,7 +32,7 @@ html {
   /* --breakpoint-small: 600px; */
   /* --breakpoint-medium: 11000px; */
 
-  padding: 2rem 5rem;
+  padding: 0rem 5rem;
   font-family: "Work Sans Variable", sans-serif;
   font-size: 1.1em;
 
@@ -41,7 +41,7 @@ html {
     background-color var(--transition-defaults);
 
   @media screen and (max-width: 600px) {
-    padding: 5em 0em;
+    padding: 6em 0em;
   }
 }
 
@@ -57,20 +57,43 @@ html {
 
 nav {
   position: fixed;
-  top: 1.5rem;
-  right: 1.5rem;
+  top: 2rem;
+  right: 2rem;
   z-index: 100;
+  display: flex;
+  align-items: center;
+  background-color: rgba(var(--color-bg-rgb), 0.9);
+  border-radius: 500px;
+  padding: 0.1rem 0.3rem;
+  transition: background-color var(--transition-defaults);
 
-  @media screen and (max-width: 600px) {
+  @media screen and (max-width: 800px) {
     top: 1rem;
     right: 1rem;
   }
 
   a,
-  span {
+  .active-link {
     display: inline-block;
-    padding: 0.4em;
+    padding: 4px 14px;
     vertical-align: middle;
+    text-decoration: none;
+    font-size: 0.9em;
+    border-radius: 500px;
+    transition: background-color var(--transition-defaults);
+  }
+
+  .active-link {
+    background-color: rgba(var(--color-text-rgb), 0.05);
+  }
+
+  a {
+    transition: background-color var(--transition-defaults),
+      color var(--transition-defaults);
+  }
+
+  a:hover {
+    background-color: rgba(var(--color-text-rgb), 0.1);
   }
 }
 

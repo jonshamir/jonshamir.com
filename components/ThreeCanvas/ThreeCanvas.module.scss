@@ -1,0 +1,25 @@
+.ThreeCanvas {
+  cursor: grab;
+  width: 100%;
+
+  &.fullscreen {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+    canvas {
+      border-radius: 0;
+    }
+  }
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  canvas {
+    background-color: #111;
+    border-radius: 1rem;
+    min-height: 30rem;
+  }
+}

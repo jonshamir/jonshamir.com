@@ -1,0 +1,23 @@
+.LabItem {
+  transition: opacity var(--transition-defaults);
+  width: 50%;
+
+  a {
+    text-decoration: none;
+  }
+
+  img {
+    border-radius: 1.5rem;
+    aspect-ratio: 1;
+    object-fit: cover;
+  }
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  span {
+    display: inline-block;
+    padding: 1rem;
+  }
+}

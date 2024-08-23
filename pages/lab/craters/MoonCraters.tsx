@@ -13,17 +13,19 @@ const SCALE_RATIO = RADIUS / MOON_RADIUS;
 
 type QuadProps = ThreeElements["mesh"] & {
   color?: THREE.Color;
+  depthTest?: boolean;
 };
 
 function Quad(props: QuadProps) {
-  const { color = new THREE.Color(), ...rest } = props;
+  const { color = new THREE.Color(), depthTest = true, ...rest } = props;
   return (
     <mesh {...rest}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
         vertexShader={circleVertexShader}
         fragmentShader={circleFragmentShader}
-        depthTest={false}
+        depthTest={depthTest}
+        depthWrite={false}
         transparent={true}
         side={THREE.DoubleSide}
         uniforms={{
@@ -38,17 +40,23 @@ export function MoonCraters() {
   return (
     <>
       <Billboard>
-        <Quad position={[0, 0, 0]} scale={RADIUS} renderOrder={1} />
+        <Quad
+          color={new THREE.Color(0xdddddd)}
+          position={[0, 0, 0]}
+          scale={RADIUS * 1.01}
+          renderOrder={1}
+          depthTest={false}
+        />
       </Billboard>
-      <Sphere args={[RADIUS, 32, 32]}>
-        <meshStandardMaterial color="white" />
+      <Sphere args={[RADIUS * 0.99, 32, 32]}>
+        <meshBasicMaterial color={new THREE.Color(0x222222)} />
       </Sphere>
       <directionalLight position={[0, 0, 1]} intensity={0.5} />
       {craters.map((crater, i) => {
         const craterRadius = (crater.diam / 2) * SCALE_RATIO;
         const rotation = new THREE.Euler(
-          -crater.lat * DEG2RAD,
-          crater.lon * DEG2RAD,
+          -crater.lon * DEG2RAD,
+          crater.lat * DEG2RAD,
           0
         );
         const zOffset = Math.sqrt(

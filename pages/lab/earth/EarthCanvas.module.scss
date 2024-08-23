@@ -1,16 +1,9 @@
-.ThreeTest {
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
-}
-
 .MeshSelect {
   display: flex;
   gap: 0.8rem;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
 
   img {
     cursor: pointer;
