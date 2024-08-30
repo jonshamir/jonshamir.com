@@ -15,6 +15,7 @@ varying vec3 vNormal;
 
 uniform vec3 uColor;
 uniform vec4 uRadius;
+uniform vec2 uSize;
 
 float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )
 {
@@ -24,11 +25,10 @@ float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )
     return min(max(q.x,q.y),0.0) + length(max(q,0.0)) - r.x;
 }
 void main() {
-    float r = 0.5;
-    float d = sdRoundedBox(vUv - vec2(0.5, 0.5), vec2(r), uRadius);
+    vec2 pos = (vUv - vec2(0.5, 0.5)) * 2.0 * uSize;
+    float d = sdRoundedBox(pos, uSize, uRadius);
     float pixelSize = sqrt(pow(dFdx(d), 2.0) + pow(dFdy(d), 2.0));
     float alpha = 1.0 - smoothstep(-pixelSize * 1.5, 0.0, d);
-
 
     vec3 normal = vNormal.xyz * 0.5 + 0.5;
     // gl_FragColor = vec4(normal, alpha);
