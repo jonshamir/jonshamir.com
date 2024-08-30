@@ -10,6 +10,8 @@ void main() {
 `;
 
 export const rectFragmentShader = /* glsl */ `
+precision mediump float;
+
 varying vec2 vUv;
 varying vec3 vNormal;
 

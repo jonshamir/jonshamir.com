@@ -1,63 +1,7 @@
 import { OrbitControls } from "@react-three/drei";
-import { ThreeElements } from "@react-three/fiber";
 import { useControls } from "leva";
-import { useEffect, useMemo, useRef } from "react";
-import * as THREE from "three";
 import { ThreeCanvas } from "../../components/ThreeCanvas/ThreeCanvas";
-import { rectFragmentShader, rectVertexShader } from "./rect.glsl";
-
-type RectProps = ThreeElements["mesh"] & {
-  size?: { x: number; y: number };
-  color?: THREE.ColorRepresentation;
-  depthTest?: boolean;
-  radius?: number;
-  shadow?: boolean;
-};
-
-function Rect(props: RectProps) {
-  const { color = "", radius = 0, depthTest = true, size, ...rest } = props;
-
-  const materialRef = useRef<THREE.ShaderMaterial>();
-  const colorRef = useRef(new THREE.Color(color));
-  const radiusRef = useRef(new THREE.Vector4(radius, radius, radius, radius));
-  const sizeRef = useRef(new THREE.Vector2(size.x, size.y));
-
-  const uniforms = useMemo(
-    () => ({
-      uColor: { value: colorRef.current },
-      uRadius: { value: radiusRef.current },
-      uSize: { value: sizeRef.current },
-    }),
-    [color, radius]
-  );
-
-  // Update uniforms when props change
-  useEffect(() => {
-    const r = Math.min(radius, Math.min(size.x, size.y));
-    if (materialRef.current) {
-      colorRef.current.set(color);
-      radiusRef.current.set(r, r, r, r);
-      sizeRef.current.set(size.x, size.y);
-      materialRef.current.uniformsNeedUpdate = true;
-    }
-  }, [color, radius, size]);
-
-  return (
-    <mesh {...rest}>
-      <planeGeometry args={[size.x, size.y]} />
-      <shaderMaterial
-        ref={materialRef}
-        vertexShader={rectVertexShader}
-        fragmentShader={rectFragmentShader}
-        depthTest={depthTest}
-        depthWrite={false}
-        transparent={true}
-        side={THREE.DoubleSide}
-        uniforms={uniforms}
-      />
-    </mesh>
-  );
-}
+import { Rect } from "./Rect";
 
 export default function RectCanvas() {
   const controls = useControls({
@@ -81,6 +25,12 @@ export default function RectCanvas() {
         size={controls.size}
         color={controls.color}
         radius={controls.radius}
+      />
+      <Rect
+        size={{ x: 5, y: 5 }}
+        color={"green"}
+        radius={controls.radius}
+        position={[-1, -1, -1]}
       />
     </ThreeCanvas>
   );
