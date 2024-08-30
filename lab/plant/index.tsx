@@ -3,7 +3,7 @@ import { Plant } from "./Plant";
 import { ThreeCanvas } from "../../components/ThreeCanvas/ThreeCanvas";
 import { useControls } from "leva";
 
-export function PlantCanvas() {
+export default function PlantCanvas() {
   const { currAge } = useControls({
     currAge: { value: 35, min: 0, max: 200 },
   });
