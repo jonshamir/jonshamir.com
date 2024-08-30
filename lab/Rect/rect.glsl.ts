@@ -14,6 +14,7 @@ varying vec2 vUv;
 varying vec3 vNormal;
 
 uniform vec3 uColor;
+uniform vec4 uRadius;
 
 float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )
 {
@@ -24,7 +25,7 @@ float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )
 }
 void main() {
     float r = 0.5;
-    float d = sdRoundedBox(vUv - vec2(0.5, 0.5), vec2(r), vec4(0.1));
+    float d = sdRoundedBox(vUv - vec2(0.5, 0.5), vec2(r), uRadius);
     float pixelSize = sqrt(pow(dFdx(d), 2.0) + pow(dFdy(d), 2.0));
     float alpha = 1.0 - smoothstep(-pixelSize * 1.5, 0.0, d);
 

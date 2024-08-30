@@ -9,7 +9,7 @@ module.exports = {
     "plugin:mdx/recommended",
     "plugin:react/recommended",
     "plugin:react/jsx-runtime",
-    "plugin:@react-three/recommended",
+    "plugin:react-three-fiber/recommended",
   ],
   overrides: [
     {
