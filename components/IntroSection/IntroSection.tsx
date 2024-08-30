@@ -11,9 +11,8 @@ export function IntroSection() {
         <InlineLogoPlaceholder />
         <h1>Hi, I&apos;m Jon Shamir</h1>
         <p>
-          Design engineer & computer graphics expert. My interests include
-          interaction design, real-time 3D graphics, data viz and machine
-          learning.
+          Software architect & designer. My interests include interaction
+          design, real-time 3D graphics, data viz and machine learning.
         </p>
         <p>
           Currently building spatial interfaces at&nbsp;
