@@ -58,8 +58,8 @@ body {
 
 nav {
   position: fixed;
-  top: 2rem;
-  right: 2rem;
+  top: 8rem;
+  left: 2rem;
   z-index: 100;
   display: flex;
   align-items: center;
@@ -67,6 +67,8 @@ nav {
   border-radius: 500px;
   padding: 0.1rem 0.3rem;
   transition: background-color var(--transition-defaults);
+  flex-direction: column;
+  gap: 0.5rem;
 
   @media screen and (max-width: 800px) {
     top: 1rem;
