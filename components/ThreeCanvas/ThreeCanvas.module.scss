@@ -1,6 +1,7 @@
 .ThreeCanvas {
   cursor: grab;
   width: 100%;
+  overflow: hidden;
 
   &.fullscreen {
     width: 100vw;
@@ -18,7 +19,6 @@
   }
 
   canvas {
-    background-color: #111;
     border-radius: 1rem;
     min-height: 30rem;
   }

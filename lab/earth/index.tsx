@@ -27,7 +27,7 @@ function MeshSelect({
   );
 }
 
-export function EarthCanvas() {
+export default function Earth() {
   const [baseMesh, setBaseMesh] = useState<BaseMesh>(BaseMesh.Icosahedron);
   return (
     <>

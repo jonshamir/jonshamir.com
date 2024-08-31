@@ -8,8 +8,13 @@
     "start": "next start"
   },
   "dependencies": {
+    "@fontsource-variable/work-sans": "^5.0.19",
+    "@napi-rs/simple-git-linux-x64-gnu": "^0.1.16",
+    "@react-three/drei": "^9.108.3",
+    "@react-three/fiber": "^8.17.6",
+    "@react-three/postprocessing": "^2.16.2",
     "gray-matter": "^4.0.3",
-    "leva": "^0.9.35",
+    "leva": "0.9.34",
     "meshline": "^3.3.1",
     "next": "latest",
     "next-themes": "0.2.1",
@@ -19,13 +24,9 @@
     "react-dom": "^18.2.0",
     "react-slick": "^0.30.2",
     "sass": "^1.77.5",
+    "sharp": "^0.33.5",
     "slick-carousel": "^1.8.1",
-    "three": "^0.166.1",
-    "@react-three/drei": "^9.108.3",
-    "@react-three/fiber": "^8.16.8",
-    "@react-three/postprocessing": "^2.16.2",
-    "@fontsource-variable/work-sans": "^5.0.19",
-    "@napi-rs/simple-git-linux-x64-gnu": "^0.1.16"
+    "three": "^0.166.1"
   },
   "devDependencies": {
     "@react-three/eslint-plugin": "^0.1.1",
