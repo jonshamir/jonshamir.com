@@ -18,7 +18,7 @@
   text-decoration: none;
   position: relative;
   background-color: rgba(var(--color-text-rgb), 0);
-  border-radius: 0.5rem;
+  border-radius: var(--rounding-medium);
   transition: background-color var(--transition-defaults);
 
   &:hover {

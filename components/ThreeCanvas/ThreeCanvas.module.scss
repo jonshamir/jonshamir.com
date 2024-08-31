@@ -1,6 +1,7 @@
 .ThreeCanvas {
   cursor: grab;
   width: 100%;
+  overflow: hidden;
 
   &.fullscreen {
     width: 100vw;

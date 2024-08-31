@@ -16,21 +16,18 @@ export default function RectCanvas() {
   });
 
   return (
-    <ThreeCanvas
-      camera={{ position: [0, 0, 10], zoom: 3.5 }}
-      style={{ backgroundColor: "grey" }}
-    >
-      <OrbitControls enablePan={false} enableZoom={false} />
+    <ThreeCanvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
+      <OrbitControls enablePan={false} />
       <Rect
         size={controls.size}
         color={controls.color}
         radius={controls.radius}
       />
       <Rect
-        size={{ x: 5, y: 5 }}
-        color={"green"}
+        size={{ x: 10, y: 5 }}
+        color="#999"
         radius={controls.radius}
-        position={[-1, -1, -1]}
+        position={[0, 0, -1]}
       />
     </ThreeCanvas>
   );
