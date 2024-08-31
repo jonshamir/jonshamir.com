@@ -188,6 +188,7 @@ figcaption,
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1rem;
 
   @media screen and (min-width: 1000px) {
     flex-direction: row;
