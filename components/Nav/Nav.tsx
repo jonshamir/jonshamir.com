@@ -30,14 +30,8 @@ export function Nav(): ReactElement {
           {navPages.map((page) => {
             const name = page.frontMatter?.title || page.name;
             return (
-              <Link
-                key={page.route}
-                href={page.route}
-                passHref
-                legacyBehavior
-                className={page.active && styles.activeLink}
-              >
-                <a>{name}</a>
+              <Link key={page.route} href={page.route} passHref legacyBehavior>
+                <a className={page.active && styles.ActiveLink}>{name}</a>
               </Link>
             );
           })}

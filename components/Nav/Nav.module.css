@@ -30,7 +30,7 @@
     font-size: 1rem;
   }
 
-  .active-link {
+  .ActiveLink {
     background-color: rgba(var(--color-text-rgb), 0.05);
   }
 
