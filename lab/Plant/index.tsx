@@ -10,7 +10,7 @@ export default function PlantCanvas() {
 
   return (
     <ThreeCanvas camera={{ fov: 15, position: [0, 8, -9] }}>
-      <OrbitControls enableDamping={false} />
+      <OrbitControls />
       <Plant age={currAge} position={[0, -0.5, 0]} />
     </ThreeCanvas>
   );

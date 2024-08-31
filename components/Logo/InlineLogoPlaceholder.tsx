@@ -1,10 +1,10 @@
-import styles from "./JonLogo.module.scss";
+import styles from "./MainLogo.module.scss";
 
 export function InlineLogoPlaceholder() {
   return (
     <div
       id="InlineLogoPlaceholder"
-      className={`${styles.container} ${styles.placeholder}`}
+      className={`${styles.InlineLogoPlaceholder}`}
     ></div>
   );
 }

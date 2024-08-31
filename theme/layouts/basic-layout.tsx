@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import { useRef } from "react";
 import { useBlogContext } from "../blog-context";
 import { HeadingContext } from "../mdx-theme";
-import Nav from "../nav";
+import { Nav } from "../../components/Nav/Nav";
 import favicon from "../../public/favicon-dark.png";
 
 export const BasicLayout = ({ children }: { children: ReactNode }) => {

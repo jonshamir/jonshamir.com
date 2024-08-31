@@ -1,24 +1,13 @@
-.container {
-  position: fixed;
+.MainLogo {
+  // position: fixed;
   top: 0;
   left: 0;
   transition: transform var(--transition-defaults);
-  transform: translate(1rem, 0) scale(0.5);
+  transform: translate(0, 0) scale(1);
   z-index: 100;
   opacity: 1;
-  height: 160px;
-  width: 120px;
-
-  & .logoBackground {
-    opacity: 0;
-    transition: opacity var(--transition-defaults);
-  }
-  &:hover .logoBackground {
-    opacity: 0.2;
-  }
-  &:active .logoBackground {
-    opacity: 0.1;
-  }
+  width: 3.5rem;
+  padding: 0.5rem;
 
   svg {
     height: 80%;
@@ -35,4 +24,11 @@
     top: -1rem;
     left: -1rem;
   }
+}
+
+.InlineLogoPlaceholder {
+  display: inline-block;
+  width: 3.5rem;
+  margin-left: 0.5rem;
+  height: 6.5rem;
 }

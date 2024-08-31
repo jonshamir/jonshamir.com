@@ -1,5 +1,4 @@
 import type { AppProps } from "next/app";
-import Head from "next/head";
 import posthog from "posthog-js";
 
 import "@fontsource-variable/work-sans";
