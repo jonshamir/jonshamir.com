@@ -6,6 +6,7 @@ body {
   --content-max-width: 50rem;
   --transition-defaults: 250ms ease;
   --rounding-medium: 0.8rem;
+  --rounding-full: 500px;
 
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
@@ -190,5 +191,20 @@ figcaption,
 
   @media screen and (min-width: 1000px) {
     flex-direction: row;
+  }
+}
+
+.clickable {
+  transition: background-color var(--transition-defaults),
+    color var(--transition-defaults);
+  background-color: rgba(var(--color-text-rgb), 0);
+  border-radius: var(--rounding-medium);
+
+  &:hover {
+    background-color: rgba(var(--color-text-rgb), 0.1);
+  }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 0.05);
   }
 }

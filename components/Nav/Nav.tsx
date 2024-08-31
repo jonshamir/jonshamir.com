@@ -5,6 +5,8 @@ import { collectPostsAndNavs } from "../../theme/utils/collect";
 import { MainLogo } from "../Logo/MainLogo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 
+import clsx from "clsx";
+
 import styles from "./Nav.module.css";
 import React from "react";
 
@@ -31,7 +33,9 @@ export function Nav(): ReactElement {
             const name = page.frontMatter?.title || page.name;
             return (
               <Link key={page.route} href={page.route} passHref legacyBehavior>
-                <a className={page.active && styles.ActiveLink}>{name}</a>
+                <a className={clsx("clickable", { ActiveLink: page.active })}>
+                  {name}
+                </a>
               </Link>
             );
           })}

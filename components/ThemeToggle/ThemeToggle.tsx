@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 
 import styles from "./ThemeToggle.module.scss";
 
+import clsx from "clsx";
 import faviconDark from "../../public/favicon-dark.png";
 import faviconLight from "../../public/favicon-light.png";
 
@@ -38,9 +39,9 @@ export function ThemeToggle() {
   return (
     <label
       htmlFor={styles.ThemeToggle}
-      className={`${styles.ThemeToggleContainer} ${
-        isLoaded ? styles.loaded : ""
-      }`}
+      className={clsx("clickable", styles.ThemeToggleContainer, {
+        [styles.loaded]: isLoaded,
+      })}
     >
       <input
         id={styles.ThemeToggle}

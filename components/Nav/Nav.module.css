@@ -26,20 +26,10 @@
     text-decoration: none;
     font-size: 0.9em;
     border-radius: 500px;
-    transition: background-color var(--transition-defaults);
     font-size: 1rem;
   }
 
   .ActiveLink {
-    background-color: rgba(var(--color-text-rgb), 0.05);
-  }
-
-  & > a {
-    transition: background-color var(--transition-defaults),
-      color var(--transition-defaults);
-  }
-
-  & > a:hover {
-    background-color: rgba(var(--color-text-rgb), 0.1);
+    opacity: 0.6;
   }
 }

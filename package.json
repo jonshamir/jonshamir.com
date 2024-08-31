@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@fontsource-variable/work-sans": "^5.0.19",
-    "@napi-rs/simple-git-linux-x64-gnu": "^0.1.16",
     "@react-three/drei": "^9.108.3",
     "@react-three/fiber": "^8.17.6",
     "@react-three/postprocessing": "^2.16.2",
