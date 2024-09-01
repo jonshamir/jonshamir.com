@@ -33,7 +33,10 @@ export default function Earth() {
     <>
       <div style={{ width: "100%" }}>
         <MeshSelect value={baseMesh} onChange={setBaseMesh} />
-        <ThreeCanvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
+        <ThreeCanvas
+          camera={{ position: [0, 0, 10], zoom: 3.5 }}
+          style={{ backgroundColor: "#101010" }}
+        >
           <OrbitControls enablePan={false} enableZoom={false} />
           <ProjectionMapping baseMesh={baseMesh} />
         </ThreeCanvas>
