@@ -3,6 +3,9 @@
 @import "satoshi.css";
 
 body {
+  /* --breakpoint-small: 600px; */
+  /* --breakpoint-medium: 11000px; */
+
   --content-max-width: 50rem;
   --transition-defaults: 250ms ease;
   --rounding-medium: 0.8rem;
@@ -31,9 +34,6 @@ body {
   @media (prefers-color-scheme: dark) {
     background-color: var(--color-bg);
   }
-
-  /* --breakpoint-small: 600px; */
-  /* --breakpoint-medium: 11000px; */
 
   font-family: "Work Sans Variable", sans-serif;
   font-size: 1.1em;

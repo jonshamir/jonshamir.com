@@ -1,3 +1,5 @@
+import "../styles/main.css";
+
 export const meta = {
   title: "Jon Shamir",
   description: "Jon Shamir portfolio website",
