@@ -1,8 +1,3 @@
-const withNextra = require("nextra")({
-  theme: "./theme/index.tsx",
-  // optional: add `unstable_staticImage: true` to enable Nextra's auto image import
-});
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   basePath: "",
@@ -20,4 +15,4 @@ const nextConfig = {
   },
 };
 
-module.exports = withNextra(nextConfig);
+module.exports = nextConfig;
