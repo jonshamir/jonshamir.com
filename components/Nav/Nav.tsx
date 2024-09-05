@@ -1,7 +1,5 @@
 import Link from "next/link";
 import { useEffect, useState, type ReactElement } from "react";
-import { useBlogContext } from "../../theme/blog-context";
-import { collectPostsAndNavs } from "../../theme/utils/collect";
 import { MainLogo } from "../Logo/MainLogo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 
@@ -15,8 +13,6 @@ export function Nav(): ReactElement {
   useEffect(() => {
     setIsMounted(true);
   }, []);
-  const { opts, config } = useBlogContext();
-  const { navPages } = collectPostsAndNavs({ opts, config });
 
   const logoLinkRef = React.useRef(null);
 
@@ -29,21 +25,11 @@ export function Nav(): ReactElement {
               <MainLogo parentRef={logoLinkRef} />
             </a>
           </Link>
-          {navPages.map((page) => {
-            const name = page.frontMatter?.title || page.name;
-            return (
-              <Link key={page.route} href={page.route} passHref legacyBehavior>
-                <a className={clsx("clickable", { ActiveLink: page.active })}>
-                  {name}
-                </a>
-              </Link>
-            );
-          })}
-          {config.navs?.map((nav) => (
-            <Link key={nav.url} href={nav.url} passHref legacyBehavior>
-              <a>{nav.name}</a>
-            </Link>
-          ))}
+
+          <Link href="/lab" passHref legacyBehavior>
+            <a className={clsx("clickable", { ActiveLink: false })}>Lab</a>
+          </Link>
+
           <ThemeToggle />
         </nav>
       )}
