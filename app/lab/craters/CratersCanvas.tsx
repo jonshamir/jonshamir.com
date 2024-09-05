@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { MoonCraters } from "./MoonCraters";
-import { ThreeCanvas } from "../../components/ThreeCanvas/ThreeCanvas";
+import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 
 export default function CratersCanvas() {
   return (
