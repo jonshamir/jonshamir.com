@@ -26,7 +26,7 @@ export function Nav(): ReactElement {
             </a>
           </Link>
 
-          <Link href="/home" passHref legacyBehavior>
+          <Link href="/" passHref legacyBehavior>
             <a className={clsx("clickable", { ActiveLink: false })}>Home</a>
           </Link>
 

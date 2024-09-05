@@ -35,7 +35,7 @@ export function MainLogo({
 
     if (placeholder && logoRef.current && parentRef.current) {
       const updatePosition = () => {
-        if (pathname === "/home" && isAtTop && parentRef.current) {
+        if (pathname === "/" && isAtTop && parentRef.current) {
           const parentRect = parentRef.current.getBoundingClientRect();
           const placeholderRect = placeholder.getBoundingClientRect();
 
