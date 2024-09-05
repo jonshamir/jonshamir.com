@@ -32,6 +32,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>{meta.title}</title>
+        <link rel="icon" href="" />
+
         <meta name="robots" content="follow, index" />
         <meta name="description" content={meta.description} />
         <meta property="og:site_name" content={meta.title} />
@@ -46,7 +49,7 @@ export default function RootLayout({
       </head>
       <body>
         <Nav />
-        {children}
+        <article>{children}</article>
       </body>
     </html>
   );

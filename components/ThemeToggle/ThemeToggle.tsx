@@ -6,27 +6,21 @@ import styles from "./ThemeToggle.module.scss";
 import clsx from "clsx";
 import faviconDark from "../../public/favicon-dark.png";
 import faviconLight from "../../public/favicon-light.png";
+import { useColorTheme } from "./useColorTheme";
 
 export function ThemeToggle() {
-  const { setTheme, resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { isDark, setIsDark } = useColorTheme();
 
-  // @TODO: take system theme
   const toggleTheme = () => {
-    setTheme(isDark ? "light" : "dark");
+    setIsDark(!isDark);
   };
-
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 1000);
-  }, []);
 
   useEffect(() => {
     const favicon = document.querySelector(
       'link[rel="icon"]'
     ) as HTMLLinkElement;
     if (favicon === null) return;
+    console.log(document.body.classList);
     if (isDark) {
       document.body.classList.add("dark");
       favicon.href = faviconDark.src;
@@ -35,6 +29,12 @@ export function ThemeToggle() {
       favicon.href = faviconLight.src;
     }
   }, [isDark]);
+
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 1000);
+  }, []);
 
   return (
     <label

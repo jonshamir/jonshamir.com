@@ -26,6 +26,10 @@ export function Nav(): ReactElement {
             </a>
           </Link>
 
+          <Link href="/home" passHref legacyBehavior>
+            <a className={clsx("clickable", { ActiveLink: false })}>Home</a>
+          </Link>
+
           <Link href="/lab" passHref legacyBehavior>
             <a className={clsx("clickable", { ActiveLink: false })}>Lab</a>
           </Link>
