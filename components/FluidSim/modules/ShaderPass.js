@@ -1,5 +1,6 @@
-import Common from "./Common";
 import * as THREE from "three";
+
+import Common from "./Common";
 
 export default class ShaderPass {
   constructor(props) {

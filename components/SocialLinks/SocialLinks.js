@@ -1,9 +1,10 @@
-import styles from "./SocialLinks.module.scss";
 import clsx from "clsx";
-import iconInstagram from "../../public/ui/instagram.svg";
+
 import iconGithub from "../../public/ui/github.svg";
-import iconTwitter from "../../public/ui/twitterx.svg";
+import iconInstagram from "../../public/ui/instagram.svg";
 import iconLinkedin from "../../public/ui/linkedin.svg";
+import iconTwitter from "../../public/ui/twitterx.svg";
+import styles from "./SocialLinks.module.scss";
 
 export function SocialLinks() {
   return (

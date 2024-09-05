@@ -1,12 +1,11 @@
+import clsx from "clsx";
 import Link from "next/link";
-import { useEffect, useState, type ReactElement } from "react";
+import { type ReactElement, useEffect, useState } from "react";
+import React from "react";
+
 import { MainLogo } from "../Logo/MainLogo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
-
-import clsx from "clsx";
-
 import styles from "./Nav.module.css";
-import React from "react";
 
 export function Nav(): ReactElement {
   const [isMounted, setIsMounted] = useState(false);

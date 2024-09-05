@@ -1,12 +1,12 @@
-import Common from "./Common";
 import * as THREE from "three";
 
 import Advection from "./Advection";
-import ExternalForce from "./ExternalForce";
-import Viscous from "./Viscous";
+import Common from "./Common";
 import Divergence from "./Divergence";
+import ExternalForce from "./ExternalForce";
 import Poisson from "./Poisson";
 import Pressure from "./Pressure";
+import Viscous from "./Viscous";
 
 export default class Simulation {
   constructor(props) {

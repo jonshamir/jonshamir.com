@@ -1,6 +1,5 @@
-import { InlineLogoPlaceholder } from "../Logo/InlineLogoPlaceholder";
 import { FluidSim } from "../FluidSim/FluidSim";
-
+import { InlineLogoPlaceholder } from "../Logo/InlineLogoPlaceholder";
 import styles from "./IntroSection.module.scss";
 
 export function IntroSection() {
