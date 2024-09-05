@@ -1,6 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { useControls } from "leva";
-import { ThreeCanvas } from "../../components/ThreeCanvas/ThreeCanvas";
+import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { Rect } from "./Rect";
 
 export default function RectCanvas() {
