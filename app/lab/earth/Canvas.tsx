@@ -1,9 +1,9 @@
 import { OrbitControls } from "@react-three/drei";
-import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
 import { useState } from "react";
-import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 
+import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import styles from "./EarthCanvas.module.scss";
+import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
 
 function MeshSelect({
   value,

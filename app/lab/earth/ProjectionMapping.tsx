@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { TextureLoader } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
+
 import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
 
 extend({ ProjectionMappingMaterial, RoundedBoxGeometry });

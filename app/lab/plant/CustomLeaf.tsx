@@ -7,6 +7,7 @@ import {
   QuadraticBezierCurve3,
   Vector3,
 } from "three";
+
 import { getLeafVertices } from "./utils";
 
 interface LeafProps {

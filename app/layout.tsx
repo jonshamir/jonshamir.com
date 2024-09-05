@@ -1,10 +1,11 @@
 "use client";
 
-import { Nav } from "../components/Nav/Nav";
 import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
 import posthog from "posthog-js";
+
+import { Nav } from "../components/Nav/Nav";
 
 // Check that PostHog is client-side (used to handle Next.js SSR)
 if (typeof window !== "undefined") {
