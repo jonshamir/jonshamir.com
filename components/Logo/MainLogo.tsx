@@ -1,13 +1,15 @@
-import styles from "./MainLogo.module.scss";
 import clsx from "clsx";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
+import styles from "./MainLogo.module.scss";
 
 export function MainLogo({
   parentRef,
 }: {
   parentRef: React.RefObject<HTMLDivElement>;
 }) {
-  const logoRef = useRef(null);
+  const logoRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   const [isAtTop, setIsAtTop] = useState(false);
 
@@ -27,11 +29,13 @@ export function MainLogo({
 
   // Transform calculations
   useEffect(() => {
+    if (logoRef.current === null) return;
+
     const placeholder = document.getElementById("InlineLogoPlaceholder");
 
     if (placeholder && logoRef.current && parentRef.current) {
       const updatePosition = () => {
-        if (isAtTop) {
+        if (pathname === "/home" && isAtTop && parentRef.current) {
           const parentRect = parentRef.current.getBoundingClientRect();
           const placeholderRect = placeholder.getBoundingClientRect();
 
@@ -40,7 +44,7 @@ export function MainLogo({
 
           logoRef.current.style.transform = `translate(${transformX}px, ${transformY}px) scale(2)`;
         } else {
-          logoRef.current.style.transform = "translate(0, 0) scale(1)";
+          logoRef.current.style.transform = "none";
         }
       };
 
@@ -50,8 +54,10 @@ export function MainLogo({
       return () => {
         window.removeEventListener("resize", updatePosition);
       };
+    } else {
+      logoRef.current.style.transform = "none";
     }
-  }, [isAtTop]);
+  }, [isAtTop, pathname]);
 
   return (
     <div ref={logoRef} className={clsx("clickable", styles.MainLogo)}>
