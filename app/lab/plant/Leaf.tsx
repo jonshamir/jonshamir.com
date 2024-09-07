@@ -10,7 +10,7 @@ interface LeafProps {
 }
 
 export function Leaf({ age, ...props }: LeafProps) {
-  const meshRef = useRef<Mesh>(null!);
+  const meshRef = useRef<Mesh>(null);
 
   // const matcap = useLoader(TextureLoader, "/src/assets/matcap0.png");
 

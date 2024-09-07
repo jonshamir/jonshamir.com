@@ -56,7 +56,7 @@ module.exports = {
     "simple-import-sort"
   ],
   rules: {
-    "react/no-unknown-property": "warn",
+    "react/no-unknown-property": "off", // Off to support react-three
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "import/first": "warn",

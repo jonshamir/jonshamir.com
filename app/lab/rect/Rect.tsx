@@ -12,6 +12,12 @@ type RectProps = ThreeElements["mesh"] & {
   shadow?: boolean;
 };
 
+type RectUniforms = {
+  uColor: { value: THREE.Color };
+  uRadius: { value: THREE.Vector4 };
+  uSize: { value: THREE.Vector2 };
+};
+
 export function Rect(props: RectProps) {
   const {
     color = "",
@@ -24,22 +30,24 @@ export function Rect(props: RectProps) {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
 
   const uniforms = useMemo(
-    () => ({
-      uColor: { value: new THREE.Color(color) },
-      uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
-      uSize: { value: new THREE.Vector2(size.x, size.y) }
-    }),
+    () =>
+      ({
+        uColor: { value: new THREE.Color(color) },
+        uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
+        uSize: { value: new THREE.Vector2(size.x, size.y) }
+      }) as RectUniforms,
     []
   );
 
   useEffect(() => {
-    if (!materialRef.current) return;
+    if (!materialRef.current?.uniforms) return;
+    const uniforms = materialRef.current.uniforms as RectUniforms;
 
     // Update uniforms when props change
-    materialRef.current.uniforms.uColor.value.set(color);
+    uniforms.uColor.value.set(color);
     const r = Math.min(radius, Math.min(size.x, size.y));
-    materialRef.current.uniforms.uRadius.value.set(r, r, r, r);
-    materialRef.current.uniforms.uSize.value.set(size.x, size.y);
+    uniforms.uRadius.value.set(r, r, r, r);
+    uniforms.uSize.value.set(size.x, size.y);
     materialRef.current.uniformsNeedUpdate = true;
   }, [color, radius, size]);
 

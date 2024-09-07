@@ -3,6 +3,7 @@ import { Euler } from "three";
 
 import { CustomLeaf } from "./CustomLeaf";
 import { pseudoRandom, range, saturate } from "./utils";
+
 const { pow } = Math;
 
 const GOLDEN_ANGLE = 2.39996;

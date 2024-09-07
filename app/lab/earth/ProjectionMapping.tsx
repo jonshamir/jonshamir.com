@@ -32,8 +32,7 @@ export function ProjectionMapping({
   const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
 
   // Assuming the first child of the loaded object is the mesh we want
-  const geometry = (obj.children[0] as THREE.Mesh)
-    .geometry as THREE.BufferGeometry;
+  const geometry = (obj.children[0] as THREE.Mesh).geometry;
 
   useFrame(() => {
     if (ref.current) {
