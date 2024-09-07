@@ -38,7 +38,7 @@ export function ThemeToggle() {
     <label
       htmlFor={styles.ThemeToggle}
       className={clsx("clickable", styles.ThemeToggleContainer, {
-        [styles.loaded]: isLoaded,
+        [styles.loaded]: isLoaded
       })}
     >
       <input

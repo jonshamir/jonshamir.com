@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import styles from "./MainLogo.module.scss";
 
 export function MainLogo({
-  parentRef,
+  parentRef
 }: {
   parentRef: React.RefObject<HTMLDivElement>;
 }) {

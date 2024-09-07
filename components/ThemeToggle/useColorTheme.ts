@@ -15,6 +15,6 @@ export function useColorTheme() {
 
   return {
     isDark: value,
-    setIsDark,
+    setIsDark
   };
 }
