@@ -75,5 +75,5 @@ module.exports = {
       }
     ]
   },
-  ignorePatterns: ["**/*.js"] // Ignore all js files
+  ignorePatterns: ["**/*.js", "**/*.md"]
 };

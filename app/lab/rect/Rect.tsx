@@ -13,7 +13,13 @@ type RectProps = ThreeElements["mesh"] & {
 };
 
 export function Rect(props: RectProps) {
-  const { color = "", radius = 0, depthTest = true, size, ...rest } = props;
+  const {
+    color = "",
+    radius = 0,
+    depthTest = true,
+    size = { x: 1, y: 1 },
+    ...rest
+  } = props;
 
   const materialRef = useRef<THREE.ShaderMaterial>(null);
 

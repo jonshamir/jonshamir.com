@@ -36,7 +36,7 @@ export default function Page() {
 
       <figure>
         <Slider Infinite={true} speed={250} autoplay autoplaySpeed={5000}>
-          {[...Array(9).keys()].map((i) => (
+          {Array.from({ length: 9 }, (_, i) => (
             <div key={i}>
               <img
                 src={`/projects/unity-cg/slide${i + 1}.png`}

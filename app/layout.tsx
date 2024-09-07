@@ -3,6 +3,7 @@
 import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
+// eslint-disable-next-line import/no-named-as-default
 import posthog from "posthog-js";
 
 import { Nav } from "../components/Nav/Nav";
