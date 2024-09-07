@@ -14,8 +14,8 @@ export default function Page() {
       <span className="description">Teaching Computer Graphics in Unity</span>
 
       <figure>
+        <Earth />
         <figcaption>
-          <Earth />
           <span>
             A projection-mapping earth shader taught as part of the course
           </span>

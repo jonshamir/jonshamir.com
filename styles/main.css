@@ -39,7 +39,8 @@ body {
   font-size: 1.1em;
 
   color: var(--color-text);
-  transition: color var(--transition-defaults),
+  transition:
+    color var(--transition-defaults),
     background-color var(--transition-defaults);
 
   padding: 0rem 8rem;
@@ -93,6 +94,7 @@ article {
   max-width: var(--content-max-width);
   margin: auto;
   padding: 2rem;
+  padding-bottom: 8rem;
 
   @media screen and (max-width: 600px) {
     padding: 0 1.5rem;
@@ -143,7 +145,8 @@ figcaption,
   font-size: 0.9em;
   font-weight: 500;
 
-  transition: background-color var(--transition-defaults),
+  transition:
+    background-color var(--transition-defaults),
     color var(--transition-defaults);
 
   &:hover {
@@ -196,7 +199,8 @@ figcaption,
 }
 
 .clickable {
-  transition: background-color var(--transition-defaults),
+  transition:
+    background-color var(--transition-defaults),
     color var(--transition-defaults);
   background-color: rgba(var(--color-text-rgb), 0);
   border-radius: var(--rounding-medium);

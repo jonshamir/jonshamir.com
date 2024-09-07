@@ -18,7 +18,6 @@ export function ThemeToggle() {
       'link[rel="icon"]'
     ) as HTMLLinkElement;
     if (favicon === null) return;
-    console.log(document.body.classList);
     if (isDark) {
       document.body.classList.add("dark");
       favicon.href = faviconDark.src;
