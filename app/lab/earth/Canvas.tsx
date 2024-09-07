@@ -15,13 +15,13 @@ function MeshSelect({
   return (
     <div className={styles.MeshSelect}>
       {Object.values(BaseMesh).map((key) => (
-        <img
+        <button
           key={key}
-          alt={key}
-          src={`/models/${key}.svg`}
           onClick={() => onChange(key as BaseMesh)}
           className={value === key ? styles.selected : ""}
-        />
+        >
+          <img alt={key} src={`/models/${key}.svg`} />
+        </button>
       ))}
     </div>
   );

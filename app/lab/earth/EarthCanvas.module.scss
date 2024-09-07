@@ -5,12 +5,14 @@
   justify-content: center;
   padding: 1rem;
 
-  img {
+  button {
     cursor: pointer;
+    background-color: rgba(var(--color-text-rgb), 0);
     width: 3rem;
     transition: background-color var(--transition-defaults);
     padding: 0.3em;
     border-radius: var(--rounding-medium);
+    border: 0;
 
     &:hover {
       background-color: rgba(var(--color-text-rgb), 0.15);
