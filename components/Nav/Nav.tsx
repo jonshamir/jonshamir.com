@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { type ReactElement, useEffect, useState } from "react";
 import React from "react";
 
 import { MainLogo } from "../Logo/MainLogo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import styles from "./Nav.module.css";
-import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { title: "Home", href: "/" },
@@ -22,8 +22,6 @@ export function Nav(): ReactElement {
 
   const pathname = usePathname();
   const logoLinkRef = React.useRef(null);
-
-  console.log(pathname);
 
   return (
     <>
