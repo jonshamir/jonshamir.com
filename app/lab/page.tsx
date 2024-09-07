@@ -6,7 +6,7 @@ const EXPERIMENTS = [
   { title: "Rect", slug: "rect" },
   { title: "Earth", slug: "earth" },
   { title: "Craters", slug: "craters" },
-  { title: "Plant", slug: "plant" },
+  { title: "Plant", slug: "plant" }
 ];
 
 export default function Page() {

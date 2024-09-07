@@ -7,7 +7,7 @@ import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
 
 function MeshSelect({
   value,
-  onChange,
+  onChange
 }: {
   value: BaseMesh;
   onChange: (value: BaseMesh) => void;

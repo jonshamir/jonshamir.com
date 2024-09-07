@@ -1,7 +1,8 @@
 import { useControls } from "leva";
 import { Euler } from "three";
-import { pseudoRandom, range, saturate } from "./utils";
+
 import { CustomLeaf } from "./CustomLeaf";
+import { pseudoRandom, range, saturate } from "./utils";
 const { pow } = Math;
 
 const GOLDEN_ANGLE = 2.39996;
@@ -17,7 +18,7 @@ export function Plant({ age: n, ...props }: PlantProps) {
     matureAge: { value: 50, min: 1, max: 300, step: 1 },
     basePitch: { value: -1.55, min: -Math.PI, max: Math.PI },
     baseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-    layerHeight: { value: 0.02, min: 0, max: 0.2 },
+    layerHeight: { value: 0.02, min: 0, max: 0.2 }
   });
   return (
     <group {...props}>

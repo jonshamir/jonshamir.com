@@ -65,7 +65,15 @@ module.exports = {
     "import/no-named-as-default-member": "off",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
-    "comma-dangle": "off"
+    "comma-dangle": "off",
+    "jsx-a11y/anchor-is-valid": [
+      "error",
+      {
+        components: ["Link"],
+        specialLink: ["hrefLeft", "hrefRight"],
+        aspects: ["invalidHref", "preferButton"]
+      }
+    ]
   },
   ignorePatterns: ["**/*.js"] // Ignore all js files
 };

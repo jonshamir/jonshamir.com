@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
-import FluidSimManager from "./modules/FluidSimManager";
-import styles from "./FluidSim.module.scss";
+
 import { useColorTheme } from "../ThemeToggle/useColorTheme";
+import styles from "./FluidSim.module.scss";
+import FluidSimManager from "./modules/FluidSimManager";
 
 let fluidSimManager: FluidSimManager | null = null;
 
@@ -12,7 +13,7 @@ export function FluidSim() {
   useEffect(() => {
     if (canvasRef.current) {
       fluidSimManager = FluidSimManager.getInstance({
-        $wrapper: canvasRef.current,
+        $wrapper: canvasRef.current
       });
     }
   }, []);

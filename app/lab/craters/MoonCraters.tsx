@@ -1,11 +1,11 @@
 import { Billboard, Sphere } from "@react-three/drei";
 import { ThreeElements } from "@react-three/fiber";
 import * as THREE from "three";
-import craters from "./craters.json";
-
 import { Vector3 } from "three";
 import { DEG2RAD } from "three/src/math/MathUtils";
+
 import { circleFragmentShader, circleVertexShader } from "./circle.glsl";
+import craters from "./craters.json";
 
 const RADIUS = 1;
 const MOON_RADIUS = 1737;
@@ -29,7 +29,7 @@ function Quad(props: QuadProps) {
         transparent={true}
         side={THREE.DoubleSide}
         uniforms={{
-          uColor: { value: color },
+          uColor: { value: color }
         }}
       />
     </mesh>

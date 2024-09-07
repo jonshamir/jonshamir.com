@@ -15,18 +15,18 @@ if (typeof window !== "undefined") {
     // Enable debug mode in development
     loaded: (posthog) => {
       if (process.env.NODE_ENV === "development") posthog.debug();
-    },
+    }
   });
 }
 
 export const meta = {
   title: "Jon Shamir",
   description: "Jon Shamir portfolio website",
-  image: "https://jonshamir.com/profile.png",
+  image: "https://jonshamir.com/profile.png"
 };
 
 export default function RootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {

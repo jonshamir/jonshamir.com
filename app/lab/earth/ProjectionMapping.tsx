@@ -15,11 +15,11 @@ export enum BaseMesh {
   Dodecahedron = "dodecahedron",
   Octahedron = "octahedron",
   Icosahedron = "icosahedron",
-  Torus = "torus",
+  Torus = "torus"
 }
 
 export function ProjectionMapping({
-  baseMesh = BaseMesh.Cube,
+  baseMesh = BaseMesh.Cube
 }: {
   baseMesh?: BaseMesh;
 }) {

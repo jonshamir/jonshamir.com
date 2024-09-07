@@ -6,7 +6,7 @@ import { Plant } from "./Plant";
 
 export default function PlantCanvas() {
   const { currAge } = useControls({
-    currAge: { value: 35, min: 0, max: 200 },
+    currAge: { value: 35, min: 0, max: 200 }
   });
 
   return (

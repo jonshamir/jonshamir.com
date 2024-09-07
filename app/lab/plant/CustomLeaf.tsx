@@ -5,7 +5,7 @@ import {
   Euler,
   Mesh,
   QuadraticBezierCurve3,
-  Vector3,
+  Vector3
 } from "three";
 
 import { getLeafVertices } from "./utils";

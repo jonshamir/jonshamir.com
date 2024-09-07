@@ -1,6 +1,7 @@
 import { ThreeElements } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
+
 import { rectFragmentShader, rectVertexShader } from "./rect.glsl";
 
 type RectProps = ThreeElements["mesh"] & {
@@ -20,7 +21,7 @@ export function Rect(props: RectProps) {
     () => ({
       uColor: { value: new THREE.Color(color) },
       uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
-      uSize: { value: new THREE.Vector2(size.x, size.y) },
+      uSize: { value: new THREE.Vector2(size.x, size.y) }
     }),
     []
   );

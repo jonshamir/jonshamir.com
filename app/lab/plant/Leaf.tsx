@@ -1,6 +1,8 @@
 import { useRef } from "react";
 import { Euler, Mesh, QuadraticBezierCurve3, Shape, Vector3 } from "three";
+
 import { saturate } from "./utils";
+
 interface LeafProps {
   position: [number, number, number];
   age: number;
@@ -40,7 +42,7 @@ export function Leaf({ age, ...props }: LeafProps) {
     bevelSize: 1,
     bevelOffset: 1,
     bevelSegments: 2,
-    extrudePath: curve,
+    extrudePath: curve
   };
 
   return (

@@ -9,7 +9,7 @@ export default function LabItem({ image, title, link, ...rest }: Props) {
     <div className={styles.LabItem} {...rest}>
       <Link href={link} passHref legacyBehavior>
         <a>
-          {image && <img src={image} />}
+          {image && <img src={image} alt={title} />}
           <span>{title}</span>
         </a>
       </Link>

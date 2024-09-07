@@ -58,7 +58,7 @@ export function MainLogo({
     } else {
       logoRef.current.style.transform = "none";
     }
-  }, [isAtTop, pathname]);
+  }, [isAtTop, parentRef, pathname]);
 
   return (
     <div ref={logoRef} className={clsx("clickable", styles.MainLogo)}>

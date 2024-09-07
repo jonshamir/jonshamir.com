@@ -17,9 +17,9 @@ export default function Page() {
       <p>
         Using the [Shape Context
         Algorithm](https://en.wikipedia.org/wiki/Shape_context) I generated a
-        "fingerprint" vector representing each leaf, which is then used to asses
-        the similarity of shapes. Finally the dimension of this vector is
-        reduced to 2D using PCA and
+        &quot;fingerprint&quot; vector representing each leaf, which is then
+        used to asses the similarity of shapes. Finally the dimension of this
+        vector is reduced to 2D using PCA and
         [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding),
         and the leaves are displayed in an interactive interface I created using
         D3.js.

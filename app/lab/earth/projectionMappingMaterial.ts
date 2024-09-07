@@ -14,7 +14,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
     albedoMap: null,
     specularMap: null,
     normalMap: null,
-    cloudMap: null,
+    cloudMap: null
   },
   /* glsl */ ` // Vertex shader
     varying vec2 vUv;
