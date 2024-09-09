@@ -57,6 +57,7 @@ export function EmailForm() {
       {mutation.isSuccess && (
         <div className="message">~ Thanks for signing up! ~</div>
       )}
+      <p>Get updates about my projects & stuff.</p>
     </div>
   );
 }
