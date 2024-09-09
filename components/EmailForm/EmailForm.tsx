@@ -42,7 +42,7 @@ export function EmailForm() {
             required={true}
           />
           <button type="submit" disabled={mutation.isLoading}>
-            {mutation.isLoading ? "Joining..." : "Join Newsletter"}
+            {mutation.isLoading ? "Joining..." : "Sign Up"}
           </button>
         </form>
       )}

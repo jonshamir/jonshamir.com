@@ -8,6 +8,7 @@
     padding: 0.4rem 0.8rem;
     border-radius: var(--rounding-medium);
     border: 0;
+    white-space: nowrap;
     transition:
       background-color var(--transition-defaults),
       color var(--transition-defaults);

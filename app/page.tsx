@@ -2,7 +2,6 @@
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import { EmailForm } from "../components/EmailForm/EmailForm";
 import { IntroSection } from "../components/IntroSection/IntroSection";
 import { ProjectSection } from "../components/ProjectSection/ProjectSection";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
@@ -14,11 +13,11 @@ export default function Page() {
     <>
       <IntroSection />
       <div className="MainPage">
-        <QueryClientProvider client={queryClient}>
-          <EmailForm />
-        </QueryClientProvider>
         <ProjectSection />
-        <SocialLinks />
+
+        <QueryClientProvider client={queryClient}>
+          <SocialLinks />
+        </QueryClientProvider>
       </div>
     </>
   );

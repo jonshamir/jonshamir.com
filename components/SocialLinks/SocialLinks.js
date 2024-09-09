@@ -1,5 +1,6 @@
 import clsx from "clsx";
 
+import { EmailForm } from "../EmailForm/EmailForm";
 import iconGithub from "../../public/ui/github.svg";
 import iconInstagram from "../../public/ui/instagram.svg";
 import iconLinkedin from "../../public/ui/linkedin.svg";
@@ -50,6 +51,8 @@ export function SocialLinks() {
         <img src={iconLinkedin.src} alt="" />
         <span>LinkedIn</span>
       </a>
+      <br />
+      <EmailForm />
     </div>
   );
 }
