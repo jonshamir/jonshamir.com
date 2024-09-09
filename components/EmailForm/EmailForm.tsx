@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 
+import styles from "./EmailForm.module.scss";
+
 interface FormData {
   email: string;
 }
@@ -29,7 +31,7 @@ export function EmailForm() {
   };
 
   return (
-    <div className="EmailForm">
+    <div className={styles.EmailForm}>
       {(mutation.isIdle || mutation.isLoading) && (
         <form onSubmit={handleSubmit}>
           <input
