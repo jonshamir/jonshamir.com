@@ -38,7 +38,7 @@ export function EmailForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="you@example.com"
+            placeholder="Enter your email"
             required={true}
           />
           <button type="submit" disabled={mutation.isLoading}>
