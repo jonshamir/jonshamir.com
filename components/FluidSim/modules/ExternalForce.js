@@ -1,9 +1,9 @@
-import mouse_vert from "./glsl/sim/mouse.vert";
-import externalForce_frag from "./glsl/sim/externalForce.frag";
-import ShaderPass from "./ShaderPass";
-import Mouse from "./Mouse";
-
 import * as THREE from "three";
+
+import externalForce_frag from "./glsl/sim/externalForce.frag";
+import mouse_vert from "./glsl/sim/mouse.vert";
+import Mouse from "./Mouse";
+import ShaderPass from "./ShaderPass";
 
 export default class ExternalForce extends ShaderPass {
   constructor(simProps) {

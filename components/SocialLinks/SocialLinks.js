@@ -1,16 +1,18 @@
-import styles from "./SocialLinks.module.scss";
+import clsx from "clsx";
 
-import iconInstagram from "../../public/ui/instagram.svg";
+import { EmailForm } from "../EmailForm/EmailForm";
 import iconGithub from "../../public/ui/github.svg";
-import iconTwitter from "../../public/ui/twitterx.svg";
+import iconInstagram from "../../public/ui/instagram.svg";
 import iconLinkedin from "../../public/ui/linkedin.svg";
+import iconTwitter from "../../public/ui/twitterx.svg";
+import styles from "./SocialLinks.module.scss";
 
 export function SocialLinks() {
   return (
     <div className={styles.SocialLinks}>
       <h2>Contact</h2>
       <a
-        className={styles.item}
+        className={clsx("clickable", styles.item)}
         key="instagram"
         href="https://www.instagram.com/yonshamir/"
         target="_blank"
@@ -20,7 +22,7 @@ export function SocialLinks() {
         <span>Instagram</span>
       </a>
       <a
-        className={styles.item}
+        className={clsx("clickable", styles.item)}
         key="github"
         href="https://github.com/jonshamir"
         target="_blank"
@@ -30,7 +32,7 @@ export function SocialLinks() {
         <span>GitHub</span>
       </a>
       <a
-        className={styles.item}
+        className={clsx("clickable", styles.item)}
         key="twitter"
         href="https://www.twitter.com/jonshamir/"
         target="_blank"
@@ -40,7 +42,7 @@ export function SocialLinks() {
         <span>Twitter</span>
       </a>
       <a
-        className={styles.item}
+        className={clsx("clickable", styles.item)}
         key="linkedin"
         href="https://www.linkedin.com/in/jonshamir/"
         target="_blank"
@@ -49,6 +51,8 @@ export function SocialLinks() {
         <img src={iconLinkedin.src} alt="" />
         <span>LinkedIn</span>
       </a>
+      <br />
+      <EmailForm />
     </div>
   );
 }

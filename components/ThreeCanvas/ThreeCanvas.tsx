@@ -1,4 +1,5 @@
 import { Canvas } from "@react-three/fiber";
+
 import styles from "./ThreeCanvas.module.scss";
 
 export type ThreeCanvasProps = React.ComponentProps<typeof Canvas>;

@@ -1,5 +1,6 @@
-import projectData from "./projectData.js";
+import clsx from "clsx";
 
+import projectData from "./projectData.js";
 import styles from "./ProjectSection.module.scss";
 
 export function ProjectSection() {
@@ -10,14 +11,9 @@ export function ProjectSection() {
         {projectData.map((project) => (
           <a
             href={`projects/${project.slug}`}
-            className={styles.ProjectTile}
+            className={clsx("clickable", styles.ProjectTile)}
             key={project.slug}
           >
-            {/* <img
-              src={`assets/projects/${project.slug}/cover.jpg`}
-              alt={project.name}
-              style={{ backgroundColor: project.color }}
-            /> */}
             <div className={styles.info}>
               <h3>{project.name}</h3>
               <span>{project.subtitle}</span>

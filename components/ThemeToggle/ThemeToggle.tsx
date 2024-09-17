@@ -1,25 +1,17 @@
-import { useTheme } from "next-themes";
+import clsx from "clsx";
 import { useEffect, useState } from "react";
-
-import styles from "./ThemeToggle.module.scss";
 
 import faviconDark from "../../public/favicon-dark.png";
 import faviconLight from "../../public/favicon-light.png";
+import styles from "./ThemeToggle.module.scss";
+import { useColorTheme } from "./useColorTheme";
 
 export function ThemeToggle() {
-  const { setTheme, resolvedTheme } = useTheme();
-  const isDark = resolvedTheme === "dark";
+  const { isDark, setIsDark } = useColorTheme();
 
-  // @TODO: take system theme
   const toggleTheme = () => {
-    setTheme(isDark ? "light" : "dark");
+    setIsDark(!isDark);
   };
-
-  const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-  useEffect(() => {
-    setTimeout(() => setIsLoaded(true), 1000);
-  }, []);
 
   useEffect(() => {
     const favicon = document.querySelector(
@@ -35,12 +27,18 @@ export function ThemeToggle() {
     }
   }, [isDark]);
 
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    setTimeout(() => setIsLoaded(true), 1000);
+  }, []);
+
   return (
     <label
       htmlFor={styles.ThemeToggle}
-      className={`${styles.ThemeToggleContainer} ${
-        isLoaded ? styles.loaded : ""
-      }`}
+      className={clsx("clickable", styles.ThemeToggleContainer, {
+        [styles.loaded]: isLoaded
+      })}
     >
       <input
         id={styles.ThemeToggle}

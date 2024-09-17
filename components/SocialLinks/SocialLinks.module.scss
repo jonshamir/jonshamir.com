@@ -12,9 +12,6 @@
     padding: 0.6rem;
     display: flex;
     align-items: center;
-    border-radius: var(--rounding-medium);
-    background-color: rgba(var(--color-text-rgb), 0);
-    transition: background-color var(--transition-defaults);
     text-decoration: none;
     position: relative;
 
@@ -30,7 +27,6 @@
     }
 
     &:hover {
-      background-color: rgba(var(--color-text-rgb), 0.1);
       &::after {
         opacity: 1;
       }
@@ -41,8 +37,6 @@
     }
 
     &:active {
-      background-color: rgba(var(--color-text-rgb), 0.05);
-
       span,
       img {
         transform: translateX(0.5em);

@@ -1,6 +1,5 @@
 import face_vert from "./glsl/sim/face.vert";
 import viscous_frag from "./glsl/sim/viscous.frag";
-
 import ShaderPass from "./ShaderPass";
 
 export default class Viscous extends ShaderPass {

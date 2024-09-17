@@ -3,8 +3,13 @@
 @import "satoshi.css";
 
 body {
+  /* --breakpoint-small: 600px; */
+  /* --breakpoint-medium: 11000px; */
+
+  --content-max-width: 50rem;
   --transition-defaults: 250ms ease;
   --rounding-medium: 0.8rem;
+  --rounding-full: 500px;
 
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
@@ -30,16 +35,15 @@ body {
     background-color: var(--color-bg);
   }
 
-  /* --breakpoint-small: 600px; */
-  /* --breakpoint-medium: 11000px; */
-
-  padding: 0rem 5rem;
   font-family: "Work Sans Variable", sans-serif;
   font-size: 1.1em;
 
   color: var(--color-text);
-  transition: color var(--transition-defaults),
+  transition:
+    color var(--transition-defaults),
     background-color var(--transition-defaults);
+
+  padding: 0rem 8rem;
 
   @media screen and (max-width: 600px) {
     padding: 6em 0em;
@@ -54,48 +58,6 @@ body {
 ::selection {
   background: var(--color-text);
   color: var(--color-bg);
-}
-
-nav {
-  position: fixed;
-  top: 2rem;
-  right: 2rem;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  background-color: rgba(var(--color-bg-rgb), 0.9);
-  border-radius: 500px;
-  padding: 0.1rem 0.3rem;
-  transition: background-color var(--transition-defaults);
-
-  @media screen and (max-width: 800px) {
-    top: 1rem;
-    right: 1rem;
-  }
-
-  a,
-  .active-link {
-    display: inline-block;
-    padding: 4px 14px;
-    vertical-align: middle;
-    text-decoration: none;
-    font-size: 0.9em;
-    border-radius: 500px;
-    transition: background-color var(--transition-defaults);
-  }
-
-  .active-link {
-    background-color: rgba(var(--color-text-rgb), 0.05);
-  }
-
-  a {
-    transition: background-color var(--transition-defaults),
-      color var(--transition-defaults);
-  }
-
-  a:hover {
-    background-color: rgba(var(--color-text-rgb), 0.1);
-  }
 }
 
 h1,
@@ -129,9 +91,10 @@ a {
 }
 
 article {
-  max-width: 1100px;
+  max-width: var(--content-max-width);
   margin: auto;
   padding: 2rem;
+  padding-bottom: 8rem;
 
   @media screen and (max-width: 600px) {
     padding: 0 1.5rem;
@@ -182,7 +145,8 @@ figcaption,
   font-size: 0.9em;
   font-weight: 500;
 
-  transition: background-color var(--transition-defaults),
+  transition:
+    background-color var(--transition-defaults),
     color var(--transition-defaults);
 
   &:hover {
@@ -227,8 +191,25 @@ figcaption,
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: 1rem;
 
   @media screen and (min-width: 1000px) {
     flex-direction: row;
+  }
+}
+
+.clickable {
+  transition:
+    background-color var(--transition-defaults),
+    color var(--transition-defaults);
+  background-color: rgba(var(--color-text-rgb), 0);
+  border-radius: var(--rounding-medium);
+
+  &:hover {
+    background-color: rgba(var(--color-text-rgb), 0.1);
+  }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 0.05);
   }
 }

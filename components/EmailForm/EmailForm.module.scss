@@ -1,0 +1,34 @@
+.EmailForm form {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  input,
+  button {
+    padding: 0.4rem 0.8rem;
+    border-radius: var(--rounding-medium);
+    border: 0;
+    white-space: nowrap;
+    transition:
+      background-color var(--transition-defaults),
+      color var(--transition-defaults);
+  }
+
+  input {
+    background-color: rgba(var(--color-text-rgb), 0.1);
+    color: var(--color-text);
+
+    &:hover {
+      background-color: rgba(var(--color-text-rgb), 0.2);
+    }
+  }
+
+  button {
+    background-color: rgba(var(--color-text-rgb), 0.75);
+    color: var(--color-bg);
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(var(--color-text-rgb), 1);
+    }
+  }
+}

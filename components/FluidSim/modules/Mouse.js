@@ -1,4 +1,5 @@
 import * as THREE from "three";
+
 import Common from "./Common";
 
 class Mouse {

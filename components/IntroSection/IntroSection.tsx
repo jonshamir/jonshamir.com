@@ -1,6 +1,5 @@
-import { InlineLogoPlaceholder } from "../Logo/InlineLogoPlaceholder";
 import { FluidSim } from "../FluidSim/FluidSim";
-
+import { InlineLogoPlaceholder } from "../Logo/InlineLogoPlaceholder";
 import styles from "./IntroSection.module.scss";
 
 export function IntroSection() {
@@ -11,8 +10,9 @@ export function IntroSection() {
         <InlineLogoPlaceholder />
         <h1>Hi, I&apos;m Jon Shamir</h1>
         <p>
-          Software architect & designer. My interests include interaction
-          design, real-time 3D graphics, data viz and machine learning.
+          Software architect & graphic designer. My interests include
+          interaction design, real-time 3D graphics, data viz and machine
+          learning.
         </p>
         <p>
           Currently building spatial interfaces at&nbsp;
