@@ -8,11 +8,13 @@ import { MainLogo } from "../Logo/MainLogo";
 import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import styles from "./Nav.module.css";
 
-const NAV_ITEMS = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Lab", href: "/lab" }
-];
+// const NAV_ITEMS = [
+//   { title: "Home", href: "/" },
+//   { title: "About", href: "/about" },
+//   { title: "Lab", href: "/lab" }
+// ];
+
+const NAV_ITEMS = [];
 
 export function Nav(): ReactElement {
   const [isMounted, setIsMounted] = useState(false);

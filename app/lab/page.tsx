@@ -23,7 +23,7 @@ export default function Page() {
 
   return (
     <>
-      <p>Small projects, experiments & stuff</p>
+      <p>Small projects & experiments</p>
       <div style={{ display: "flex", gap: "1rem" }}>{experimentList}</div>
     </>
   );
