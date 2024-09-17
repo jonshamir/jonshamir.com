@@ -1,8 +1,8 @@
 "use client";
 
-import clsx from "clsx";
+// import clsx from "clsx";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { type ReactElement, useEffect, useState } from "react";
 import React from "react";
 
@@ -16,15 +16,13 @@ import styles from "./Nav.module.css";
 //   { title: "Lab", href: "/lab" }
 // ];
 
-const NAV_ITEMS = [];
-
 export function Nav(): ReactElement {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const logoLinkRef = React.useRef(null);
 
   return (
@@ -37,7 +35,7 @@ export function Nav(): ReactElement {
             </a>
           </Link>
 
-          {NAV_ITEMS.map((item) => (
+          {/* {NAV_ITEMS.map((item) => (
             <Link href={item.href} passHref legacyBehavior key={item.href}>
               <a
                 className={clsx("clickable", {
@@ -47,7 +45,7 @@ export function Nav(): ReactElement {
                 {item.title}
               </a>
             </Link>
-          ))}
+          ))} */}
           <ThemeToggle />
         </nav>
       )}

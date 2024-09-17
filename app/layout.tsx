@@ -1,6 +1,7 @@
 import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
+import type { Metadata } from "next";
 // eslint-disable-next-line import/no-named-as-default
 import posthog from "posthog-js";
 
@@ -18,10 +19,21 @@ if (typeof window !== "undefined") {
   });
 }
 
-export const meta = {
+export const metadata: Metadata = {
   title: "Jon Shamir",
   description: "Jon Shamir portfolio website",
-  image: "https://jonshamir.com/profile.png"
+  openGraph: {
+    title: "Jon Shamir",
+    description: "Jon Shamir portfolio website",
+    images: { url: "https://jonshamir.com/profile.png", alt: "Jon Shamir" }
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: "@jonshamir",
+    title: "Jon Shamir",
+    description: "Jon Shamir portfolio website",
+    images: { url: "https://jonshamir.com/profile.png", alt: "Jon Shamir" }
+  }
 };
 
 export default function RootLayout({
@@ -32,20 +44,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>{meta.title}</title>
         <link rel="icon" href="" />
-
-        <meta name="robots" content="follow, index" />
-        <meta name="description" content={meta.description} />
-        <meta property="og:site_name" content={meta.title} />
-        <meta property="og:description" content={meta.description} />
-        <meta property="og:title" content={meta.title} />
-        <meta property="og:image" content={meta.image} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:site" content="@jonshamir" />
-        <meta name="twitter:title" content={meta.title} />
-        <meta name="twitter:description" content={meta.description} />
-        <meta name="twitter:image" content={meta.image} />
       </head>
       <body>
         <Nav />
