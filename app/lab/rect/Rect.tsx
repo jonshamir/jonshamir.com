@@ -36,7 +36,7 @@ export function Rect(props: RectProps) {
         uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
         uSize: { value: new THREE.Vector2(size.x, size.y) }
       }) as RectUniforms,
-    []
+    [color, radius, size.x, size.y]
   );
 
   useEffect(() => {
