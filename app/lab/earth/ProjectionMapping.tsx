@@ -45,8 +45,7 @@ export function ProjectionMapping({
     <>
       <group ref={ref}>
         <mesh geometry={geometry}>
-          {/* 
-          // @ts-ignore */}
+          {/* @ts-expect-error */}
           <projectionMappingMaterial
             albedoMap={albedo}
             specularMap={specular}
