@@ -3,7 +3,7 @@ import styles from "./JonLogo.module.scss";
 export function JonLogo({ isHidden }: { isHidden?: boolean }) {
   return (
     <div className={styles.container + " " + styles.visible}>
-      <div className={!isHidden && styles.rotate}>
+      <div className={!isHidden ? styles.rotate : ""}>
         <div className={styles.logo}>
           <div className={styles.top}>
             <div className={styles.face}></div>

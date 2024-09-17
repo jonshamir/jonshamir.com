@@ -34,8 +34,10 @@ export function MainLogo({
 
     const placeholder = document.getElementById("InlineLogoPlaceholder");
 
-    if (placeholder && logoRef.current && parentRef.current) {
+    if (placeholder && parentRef.current) {
       const updatePosition = () => {
+        if (logoRef.current === null) return;
+
         if (pathname === "/" && isAtTop && parentRef.current) {
           const parentRect = parentRef.current.getBoundingClientRect();
           const placeholderRect = placeholder.getBoundingClientRect();
