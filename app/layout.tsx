@@ -1,5 +1,3 @@
-"use client";
-
 import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
