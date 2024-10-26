@@ -2,22 +2,18 @@ import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
 import type { Metadata } from "next";
-// eslint-disable-next-line import/no-named-as-default
-import posthog from "posthog-js";
+import dynamic from "next/dynamic";
+import Script from "next/script";
 
+import { AnalyticsProvider } from "../components/analytics/AnalyticsProvider";
 import { Nav } from "../components/Nav/Nav";
 
-// Check that PostHog is client-side (used to handle Next.js SSR)
-if (typeof window !== "undefined") {
-  posthog.init("phc_Ud6pwqtRXUUeeC5zAjDoPZ7MYE41EdRWPMY2gdni1Yt", {
-    api_host: "https://app.posthog.com" || "https://us.i.posthog.com",
-    person_profiles: "identified_only",
-    // Enable debug mode in development
-    loaded: (posthog) => {
-      if (process.env.NODE_ENV === "development") posthog.debug();
-    }
-  });
-}
+const PageViewTracker = dynamic(
+  () => import("../components/analytics/PageViewTracker"),
+  {
+    ssr: false
+  }
+);
 
 export const metadata: Metadata = {
   title: "Jon Shamir",
@@ -45,11 +41,15 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <link rel="icon" href="" />
+        <Script src="/theme.js" strategy="beforeInteractive" />
       </head>
-      <body>
-        <Nav />
-        <article>{children}</article>
-      </body>
+      <AnalyticsProvider>
+        <body>
+          <PageViewTracker />
+          <Nav />
+          <article>{children}</article>
+        </body>
+      </AnalyticsProvider>
     </html>
   );
 }
