@@ -4,10 +4,11 @@ module.exports = {
     es6: true
   },
   extends: [
+    "next/core-web-vitals",
     "eslint:recommended", // Eslint recommended configuration by eslint.
     "plugin:import/recommended", // Linting of ES2015+ import/export syntax.
     "plugin:react/recommended", // Recommended react linting configs.
-    "plugin:react-hooks/recommended", // Recommended react hooks linting configs.
+    // "plugin:react-hooks/recommended", // Recommended react hooks linting configs.
     "plugin:jsx-a11y/recommended", // Turns on a11y rules for JSX.
     "plugin:@typescript-eslint/recommended", // Turns on rules from TypeScript-specific plugin.
     "plugin:prettier/recommended", // Turns off all rules that are unnecessary or might conflict with Prettier.
@@ -45,9 +46,8 @@ module.exports = {
   plugins: [
     "@typescript-eslint",
     "react",
-    "react-hooks",
+    // "react-hooks",
     "@react-three",
-    "react-hooks",
     "jsx-a11y",
     "prettier",
     "mdx",
@@ -56,6 +56,7 @@ module.exports = {
     "simple-import-sort"
   ],
   rules: {
+    "@next/next/no-img-element": "off",
     "react/no-unknown-property": "off", // Off to support react-three
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/ban-ts-comment": "off",
