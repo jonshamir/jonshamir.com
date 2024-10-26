@@ -7,6 +7,16 @@ export default function Page() {
 
       <h1>Leaf Map</h1>
       <span className="description">Interactive map of leaf shapes</span>
+      <br />
+      <br />
+      <a
+        href="https://jonshamir.github.io/leaf-map/"
+        target="_blank"
+        className="button"
+        rel="noreferrer"
+      >
+        Visit Project <span className="arrow">↗</span>
+      </a>
       <p>
         I used machine learning techniques to organize tree species according to
         their leaf shape. The idea was to create a more intuitive and friendly

@@ -6,6 +6,16 @@ export default function Page() {
       <img src="/projects/muser/hero.png" alt="" className="hero" />
       <h1>Muser</h1>
       <span className="description">Smart music visualizer</span>
+      <br />
+      <br />
+      <a
+        href="https://jonshamir.github.io/muser/"
+        target="_blank"
+        className="button"
+        rel="noreferrer"
+      >
+        Visit Project <span className="arrow">↗</span>
+      </a>
       <p>
         Muser is an experiment to see how machine learning technology can be
         used to enhance music visualization. The idea originated while writing a

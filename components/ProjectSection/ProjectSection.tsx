@@ -1,6 +1,6 @@
 import clsx from "clsx";
 
-import projectData from "./projectData.js";
+import projectData from "./projectData";
 import styles from "./ProjectSection.module.scss";
 
 export function ProjectSection() {

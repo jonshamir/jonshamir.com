@@ -2,6 +2,6 @@
   try {
     var isDark = localStorage.getItem("color-scheme");
     if (!isDark) return;
-    document.documentElement.classList.add("dark");
+    document.body.classList.add("dark");
   } catch (e) {}
 })();
