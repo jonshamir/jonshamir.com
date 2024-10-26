@@ -1,4 +1,5 @@
 import clsx from "clsx";
+import Link from "next/link";
 
 import projectData from "./projectData";
 import styles from "./ProjectSection.module.scss";
@@ -9,16 +10,19 @@ export function ProjectSection() {
       <h2>Projects</h2>
       <div>
         {projectData.map((project) => (
-          <a
+          <Link
             href={`projects/${project.slug}`}
-            className={clsx("clickable", styles.ProjectTile)}
+            passHref
+            legacyBehavior
             key={project.slug}
           >
-            <div className={styles.info}>
-              <h3>{project.name}</h3>
-              <span>{project.subtitle}</span>
-            </div>
-          </a>
+            <a className={clsx("clickable", styles.ProjectTile)}>
+              <div className={styles.info}>
+                <h3>{project.name}</h3>
+                <span>{project.subtitle}</span>
+              </div>
+            </a>
+          </Link>
         ))}
       </div>
     </div>
