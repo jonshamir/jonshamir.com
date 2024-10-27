@@ -2,11 +2,16 @@ import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Script from "next/script";
 
 import { Nav } from "../components/Nav/Nav";
 import { AnalyticsProvider } from "../features/analytics/AnalyticsProvider";
-import PageViewTracker from "../features/analytics/PageViewTracker";
+
+const PageViewTracker = dynamic(
+  () => import("../features/analytics/PageViewTracker"),
+  { ssr: false }
+);
 
 export const metadata: Metadata = {
   title: "Jon Shamir",
@@ -38,6 +43,7 @@ export default function RootLayout({
       </head>
       <AnalyticsProvider>
         <body>
+          {/* @ts-expect-error */}
           <PageViewTracker />
           <Nav />
           <article>{children}</article>
