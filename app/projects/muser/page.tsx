@@ -1,5 +1,7 @@
 "use client";
 
+import { Outlink } from "../../../components/Outlink";
+
 export default function Page() {
   return (
     <>
@@ -23,11 +25,11 @@ export default function Page() {
         designed and implemented the project from start to finish.
       </p>
       <p>
-        A pre-trained neural network called
-        [musicnn](https://github.com/jordipons/musicnn) predicts the musical
-        genre for each second of a song. The predictions are then used to
-        generate a color scheme. The final visualization color palette is based
-        on the 5 most-fitting genres.
+        A pre-trained neural network called{" "}
+        <Outlink href="https://github.com/jordipons/musicnn">musicnn</Outlink>{" "}
+        predicts the musical genre for each second of a song. The predictions
+        are then used to generate a color scheme. The final visualization color
+        palette is based on the 5 most-fitting genres.
       </p>
       <p>
         We can use this to visualize how the style of a song changes over time:
@@ -49,9 +51,10 @@ export default function Page() {
       </figure>
       <p>
         kandinsky Circles in a Circle by Wassily Kandinsky, 1923 Colors for each
-        genre were chosen according to the [Musicmap](https://musicmap.info/)
-        project so that music genres which are stylistically closer will get
-        similar colors.
+        genre were chosen according to the{" "}
+        <Outlink href="https://musicmap.info/">Musicmap</Outlink> project so
+        that music genres which are stylistically closer will get similar
+        colors.
       </p>
       <p>
         Muser is inspired by Wassily Kandinsky (1866-1944). Generally credited

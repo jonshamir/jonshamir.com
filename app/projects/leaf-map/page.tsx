@@ -1,5 +1,7 @@
 "use client";
 
+import { Outlink } from "../../../components/Outlink";
+
 export default function Page() {
   return (
     <>
@@ -25,20 +27,29 @@ export default function Page() {
 
       <img src="/projects/leaf-map/features.png" alt="Leaf features" />
       <p>
-        Using the [Shape Context
-        Algorithm](https://en.wikipedia.org/wiki/Shape_context) I generated a
-        &quot;fingerprint&quot; vector representing each leaf, which is then
-        used to asses the similarity of shapes. Finally the dimension of this
-        vector is reduced to 2D using PCA and
-        [t-SNE](https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding),
-        and the leaves are displayed in an interactive interface I created using
-        D3.js.
+        Using the{" "}
+        <Outlink href="https://en.wikipedia.org/wiki/Shape_context">
+          Shape Context Algorithm
+        </Outlink>{" "}
+        I generated a &quot;fingerprint&quot; vector representing each leaf,
+        which is then used to asses the similarity of shapes. Finally the
+        dimension of this vector is reduced to 2D using PCA and{" "}
+        <Outlink href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding">
+          t-SNE
+        </Outlink>
+        , and the leaves are displayed in an interactive interface I created
+        using D3.js.
       </p>
       <p>
-        The project was inspired by the [IDEO Font
-        Map](https://www.designboom.com/design/ideo-font-map-interview-typography-04-21-2017/),
-        all data and images were taken from the [Leaf Snap
-        dataset](https://leafsnap.com/dataset/).
+        The project was inspired by the{" "}
+        <Outlink href="https://www.designboom.com/design/ideo-font-map-interview-typography-04-21-2017/">
+          IDEO Font Map
+        </Outlink>
+        , all data and images were taken from the{" "}
+        <Outlink href="https://leafsnap.com/dataset/">
+          Leaf Snap dataset
+        </Outlink>
+        .{" "}
       </p>
       <h2>Tools Used</h2>
       <ul>

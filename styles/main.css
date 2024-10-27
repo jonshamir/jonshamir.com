@@ -134,6 +134,23 @@ figcaption,
   font-style: italic;
 }
 
+.outlink {
+  opacity: 0.8;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &::after {
+    content: " ↗";
+    font-family: "Satoshi";
+    font-weight: 700;
+    font-size: 0.8em;
+    transition: transform var(--transition-defaults);
+    transform: translate(0, 0.15em);
+  }
+}
+
 .button {
   display: inline-block;
   text-decoration: none;
