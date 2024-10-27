@@ -14,15 +14,15 @@ body {
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
 
-  --color-bg: #ede5d6;
-  --color-bg-rgb: 237, 229, 214;
+  --color-bg: #ede7e5;
+  --color-bg-rgb: 237, 231, 229;
 
   &.dark {
-    --color-text: #d9d1c1;
-    --color-text-rgb: 217, 209, 193;
+    --color-text: #e0dacf;
+    --color-text-rgb: 224, 218, 207;
 
-    --color-bg: #2f3338;
-    --color-bg-rgb: 47, 51, 56;
+    --color-bg: #2f3138;
+    --color-bg-rgb: 47, 49, 56;
   }
 
   background-color: var(--color-bg);
