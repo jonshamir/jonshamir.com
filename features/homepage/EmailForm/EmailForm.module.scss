@@ -3,6 +3,11 @@
   align-items: center;
   gap: 1rem;
 
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
   input,
   button {
     padding: 0.4rem 0.8rem;
@@ -29,6 +34,9 @@
     cursor: pointer;
     &:hover {
       background-color: rgba(var(--color-text-rgb), 1);
+    }
+    &:active {
+      background-color: rgba(var(--color-text-rgb), 0.5);
     }
   }
 }
