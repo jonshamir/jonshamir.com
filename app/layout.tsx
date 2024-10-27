@@ -2,18 +2,11 @@ import "@fontsource-variable/work-sans";
 import "../styles/main.css";
 
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Script from "next/script";
 
-import { AnalyticsProvider } from "../components/analytics/AnalyticsProvider";
 import { Nav } from "../components/Nav/Nav";
-
-const PageViewTracker = dynamic(
-  () => import("../components/analytics/PageViewTracker"),
-  {
-    ssr: false
-  }
-);
+import { AnalyticsProvider } from "../features/analytics/AnalyticsProvider";
+import PageViewTracker from "../features/analytics/PageViewTracker";
 
 export const metadata: Metadata = {
   title: "Jon Shamir",

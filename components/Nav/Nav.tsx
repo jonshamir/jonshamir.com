@@ -6,8 +6,8 @@ import Link from "next/link";
 import { type ReactElement, useEffect, useState } from "react";
 import React from "react";
 
+import { ThemeToggle } from "../../features/theme/ThemeToggle";
 import { MainLogo } from "../Logo/MainLogo";
-import { ThemeToggle } from "../ThemeToggle/ThemeToggle";
 import styles from "./Nav.module.css";
 
 // const NAV_ITEMS = [

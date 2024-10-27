@@ -2,9 +2,9 @@
 
 import { QueryClient, QueryClientProvider } from "react-query";
 
-import { IntroSection } from "../components/IntroSection/IntroSection";
-import { ProjectSection } from "../components/ProjectSection/ProjectSection";
-import { SocialLinks } from "../components/SocialLinks/SocialLinks";
+import { IntroSection } from "../features/homepage/IntroSection/IntroSection";
+import { ProjectSection } from "../features/homepage/ProjectSection/ProjectSection";
+import { SocialLinks } from "../features/homepage/SocialLinks/SocialLinks";
 
 const queryClient = new QueryClient();
 

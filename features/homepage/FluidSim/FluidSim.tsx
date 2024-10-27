@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { useColorTheme } from "../ThemeToggle/useColorTheme";
+import { useColorTheme } from "../../theme/useColorTheme";
 import styles from "./FluidSim.module.scss";
 import FluidSimManager from "./modules/FluidSimManager";
 

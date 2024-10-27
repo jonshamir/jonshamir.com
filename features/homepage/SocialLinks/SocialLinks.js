@@ -1,10 +1,10 @@
 import clsx from "clsx";
 
 import { EmailForm } from "../EmailForm/EmailForm";
-import iconGithub from "../../public/ui/github.svg";
-import iconInstagram from "../../public/ui/instagram.svg";
-import iconLinkedin from "../../public/ui/linkedin.svg";
-import iconTwitter from "../../public/ui/twitterx.svg";
+import iconGithub from "./assets/github.svg";
+import iconInstagram from "./assets/instagram.svg";
+import iconLinkedin from "./assets/linkedin.svg";
+import iconTwitter from "./assets/twitterx.svg";
 import styles from "./SocialLinks.module.scss";
 
 export function SocialLinks() {
