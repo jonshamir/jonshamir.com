@@ -8,6 +8,12 @@ type Project = {
 
 const projectData: Project[] = [
   {
+    slug: "spacetop",
+    name: "Spacetop",
+    subtitle: "2024 | AR Laptop",
+    color: "#e7e1e1"
+  },
+  {
     slug: "herb-tree",
     name: "Herb Tree",
     subtitle: "2023 | Interactive botanic visualization",
