@@ -33,12 +33,6 @@ const projectData: Project[] = [
     color: "#8595a8"
   },
   {
-    slug: "scopus",
-    name: "Scopus",
-    subtitle: "2019 | Short 3D animation",
-    color: "#a1a1a1"
-  },
-  {
     slug: "leaf-map",
     name: "Leaf Map",
     subtitle: "2018 | Interactive map of leaf shapes",

@@ -220,7 +220,7 @@ figcaption,
   gap: 1rem;
 
   @media screen and (min-width: 1000px) {
-    flex-direction: row;
+    /* flex-direction: row; */
   }
 }
 
