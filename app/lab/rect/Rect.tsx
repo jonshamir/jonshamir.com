@@ -27,8 +27,6 @@ export function Rect(props: RectProps) {
     ...rest
   } = props;
 
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-
   const uniformsRef = useRef<RectUniforms>({
     uColor: { value: new THREE.Color(color) },
     uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
@@ -37,22 +35,17 @@ export function Rect(props: RectProps) {
 
   useEffect(() => {
     if (uniformsRef.current === undefined) return;
-    const uniforms = uniformsRef.current;
-
     // Update uniforms when props change
     uniformsRef.current.uColor.value.set(color);
-    console.log("uniforms.uColor.value", uniforms.uColor.value);
     const r = Math.min(radius, Math.min(size.x, size.y));
     uniformsRef.current.uRadius.value.set(r, r, r, r);
     uniformsRef.current.uSize.value.set(size.x, size.y);
-    materialRef.current.uniformsNeedUpdate = true;
   }, [color, radius, size]);
 
   return (
     <mesh {...rest}>
       <planeGeometry args={[size.x, size.y]} />
       <shaderMaterial
-        ref={materialRef}
         vertexShader={rectVertexShader}
         fragmentShader={rectFragmentShader}
         depthTest={depthTest}
