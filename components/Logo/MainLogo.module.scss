@@ -11,6 +11,27 @@
   width: 3.5rem;
   padding: 0.5rem;
   border-radius: var(--rounding-full) !important;
+  background-color: var(--color-bg);
+
+  &::before {
+    content: "";
+    transition: opacity var(--transition-defaults);
+
+    display: block;
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-text);
+    border-radius: var(--rounding-full);
+    opacity: 0;
+  }
+
+  &:hover::before {
+    opacity: 0.1;
+  }
+
+  &:active::before {
+    opacity: 0.05;
+  }
 
   svg {
     height: 80%;

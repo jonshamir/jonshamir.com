@@ -42,12 +42,6 @@ body {
   transition:
     color var(--transition-defaults),
     background-color var(--transition-defaults);
-
-  padding: 0rem 8rem;
-
-  @media screen and (max-width: 600px) {
-    padding: 6em 0em;
-  }
 }
 
 * {
@@ -58,6 +52,33 @@ body {
 ::selection {
   background: var(--color-text);
   color: var(--color-bg);
+}
+
+/* https://www.joshwcomeau.com/css/full-bleed/ */
+.wrapper {
+  display: grid;
+  grid-template-columns:
+    1fr
+    min(60ch, calc(100% - 4rem))
+    1fr;
+  grid-column-gap: 2rem;
+  padding-bottom: 4rem;
+}
+
+.wrapper > * {
+  grid-column: 2;
+}
+
+.full-bleed,
+.cover {
+  width: 100%;
+  grid-column: 1 / 4;
+}
+
+.cover {
+  height: 20rem;
+  object-fit: cover;
+  margin-bottom: 2rem;
 }
 
 h1,
@@ -87,17 +108,6 @@ a {
   &:hover {
     text-decoration: none;
     opacity: 1;
-  }
-}
-
-article {
-  max-width: var(--content-max-width);
-  margin: auto;
-  padding: 2rem;
-  padding-bottom: 8rem;
-
-  @media screen and (max-width: 600px) {
-    padding: 0 1.5rem;
   }
 }
 
@@ -193,23 +203,6 @@ figcaption,
 
   &:active {
     background-color: rgba(var(--color-text-rgb), 0.7);
-  }
-}
-
-.hero {
-  object-fit: cover;
-  width: 100%;
-  margin: -100px auto auto;
-  border-radius: 1rem;
-  max-width: 1600px;
-  overflow: hidden;
-  margin-bottom: 2rem;
-  --aspect-ratio: (1.95);
-
-  @media screen and (max-width: 600px) {
-    border-radius: 0;
-    margin-left: -1.5rem;
-    width: 100vw;
   }
 }
 

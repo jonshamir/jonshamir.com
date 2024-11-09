@@ -5,7 +5,7 @@ import { Outlink } from "../../../components/Outlink";
 export default function Page() {
   return (
     <>
-      <img src="/projects/muser/hero.png" alt="" className="hero" />
+      <img src="/projects/muser/hero.png" alt="" className="cover" />
       <h1>Muser</h1>
       <span className="description">Smart music visualizer</span>
       <br />
