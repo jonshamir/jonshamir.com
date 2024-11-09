@@ -1,5 +1,5 @@
 import { ThreeElements } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import { rectFragmentShader, rectVertexShader } from "./rect.glsl";
