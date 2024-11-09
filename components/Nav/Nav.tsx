@@ -9,12 +9,14 @@ import React from "react";
 import { ThemeToggle } from "../../features/theme/ThemeToggle";
 import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
+import clsx from "clsx";
+import { usePathname } from "next/navigation";
 
-// const NAV_ITEMS = [
-//   { title: "Home", href: "/" },
-//   { title: "About", href: "/about" },
-//   { title: "Lab", href: "/lab" }
-// ];
+const NAV_ITEMS = [
+  { title: "Home", href: "/" },
+  { title: "About", href: "/about" },
+  { title: "Lab", href: "/lab" }
+];
 
 export function Nav(): ReactElement {
   const [isMounted, setIsMounted] = useState(false);
@@ -22,7 +24,7 @@ export function Nav(): ReactElement {
     setIsMounted(true);
   }, []);
 
-  // const pathname = usePathname();
+  const pathname = usePathname();
   const logoLinkRef = React.useRef(null);
 
   return (
@@ -35,7 +37,7 @@ export function Nav(): ReactElement {
             </a>
           </Link>
 
-          {/* {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <Link href={item.href} passHref legacyBehavior key={item.href}>
               <a
                 className={clsx("clickable", {
@@ -45,7 +47,7 @@ export function Nav(): ReactElement {
                 {item.title}
               </a>
             </Link>
-          ))} */}
+          ))}
           <ThemeToggle />
         </nav>
       )}
