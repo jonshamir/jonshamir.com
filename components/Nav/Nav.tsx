@@ -1,19 +1,18 @@
 "use client";
 
-import clsx from "clsx";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { ThemeToggle } from "../../features/theme/ThemeToggle";
 import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
 
-const NAV_ITEMS = [
-  { title: "Home", href: "/" },
-  { title: "About", href: "/about" },
-  { title: "Lab", href: "/lab" }
-];
+// const NAV_ITEMS = [
+//   { title: "Home", href: "/" },
+//   { title: "About", href: "/about" },
+//   { title: "Lab", href: "/lab" }
+// ];
 
 export function Nav() {
   const [isMounted, setIsMounted] = useState(false);
@@ -21,7 +20,7 @@ export function Nav() {
     setIsMounted(true);
   }, []);
 
-  const pathname = usePathname();
+  // const pathname = usePathname();
   const logoRef = useRef(null);
 
   return (

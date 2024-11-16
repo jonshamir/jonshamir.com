@@ -43,7 +43,6 @@ export default function RootLayout({
       </head>
       <AnalyticsProvider>
         <body>
-          {/* @ts-expect-error */}
           <PageViewTracker />
           <Nav />
           <article className="wrapper">{children}</article>
