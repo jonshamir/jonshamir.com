@@ -38,7 +38,7 @@
       }
     }
 
-    img {
+    & img {
       width: 1.2em;
       height: 1.2em;
       vertical-align: middle;
@@ -49,7 +49,7 @@
         filter var(--transition-defaults);
       filter: invert(1);
     }
-    span {
+    & span {
       color: var(--color-text) !important;
       transition:
         transform var(--transition-defaults),
@@ -65,4 +65,8 @@
       padding: 0.3rem 0.5rem;
     }
   }
+}
+
+:global(.dark) .SocialLinks a img {
+  filter: none;
 }
