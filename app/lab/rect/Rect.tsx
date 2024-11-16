@@ -1,5 +1,5 @@
 import { ThreeElements } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 import { rectFragmentShader, rectVertexShader } from "./rect.glsl";
@@ -27,42 +27,32 @@ export function Rect(props: RectProps) {
     ...rest
   } = props;
 
-  const materialRef = useRef<THREE.ShaderMaterial>(null);
-
-  const uniforms = useMemo(
-    () =>
-      ({
-        uColor: { value: new THREE.Color(color) },
-        uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
-        uSize: { value: new THREE.Vector2(size.x, size.y) }
-      }) as RectUniforms,
-    [color, radius, size.x, size.y]
-  );
+  const uniformsRef = useRef<RectUniforms>({
+    uColor: { value: new THREE.Color(color) },
+    uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
+    uSize: { value: new THREE.Vector2(size.x, size.y) }
+  });
 
   useEffect(() => {
-    if (!materialRef.current?.uniforms) return;
-    const uniforms = materialRef.current.uniforms as RectUniforms;
-
+    if (uniformsRef.current === undefined) return;
     // Update uniforms when props change
-    uniforms.uColor.value.set(color);
+    uniformsRef.current.uColor.value.set(color);
     const r = Math.min(radius, Math.min(size.x, size.y));
-    uniforms.uRadius.value.set(r, r, r, r);
-    uniforms.uSize.value.set(size.x, size.y);
-    materialRef.current.uniformsNeedUpdate = true;
+    uniformsRef.current.uRadius.value.set(r, r, r, r);
+    uniformsRef.current.uSize.value.set(size.x, size.y);
   }, [color, radius, size]);
 
   return (
     <mesh {...rest}>
       <planeGeometry args={[size.x, size.y]} />
       <shaderMaterial
-        ref={materialRef}
         vertexShader={rectVertexShader}
         fragmentShader={rectFragmentShader}
         depthTest={depthTest}
         depthWrite={false}
         transparent={true}
         side={THREE.DoubleSide}
-        uniforms={uniforms}
+        uniforms={uniformsRef.current}
       />
     </mesh>
   );

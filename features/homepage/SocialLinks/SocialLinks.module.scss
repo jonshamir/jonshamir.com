@@ -1,15 +1,10 @@
-:global(.dark) .SocialLinks a img {
-  filter: none;
-}
-
 .SocialLinks {
+  margin-top: 3rem;
   display: flex;
   flex-direction: column;
-  @media screen and (min-width: 1000px) {
-    min-width: 300px;
-  }
+
   .item {
-    padding: 0.6rem;
+    padding: 0.3rem;
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -48,13 +43,16 @@
       height: 1.2em;
       vertical-align: middle;
       opacity: 0.7;
-      transition: transform var(--transition-defaults),
-        opacity var(--transition-defaults), filter var(--transition-defaults);
+      transition:
+        transform var(--transition-defaults),
+        opacity var(--transition-defaults),
+        filter var(--transition-defaults);
       filter: invert(1);
     }
     span {
       color: var(--color-text) !important;
-      transition: transform var(--transition-defaults),
+      transition:
+        transform var(--transition-defaults),
         color var(--transition-defaults);
       display: inline-block;
       opacity: 1;

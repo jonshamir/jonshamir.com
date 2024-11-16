@@ -1,5 +1,5 @@
 .MainLogo {
-  // position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   transition:
@@ -8,9 +8,30 @@
   transform: translate(0, 0) scale(1);
   z-index: 100;
   opacity: 1;
-  width: 3.5rem;
-  padding: 0.5rem;
+  width: 2.8rem;
+  padding: 0.3rem;
   border-radius: var(--rounding-full) !important;
+  background-color: var(--color-bg);
+
+  &::before {
+    content: "";
+    transition: opacity var(--transition-defaults);
+
+    display: block;
+    position: absolute;
+    inset: 0;
+    background-color: var(--color-text);
+    border-radius: var(--rounding-full);
+    opacity: 0;
+  }
+
+  &:hover::before {
+    opacity: 0.1;
+  }
+
+  &:active::before {
+    opacity: 0.05;
+  }
 
   svg {
     height: 80%;
@@ -21,11 +42,6 @@
     fill: var(--color-text);
     transition: fill var(--transition-defaults);
     opacity: 1;
-  }
-
-  @media screen and (max-width: 600px) {
-    top: -1rem;
-    left: -1rem;
   }
 }
 

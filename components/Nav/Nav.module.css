@@ -1,46 +1,48 @@
 .Nav {
   position: fixed;
-  top: 6rem;
-  left: 50%;
-  margin-left: -32rem;
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  padding: 0.1rem 0.3rem;
-  transition: background-color var(--transition-defaults);
-  flex-direction: column;
-  gap: 0.5rem;
-  align-items: flex-end;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  box-sizing: border-box;
+  padding: 1rem;
 
-  @media screen and (max-width: 70rem) {
-    top: 4rem;
-    left: 4rem;
-    margin-left: 0;
+  @media screen and (min-width: 70rem) {
+    padding: 1.5rem;
   }
 
-  @media screen and (max-width: 40rem) {
-    top: 0;
-    left: 0;
-    width: 100%;
+  & > div {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: flex-start;
-    padding: 1rem;
+    margin: 0 auto;
   }
 
-  & > a,
-  & .activeLink {
-    display: inline-block;
-    padding: 0.3em 0.8em;
-    vertical-align: middle;
-    text-decoration: none;
-    font-size: 0.9em;
-    border-radius: 500px;
-    font-size: 1rem;
-  }
+  .Wrapper {
+    transition: background-color var(--transition-defaults);
+    background-color: var(--color-bg);
+    border-radius: var(--rounding-full);
+    padding: 0.2rem;
+    display: flex;
+    flex-direction: row;
 
-  .ActiveLink {
-    opacity: 0.6;
+    & a {
+      display: inline-block;
+      padding: 0.3em 0.8em;
+      vertical-align: middle;
+      text-decoration: none;
+      font-size: 0.9em;
+      border-radius: 500px;
+      font-size: 1rem;
+    }
+
+    .ActiveLink {
+      opacity: 0.6;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
   }
 }

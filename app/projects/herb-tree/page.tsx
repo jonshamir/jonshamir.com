@@ -3,7 +3,7 @@
 export default function Page() {
   return (
     <>
-      <img src="/projects/herb-tree/hero.png" alt="" className="hero" />
+      <img src="/projects/herb-tree/hero.png" alt="" className="cover" />
       <h1>Herbarium</h1>
       <span className="description">Interactive botanic visualization</span>
       <p>

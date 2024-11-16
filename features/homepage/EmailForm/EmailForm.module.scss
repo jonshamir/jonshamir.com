@@ -1,17 +1,12 @@
 .EmailForm form {
   display: flex;
   align-items: center;
-  gap: 1rem;
-
-  @media screen and (max-width: 600px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  gap: 0.5rem;
 
   input,
   button {
-    padding: 0.4rem 0.8rem;
-    border-radius: var(--rounding-medium);
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--rounding-full);
     border: 0;
     white-space: nowrap;
     transition:
@@ -25,6 +20,11 @@
 
     &:hover {
       background-color: rgba(var(--color-text-rgb), 0.2);
+    }
+
+    &:focus {
+      outline: 2px solid rgba(var(--color-text-rgb), 0.5);
+      background-color: rgba(var(--color-text-rgb), 0.1);
     }
   }
 

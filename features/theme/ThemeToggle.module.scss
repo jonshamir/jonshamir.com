@@ -5,7 +5,8 @@
   margin: 0;
   line-height: 0;
 
-  border-radius: 500px;
+  /* Override default rounding */
+  --rounding-medium: 500px;
 }
 
 #ThemeToggle {
@@ -30,7 +31,8 @@
     height: 14px;
     position: absolute;
     inset: 0px;
-    transition: transform var(--transition-defaults),
+    transition:
+      transform var(--transition-defaults),
       background-color var(--transition-defaults);
   }
 
