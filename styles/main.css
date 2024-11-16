@@ -4,7 +4,7 @@
 
 body {
   /* --breakpoint-small: 600px; */
-  /* --breakpoint-medium: 11000px; */
+  /* --breakpoint-medium: 1100px; */
 
   --content-max-width: 50rem;
   --transition-defaults: 250ms ease;
@@ -36,7 +36,6 @@ body {
   }
 
   font-family: "Work Sans Variable", sans-serif;
-  font-size: 1.1em;
 
   color: var(--color-text);
   transition:
@@ -59,9 +58,9 @@ body {
   display: grid;
   grid-template-columns:
     1fr
-    min(60ch, calc(100% - 4rem))
+    min(60ch, calc(100% - 3rem))
     1fr;
-  grid-column-gap: 2rem;
+  grid-column-gap: 1.5rem;
   padding-bottom: 4rem;
 }
 
