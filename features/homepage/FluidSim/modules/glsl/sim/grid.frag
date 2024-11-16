@@ -24,7 +24,7 @@ float circle(in vec2 p, in float strength)
     float s =
         darkTheme == 1.0 
         ? max(pow((baseRadius / radius), 4.0), 0.1)
-        : (baseRadius / radius);
+        : (baseRadius / radius) * 0.8;
 
 	return (1.0 - smoothstep(-0.01, 0.01, d)) * s;
 }
