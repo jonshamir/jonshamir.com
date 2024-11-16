@@ -37,7 +37,7 @@ export function Nav() {
             <div style={{ flexGrow: 1 }} />
 
             <div className={styles.Wrapper}>
-              {NAV_ITEMS.map((item) => (
+              {/* {NAV_ITEMS.map((item) => (
                 <Link href={item.href} passHref legacyBehavior key={item.href}>
                   <a
                     className={clsx("clickable", {
@@ -47,7 +47,7 @@ export function Nav() {
                     {item.title}
                   </a>
                 </Link>
-              ))}
+              ))} */}
               <ThemeToggle />
             </div>
           </div>
