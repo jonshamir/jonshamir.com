@@ -80,6 +80,10 @@ body {
   margin-bottom: 2rem;
 }
 
+i {
+  font-style: italic;
+}
+
 li::marker {
   color: rgba(var(--color-text-rgb), 0.5);
   transition: color var(--transition-defaults);
@@ -93,7 +97,6 @@ h5,
 h6 {
   font-family: "Satoshi", sans-serif;
   margin: 0;
-  margin-bottom: 0.5em;
 }
 
 h1 {
@@ -122,10 +125,9 @@ p {
   margin: 0.5em 0;
 }
 
-span.description {
+.description {
   opacity: 0.7;
   font-style: italic;
-  margin-top: -1rem;
   margin-bottom: 0.5rem;
 }
 

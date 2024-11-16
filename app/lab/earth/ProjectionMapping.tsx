@@ -6,6 +6,9 @@ import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeom
 import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
 import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
+import { useGLTF } from "@react-three/drei";
+import { MorphingPlatonicMesh } from "./MorphingPlatonicMesh";
+import { CustomMaterial } from "./CustomMaterial";
 
 extend({ ProjectionMappingMaterial, RoundedBoxGeometry });
 
@@ -14,8 +17,8 @@ export enum BaseMesh {
   Cube = "cube",
   Dodecahedron = "dodecahedron",
   Octahedron = "octahedron",
-  Icosahedron = "icosahedron",
-  Torus = "torus"
+  Icosahedron = "icosahedron"
+  // Torus = "torus"
 }
 
 export function ProjectionMapping({
@@ -31,12 +34,14 @@ export function ProjectionMapping({
 
   const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
 
+  const morph = useGLTF("/models/platonics.glb");
+
   // Assuming the first child of the loaded object is the mesh we want
   const geometry = (obj.children[0] as THREE.Mesh).geometry;
 
   useFrame(() => {
     if (ref.current) {
-      ref.current.rotation.y += 0.001;
+      // ref.current.rotation.y += 0.001;
     }
   });
 
@@ -44,14 +49,22 @@ export function ProjectionMapping({
   return (
     <>
       <group ref={ref}>
-        <mesh geometry={geometry}>
+        {/* <mesh geometry={geometry}>
           <projectionMappingMaterial
             albedoMap={albedo}
             specularMap={specular}
             bumpMap={bump}
             cloudMap={clouds}
           />
-        </mesh>
+        </mesh> */}
+        <MorphingPlatonicMesh mesh={baseMesh}>
+          <CustomMaterial
+            albedoMap={albedo}
+            specularMap={specular}
+            bumpMap={bump}
+            cloudMap={clouds}
+          />
+        </MorphingPlatonicMesh>
       </group>
       <directionalLight position={[0, 0, 1]} intensity={1.5} />
     </>

@@ -1,5 +1,6 @@
 import "@fontsource-variable/work-sans";
 import "../styles/main.css";
+import "katex/dist/katex.min.css";
 
 import type { Metadata } from "next";
 import dynamic from "next/dynamic";
