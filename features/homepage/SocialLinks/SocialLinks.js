@@ -5,52 +5,53 @@ import iconGithub from "./assets/github.svg";
 import iconInstagram from "./assets/instagram.svg";
 import iconLinkedin from "./assets/linkedin.svg";
 import iconTwitter from "./assets/twitterx.svg";
+import iconBluesky from "./assets/bluesky.svg";
 import styles from "./SocialLinks.module.scss";
+
+const socialLinks = [
+  {
+    icon: iconInstagram,
+    href: "https://www.instagram.com/yonshamir/",
+    label: "Instagram"
+  },
+  {
+    icon: iconGithub,
+    href: "https://github.com/jonshamir",
+    label: "GitHub"
+  },
+  {
+    icon: iconBluesky,
+    href: "https://bsky.app/profile/jonshamir.com",
+    label: "Bluesky"
+  },
+  {
+    icon: iconTwitter,
+    href: "https://www.twitter.com/jonshamir/",
+    label: "Twitter"
+  },
+  {
+    icon: iconLinkedin,
+    href: "https://www.linkedin.com/in/jonshamir/",
+    label: "LinkedIn"
+  }
+];
 
 export function SocialLinks() {
   return (
     <div className={styles.SocialLinks}>
       <h2>Contact</h2>
-      <a
-        className={clsx("clickable", styles.item)}
-        key="instagram"
-        href="https://www.instagram.com/yonshamir/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={iconInstagram.src} alt="" />
-        <span>Instagram</span>
-      </a>
-      <a
-        className={clsx("clickable", styles.item)}
-        key="github"
-        href="https://github.com/jonshamir"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={iconGithub.src} alt="" />
-        <span>GitHub</span>
-      </a>
-      <a
-        className={clsx("clickable", styles.item)}
-        key="twitter"
-        href="https://www.twitter.com/jonshamir/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={iconTwitter.src} alt="" />
-        <span>Twitter</span>
-      </a>
-      <a
-        className={clsx("clickable", styles.item)}
-        key="linkedin"
-        href="https://www.linkedin.com/in/jonshamir/"
-        target="_blank"
-        rel="noreferrer"
-      >
-        <img src={iconLinkedin.src} alt="" />
-        <span>LinkedIn</span>
-      </a>
+      {socialLinks.map((link) => (
+        <a
+          className={clsx("clickable", styles.item)}
+          key={link.label}
+          href={link.href}
+          target="_blank"
+          rel="noreferrer"
+        >
+          <img src={link.icon.src} alt="" />
+          <span>{link.label}</span>
+        </a>
+      ))}
       <br />
       <EmailForm />
     </div>
