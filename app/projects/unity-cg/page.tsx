@@ -10,6 +10,11 @@ import Earth from "../../lab/earth/Canvas";
 export default function Page() {
   return (
     <>
+      <p>
+        <br />
+        <br />
+        <br />
+      </p>
       <h1>Unity CG</h1>
       <span className="description">Teaching Computer Graphics in Unity</span>
 
