@@ -1,16 +1,13 @@
 "use client";
 
-// import clsx from "clsx";
+import clsx from "clsx";
 import Link from "next/link";
-// import { usePathname } from "next/navigation";
-import { type ReactElement, useEffect, useState } from "react";
-import React from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 import { ThemeToggle } from "../../features/theme/ThemeToggle";
 import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
-import clsx from "clsx";
-import { usePathname } from "next/navigation";
 
 const NAV_ITEMS = [
   { title: "Home", href: "/" },
@@ -18,22 +15,22 @@ const NAV_ITEMS = [
   { title: "Lab", href: "/lab" }
 ];
 
-export function Nav(): ReactElement {
+export function Nav() {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
   }, []);
 
   const pathname = usePathname();
-  const logoLinkRef = React.useRef(null);
+  const logoRef = useRef(null);
 
   return (
-    <>
-      {isMounted && (
-        <nav className={styles.Nav}>
+    isMounted && (
+      <nav className={styles.Nav}>
+        <div>
           <Link href="/" passHref legacyBehavior>
-            <a style={{ padding: 0 }} ref={logoLinkRef}>
-              <MainLogo parentRef={logoLinkRef} />
+            <a style={{ padding: 0 }} ref={logoRef}>
+              <MainLogo parentRef={logoRef} />
             </a>
           </Link>
 
@@ -48,9 +45,10 @@ export function Nav(): ReactElement {
               </a>
             </Link>
           ))}
+          <div style={{ flexGrow: 1 }} />
           <ThemeToggle />
-        </nav>
-      )}
-    </>
+        </div>
+      </nav>
+    )
   );
 }

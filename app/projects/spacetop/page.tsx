@@ -5,7 +5,7 @@ import { Outlink } from "../../../components/Outlink";
 export default function Page() {
   return (
     <>
-      <img src="/projects/leaf-map/hero.png" alt="" className="hero" />
+      <img src="/projects/spacetop/hero.png" alt="" className="cover" />
 
       <h1>Spacetop</h1>
       <span className="description">AR Laptop</span>
