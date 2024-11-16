@@ -1,6 +1,6 @@
 "use client";
 
-import LabItem from "../../components/LabItem/LabItem";
+import LabItem from "./components/LabItem/LabItem";
 
 const EXPERIMENTS = [
   { title: "Rect", slug: "rect" },
@@ -10,21 +10,23 @@ const EXPERIMENTS = [
 ];
 
 export default function Page() {
-  const experimentList = EXPERIMENTS.map((e) => {
-    return (
-      <LabItem
-        key={e.slug}
-        image={`/lab/${e.slug}.png`}
-        title={e.title}
-        link={`/lab/${e.slug}`}
-      />
-    );
-  });
-
   return (
     <>
+      <h1>Lab</h1>
       <p>Small projects & experiments</p>
-      <div style={{ display: "flex", gap: "1rem" }}>{experimentList}</div>
+      <p>
+        <br />
+      </p>
+      <div style={{ display: "flex", gap: "1rem" }}>
+        {EXPERIMENTS.map((e) => (
+          <LabItem
+            key={e.slug}
+            image={`/lab/${e.slug}.png`}
+            title={e.title}
+            link={`/lab/${e.slug}`}
+          />
+        ))}
+      </div>
     </>
   );
 }

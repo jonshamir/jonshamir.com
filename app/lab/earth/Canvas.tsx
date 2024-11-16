@@ -31,16 +31,15 @@ export default function Earth() {
   const [baseMesh, setBaseMesh] = useState<BaseMesh>(BaseMesh.Icosahedron);
   return (
     <>
-      <div style={{ width: "100%" }}>
-        <MeshSelect value={baseMesh} onChange={setBaseMesh} />
-        <ThreeCanvas
-          camera={{ position: [0, 0, 10], zoom: 3.5 }}
-          style={{ backgroundColor: "#101010" }}
-        >
-          <OrbitControls enablePan={false} enableZoom={false} />
-          <ProjectionMapping baseMesh={baseMesh} />
-        </ThreeCanvas>
-      </div>
+      <MeshSelect value={baseMesh} onChange={setBaseMesh} />
+      <ThreeCanvas
+        className="full-bleed"
+        camera={{ position: [0, 0, 10], zoom: 3.5 }}
+        style={{ backgroundColor: "#101010" }}
+      >
+        <OrbitControls enablePan={false} enableZoom={false} />
+        <ProjectionMapping baseMesh={baseMesh} />
+      </ThreeCanvas>
     </>
   );
 }

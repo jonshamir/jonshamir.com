@@ -1,36 +1,43 @@
 import clsx from "clsx";
+import { StaticImageData } from "next/image";
 
 import { EmailForm } from "../EmailForm/EmailForm";
+import iconBluesky from "./assets/bluesky.svg";
 import iconGithub from "./assets/github.svg";
 import iconInstagram from "./assets/instagram.svg";
 import iconLinkedin from "./assets/linkedin.svg";
 import iconTwitter from "./assets/twitterx.svg";
-import iconBluesky from "./assets/bluesky.svg";
 import styles from "./SocialLinks.module.scss";
 
-const socialLinks = [
+type SocialLink = {
+  icon: StaticImageData;
+  href: string;
+  label: string;
+};
+
+const SOCIAL_LINKS: SocialLink[] = [
   {
-    icon: iconInstagram,
+    icon: iconInstagram as StaticImageData,
     href: "https://www.instagram.com/yonshamir/",
     label: "Instagram"
   },
   {
-    icon: iconGithub,
+    icon: iconGithub as StaticImageData,
     href: "https://github.com/jonshamir",
     label: "GitHub"
   },
   {
-    icon: iconBluesky,
+    icon: iconBluesky as StaticImageData,
     href: "https://bsky.app/profile/jonshamir.com",
     label: "Bluesky"
   },
   {
-    icon: iconTwitter,
+    icon: iconTwitter as StaticImageData,
     href: "https://www.twitter.com/jonshamir/",
     label: "Twitter"
   },
   {
-    icon: iconLinkedin,
+    icon: iconLinkedin as StaticImageData,
     href: "https://www.linkedin.com/in/jonshamir/",
     label: "LinkedIn"
   }
@@ -40,7 +47,7 @@ export function SocialLinks() {
   return (
     <div className={styles.SocialLinks}>
       <h2>Contact</h2>
-      {socialLinks.map((link) => (
+      {SOCIAL_LINKS.map((link) => (
         <a
           className={clsx("clickable", styles.item)}
           key={link.label}

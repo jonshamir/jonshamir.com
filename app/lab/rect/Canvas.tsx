@@ -17,7 +17,10 @@ export default function RectCanvas() {
   });
 
   return (
-    <ThreeCanvas camera={{ position: [0, 0, 10], zoom: 3.5 }}>
+    <ThreeCanvas
+      camera={{ position: [0, 0, 10], zoom: 3.5 }}
+      className="full-bleed"
+    >
       <OrbitControls enablePan={false} />
       <Rect
         size={controls.size}

@@ -24,3 +24,10 @@
     min-height: 30rem;
   }
 }
+
+:global(.full-bleed).ThreeCanvas {
+  border-radius: 0;
+  canvas {
+    border-radius: 0;
+  }
+}

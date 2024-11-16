@@ -18,14 +18,16 @@ export default function Page() {
       <h1>Unity CG</h1>
       <span className="description">Teaching Computer Graphics in Unity</span>
 
-      <figure>
-        <Earth />
-        <figcaption>
-          <span>
-            A projection-mapping earth shader taught as part of the course
-          </span>
-        </figcaption>
-      </figure>
+      <Earth />
+
+      <figcaption>
+        <span>
+          A projection-mapping earth shader taught as part of the course
+        </span>
+      </figcaption>
+      <p>
+        <br />
+      </p>
       <p>
         In 2019 I was given the opportunity to rebuild the practical side of the
         Computer Graphics Course at the Hebrew University from the ground up.
