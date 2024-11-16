@@ -61,6 +61,7 @@ body {
     min(60ch, calc(100% - 3rem))
     1fr;
   grid-column-gap: 1.5rem;
+  grid-row-gap: 0.5rem;
   padding-bottom: 4rem;
 }
 
@@ -112,7 +113,7 @@ a {
 
 p {
   max-width: 40em;
-  margin: 1em 0;
+  margin-bottom: 1em;
 }
 
 span.description {
