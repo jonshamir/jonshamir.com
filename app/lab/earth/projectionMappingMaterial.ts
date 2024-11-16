@@ -3,17 +3,17 @@ import { ReactThreeFiber } from "@react-three/fiber";
 import * as THREE from "three";
 
 interface ProjectionMappingMaterialProps {
-  albedoMap: THREE.Texture;
-  specularMap: THREE.Texture;
-  normalMap: THREE.Texture;
-  cloudMap: THREE.Texture;
+  albedoMap?: THREE.Texture;
+  specularMap?: THREE.Texture;
+  bumpMap?: THREE.Texture;
+  cloudMap?: THREE.Texture;
 }
 
 export const ProjectionMappingMaterial = shaderMaterial(
   {
     albedoMap: null,
     specularMap: null,
-    normalMap: null,
+    bumpMap: null,
     cloudMap: null
   },
   /* glsl */ ` // Vertex shader
@@ -43,6 +43,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
 
     uniform sampler2D albedoMap;
     uniform sampler2D specularMap;
+    uniform sampler2D bumpMap;
     uniform sampler2D cloudMap;
 
     #define PI 3.141592653
@@ -76,10 +77,48 @@ export const ProjectionMappingMaterial = shaderMaterial(
         return diffuse + specular + ambient;
     }
 
+    // Converts tangent-space vector v to world-space, using the normal and tangent at a given point 
+    vec3 tangentToWorldSpace(vec3 v, vec3 normal, vec3 tangent)
+    {
+      vec3 binormal = cross(tangent, normal);
+      return v.x * tangent + v.z * normal + v.y * binormal;
+    }
+
+    // Returns the world-space bump-mapped normal for the given bumpMapData
+    vec3 getBumpMappedNormal(        
+      vec3 normal,      // Mesh surface normal at the point
+      vec3 tangent,     // Mesh surface tangent at the point
+      vec2 uv,          // UV coordinates of the point
+      float bumpScale   // Bump scaling factor
+    )
+    {
+      ivec2 size = textureSize(bumpMap, 0);
+      vec2 du = vec2(1.0 / float(size.x), 0.0);
+      vec2 dv = vec2(0.0, 1.0 / float(size.y));
+
+      // Sample the height map
+      float f = texture2D(bumpMap, uv).r;
+      float fdu = texture2D(bumpMap, uv + du).r;
+      float fdv = texture2D(bumpMap, uv + dv).r;
+
+      // Calculate partial derivatives
+      float ftu = bumpScale * (fdu - f) / du.x;
+      float ftv = bumpScale * (fdv - f) / dv.y;
+
+      // tangent-space normal
+      vec3 n = vec3(ftu, -ftv, 1.0); // Cross-product of tangents
+
+      return normalize(tangentToWorldSpace(n, normal, tangent));
+    }
+
 
     void main() {
         vec2 uv = getSphericalUV(vVertex);
         vec3 normal = normalize(vNormal);
+        vec3 tangent = normalize(cross(normal, vec3(0.0, 1.0, 0.0)));
+
+        normal = getBumpMappedNormal(normal, tangent, uv, 1.0 / 1000.0);
+
         vec3 viewDirection = normalize(vCameraPosition - vVertex);
         vec3 lightDirection = normalize(vLightDirection);
 
@@ -114,8 +153,8 @@ export const ProjectionMappingMaterial = shaderMaterial(
 declare global {
   namespace JSX {
     interface IntrinsicElements {
-      customMaterial: ReactThreeFiber.Object3DNode<
-        typeof ProjectionMappingMaterial,
+      projectionMappingMaterial: ReactThreeFiber.Object3DNode<
+        ProjectionMappingMaterialProps,
         ProjectionMappingMaterialProps
       >;
     }

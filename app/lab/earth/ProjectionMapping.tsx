@@ -26,7 +26,7 @@ export function ProjectionMapping({
   const ref = useRef<THREE.Group>(null);
   const [albedo] = useLoader(TextureLoader, ["/textures/EarthAlbedo.jpg"]);
   const [specular] = useLoader(TextureLoader, ["/textures/EarthSpecular.jpg"]);
-  // const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
+  const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
   const [clouds] = useLoader(TextureLoader, ["/textures/EarthClouds.jpg"]);
 
   const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
@@ -45,10 +45,10 @@ export function ProjectionMapping({
     <>
       <group ref={ref}>
         <mesh geometry={geometry}>
-          {/* @ts-expect-error */}
           <projectionMappingMaterial
             albedoMap={albedo}
             specularMap={specular}
+            bumpMap={bump}
             cloudMap={clouds}
           />
         </mesh>
