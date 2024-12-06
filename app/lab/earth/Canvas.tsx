@@ -1,3 +1,5 @@
+"use client";
+
 import { OrbitControls } from "@react-three/drei";
 import { useState } from "react";
 

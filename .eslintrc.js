@@ -29,6 +29,14 @@ module.exports = {
       parserOptions: {
         sourceType: "script"
       }
+    },
+    {
+      files: ["*.mdx"],
+      extends: ["plugin:mdx/recommended"],
+      parser: "eslint-mdx",
+      parserOptions: {
+        project: null
+      }
     }
   ],
   parser: "@typescript-eslint/parser",
@@ -36,7 +44,8 @@ module.exports = {
     project: true,
     tsconfigRootDir: __dirname,
     ecmaVersion: "latest",
-    sourceType: "module"
+    sourceType: "module",
+    extraFileExtensions: [".mdx"]
   },
   settings: {
     react: {

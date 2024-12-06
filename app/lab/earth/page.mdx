@@ -1,0 +1,36 @@
+import Canvas from "../earth/Canvas";
+
+# Earth Projections
+
+<span className="description">
+  This is an experiment implementing a spherical projection mapping shader in
+  WebGL
+</span>
+
+Usually, textures are mapped to 3D meshes using _explicit UV mapping_ - each vertex is assigned specific UV (texture-space) coordinates. However, UV coordinates can also be calculated procedurally from vertex positions.
+
+**Projection mapping** is a texture mapping technique that calculates UV coordinates dynamically by mapping between the texture and some intermediate surface, then projecting this surface onto a 3D object.
+
+Click the shapes to see the Earth projected onto them using spherical projection mapping:
+
+<Canvas />
+
+In the case of spherical projection mapping, we map each vertex to a point on a sphere, ignoring the radius. Given cartesian coordinates $$(x,y,z)$$ of a vertex we want to find its spherical coordinates $$(r,\theta,\phi)$$:
+
+$$
+\begin{aligned}
+    r &= \sqrt{x^2 + y^2 + z^2} \\
+    \theta &= \arctan2(y, x) \\
+    \phi &= \arccos(y / r)
+\end{aligned}
+$$
+
+To project through the unit sphere, we can ignore $$r$$ and normalize to $$[0,1]$$:
+
+$$
+u = 0.5 + \frac{\theta}{2\pi}, \quad v = 1 - \frac{\phi}{\pi}
+$$
+
+You might notice a little seam on one side of the Earth. This is due to the way the uv coordinates are calculated. The problem is described in detail in [Distinctive Derivative Differences](https://bgolus.medium.com/distinctive-derivative-differences-cce38d36797b) Pesky Problems with Procedural UVs
+
+You can find the GLSL source code on github
