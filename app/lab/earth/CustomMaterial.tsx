@@ -154,6 +154,7 @@ export function CustomMaterial(props: {
 
   return (
     <CustomShaderMaterial
+      // @ts-expect-error ref is not typed
       ref={materialRef}
       baseMaterial={THREE.MeshLambertMaterial}
       vertexShader={vertexShader}
