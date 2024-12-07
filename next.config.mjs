@@ -9,12 +9,12 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  webpack: (config, options) => {
+  webpack: (config) => {
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
+      use: "glslify-loader",
       type: "asset/source"
     });
-
     return config;
   }
 };
