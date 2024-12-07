@@ -12,7 +12,7 @@ const nextConfig = {
   webpack: (config) => {
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
-      use: "glslify-loader",
+      use: "raw-loader",
       type: "asset/source"
     });
     return config;
