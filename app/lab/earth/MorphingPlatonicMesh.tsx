@@ -56,8 +56,9 @@ export function MorphingPlatonicMesh({
           target,
           0.1
         );
-        const mesh = meshRef.current!;
-        mesh.morphTargetInfluences![index] = currentInfluences.current[index];
+        const mesh = meshRef.current;
+        if (!mesh || !mesh.morphTargetInfluences) return;
+        mesh.morphTargetInfluences[index] = currentInfluences.current[index];
       });
     }
   });
