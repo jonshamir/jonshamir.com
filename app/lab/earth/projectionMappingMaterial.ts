@@ -151,6 +151,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
 );
 
 declare global {
+  /* eslint-disable-next-line @typescript-eslint/no-namespace */
   namespace JSX {
     interface IntrinsicElements {
       projectionMappingMaterial: ReactThreeFiber.Object3DNode<

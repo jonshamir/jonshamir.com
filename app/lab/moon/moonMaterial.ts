@@ -136,6 +136,7 @@ export const MoonMaterial = shaderMaterial(
 );
 
 declare global {
+  /* eslint-disable-next-line @typescript-eslint/no-namespace */
   namespace JSX {
     interface IntrinsicElements {
       moonMaterial: ReactThreeFiber.Object3DNode<
