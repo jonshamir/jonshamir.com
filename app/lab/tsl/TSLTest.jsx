@@ -1,6 +1,6 @@
 import { useMemo } from "react";
+import { MeshBasicMaterial } from "three";
 import {
-  MeshBasicNodeMaterial,
   mix,
   modelWorldMatrix,
   positionLocal,
@@ -10,7 +10,8 @@ import {
   uv,
   vec3,
   vec4
-} from "three/nodes";
+} from "three/tsl";
+import { MeshBasicNodeMaterial } from "three/webgpu";
 
 export function TSLTest() {
   const uniforms = useMemo(
@@ -32,7 +33,7 @@ export function TSLTest() {
       .add(sin(modelPosition.z.mul(uniforms.frequencyY).sub(time)).mul(0.1));
     material.positionNode = positionLocal.add(vec3(0, 0, elevation));
 
-    // fragment
+    // // fragment
     const color1 = vec3(uv(), 1.0);
     const color2 = vec3(1.0, uv());
     material.colorNode = mix(color1, color2, sin(time).mul(0.5).add(0.5));
@@ -43,7 +44,7 @@ export function TSLTest() {
   return (
     <>
       <mesh material={customMaterial} rotation-x={-Math.PI * 0.5}>
-        <planeGeometry args={[1, 1, 512, 512]} />
+        <sphereGeometry args={[1, 1, 512, 512]} />
       </mesh>
     </>
   );

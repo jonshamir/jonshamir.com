@@ -3,7 +3,7 @@
 import { OrbitControls } from "@react-three/drei";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
-import { TSLTest } from "./TSLTest";
+import { TSLTest } from "./TSLTest.jsx";
 
 export default function Earth() {
   return (
