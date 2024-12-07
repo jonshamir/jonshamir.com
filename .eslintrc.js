@@ -13,8 +13,6 @@ module.exports = {
     "plugin:@typescript-eslint/recommended", // Turns on rules from TypeScript-specific plugin.
     "plugin:prettier/recommended", // Turns off all rules that are unnecessary or might conflict with Prettier.
     "plugin:mdx/recommended",
-    "plugin:@typescript-eslint/recommended-type-checked",
-    "plugin:@typescript-eslint/strict",
     "plugin:eslint-plugin-import/typescript",
     "plugin:eslint-comments/recommended",
     "plugin:react/jsx-runtime",
@@ -37,6 +35,13 @@ module.exports = {
       parserOptions: {
         project: null
       }
+    },
+    {
+      files: ["**/*.ts", "**/*.tsx"],
+      extends: [
+        "plugin:@typescript-eslint/recommended-type-checked",
+        "plugin:@typescript-eslint/strict"
+      ]
     }
   ],
   parser: "@typescript-eslint/parser",
@@ -69,6 +74,7 @@ module.exports = {
     "react/no-unknown-property": "off", // Off to support react-three
     "@typescript-eslint/no-namespace": "off",
     "@typescript-eslint/ban-ts-comment": "off",
+    "@typescript-eslint/no-non-null-assertion": "off",
     "import/first": "warn",
     "import/newline-after-import": "warn",
     "import/no-duplicates": "error",

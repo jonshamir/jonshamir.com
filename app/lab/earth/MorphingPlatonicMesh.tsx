@@ -1,7 +1,8 @@
-import { useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import * as THREE from "three";
+import { useFrame } from "@react-three/fiber";
 import { useRef } from "react";
+import * as THREE from "three";
+
 import { BaseMesh } from "./ProjectionMapping";
 
 function meshToIndex(mesh: BaseMesh) {
@@ -45,7 +46,7 @@ export function MorphingPlatonicMesh({
     geometry.morphTargetsRelative = true;
   }
 
-  useFrame(({ clock }) => {
+  useFrame(() => {
     if (meshRef.current && meshRef.current.morphTargetInfluences) {
       // Smoothly transition each influence
       currentInfluences.current.forEach((_, index) => {

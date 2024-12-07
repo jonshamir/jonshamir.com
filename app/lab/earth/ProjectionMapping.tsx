@@ -1,14 +1,14 @@
+// import { useGLTF } from "@react-three/drei";
 import { extend, useFrame, useLoader } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { TextureLoader } from "three";
 import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
-import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 
-import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
-import { useGLTF } from "@react-three/drei";
-import { MorphingPlatonicMesh } from "./MorphingPlatonicMesh";
+// import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { CustomMaterial } from "./CustomMaterial";
+import { MorphingPlatonicMesh } from "./MorphingPlatonicMesh";
+import { ProjectionMappingMaterial } from "./projectionMappingMaterial";
 
 extend({ ProjectionMappingMaterial, RoundedBoxGeometry });
 
@@ -32,12 +32,12 @@ export function ProjectionMapping({
   const [bump] = useLoader(TextureLoader, ["/textures/EarthHeight.jpg"]);
   const [clouds] = useLoader(TextureLoader, ["/textures/EarthClouds.jpg"]);
 
-  const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
+  // const obj = useLoader(OBJLoader, `/models/${baseMesh}.obj`);
 
-  const morph = useGLTF("/models/platonics.glb");
+  // const morph = useGLTF("/models/platonics.glb");
 
   // Assuming the first child of the loaded object is the mesh we want
-  const geometry = (obj.children[0] as THREE.Mesh).geometry;
+  // const geometry = (obj.children[0] as THREE.Mesh).geometry;
 
   useFrame(() => {
     if (ref.current) {

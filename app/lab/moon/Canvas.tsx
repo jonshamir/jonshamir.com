@@ -1,10 +1,10 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
+import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { Moon } from "./Moon";
-import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 
 export default function Earth() {
   const postProcessing = true;
