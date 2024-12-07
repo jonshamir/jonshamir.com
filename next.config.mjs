@@ -9,11 +9,10 @@ const nextConfig = {
   images: {
     unoptimized: true
   },
-  webpack: (config) => {
+  webpack: (config, options) => {
     config.module.rules.push({
       test: /\.(glsl|vs|fs|vert|frag)$/,
-      use: "raw-loader",
-      type: "asset/source"
+      use: "raw-loader"
     });
     return config;
   }
