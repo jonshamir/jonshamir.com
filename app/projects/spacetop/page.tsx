@@ -8,7 +8,7 @@ export default function Page() {
       <img src="/projects/spacetop/hero.png" alt="" className="cover" />
 
       <h1>Spacetop</h1>
-      <span className="description">AR Laptop</span>
+      <span className="description">Augmented Reality Laptop</span>
       <br />
       <br />
       <a
