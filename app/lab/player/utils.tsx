@@ -1,0 +1,33 @@
+export const MELODIES = [
+  "MelodyGOT",
+  "MelodyHappyBirthday",
+  "MelodyIJ",
+  "MelodySMB"
+];
+export const SOUNDS = [
+  "A3",
+  "A4",
+  "Ab3",
+  "Ab4",
+  "B3",
+  "B4",
+  "Bb3",
+  "Bb4",
+  "C3",
+  "C4",
+  "C5",
+  "D3",
+  "D4",
+  "Db3",
+  "Db4",
+  "E3",
+  "E4",
+  "Eb3",
+  "Eb4",
+  "F3",
+  "F4",
+  "G3",
+  "G4",
+  "Gb3",
+  "Gb4"
+];
