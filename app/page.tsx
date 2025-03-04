@@ -5,7 +5,7 @@ import Link from "next/link";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
-import { FluidSim } from "../features/homepage/FluidSim/FluidSim";
+import HeroEffect from "../features/homepage/HeroEffect/HeroEffect";
 import { SocialLinks } from "../features/homepage/SocialLinks/SocialLinks";
 import styles from "./page.module.css";
 import projectData from "./projects/projectData";
@@ -15,7 +15,8 @@ const queryClient = new QueryClient();
 export default function Page() {
   return (
     <>
-      <FluidSim />
+      {/* <FluidSim /> */}
+      <HeroEffect />
       <div className={styles.IntroSection}>
         <InlineLogoPlaceholder />
         <h1>Hi, I&rsquo;m Jon Shamir</h1>
