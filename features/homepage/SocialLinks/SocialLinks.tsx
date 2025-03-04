@@ -17,9 +17,9 @@ type SocialLink = {
 
 const SOCIAL_LINKS: SocialLink[] = [
   {
-    icon: iconInstagram as StaticImageData,
-    href: "https://www.instagram.com/yonshamir/",
-    label: "Instagram"
+    icon: iconBluesky as StaticImageData,
+    href: "https://bsky.app/profile/jonshamir.com",
+    label: "Bluesky"
   },
   {
     icon: iconGithub as StaticImageData,
@@ -27,9 +27,9 @@ const SOCIAL_LINKS: SocialLink[] = [
     label: "GitHub"
   },
   {
-    icon: iconBluesky as StaticImageData,
-    href: "https://bsky.app/profile/jonshamir.com",
-    label: "Bluesky"
+    icon: iconInstagram as StaticImageData,
+    href: "https://www.instagram.com/yonshamir/",
+    label: "Instagram"
   },
   {
     icon: iconTwitter as StaticImageData,
