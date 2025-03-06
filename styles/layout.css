@@ -7,6 +7,7 @@
     1fr;
   grid-column-gap: 1.5rem;
   padding-bottom: 4rem;
+  padding-top: 4rem;
 }
 
 .wrapper > * {

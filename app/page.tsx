@@ -39,11 +39,7 @@ export default function Page() {
         </div>
       </div>
       <h3>Projects</h3>
-      <p>
-        I&rsquo;m a product engineer and designer. My interests include
-        interaction design, real-time 3D graphics, data visualization and
-        machine learning.
-      </p>
+      <p>Some of the things I’ve made or worked on over the years.</p>
       {projectData.map((project) => (
         <Link
           href={`projects/${project.slug}`}

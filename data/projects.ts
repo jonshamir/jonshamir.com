@@ -3,40 +3,53 @@ type ProjectItem = {
   name: string;
   subtitle: string;
   link?: string;
+  year: number;
 };
 
 const projects: ProjectItem[] = [
   {
-    slug: "spacetop",
-    name: "Spacetop",
-    subtitle: "2025 · Augmented reality laptop"
+    slug: "prepbook",
+    name: "Prepbook",
+    subtitle: "Clever recipe notebook",
+    year: 2025
   },
   {
-    slug: "herb-tree",
-    name: "Herb Tree",
-    subtitle: "2023 · Interactive botanic visualization"
+    slug: "spacetop",
+    name: "Spacetop",
+    subtitle: "Augmented reality laptop",
+    year: 2025
   },
+  // {
+  //   slug: "herb-tree",
+  //   name: "Herbarium",
+  //   subtitle: "Interactive botanic visualization"
+  //   year: 2023
+  // },
   {
     slug: "muser",
     name: "Muser",
-    subtitle: "2021 · Smart music visualizer",
-    link: "https://jonshamir.github.io/muser/"
+    subtitle: "Smart music visualizer",
+    link: "https://jonshamir.github.io/muser/",
+    year: 2021
   },
   // {
   //   slug: "unity-cg",
   //   name: "Unity CG",
-  //   subtitle: "2020-2023 · Computer graphics course in Unity",
+  //   subtitle: "Computer graphics course in Unity",
+  //   year: 2020
   // },
   {
     slug: "leaf-map",
     name: "Leaf Map",
-    subtitle: "2018 · Interactive map of leaf shapes",
-    link: "https://jonshamir.github.io/leaf-map/"
+    subtitle: "Interactive map of leaf shapes",
+    link: "https://jonshamir.github.io/leaf-map/",
+    year: 2018
   },
   {
-    slug: "widgets-bar",
+    slug: "widgets",
     name: "Widgets Bar",
-    subtitle: "2015 · Extension toolbar for Apple Safari"
+    subtitle: "Extension toolbar for Apple Safari",
+    year: 2016
   }
 ];
 

@@ -13,8 +13,8 @@ body {
   --rounding-medium: 0.6rem;
   --rounding-full: 999px;
 
-  --color-accent: #535bf2;
-  --color-link: #535bf2;
+  --color-accent: #536bf2;
+  --color-link: #475ddc;
 
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
@@ -25,7 +25,7 @@ body {
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
   &.dark {
-    --color-link: #9297ff;
+    --color-link: #7a8eff;
 
     --color-text: #e0dacf;
     --color-text-rgb: 224, 218, 207;
@@ -57,13 +57,13 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-.outlink {
-  opacity: 0.8;
-
-  &:hover {
-    opacity: 0.8;
+.themed-svg {
+  * {
+    fill: var(--color-text);
   }
+}
 
+.outlink {
   &::after {
     content: " ↗";
     font-family: "Satoshi";

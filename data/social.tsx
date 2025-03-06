@@ -1,10 +1,10 @@
 import { ReactNode } from "react";
 
-import BlueskyIcon from "./assets/bluesky.svg";
-import GithubIcon from "./assets/github.svg";
-import InstagramIcon from "./assets/instagram.svg";
-import LinkedInIcon from "./assets/linkedin.svg";
-import TwitterIcon from "./assets/twitterx.svg";
+import BlueskyIcon from "./social-icons/bluesky.svg";
+import GithubIcon from "./social-icons/github.svg";
+import InstagramIcon from "./social-icons/instagram.svg";
+import LinkedInIcon from "./social-icons/linkedin.svg";
+import TwitterIcon from "./social-icons/twitterx.svg";
 
 type SocialLink = {
   icon: ReactNode;

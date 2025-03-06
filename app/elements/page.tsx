@@ -3,8 +3,8 @@ export default function Elements() {
     <main>
       <h1>HTML Elements</h1>
       <p>
-        This page provides an overview of common HTML elements. Use this page to
-        see how your CSS changes the styling of these elements.
+        This is a sample page of common HTML elements. I use it to make sure
+        common HTML elements are styled consistently across the site.
       </p>
       <nav role="navigation">
         <ul>

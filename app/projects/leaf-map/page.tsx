@@ -49,13 +49,8 @@ export default function Page() {
         <Outlink href="https://leafsnap.com/dataset/">
           Leaf Snap dataset
         </Outlink>
-        .{" "}
+        .
       </p>
-      <h2>Tools Used</h2>
-      <ul>
-        <li>JavaScript</li>
-        <li>Python (data processing)</li>
-      </ul>
     </>
   );
 }
