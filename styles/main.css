@@ -7,15 +7,18 @@
 
 body {
   --content-max-width: 50rem;
-  --transition-defaults: 250ms ease;
+  --transition-defaults: 200ms ease-out;
+
+  --rounding-small: 0.4rem;
   --rounding-medium: 0.6rem;
   --rounding-full: 999px;
 
   --color-accent: #535bf2;
-  --color-secondary: #bfc6d2;
 
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
+
+  --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
   --color-bg: #ede7e5;
   --color-bg-rgb: 237, 231, 229;

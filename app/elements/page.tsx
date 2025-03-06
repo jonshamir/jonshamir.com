@@ -68,7 +68,7 @@ export default function Elements() {
         </ul>
       </nav>
       <section id="text">
-        <h1>Text</h1>
+        <h2>Text</h2>
         <article id="text__headings">
           <div>
             <h1>Heading 1</h1>
@@ -102,7 +102,7 @@ export default function Elements() {
           </div>
         </article>
         <article id="text__blockquotes">
-          <h1>Blockquotes</h1>
+          <h2>Blockquotes</h2>
           <div>
             <blockquote>
               <p>
@@ -130,7 +130,7 @@ export default function Elements() {
           </div>
         </article>
         <article id="text__lists">
-          <h1>Lists</h1>
+          <h2>Lists</h2>
           <div>
             <h3>Definition list</h3>
             <dl>
@@ -182,13 +182,13 @@ export default function Elements() {
           </div>
         </article>
         <article id="text__hr">
-          <h1>Horizontal rules</h1>
+          <h2>Horizontal rules</h2>
           <div>
             <hr />
           </div>
         </article>
         <article id="text__tables">
-          <h1>Tabular data</h1>
+          <h2>Tabular data</h2>
           <table>
             <caption>Table Caption</caption>
             <thead>
@@ -242,7 +242,7 @@ export default function Elements() {
           </table>
         </article>
         <article id="text__code">
-          <h1>Code</h1>
+          <h2>Code</h2>
           <div>
             <p>
               <strong>Keyboard input:</strong> <kbd>Cmd</kbd>
@@ -258,7 +258,7 @@ export default function Elements() {
           </div>
         </article>
         <article id="text__inline">
-          <h1>Inline elements</h1>
+          <h2>Inline elements</h2>
           <div>
             <a href="#!">This is a text link</a>.<br />
             <strong>Strong is used to indicate strong importance.</strong>
@@ -303,9 +303,9 @@ export default function Elements() {
       </section>
 
       <section id="embedded">
-        <h1>Embedded content</h1>
+        <h2>Embedded content</h2>
         <article id="embedded__images">
-          <h2>Images</h2>
+          <h3>Images</h3>
           <div>
             <h3>
               No <code>&lt;figure&gt;</code> element
@@ -392,7 +392,7 @@ export default function Elements() {
         </article>
       </section>
       <section id="forms">
-        <h1>Form elements</h1>
+        <h2>Form elements</h2>
         <form>
           <fieldset id="forms__input">
             <legend>Input fields</legend>
