@@ -87,12 +87,11 @@ blockquote {
 
 /* Links */
 a {
-  color: var(--color-text);
-  transition: color var(--transition-defaults);
+  color: var(--color-link);
+  text-decoration: none;
 
   &:hover {
-    text-decoration: none;
-    opacity: 1;
+    text-decoration: underline;
   }
 }
 
@@ -138,8 +137,8 @@ select {
   outline: 1px solid transparent;
 
   &:focus {
-    border-color: var(--color-accent);
-    outline: 1px solid var(--color-accent);
+    border-color: var(--color-link);
+    outline: 1px solid var(--color-link);
   }
 }
 

@@ -11,9 +11,12 @@
   cursor: pointer;
   text-decoration: none;
   position: relative;
-  padding: 0.5rem;
+  padding: 0.3rem;
+  margin: 0.2rem 0;
+  color: var(--color-text);
 
   &:hover {
+    text-decoration: none;
     .info {
       transform: translateX(0.4em);
     }
@@ -54,6 +57,7 @@
   }
 
   & path {
+    transition: fill var(--transition-defaults);
     fill: var(--color-text);
   }
 }

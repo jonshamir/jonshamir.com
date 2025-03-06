@@ -14,16 +14,19 @@ body {
   --rounding-full: 999px;
 
   --color-accent: #535bf2;
+  --color-link: #535bf2;
 
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
 
-  --color-secondary: rgba(var(--color-text-rgb), 0.3);
-
   --color-bg: #ede7e5;
   --color-bg-rgb: 237, 231, 229;
 
+  --color-secondary: rgba(var(--color-text-rgb), 0.3);
+
   &.dark {
+    --color-link: #9297ff;
+
     --color-text: #e0dacf;
     --color-text-rgb: 224, 218, 207;
 
