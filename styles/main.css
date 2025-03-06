@@ -3,6 +3,7 @@
 @import "layout.css";
 @import "muser.css";
 @import "satoshi.css";
+@import "supreme.css";
 
 body {
   --content-max-width: 50rem;
@@ -37,7 +38,7 @@ body {
     background-color: var(--color-bg);
   }
 
-  font-family: "Work Sans Variable", sans-serif;
+  /* font-family: "Supreme Variable", sans-serif; */
 
   color: var(--color-text);
   transition:

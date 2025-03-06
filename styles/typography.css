@@ -1,3 +1,10 @@
+:root {
+  --font-titles: "Satoshi", sans-serif;
+  --font-body: "Supreme-Variable", sans-serif;
+
+  font-family: var(--font-body);
+}
+
 ::selection {
   background: var(--color-text);
   color: var(--color-bg);

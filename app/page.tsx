@@ -19,17 +19,10 @@ export default function Page() {
       <div className={styles.IntroSection}>
         <InlineLogoPlaceholder />
         <h1>Hi, I&rsquo;m Jon Shamir</h1>
-        <p>
-          I&rsquo;m a software architect and designer with over a decade of
-          professional experience. My interests include interaction design,
-          real-time 3D graphics, data visualization and machine learning.
-        </p>
-        <p>
-          Currently building novel spatial interfaces at&nbsp;
-          <a href="https://www.sightful.com/" target="_blank" rel="noreferrer">
-            Sightful
-          </a>
-          .
+        <p style={{ fontSize: "1.4rem", fontWeight: 300 }}>
+          I&rsquo;m a product engineer and designer. My interests include
+          interaction design, real-time 3D graphics, data visualization and
+          machine learning.
         </p>
       </div>
       <h2>Projects</h2>
