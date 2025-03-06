@@ -17,7 +17,7 @@ export default function Page() {
     <>
       <div className={styles.IntroSection}>
         <InlineLogoPlaceholder />
-        <h1>Hi, I&rsquo;m Jon Shamir</h1>
+        <h1>Hi, I&rsquo;m Jon</h1>
         <p style={{ fontSize: "1.2rem", fontWeight: 350 }}>
           I&rsquo;m a product engineer and designer. My interests include
           interaction design, real-time 3D graphics, data visualization and

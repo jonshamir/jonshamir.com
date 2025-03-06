@@ -79,6 +79,7 @@ module.exports = {
     "import/newline-after-import": "warn",
     "import/no-duplicates": "error",
     "import/no-named-as-default-member": "off",
+    "jsx-a11y/media-has-caption": "off",
     "simple-import-sort/imports": "warn",
     "simple-import-sort/exports": "warn",
     "comma-dangle": "off",

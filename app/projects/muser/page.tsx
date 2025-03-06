@@ -5,7 +5,6 @@ import { Outlink } from "../../../components/Outlink";
 export default function Page() {
   return (
     <>
-      <img src="/projects/muser/hero.png" alt="" className="cover" />
       <h1>Muser</h1>
       <span className="description">Smart music visualizer</span>
       <p>
@@ -24,6 +23,15 @@ export default function Page() {
         seminar paper on the history of music visualization. I researched,
         designed and implemented the project from start to finish.
       </p>
+      <figure className="full-bleed">
+        <video
+          src="/projects/muser/demo.mp4"
+          style={{ maxHeight: "300px", height: "auto", maxWidth: "1000px" }}
+          autoPlay
+          muted
+          loop
+        />
+      </figure>
       <p>
         A pre-trained neural network called{" "}
         <Outlink href="https://github.com/jordipons/musicnn">musicnn</Outlink>{" "}
