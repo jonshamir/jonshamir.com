@@ -5,57 +5,44 @@ import { Outlink } from "../../../components/Outlink";
 export default function Page() {
   return (
     <>
-      <img src="/projects/spacetop/hero.png" alt="" className="cover" />
-
       <h1>Spacetop</h1>
-      <span className="description">Augmented Reality Laptop</span>
-      <br />
-      <br />
-      <a
-        href="https://jonshamir.github.io/leaf-map/"
-        target="_blank"
-        className="button"
-        rel="noreferrer"
-      >
-        Visit Project <span className="arrow">↗</span>
-      </a>
+      <span className="description">Augmented reality desktop OS</span>
       <p>
-        I used machine learning techniques to organize tree species according to
-        their leaf shape. The idea was to create a more intuitive and friendly
-        way to recognize plant species.{" "}
-      </p>
-
-      <img src="/projects/leaf-map/features.png" alt="Leaf features" />
-      <p>
-        Using the{" "}
-        <Outlink href="https://en.wikipedia.org/wiki/Shape_context">
-          Shape Context Algorithm
-        </Outlink>{" "}
-        I generated a &quot;fingerprint&quot; vector representing each leaf,
-        which is then used to asses the similarity of shapes. Finally the
-        dimension of this vector is reduced to 2D using PCA and{" "}
-        <Outlink href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding">
-          t-SNE
-        </Outlink>
-        , and the leaves are displayed in an interactive interface I created
-        using D3.js.
+        <a
+          href="https://prepbook.app"
+          target="_blank"
+          className="button"
+          rel="noreferrer"
+        >
+          Visit Project <span className="arrow">↗</span>
+        </a>
       </p>
       <p>
-        The project was inspired by the{" "}
-        <Outlink href="https://www.designboom.com/design/ideo-font-map-interview-typography-04-21-2017/">
-          IDEO Font Map
-        </Outlink>
-        , all data and images were taken from the{" "}
-        <Outlink href="https://leafsnap.com/dataset/">
-          Leaf Snap dataset
-        </Outlink>
-        .{" "}
+        Muser is an experiment to see how machine learning technology can be
+        used to enhance music visualization. The idea originated while writing a
+        seminar paper on the history of music visualization. I researched,
+        designed and implemented the project from start to finish.
       </p>
-      <h2>Tools Used</h2>
-      <ul>
-        <li>JavaScript</li>
-        <li>Python (data processing)</li>
-      </ul>
+      <p>
+        A pre-trained neural network called{" "}
+        <Outlink href="https://github.com/jordipons/musicnn">musicnn</Outlink>{" "}
+        predicts the musical genre for each second of a song. The predictions
+        are then used to generate a color scheme. The final visualization color
+        palette is based on the 5 most-fitting genres.
+      </p>
+      <p>
+        kandinsky Circles in a Circle by Wassily Kandinsky, 1923 Colors for each
+        genre were chosen according to the{" "}
+        <Outlink href="https://musicmap.info/">Musicmap</Outlink> project so
+        that music genres which are stylistically closer will get similar
+        colors.
+      </p>
+      <p>
+        Muser is inspired by Wassily Kandinsky (1866-1944). Generally credited
+        as the pioneer of abstract art, his work is well-known for its musical
+        influences. Kandinsky associated specific tones and instruments to
+        shapes and colors, thus “visualizing” a musical composition.
+      </p>
     </>
   );
 }

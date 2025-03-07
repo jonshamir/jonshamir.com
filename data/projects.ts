@@ -16,7 +16,7 @@ const projects: ProjectItem[] = [
   {
     slug: "spacetop",
     name: "Spacetop",
-    subtitle: "Augmented reality laptop",
+    subtitle: "Augmented reality desktop OS",
     year: 2025
   },
   // {
@@ -38,18 +38,24 @@ const projects: ProjectItem[] = [
   //   subtitle: "Computer graphics course in Unity",
   //   year: 2020
   // },
+  // {
+  //   slug: "power-pal",
+  //   name: "Power Pal",
+  //   subtitle: "Electric info website",
+  //   year: 2020
+  // },
+  {
+    slug: "widgets",
+    name: "Widgets Bar",
+    subtitle: "Extension toolbar for Apple Safari",
+    year: 2016
+  },
   {
     slug: "leaf-map",
     name: "Leaf Map",
     subtitle: "Interactive map of leaf shapes",
     link: "https://jonshamir.github.io/leaf-map/",
     year: 2018
-  },
-  {
-    slug: "widgets",
-    name: "Widgets Bar",
-    subtitle: "Extension toolbar for Apple Safari",
-    year: 2016
   }
 ];
 

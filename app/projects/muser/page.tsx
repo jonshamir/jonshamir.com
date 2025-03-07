@@ -72,11 +72,6 @@ export default function Page() {
         influences. Kandinsky associated specific tones and instruments to
         shapes and colors, thus “visualizing” a musical composition.
       </p>
-      <h2> Tools Used</h2>
-      <ul>
-        <li>JavaScript (interface)</li>
-        <li>Python (data proccessing)</li>
-      </ul>
     </>
   );
 }

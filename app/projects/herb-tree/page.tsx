@@ -22,12 +22,6 @@ export default function Page() {
         />
         <figcaption>Photographing a specimen for the project.</figcaption>
       </figure>
-      <h2> Tools Used</h2>
-      <ul>
-        <li>JavaScript (d3.js + React.js)</li>
-        <li>Python</li>
-        <li>Photography</li>
-      </ul>
     </>
   );
 }
