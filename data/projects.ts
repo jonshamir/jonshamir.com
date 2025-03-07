@@ -16,7 +16,7 @@ const projects: ProjectItem[] = [
   {
     slug: "spacetop",
     name: "Spacetop",
-    subtitle: "Augmented reality desktop OS",
+    subtitle: "Augmented reality laptop OS",
     year: 2025
   },
   // {

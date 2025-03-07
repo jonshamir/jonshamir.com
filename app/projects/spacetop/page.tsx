@@ -6,10 +6,10 @@ export default function Page() {
   return (
     <>
       <h1>Spacetop</h1>
-      <span className="description">Augmented reality desktop OS</span>
+      <span className="description">Augmented reality laptop OS</span>
       <p>
         <a
-          href="https://prepbook.app"
+          href="https://www.sightful.com/"
           target="_blank"
           className="button"
           rel="noreferrer"
