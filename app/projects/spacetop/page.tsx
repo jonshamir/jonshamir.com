@@ -1,7 +1,5 @@
 "use client";
 
-import TilePrototype from "./TilePrototype/TilePrototype";
-
 export default function Page() {
   return (
     <>
@@ -42,7 +40,6 @@ export default function Page() {
         traditional desktop user interface to a 3D environment provided many
         challenges, both in design and implementation.{" "}
       </p>
-      <TilePrototype />
     </>
   );
 }

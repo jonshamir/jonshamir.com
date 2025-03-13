@@ -15,7 +15,7 @@ const NAV_ITEMS = [
   { title: "Lab", href: "/lab" }
 ];
 
-export function Nav() {
+export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
@@ -37,17 +37,23 @@ export function Nav() {
             <div style={{ flexGrow: 1 }} />
 
             <div className={styles.Wrapper}>
-              {NAV_ITEMS.map((item) => (
-                <Link href={item.href} passHref legacyBehavior key={item.href}>
-                  <a
-                    className={clsx("clickable", {
-                      [styles.ActiveLink]: pathname === item.href
-                    })}
+              {showNavItems &&
+                NAV_ITEMS.map((item) => (
+                  <Link
+                    href={item.href}
+                    passHref
+                    legacyBehavior
+                    key={item.href}
                   >
-                    {item.title}
-                  </a>
-                </Link>
-              ))}
+                    <a
+                      className={clsx("clickable", {
+                        [styles.ActiveLink]: pathname === item.href
+                      })}
+                    >
+                      {item.title}
+                    </a>
+                  </Link>
+                ))}
               <ThemeToggle />
             </div>
           </div>
