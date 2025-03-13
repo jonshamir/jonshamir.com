@@ -74,49 +74,11 @@ body {
   }
 }
 
-.button {
+.arrow {
   display: inline-block;
-  text-decoration: none;
-  padding: 0.3em 0.8em;
-  border-radius: 100px;
-  background-color: rgba(var(--color-text-rgb), 0.7);
-  color: var(--color-bg);
-  font-size: 0.9em;
+  font-family: "Satoshi";
   font-weight: 500;
-
-  transition:
-    background-color var(--transition-defaults),
-    color var(--transition-defaults);
-
-  .arrow {
-    display: inline-block;
-    font-family: "Satoshi";
-    font-weight: 600;
-    transition: transform var(--transition-defaults);
-  }
-
-  &:hover {
-    background-color: rgba(var(--color-text-rgb), 0.9);
-    .arrow {
-      transform: translate(0.15em, -0.15em);
-    }
-  }
-
-  &:active {
-    background-color: rgba(var(--color-text-rgb), 1);
-  }
-}
-
-.dark .button {
-  background-color: rgba(var(--color-text-rgb), 0.85);
-
-  &:hover {
-    background-color: rgba(var(--color-text-rgb), 1);
-  }
-
-  &:active {
-    background-color: rgba(var(--color-text-rgb), 0.7);
-  }
+  transition: transform var(--transition-defaults);
 }
 
 .clickable {
