@@ -26,13 +26,16 @@ export default function Page() {
           alt="Screenshot of Widgets Bar"
           style={{ maxWidth: "1000px" }}
         />
-        <figcaption>Screenshot of Widgets Bar running on Safari 8</figcaption>
+        <figcaption>
+          Screenshot of Widgets Bar running on Apple Safari 8
+        </figcaption>
       </figure>
       <p>
         The widgets included weather, clocks, an RSS feed, and calendar. The
         look and feel of the extension was designed to fit in with the native
-        MacOS design. A set of weather icons was created especially for the
-        project to work in small sizes and on lower resolution displays.
+        MacOS design. A set of weather icons was created for the project to work
+        in small sizes and on lower resolution displays which were common at the
+        time.
       </p>
       <figure style={{ padding: "3em" }}>
         <WeatherIcons className="themed-svg" />

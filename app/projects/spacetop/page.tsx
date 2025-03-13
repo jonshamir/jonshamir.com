@@ -1,5 +1,7 @@
 "use client";
 
+import Carousel from "../../../components/Carousel/Carousel";
+
 export default function Page() {
   return (
     <>
@@ -23,6 +25,8 @@ export default function Page() {
         interaction paradigms.
       </p>
 
+      <Carousel slides={Array.from(Array(5).keys())} options={{ loop: true }} />
+
       <figure className="full-bleed">
         <img
           src="/projects/spacetop/hero.png"
@@ -30,9 +34,7 @@ export default function Page() {
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
         />
         <figcaption>
-          In Spacetop, windows are overlaid on top of the real world, allowing
-          users to interact with them using a keyboard, mouse and augmented
-          reality glasses.
+          Spacetop is like a huge virtual screen that you can take anywhere
         </figcaption>
       </figure>
 
@@ -45,20 +47,27 @@ export default function Page() {
       </p>
       <h2>The Canvas</h2>
       <p>
+        <img
+          src="/projects/spacetop/cursor-move.gif"
+          alt="The cursor moving around on the canvas"
+          style={{ maxHeight: "200px", float: "inline-end", margin: "1rem" }}
+        />
         The canvas is a huge virtual &quot;screen&quot; that curves around the
-        user. Instead of being limited by the edges of a physical screen, the
+        user. Instead of being limited by the edges of a physical screen, the
         virtual canvas can expand to fit the content. To allow the users to
         understand the 3D shape of the canvas surface without being
         claustrophobic, a dot grid is revealed only around the cursor and
         content.
       </p>
-      <figure>
+      <p>The canvas itself can be panned and zoomed by the user.</p>
+      <figure className="full-bleed">
         <img
-          src="/projects/spacetop/cursor-move.gif"
-          alt="The cursor moving around on the canvas"
-          style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
+          src="/projects/spacetop/nav.gif"
+          alt="The canvas itself can be panned and zoomed by the user"
+          style={{ maxHeight: "500px", height: "auto", maxWidth: "1000px" }}
         />
       </figure>
+
       <h2>Spaces</h2>
       <p>
         What does it mean for a dialog or pop-up to be in 3D space? How can we
@@ -81,17 +90,6 @@ export default function Page() {
         />
         <figcaption>
           The compass points the user to a window outside the field of view.
-        </figcaption>
-      </figure>
-
-      <figure className="full-bleed">
-        <img
-          src="/projects/spacetop/nav.gif"
-          alt="The compass points the user to a window outside the field of view"
-          style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
-        />
-        <figcaption>
-          The canvas is dynamic and can be navigated by the user.
         </figcaption>
       </figure>
 

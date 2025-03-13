@@ -1,10 +1,5 @@
 "use client";
 
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-
-import Slider from "react-slick";
-
 import Earth from "../../lab/earth/Canvas";
 
 export default function Page() {
@@ -42,7 +37,7 @@ export default function Page() {
       </p>
 
       <figure>
-        <Slider Infinite={true} speed={250} autoplay autoplaySpeed={5000}>
+        {/* <Slider Infinite={true} speed={250} autoplay autoplaySpeed={5000}>
           {Array.from({ length: 9 }, (_, i) => (
             <div key={i}>
               <img
@@ -52,7 +47,7 @@ export default function Page() {
               />
             </div>
           ))}
-        </Slider>
+        </Slider> */}
         <figcaption>Some of the slides I created for the course</figcaption>
       </figure>
       <p>
