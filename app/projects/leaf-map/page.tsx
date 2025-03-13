@@ -18,7 +18,7 @@ export default function Page() {
         </a>
       </p>
       <p>
-        I've always been fascinated by the shapes of plants. While studying
+        I&apos;ve always been fascinated by the shapes of plants. While studying
         Dimensionality Reduction and data visualization techniques, I applied
         these concepts to categorize tree species based on leaf shapes. My goal
         was to develop a more intuitive and user-friendly approach to plant
