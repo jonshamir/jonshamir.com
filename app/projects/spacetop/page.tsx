@@ -49,7 +49,7 @@ export default function Page() {
           style={{
             maxHeight: "200px",
             float: "inline-end",
-            margin: "1rem",
+            margin: "0 1rem",
             borderRadius: "var(--rounding-small)"
           }}
         />
@@ -99,10 +99,10 @@ export default function Page() {
 
       <h2>Materials & Rendering</h2>
       <p>
-        Developed custom shaders designed for XR rendering, taking into account
-        performance and legibility while implementing spatial UI effects unique
-        to the 3D medium. 3D user interfaces allow us to utilize material
-        properties that we do not have in 2d interfaces.
+        Rendering spatial interfaces opens up interesting possibilities and
+        effects. Subtle highlights can react to the movement of the head to give
+        the illusion of depth. Soft shadows can indicate distance between
+        objects.
       </p>
       <figure>
         <img
@@ -111,6 +111,12 @@ export default function Page() {
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
         />
       </figure>
+      <p>
+        To remain performant, all UI rendering is based on quads, however in the
+        fragment shader we can create special effects. In XR we know the
+        position of the head. Using Parallax mapping and normal mapping a 3D
+        &quot;illusion&quot; can be achieved.
+      </p>
 
       <figure>
         <img
