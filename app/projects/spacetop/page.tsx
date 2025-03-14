@@ -1,7 +1,5 @@
 "use client";
 
-import Carousel from "../../../components/Carousel/Carousel";
-
 export default function Page() {
   return (
     <>
@@ -19,13 +17,11 @@ export default function Page() {
       </p>
       <p>
         Spacetop is a spatial operating system, designed to work with a
-        keyboard, mouse and augmented reality glasses instead of a screen.
-        Unlike other XR products, Spacetop has a minimal learning curve and is
-        intuitive to first-time users because it builds upon traditional desktop
-        interaction paradigms.
+        keyboard, mouse and augmented reality glasses as a display. Unlike other
+        XR products, Spacetop has a minimal learning curve and is intuitive to
+        first-time users because it builds upon traditional desktop interaction
+        paradigms.
       </p>
-
-      <Carousel slides={Array.from(Array(5).keys())} options={{ loop: true }} />
 
       <figure className="full-bleed">
         <img
@@ -50,7 +46,12 @@ export default function Page() {
         <img
           src="/projects/spacetop/cursor-move.gif"
           alt="The cursor moving around on the canvas"
-          style={{ maxHeight: "200px", float: "inline-end", margin: "1rem" }}
+          style={{
+            maxHeight: "200px",
+            float: "inline-end",
+            margin: "1rem",
+            borderRadius: "var(--rounding-small)"
+          }}
         />
         The canvas is a huge virtual &quot;screen&quot; that curves around the
         user. Instead of being limited by the edges of a physical screen, the
@@ -62,7 +63,8 @@ export default function Page() {
       <p>The canvas itself can be panned and zoomed by the user.</p>
       <figure className="full-bleed">
         <img
-          src="/projects/spacetop/nav.gif"
+          src={"/projects/spacetop/nav.gif"}
+          // src={inView ? "/projects/spacetop/nav.gif" : ""}
           alt="The canvas itself can be panned and zoomed by the user"
           style={{ maxHeight: "500px", height: "auto", maxWidth: "1000px" }}
         />
