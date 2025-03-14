@@ -8,7 +8,7 @@ type ImageProps = {
  * A component that displays a gif image.
  * The gif starts playing when the image is in the viewport.
  */
-export default function Image({
+export function Image({
   src,
   alt = "",
   loadOnScroll = false,

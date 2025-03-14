@@ -1,7 +1,5 @@
 "use client";
 
-import GifImage from "../../../components/Image/Image";
-
 export default function Page() {
   return (
     <>
@@ -62,10 +60,12 @@ export default function Page() {
         claustrophobic, a dot grid is revealed only around the cursor and
         content.
       </p>
-      <p>The canvas itself can be panned and zoomed by the user.</p>
+      <p>
+        The canvas itself can be panned and manipulated using touchpad gestures
+        or keyboard shortcuts.
+      </p>
       <figure className="full-bleed">
-        <GifImage
-          loadOnScroll
+        <img
           src="/projects/spacetop/nav.gif"
           alt="The canvas itself can be panned and zoomed by the user"
           style={{ maxHeight: "500px", height: "auto", maxWidth: "1000px" }}
@@ -87,8 +87,7 @@ export default function Page() {
         into the product.
       </p>
       <figure>
-        <GifImage
-          loadOnScroll
+        <img
           src="/projects/spacetop/compass.gif"
           alt="The compass points the user to a window outside the field of view"
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
