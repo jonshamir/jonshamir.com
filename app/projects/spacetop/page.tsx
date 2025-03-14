@@ -1,5 +1,13 @@
 "use client";
 
+import Image from "next/image";
+
+import bevelImage from "../../../public/projects/spacetop/bevel.gif";
+import compassImage from "../../../public/projects/spacetop/compass.gif";
+import cursorMoveImage from "../../../public/projects/spacetop/cursor-move.gif";
+import heroImage from "../../../public/projects/spacetop/hero.png";
+import navImage from "../../../public/projects/spacetop/nav.gif";
+
 export default function Page() {
   return (
     <>
@@ -24,8 +32,8 @@ export default function Page() {
       </p>
 
       <figure className="full-bleed">
-        <img
-          src="/projects/spacetop/hero.png"
+        <Image
+          src={heroImage}
           alt="Illustration of Spacetop being used on an airplane"
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
         />
@@ -44,7 +52,7 @@ export default function Page() {
       <h2>The Canvas</h2>
       <p>
         <img
-          src="/projects/spacetop/cursor-move.gif"
+          src={cursorMoveImage.src}
           alt="The cursor moving around on the canvas"
           style={{
             maxHeight: "200px",
@@ -65,8 +73,8 @@ export default function Page() {
         or keyboard shortcuts.
       </p>
       <figure className="full-bleed">
-        <img
-          src="/projects/spacetop/nav.gif"
+        <Image
+          src={navImage}
           alt="The canvas itself can be panned and zoomed by the user"
           style={{ maxHeight: "500px", height: "auto", maxWidth: "1000px" }}
         />
@@ -80,13 +88,13 @@ export default function Page() {
         see.
       </p>
       <figure>
-        <img
-          src="/projects/spacetop/compass.gif"
+        <Image
+          src={compassImage}
           alt="The compass points the user to a window outside the field of view"
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
         />
         <figcaption>
-          The compass points the user to a window outside the field of view.
+          The compass points to a window outside the field of view
         </figcaption>
       </figure>
 
@@ -98,8 +106,8 @@ export default function Page() {
         objects.
       </p>
       <figure>
-        <img
-          src="/projects/spacetop/bevel.gif"
+        <Image
+          src={bevelImage}
           alt="A special shader that created a 3D illusion"
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
         />
