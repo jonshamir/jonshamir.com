@@ -14,16 +14,6 @@ export default function Page() {
       <h1>Spacetop</h1>
       <span className="description">Augmented reality laptop OS</span>
       <p>
-        <a
-          href="https://www.sightful.com/"
-          target="_blank"
-          className="button"
-          rel="noreferrer"
-        >
-          Official Spacetop site <span className="arrow">↗</span>
-        </a>
-      </p>
-      <p>
         Spacetop is a spatial operating system, designed to work with a
         keyboard, mouse and augmented reality glasses as a display. Unlike other
         XR products, Spacetop has a minimal learning curve and is intuitive to
@@ -49,6 +39,17 @@ export default function Page() {
         frameworks to manage UI in 3D space, creating special shader effects and
         more.
       </p>
+      <p>
+        <a
+          href="https://www.sightful.com/"
+          target="_blank"
+          className="button"
+          rel="noreferrer"
+        >
+          Visit the official Spacetop site <span className="arrow">↗</span>
+        </a>
+      </p>
+
       <h2>The Canvas</h2>
       <p>
         <img
