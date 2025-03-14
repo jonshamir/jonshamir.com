@@ -18,10 +18,10 @@ export default function Page() {
         </a>
       </p>
       <p>
-        Muser is an experiment to see how machine learning technology can be
-        used to enhance music visualization. The idea originated while writing a
-        seminar paper on the history of music visualization. I researched,
-        designed and implemented the project from start to finish.
+        Muser is an experiment in using machine learning to enhance music
+        visualization. The idea originated while writing a seminar paper on the
+        history of music visualization. I researched, designed and built the
+        project as part of studies.
       </p>
       <figure className="full-bleed">
         <video
