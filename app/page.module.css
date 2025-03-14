@@ -1,9 +1,9 @@
 .IntroSection {
-  z-index: 101;
-  height: 80vh;
-  max-height: 50rem;
-  min-height: 32rem;
-  padding: 10rem 2rem 0 2rem;
+  /* z-index: 101; */
+  /* height: 80vh; */
+  /* max-height: 50rem; */
+  /* min-height: 32rem; */
+  padding: 4rem 2rem 5rem 2rem;
 }
 
 .ProjectItem {
@@ -11,17 +11,20 @@
   cursor: pointer;
   text-decoration: none;
   position: relative;
-  padding: 0.5rem;
+  padding: 0.3rem;
+  margin: 0.2rem 0;
+  color: var(--color-text);
 
   &:hover {
+    text-decoration: none;
     .info {
-      transform: translateX(0.6em);
+      transform: translateX(0.4em);
     }
   }
 
   &:active {
     .info {
-      transform: translateX(0.5em);
+      transform: translateX(0.2em);
     }
   }
 
@@ -31,15 +34,30 @@
     flex-direction: column;
     justify-content: center;
 
-    & h3 {
-      font-weight: 500;
-      margin: 0;
-      margin-bottom: 0.3em;
-      font-size: 1.2em;
-      letter-spacing: 0.03em;
-    }
     & span {
       opacity: 0.6;
     }
+  }
+}
+
+.SocialLinks {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  padding-top: 1rem;
+
+  & a {
+    padding: 0.5rem;
+    border-radius: var(--rounding-full);
+  }
+
+  & svg {
+    width: 1.2rem;
+    height: 1.2rem;
+  }
+
+  & path {
+    transition: fill var(--transition-defaults);
+    fill: var(--color-text);
   }
 }

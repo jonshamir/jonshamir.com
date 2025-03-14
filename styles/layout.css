@@ -1,0 +1,34 @@
+/* https://www.joshwcomeau.com/css/full-bleed/ */
+.wrapper {
+  display: grid;
+  grid-template-columns:
+    1fr
+    min(60ch, calc(100% - 3rem))
+    1fr;
+  grid-column-gap: 1.5rem;
+  padding-bottom: 4rem;
+  padding-top: 4rem;
+}
+
+.wrapper > * {
+  grid-column: 2;
+}
+
+.full-bleed,
+.cover {
+  width: 100%;
+  grid-column: 1 / 4;
+}
+
+.cover {
+  height: 20rem;
+  object-fit: cover;
+  margin-bottom: 2rem;
+}
+
+footer {
+  width: 100%;
+  padding: 3rem;
+  opacity: 0.3;
+  font-size: 0.8rem;
+}

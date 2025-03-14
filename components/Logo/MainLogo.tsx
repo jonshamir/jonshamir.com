@@ -17,7 +17,7 @@ export function MainLogo({
   // Scroll listeners
   useEffect(() => {
     const handleScroll = () => {
-      setIsAtTop(window.scrollY === 0);
+      setIsAtTop(window.scrollY <= 0);
     };
 
     window.addEventListener("scroll", handleScroll);

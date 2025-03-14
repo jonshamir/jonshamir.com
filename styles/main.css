@@ -1,15 +1,20 @@
 @import "reset.css";
+@import "typography.css";
+@import "layout.css";
 @import "muser.css";
 @import "satoshi.css";
+@import "supreme.css";
 
 body {
-  /* --breakpoint-small: 600px; */
-  /* --breakpoint-medium: 1100px; */
-
   --content-max-width: 50rem;
-  --transition-defaults: 250ms ease;
+  --transition-defaults: 200ms ease-out;
+
+  --rounding-small: 0.4rem;
   --rounding-medium: 0.6rem;
-  --rounding-full: 500px;
+  --rounding-full: 999px;
+
+  --color-accent: #536bf2;
+  --color-link: #475ddc;
 
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
@@ -17,7 +22,11 @@ body {
   --color-bg: #ede7e5;
   --color-bg-rgb: 237, 231, 229;
 
+  --color-secondary: rgba(var(--color-text-rgb), 0.3);
+
   &.dark {
+    --color-link: #7a8eff;
+
     --color-text: #e0dacf;
     --color-text-rgb: 224, 218, 207;
 
@@ -35,7 +44,7 @@ body {
     background-color: var(--color-bg);
   }
 
-  font-family: "Work Sans Variable", sans-serif;
+  /* font-family: "Supreme Variable", sans-serif; */
 
   color: var(--color-text);
   transition:
@@ -48,119 +57,13 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
-::selection {
-  background: var(--color-text);
-  color: var(--color-bg);
-}
-
-/* https://www.joshwcomeau.com/css/full-bleed/ */
-.wrapper {
-  display: grid;
-  grid-template-columns:
-    1fr
-    min(60ch, calc(100% - 3rem))
-    1fr;
-  grid-column-gap: 1.5rem;
-  padding-bottom: 4rem;
-}
-
-.wrapper > * {
-  grid-column: 2;
-}
-
-.full-bleed,
-.cover {
-  width: 100%;
-  grid-column: 1 / 4;
-}
-
-.cover {
-  height: 20rem;
-  object-fit: cover;
-  margin-bottom: 2rem;
-}
-
-i {
-  font-style: italic;
-}
-
-li::marker {
-  color: rgba(var(--color-text-rgb), 0.5);
-  transition: color var(--transition-defaults);
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  font-family: "Satoshi", sans-serif;
-  margin: 0;
-}
-
-h1 {
-  font-size: 2rem;
-}
-
-footer {
-  width: 100%;
-  padding: 3rem;
-  opacity: 0.3;
-  font-size: 0.8rem;
-}
-
-a {
-  color: var(--color-text);
-  transition: color var(--transition-defaults);
-
-  &:hover {
-    text-decoration: none;
-    opacity: 1;
+.themed-svg {
+  * {
+    fill: var(--color-text);
   }
-}
-
-p {
-  max-width: 40em;
-  margin: 0.5em 0;
-}
-
-.description {
-  opacity: 0.7;
-  font-style: italic;
-  margin-bottom: 0.5rem;
-}
-
-figure {
-  max-width: 36em;
-  margin: 2em 1em;
-  margin-left: 2em;
-
-  @media screen and (max-width: 600px) {
-    margin: 1em 0;
-  }
-
-  img {
-    max-width: 100%;
-  }
-}
-
-figcaption,
-.figcaption {
-  display: inline-block;
-  opacity: 0.5;
-  margin-left: 1em;
-  margin-top: 1em;
-  font-style: italic;
 }
 
 .outlink {
-  opacity: 0.8;
-
-  &:hover {
-    opacity: 0.8;
-  }
-
   &::after {
     content: " ↗";
     font-family: "Satoshi";
@@ -171,49 +74,11 @@ figcaption,
   }
 }
 
-.button {
+.arrow {
   display: inline-block;
-  text-decoration: none;
-  padding: 0.3em 0.8em;
-  border-radius: 100px;
-  background-color: rgba(var(--color-text-rgb), 0.7);
-  color: var(--color-bg);
-  font-size: 0.9em;
+  font-family: "Satoshi";
   font-weight: 500;
-
-  transition:
-    background-color var(--transition-defaults),
-    color var(--transition-defaults);
-
-  .arrow {
-    display: inline-block;
-    font-family: "Satoshi";
-    font-weight: 600;
-    transition: transform var(--transition-defaults);
-  }
-
-  &:hover {
-    background-color: rgba(var(--color-text-rgb), 0.9);
-    .arrow {
-      transform: translate(0.15em, -0.15em);
-    }
-  }
-
-  &:active {
-    background-color: rgba(var(--color-text-rgb), 1);
-  }
-}
-
-.dark .button {
-  background-color: rgba(var(--color-text-rgb), 0.85);
-
-  &:hover {
-    background-color: rgba(var(--color-text-rgb), 1);
-  }
-
-  &:active {
-    background-color: rgba(var(--color-text-rgb), 0.7);
-  }
+  transition: transform var(--transition-defaults);
 }
 
 .clickable {
