@@ -118,7 +118,7 @@ export default function Page() {
         &quot;illusion&quot; can be achieved.
       </p>
 
-      <figure>
+      {/* <figure>
         <img
           src="/projects/spacetop/widgets.gif"
           alt="Widgets demonstrate the use of materials and rendering techniques."
@@ -127,7 +127,7 @@ export default function Page() {
         <figcaption>
           Widgets demonstrate the use of materials and rendering techniques.
         </figcaption>
-      </figure>
+      </figure> */}
     </>
   );
 }
