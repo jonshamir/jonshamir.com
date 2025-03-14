@@ -1,5 +1,7 @@
 "use client";
-import { useParams, usePathname } from "next/navigation";
+
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 import projectData from "../../data/projects";
 
@@ -18,7 +20,7 @@ export default function ProjectLayout({
     <>
       {children}
 
-      <a
+      <Link
         href={`/projects/${nextProject.slug}`}
         className="clickable"
         style={{
@@ -31,7 +33,7 @@ export default function ProjectLayout({
         {nextProject.name} <span className="arrow">→</span>
         <br />
         <span style={{ opacity: "0.7" }}>{nextProject.subtitle}</span>
-      </a>
+      </Link>
     </>
   );
 }

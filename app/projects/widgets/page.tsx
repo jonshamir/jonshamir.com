@@ -1,14 +1,18 @@
 "use client";
 
+import Image from "next/image";
+
+import screenshotImage from "../../../public/projects/widgets/screenshot.png";
 import WeatherIcons from "./weather.svg";
 
 export default function Page() {
   return (
     <>
-      <img
+      <Image
         src="/projects/widgets/icon.png"
         alt="Widgets Bar icon"
-        style={{ width: "100px" }}
+        width={100}
+        height={100}
       />
       <h1>Widgets Bar</h1>
       <span className="description">Extension toolbar for Apple Safari</span>
@@ -21,10 +25,10 @@ export default function Page() {
         featured by apple in the official <em>Safari Extension Gallery</em>.
       </p>
       <figure className="full-bleed">
-        <img
-          src="/projects/widgets/screenshot.png"
+        <Image
+          src={screenshotImage}
           alt="Screenshot of Widgets Bar"
-          style={{ maxWidth: "1000px" }}
+          style={{ maxWidth: "1000px", height: "auto" }}
         />
         <figcaption>
           Screenshot of Widgets Bar running on Apple Safari 8
