@@ -72,19 +72,12 @@ export default function Page() {
         />
       </figure>
 
-      <h2>Spaces</h2>
       <p>
-        What does it mean for a dialog or pop-up to be in 3D space? How can we
-        ensure the user understands what's going on without losing context or
-        missing a notification? The system UI structure, its layers, their roles
-        and mechanics: how dialogs work, where do notifications pop up, how is
-        input focus communicated, etc.
-      </p>
-      <p>
-        Created a framework for managing user interfaces in 3D, integrating data
-        from various sensors into a performant and easy to use API. Worked
-        closely with the algorithms team to incorporate computer vision models
-        into the product.
+        What does it mean for a dialog or notification to exist in a 3D space?
+        The spatial nature of the platform, along with the limited field of
+        view, required some creative solutions, such a the compass component
+        that guides your attention when it is needed somewhere you can&apos;t
+        see.
       </p>
       <figure>
         <img
@@ -115,19 +108,8 @@ export default function Page() {
         To remain performant, all UI rendering is based on quads, however in the
         fragment shader we can create special effects. In XR we know the
         position of the head. Using Parallax mapping and normal mapping a 3D
-        &quot;illusion&quot; can be achieved.
+        illusion can be achieved.
       </p>
-
-      {/* <figure>
-        <img
-          src="/projects/spacetop/widgets.gif"
-          alt="Widgets demonstrate the use of materials and rendering techniques."
-          style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
-        />
-        <figcaption>
-          Widgets demonstrate the use of materials and rendering techniques.
-        </figcaption>
-      </figure> */}
     </>
   );
 }

@@ -24,7 +24,7 @@ export default function ProjectLayout({
         style={{
           marginTop: "2rem",
           placeSelf: "flex-end",
-          padding: "1rem",
+          padding: "0.5rem 1rem",
           textDecoration: "none"
         }}
       >
