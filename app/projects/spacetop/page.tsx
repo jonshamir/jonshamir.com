@@ -1,12 +1,8 @@
 "use client";
 
-import { useIntersectionObserver } from "usehooks-ts";
+import GifImage from "../../../components/Image/Image";
 
 export default function Page() {
-  const { isIntersecting, ref } = useIntersectionObserver({
-    threshold: 0
-  });
-
   return (
     <>
       <h1>Spacetop</h1>
@@ -68,9 +64,9 @@ export default function Page() {
       </p>
       <p>The canvas itself can be panned and zoomed by the user.</p>
       <figure className="full-bleed">
-        <img
-          ref={ref}
-          src={isIntersecting ? "/projects/spacetop/nav.gif" : ""}
+        <GifImage
+          loadOnScroll
+          src="/projects/spacetop/nav.gif"
           alt="The canvas itself can be panned and zoomed by the user"
           style={{ maxHeight: "500px", height: "auto", maxWidth: "1000px" }}
         />
@@ -91,7 +87,8 @@ export default function Page() {
         into the product.
       </p>
       <figure>
-        <img
+        <GifImage
+          loadOnScroll
           src="/projects/spacetop/compass.gif"
           alt="The compass points the user to a window outside the field of view"
           style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
