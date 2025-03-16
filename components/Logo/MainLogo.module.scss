@@ -14,7 +14,8 @@
   background-color: var(--color-bg);
 
   @media screen and (max-width: 40rem) {
-    width: 2.2rem;
+    width: 2.4rem;
+    padding: 0.4rem;
   }
 
   &::before {
