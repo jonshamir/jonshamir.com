@@ -27,6 +27,7 @@ export default function Page() {
         <video
           src="/projects/muser/demo.mp4"
           style={{ maxHeight: "300px", height: "auto", maxWidth: "1000px" }}
+          playsInline
           autoPlay
           muted
           loop
