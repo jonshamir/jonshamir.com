@@ -8,10 +8,6 @@
   grid-column-gap: 1.5rem;
   padding-bottom: 4rem;
   padding-top: 4rem;
-
-  @media screen and (max-width: 40rem) {
-    padding-top: 6rem;
-  }
 }
 
 .wrapper > * {
