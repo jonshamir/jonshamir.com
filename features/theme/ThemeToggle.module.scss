@@ -12,11 +12,10 @@
 #ThemeToggle {
   appearance: none;
   -webkit-appearance: none;
+
   background-color: var(--color-bg);
-  border-radius: 500px;
-  border-width: 2px;
-  border-style: solid;
-  border-color: var(--color-text);
+  border-radius: 999px;
+  border: 2px solid var(--color-text);
   width: 18px;
   height: 18px;
   transition: border var(--transition-defaults);
@@ -39,17 +38,17 @@
   &::before {
     width: 7px;
     background-color: var(--color-text);
-    border-radius: 50px 0 0 50px;
-    animation: flipLight 0s step-end;
-    animation-fill-mode: forwards;
+    border-radius: 999px 0 0 999px;
+
+    animation: flipLight 0s step-end forwards;
   }
 
   &::after {
     background-color: var(--color-bg);
-    border-radius: 50px;
-    transform: scale(0, 1);
-    animation: turnLight 0s ease-in-out;
-    animation-fill-mode: forwards;
+    border-radius: 999px;
+    transform: scaleX(0.4);
+
+    animation: rotateLight 0s ease-in-out forwards;
   }
 }
 
@@ -58,14 +57,14 @@
 
   &::before {
     background-color: var(--color-bg);
-    animation: flipDark 0s step-end;
-    animation-fill-mode: forwards;
+
+    animation: flipDark 0s step-end forwards;
   }
 
   &::after {
     background-color: var(--color-text);
-    animation: turnDark 0s ease-in-out;
-    animation-fill-mode: forwards;
+
+    animation: rotateDark 0s ease-in-out forwards;
   }
 }
 
@@ -78,27 +77,16 @@
   }
 }
 
-@keyframes turnDark {
+// A separate animation for each theme is needed so a change of theme will trigger a new animation
+@keyframes rotateDark {
   0% {
-    transform: scale(0, 1);
+    transform: scaleX(0);
   }
   50% {
-    transform: scale(1, 1);
+    transform: scaleX(1);
   }
   100% {
-    transform: scale(0, 1);
-  }
-}
-
-@keyframes turnLight {
-  0% {
-    transform: scale(0, 1);
-  }
-  50% {
-    transform: scale(1, 1);
-  }
-  100% {
-    transform: scale(0, 1);
+    transform: scaleX(0);
   }
 }
 
@@ -108,6 +96,18 @@
   }
   100% {
     transform: translate(100%) rotate(180deg);
+  }
+}
+
+@keyframes rotateLight {
+  0% {
+    transform: scaleX(0);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
   }
 }
 
