@@ -19,7 +19,7 @@ export default function RectCanvas() {
   return (
     <ThreeCanvas
       camera={{ position: [0, 0, 10], zoom: 3.5 }}
-      className="full-bleed"
+      isFullscreen={true}
     >
       <OrbitControls enablePan={false} />
       <Rect
