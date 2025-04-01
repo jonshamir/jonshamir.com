@@ -1,5 +1,6 @@
 import { OrbitControls } from "@react-three/drei";
 import { useControls } from "leva";
+import { Vector3 } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { BlurredRect } from "./BlurredRect";
@@ -10,22 +11,24 @@ function ShadowRect(props: {
   color: string;
   radius: number;
   offset: number;
+  position: number[];
 }) {
-  const { size, color, radius, offset } = props;
+  const { size, color, radius, offset, position } = props;
+  const [x, y, z] = position;
   return (
     <>
       <BlurredRect
         size={size}
         color="#444"
         radius={radius}
-        blur={offset}
-        // position={[0, 0, -offset]}
+        blur={offset * 1.8}
+        position={[x, y - offset / 2, z]}
       />
       <Rect
         size={size}
         color={color}
         radius={radius}
-        position={[0, 0, offset]}
+        position={[x, y, z + offset]}
       />
     </>
   );
@@ -41,27 +44,36 @@ export default function RectCanvas() {
       y: { min: 0 },
       label: "Size"
     },
-    blur: { value: 0.3, min: 0, max: 1, label: "Blur" }
+    zOffset: { value: 0.3, min: 0, max: 10, label: "Z Offset" }
   });
 
   return (
     <ThreeCanvas
       camera={{ position: [0, 0, 10], zoom: 3.5 }}
       isFullscreen={true}
+      gl={{ sortObjects: false }}
     >
       <OrbitControls enablePan={false} />
-      <ShadowRect
-        size={controls.size}
-        color={controls.color}
-        radius={controls.radius}
-        offset={controls.blur}
-      />
       <Rect
-        size={{ x: 10, y: 5 }}
-        color="#999"
+        size={{ x: 20, y: 10 }}
+        color="hsl(0, 0%, 50%)"
         radius={1}
         position={[0, 0, -0.01]}
       />
+
+      {Array.from({ length: 10 }, (_, i) => {
+        const offset = Math.max(Math.sin(i + controls.zOffset) * 1, 0);
+        return (
+          <ShadowRect
+            key={i}
+            size={controls.size}
+            color={`hsl(0, 0%, ${50 + offset * 5}%)`}
+            radius={controls.radius}
+            offset={offset}
+            position={[i * 1.5 - 8, 0, 0]}
+          />
+        );
+      })}
     </ThreeCanvas>
   );
 }
