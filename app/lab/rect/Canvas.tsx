@@ -19,7 +19,7 @@ function ShadowRect(props: {
     <>
       <BlurredRect
         size={size}
-        color={`hsl(0, 0%, ${30 + offset * 8}%)`}
+        color={`hsl(0, 0%, ${30 + offset * 10}%)`}
         radius={radius}
         blur={offset * 1.8}
         position={[x, y - offset / 2, z]}
@@ -62,17 +62,22 @@ export default function RectCanvas() {
       />
 
       {Array.from({ length: 12 }, (_, i) => {
-        const offset = Math.max(Math.sin(i + controls.zOffset) * 0.5 + 0.4, 0);
-        return (
-          <ShadowRect
-            key={i}
-            size={controls.size}
-            color={`hsl(0, 0%, ${50 + offset * 3}%)`}
-            radius={controls.radius}
-            offset={offset}
-            position={[i * 1.4 - 8, 0, 0]}
-          />
-        );
+        return Array.from({ length: 6 }, (_, j) => {
+          const offset = Math.max(
+            Math.sin(i + j + controls.zOffset) * 0.2 + 0.3,
+            0
+          );
+          return (
+            <ShadowRect
+              key={`${i}-${j}`}
+              size={controls.size}
+              color={`hsl(0, 0%, ${50 + offset * 3}%)`}
+              radius={controls.radius}
+              offset={offset}
+              position={[i * 1.4 - 8, 3.5 - j * 1.4, 0]}
+            />
+          );
+        });
       })}
     </ThreeCanvas>
   );
