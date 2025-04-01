@@ -1,4 +1,4 @@
-export const rectVertexShader = /* glsl */ `
+export const vertexShader = /* glsl */ `
 varying vec2 vUv;
 varying vec3 vNormal;
 
@@ -9,7 +9,7 @@ void main() {
 }
 `;
 
-export const rectFragmentShader = /* glsl */ `
+export const fragmentShader = /* glsl */ `
 precision mediump float;
 
 varying vec2 vUv;
@@ -19,7 +19,7 @@ uniform vec3 uColor;
 uniform vec4 uRadius;
 uniform vec2 uSize;
 
-float sdRoundedBox( in vec2 p, in vec2 b, in vec4 r )
+float sdRoundedBox(in vec2 p, in vec2 b, in vec4 r)
 {
     r.xy = (p.x>0.0)?r.xy : r.zw;
     r.x  = (p.y>0.0)?r.x  : r.y;

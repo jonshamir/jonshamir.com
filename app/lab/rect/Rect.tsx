@@ -2,9 +2,9 @@ import { ThreeElements } from "@react-three/fiber";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-import { rectFragmentShader, rectVertexShader } from "./rect.glsl";
+import { fragmentShader, vertexShader } from "./rect.glsl";
 
-type RectProps = ThreeElements["mesh"] & {
+export type RectProps = ThreeElements["mesh"] & {
   size?: { x: number; y: number };
   color?: THREE.ColorRepresentation;
   depthTest?: boolean;
@@ -46,8 +46,8 @@ export function Rect(props: RectProps) {
     <mesh {...rest}>
       <planeGeometry args={[size.x, size.y]} />
       <shaderMaterial
-        vertexShader={rectVertexShader}
-        fragmentShader={rectFragmentShader}
+        vertexShader={vertexShader}
+        fragmentShader={fragmentShader}
         depthTest={depthTest}
         depthWrite={false}
         transparent={true}
