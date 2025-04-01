@@ -46,6 +46,7 @@ float roundedBoxShadowX(float x, float y, float sigma, float corner, vec2 halfSi
 
 // Return the mask for the shadow of a box from lower to upper
 float roundedBoxShadow(vec2 pos, vec2 size, float sigma, float radius) {
+    sigma = sigma * 0.5;
     // The signal is only non-zero in a limited range, so don't waste samples
     float low = pos.y - size.y;
     float high = pos.y + size.y;

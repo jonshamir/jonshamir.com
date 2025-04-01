@@ -5,6 +5,32 @@ import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { BlurredRect } from "./BlurredRect";
 import { Rect } from "./Rect";
 
+function ShadowRect(props: {
+  size: { x: number; y: number };
+  color: string;
+  radius: number;
+  offset: number;
+}) {
+  const { size, color, radius, offset } = props;
+  return (
+    <>
+      <BlurredRect
+        size={size}
+        color="#444"
+        radius={radius}
+        blur={offset}
+        // position={[0, 0, -offset]}
+      />
+      <Rect
+        size={size}
+        color={color}
+        radius={radius}
+        position={[0, 0, offset]}
+      />
+    </>
+  );
+}
+
 export default function RectCanvas() {
   const controls = useControls({
     color: { value: "#5772ad", label: "Color" },
@@ -24,23 +50,17 @@ export default function RectCanvas() {
       isFullscreen={true}
     >
       <OrbitControls enablePan={false} />
-      <BlurredRect
-        size={controls.size}
-        color="#444"
-        radius={controls.radius}
-        blur={controls.blur}
-        position={[0, 0, -0.9]}
-      />
-      <Rect
+      <ShadowRect
         size={controls.size}
         color={controls.color}
         radius={controls.radius}
+        offset={controls.blur}
       />
       <Rect
         size={{ x: 10, y: 5 }}
         color="#999"
         radius={1}
-        position={[0, 0, -1]}
+        position={[0, 0, -0.01]}
       />
     </ThreeCanvas>
   );
