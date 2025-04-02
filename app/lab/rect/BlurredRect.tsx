@@ -32,8 +32,6 @@ export function BlurredRect(props: BlurredRectProps) {
     uBlur: { value: blur }
   });
 
-  const geometryRef = useRef<THREE.PlaneGeometry>(null);
-
   useEffect(() => {
     if (uniformsRef.current === undefined) return;
     // Update uniforms when props change
@@ -44,29 +42,9 @@ export function BlurredRect(props: BlurredRectProps) {
     uniformsRef.current.uBlur.value = blur;
   }, [color, radius, size, blur]);
 
-  useEffect(() => {
-    if (!geometryRef.current) return;
-
-    const uvs = geometryRef.current.attributes.uv;
-    // Adjust UVs to account for the blur padding
-    const scaleX = (size.x + blur) / size.x;
-    const scaleY = (size.y + blur) / size.y;
-    const offsetX = (1 - scaleX) / 2;
-    const offsetY = (1 - scaleY) / 2;
-
-    for (let i = 0; i < uvs.count; i++) {
-      uvs.setXY(
-        i,
-        uvs.getX(i) * scaleX + offsetX,
-        uvs.getY(i) * scaleY + offsetY
-      );
-    }
-    uvs.needsUpdate = true;
-  }, [size, blur]);
-
   return (
     <mesh {...rest}>
-      <planeGeometry ref={geometryRef} args={[size.x + blur, size.y + blur]} />
+      <planeGeometry args={[size.x, size.y]} />
       <shaderMaterial
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}

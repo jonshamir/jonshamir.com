@@ -2,10 +2,21 @@ export const vertexShader = /* glsl */ `
 varying vec2 vUv;
 varying vec3 vNormal;
 
+uniform vec2 uSize;
+uniform float uBlur;
+
 void main() {
-    vUv = uv;
+    float scaleX = (uSize.x + uBlur) / uSize.x;
+    float scaleY = (uSize.y + uBlur) / uSize.y;
+    float offsetX = (1.0 - scaleX) / 2.0;
+    float offsetY = (1.0 - scaleY) / 2.0;
+
+    vUv = uv * vec2(scaleX, scaleY) + vec2(offsetX, offsetY);
+    vec3 pos = position;
+    pos.x *= scaleX;
+    pos.y *= scaleY;
     vNormal = normalize(vec3(viewMatrix * modelMatrix * vec4(normal, 0.0)));
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
 }
 `;
 
@@ -17,8 +28,8 @@ varying vec3 vNormal;
 
 uniform vec3 uColor;
 uniform vec4 uRadius;
-uniform vec2 uSize;
-uniform float uBlur;
+uniform highp vec2 uSize;
+uniform highp float uBlur;
 
 // https://madebyevan.com/shaders/fast-rounded-rectangle-shadows/
 
