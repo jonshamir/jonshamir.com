@@ -1,6 +1,5 @@
 import { OrbitControls } from "@react-three/drei";
 import { useControls } from "leva";
-import { Vector3 } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { BlurredRect } from "./BlurredRect";
@@ -64,7 +63,7 @@ export default function RectCanvas() {
       {Array.from({ length: 12 }, (_, i) => {
         return Array.from({ length: 6 }, (_, j) => {
           const offset = Math.max(
-            Math.sin(i + j + controls.zOffset) * 0.2 + 0.3,
+            Math.sin(i + j + controls.zOffset) * 0.5 + 0.1,
             0
           );
           return (

@@ -88,7 +88,17 @@ void main() {
     vec2 pos = (vUv - vec2(0.5, 0.5)) * 2.0 * uSize;
     float d = sdRoundedBox(pos, uSize, uRadius);
     float pixelSize = sqrt(pow(dFdx(d), 2.0) + pow(dFdy(d), 2.0));
-    float alpha = roundedBoxShadow(pos, uSize, uBlur * 0.5, uRadius.x);
+    // Use at least pixelWidth blur to prevent aliasing
+    // float blur = max(uBlur * 0.5, pixelSize / 3.0);
+    // float antialiasingOffset = blur - pixelSize;
+    // vec2 size = uSize + vec2(antialiasingOffset, antialiasingOffset);
+    // float radius = uRadius.x + antialiasingOffset;
+
+    float blur = uBlur * 0.5;
+    vec2 size = uSize;
+    float radius = uRadius.x;
+
+    float alpha = roundedBoxShadow(pos, size, blur, radius);
 
     vec3 normal = vNormal.xyz * 0.5 + 0.5;
     vec3 gammaCorrectedColor = pow(uColor.rgb, vec3(1.0/2.2));
