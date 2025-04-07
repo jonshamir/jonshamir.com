@@ -19,9 +19,30 @@ export default function Page() {
         <InlineLogoPlaceholder />
         <h1>Hi, I&rsquo;m Jon</h1>
         <p style={{ fontSize: "1.2rem", fontWeight: 350 }}>
-          I&rsquo;m a product engineer and designer. My interests include
-          interaction design, real-time 3D graphics, data visualization and
-          machine learning.
+          I&rsquo;m a product engineer and designer.
+          <br />I like to work at the intersection of technology and user
+          experience, creating{" "}
+          <a className="inlinePreview">
+            interesting interactions
+            <img src="homepage/overview.gif" alt="overview" />
+          </a>{" "}
+          and{" "}
+          <a className="inlinePreview">
+            data visualizations
+            <video src="homepage/herbs.mp4" autoPlay muted loop playsInline />
+          </a>{" "}
+          utilizing{" "}
+          <a className="inlinePreview">
+            machine learning
+            <video src="homepage/muser.mp4" autoPlay muted loop playsInline />
+          </a>{" "}
+          and{" "}
+          <a className="inlinePreview">
+            interactive 3D graphics
+            <video src="homepage/earth.mp4" autoPlay muted loop playsInline />
+          </a>{" "}
+          {/* where I enjoy exploring the intersection of technology and user
+          experience */}
         </p>
         <div className={styles.SocialLinks}>
           {SOCIAL_LINKS.map((link) => (

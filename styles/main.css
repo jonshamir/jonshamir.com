@@ -96,3 +96,51 @@ body {
     background-color: rgba(var(--color-text-rgb), 0.05);
   }
 }
+
+.inlinePreview {
+  display: inline;
+  cursor: help;
+  color: rgba(var(--color-text-rgb));
+  transition:
+    color var(--transition-defaults),
+    background-color var(--transition-defaults);
+  /* text-decoration: underline dotted 2px rgba(var(--color-text-rgb), 0.4); */
+  position: relative;
+  white-space: nowrap;
+  display: inline-block;
+  background-color: rgba(var(--color-text-rgb), 0.1);
+  padding: 0 0.4em;
+  margin: 0.1em 0;
+  border-radius: var(--rounding-full);
+}
+
+.inlinePreview:hover {
+  background-color: rgba(var(--color-text-rgb), 0.2);
+  text-decoration: none;
+}
+
+.inlinePreview video,
+.inlinePreview img {
+  display: block;
+  position: absolute;
+  bottom: -8em;
+  right: -8em;
+  width: 10rem;
+  height: 10rem;
+  /* border-radius: var(--rounding-medium); */
+  border-radius: 1rem 5rem 5rem 5rem;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: 0 0;
+  transform: rotate(5deg) scale(0.9);
+  transition:
+    opacity var(--transition-defaults),
+    transform var(--transition-defaults);
+}
+
+.inlinePreview:hover video,
+.inlinePreview:hover img {
+  opacity: 1;
+  transform: translate(0, 0rem) rotate(0deg);
+}
