@@ -39,7 +39,7 @@ export default function Page() {
         </div>
       </div>
       <h3>Projects</h3>
-      <p>Some of the things I’ve made or worked on over the years.</p>
+      <p>Some of the things I’ve made or worked on over the years:</p>
       {projectData.map((project) => (
         <Link
           href={`projects/${project.slug}`}
