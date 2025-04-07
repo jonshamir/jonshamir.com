@@ -1,18 +1,14 @@
 import "@fontsource-variable/work-sans";
-import "../styles/main.css";
 import "katex/dist/katex.min.css";
+import "../styles/main.css";
 
 import type { Metadata } from "next";
-import dynamic from "next/dynamic";
 import Script from "next/script";
+import { Suspense } from "react";
 
 import { Nav } from "../components/Nav/Nav";
 import { AnalyticsProvider } from "../features/analytics/AnalyticsProvider";
-
-const PageViewTracker = dynamic(
-  () => import("../features/analytics/PageViewTracker"),
-  { ssr: false }
-);
+import PageViewTracker from "../features/analytics/PageViewTracker";
 
 export const metadata: Metadata = {
   title: "Jon Shamir",
@@ -44,7 +40,9 @@ export default function RootLayout({
       </head>
       <AnalyticsProvider>
         <body>
-          <PageViewTracker />
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
           <Nav />
           <article className="wrapper">{children}</article>
         </body>

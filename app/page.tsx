@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import Link from "next/link";
+import React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
@@ -53,14 +54,14 @@ export default function Page() {
               rel="noreferrer"
               className="clickable"
             >
-              <link.icon />
+              {React.createElement(link.icon)}
               {/* <span>{link.label}</span> */}
             </a>
           ))}
         </div>
       </div>
       <h3>Projects</h3>
-      <p>Some of the things I’ve made or worked on over the years:</p>
+      <p>Some of the things I&rsquo;ve made or worked on over the years:</p>
       {projectData.map((project) => (
         <Link
           href={`projects/${project.slug}`}
