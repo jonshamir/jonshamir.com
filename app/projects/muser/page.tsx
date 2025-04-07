@@ -21,7 +21,7 @@ export default function Page() {
         Muser is an experiment in using machine learning to enhance music
         visualization. The idea originated while writing a seminar paper on the
         history of music visualization. I researched, designed and built the
-        project as part of studies.
+        project as part of my studies.
       </p>
       <figure className="full-bleed">
         <video
