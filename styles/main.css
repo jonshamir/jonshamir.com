@@ -137,6 +137,11 @@ body {
   transition:
     opacity var(--transition-defaults),
     transform var(--transition-defaults);
+
+  @media (max-width: 40rem) {
+    right: -4em;
+    bottom: -8.5em;
+  }
 }
 
 .inlinePreview:hover video,
