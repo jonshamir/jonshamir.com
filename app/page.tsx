@@ -27,7 +27,7 @@ export default function Page() {
           experience, creating{" "}
           <a className="inlinePreview">
             interesting interactions
-            <img src="homepage/overview.gif" alt="overview" />
+            <img src="homepage/cursor-move.gif" alt="overview" />
           </a>{" "}
           and{" "}
           <a className="inlinePreview">

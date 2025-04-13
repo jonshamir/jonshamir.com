@@ -5,6 +5,10 @@
     padding: 4rem 2rem 5rem 0;
   }
 
+  & h1 {
+    line-height: 1em;
+  }
+
   & h1 span {
     display: inline-block;
     font-size: 0.5em;
@@ -15,6 +19,12 @@
       transform var(--transition-defaults),
       opacity var(--transition-defaults);
     cursor: help;
+    line-height: 1rem;
+
+    @media screen and (max-width: 40rem) {
+      opacity: 0.6;
+      transform: scale(1);
+    }
   }
 
   & h1:hover span {
