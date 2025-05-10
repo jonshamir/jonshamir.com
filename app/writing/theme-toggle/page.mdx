@@ -15,3 +15,47 @@ So how does it work?
 The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color
 On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
+
+## The Setup
+
+HTML button element
+
+```html
+<button class="ThemeToggle">
+  <span class="ThemeToggle__half ThemeToggle__half--left"></span>
+  <span class="ThemeToggle__half ThemeToggle__half--right"></span>
+</button>
+```
+
+CSS
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+  --foreground-color: #ccc;
+  --background-color: #222;
+}
+```
+
+## The Animation
+
+The animation is split into 4 parts:
+
+1. The initial state
+2. The first half of the animation
+3. The second half of the animation
+4. The final state
+
+## Final touches - the gap
+
+The gap is created by the border-width and the size of the button.
+
+box shadow trick
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+}
+```

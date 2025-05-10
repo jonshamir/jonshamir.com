@@ -1,6 +1,6 @@
 .ThemeToggleDemo {
-  --duration: 1.25s;
-  --border-width: 2px;
+  --duration: 0.5s;
+  --border-width: 4px;
   --size: 60px;
 
   --foreground-color: #ccc;
@@ -29,11 +29,10 @@
 .ThemeToggle:hover,
 .ThemeToggle:focus,
 .ThemeToggle:active {
-  background-color: transparent;
-  border: none;
-  outline: var(--border-width) solid var(--foreground-color) !important;
+  outline: none !important;
+  border: var(--border-width) solid var(--foreground-color) !important;
   position: relative;
-  transition: outline-color var(--duration) ease-out;
+  transition: border-color var(--duration) ease-out;
   background-color: var(--background-color);
 }
 
@@ -46,6 +45,7 @@
   width: 50%;
   border-radius: 999px 0 0 999px;
   transform-origin: 100% 50%;
+  /* opacity: 0; */
 }
 
 .ThemeToggle::after {
@@ -58,6 +58,7 @@
 
 .ThemeToggle::after {
   animation: flipLightAfter var(--duration) ease-in forwards;
+  box-shadow: -1px 0px 0 0px var(--foreground-color);
 }
 
 .isDark .ThemeToggle {
@@ -72,6 +73,7 @@
 .isDark .ThemeToggle::after {
   animation: flipDarkAfter var(--duration) ease-out forwards;
   background-color: var(--background-color);
+  box-shadow: none;
 }
 
 @keyframes flipLightBefore {
