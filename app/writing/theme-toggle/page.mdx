@@ -1,0 +1,61 @@
+import { ThemeToggleDemo } from "./ThemeToggleDemo";
+
+# Animated dark mode toggle with CSS
+
+Ive wanted to get into technincal blogging for a long time but always found myself getting lost in the details, working on illustrations and interactive examples and getting lost in the process.
+So I decided to start with something relatively straightforward - how I made the little dark mode toggle on the corner of this website
+
+I originally created a CSS animation to represent the phases of the moon a long time ago. A while bac
+In this post I'm going to break down the creation of the dark mode toggle in this website, which has sort of a 3D effect to it, inspired by the moon. you can try it out here:
+
+<ThemeToggleDemo />
+_Demo embed_ https://codepen.io/shamir/pen/YGbbNX
+
+So how does it work?
+The idea is to have 2 halves
+There is a hidden circle in the middle with scaleX(0), with each half being one color
+On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
+
+## The Setup
+
+HTML button element
+
+```html
+<button class="ThemeToggle">
+  <span class="ThemeToggle__half ThemeToggle__half--left"></span>
+  <span class="ThemeToggle__half ThemeToggle__half--right"></span>
+</button>
+```
+
+CSS
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+  --foreground-color: #ccc;
+  --background-color: #222;
+}
+```
+
+## The Animation
+
+The animation is split into 4 parts:
+
+1. The initial state
+2. The first half of the animation
+3. The second half of the animation
+4. The final state
+
+## Final touches - the gap
+
+The gap is created by the border-width and the size of the button.
+
+box shadow trick
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+}
+```
