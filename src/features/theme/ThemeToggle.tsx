@@ -1,8 +1,8 @@
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 
-import faviconDark from "../../public/favicon-dark.png";
-import faviconLight from "../../public/favicon-light.png";
+import faviconDark from "../../../public/favicon-dark.png";
+import faviconLight from "../../../public/favicon-light.png";
 import styles from "./ThemeToggle.module.scss";
 import { useColorTheme } from "./useColorTheme";
 
