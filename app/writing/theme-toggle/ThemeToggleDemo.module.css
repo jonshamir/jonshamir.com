@@ -11,6 +11,7 @@
     --background-color: #ccc;
   }
 
+  border-radius: var(--rounding-medium);
   background-color: var(--background-color);
   transition: background-color var(--duration) ease-out;
   padding: 40px;
@@ -23,6 +24,7 @@
   width: var(--size);
   height: var(--size);
   border-radius: 999px;
+  padding: 0;
 }
 
 .ThemeToggle,
@@ -45,7 +47,6 @@
   width: 50%;
   border-radius: 999px 0 0 999px;
   transform-origin: 100% 50%;
-  /* opacity: 0; */
 }
 
 .ThemeToggle::after {
