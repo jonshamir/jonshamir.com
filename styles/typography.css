@@ -209,3 +209,7 @@ figcaption,
   font-style: italic;
   max-width: min(60ch, calc(100% - 3rem));
 }
+
+code {
+  font-size: 0.8rem;
+}
