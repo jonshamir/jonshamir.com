@@ -53,6 +53,7 @@ h6 {
 h1 {
   font-size: 2.5em;
   font-weight: 500;
+  line-height: 1.2em;
 }
 
 h2 {
@@ -207,4 +208,8 @@ figcaption,
   margin: 0.5em;
   font-style: italic;
   max-width: min(60ch, calc(100% - 3rem));
+}
+
+code {
+  font-size: 0.8rem;
 }

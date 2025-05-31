@@ -7,12 +7,12 @@ type ProjectItem = {
 };
 
 const projects: ProjectItem[] = [
-  // {
-  //   slug: "prepbook",
-  //   name: "Prepbook",
-  //   subtitle: "Clever recipe notebook",
-  //   year: 2025
-  // },
+  {
+    slug: "prepbook",
+    name: "Prepbook",
+    subtitle: "Clever recipe notebook",
+    year: 2025
+  },
   {
     slug: "spacetop",
     name: "Spacetop",

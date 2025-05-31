@@ -1,0 +1,71 @@
+import { ThemeToggleDemo } from "./ThemeToggleDemo";
+
+# Animated dark mode toggle with CSS
+
+Part of the fun of working on a personal website is to spend unnecessary amounts of time on small details. I wanted to have a dark & light mode to show off my CSS skills like the cool kids, but I wanted to find a unique way.
+
+Animated transition
+
+there are all kinds of cool effects to transition from dark to light, but I decided to go with a simple crossfade.
+
+[Link to some cool examples]
+
+To implement this, I created CSS variables for colors in light and dark mode.
+I also have a variable for the transition settings
+
+For this website I wanted to create a nice theme toggle.
+
+I originally created a CSS animation to represent the phases of the moon a long time ago. A while bac
+In this post I'm going to break down the creation of the dark mode toggle in this website, which has sort of a 3D effect to it, inspired by the moon. you can try it out here:
+
+<ThemeToggleDemo />
+_Demo embed_ https://codepen.io/shamir/pen/YGbbNX
+
+So how does it work?
+The idea is to have 2 halves
+There is a hidden circle in the middle with scaleX(0), with each half being one color
+On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
+
+## The Setup
+
+HTML button element
+
+```html
+<button class="ThemeToggle">
+  <span class="ThemeToggle__half ThemeToggle__half--left"></span>
+  <span class="ThemeToggle__half ThemeToggle__half--right"></span>
+</button>
+```
+
+CSS
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+  --foreground-color: #ccc;
+  --background-color: #222;
+}
+```
+
+## The Animation
+
+The animation is split into 4 parts:
+
+1. The initial state
+2. The first half of the animation
+3. The second half of the animation
+4. The final state
+
+## Final touches - the gap
+
+The gap is created by the border-width and the size of the button.
+
+box shadow trick
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+}
+```

@@ -1,0 +1,126 @@
+.ThemeToggleDemo {
+  --duration: 0.5s;
+  --border-width: 4px;
+  --size: 60px;
+
+  --foreground-color: #ccc;
+  --background-color: #222;
+
+  &.isDark {
+    --foreground-color: #222;
+    --background-color: #ccc;
+  }
+
+  border-radius: var(--rounding-medium);
+  background-color: var(--background-color);
+  transition: background-color var(--duration) ease-out;
+  padding: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.ThemeToggle {
+  width: var(--size);
+  height: var(--size);
+  border-radius: 999px;
+  padding: 0;
+}
+
+.ThemeToggle,
+.ThemeToggle:hover,
+.ThemeToggle:focus,
+.ThemeToggle:active {
+  outline: none !important;
+  border: var(--border-width) solid var(--foreground-color) !important;
+  position: relative;
+  transition: border-color var(--duration) ease-out;
+  background-color: var(--background-color);
+}
+
+.ThemeToggle::before,
+.ThemeToggle::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: var(--foreground-color);
+  width: 50%;
+  border-radius: 999px 0 0 999px;
+  transform-origin: 100% 50%;
+}
+
+.ThemeToggle::after {
+  transform: rotateY(90deg);
+}
+
+.ThemeToggle::before {
+  animation: flipLightBefore var(--duration) ease-out forwards;
+}
+
+.ThemeToggle::after {
+  animation: flipLightAfter var(--duration) ease-in forwards;
+  box-shadow: -1px 0px 0 0px var(--foreground-color);
+}
+
+.isDark .ThemeToggle {
+  background-color: var(--foreground-color);
+}
+
+.isDark .ThemeToggle::before {
+  animation: flipDarkBefore var(--duration) ease-in forwards;
+  background-color: var(--background-color);
+}
+
+.isDark .ThemeToggle::after {
+  animation: flipDarkAfter var(--duration) ease-out forwards;
+  background-color: var(--background-color);
+  box-shadow: none;
+}
+
+@keyframes flipLightBefore {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(90deg);
+  }
+}
+
+@keyframes flipLightAfter {
+  0% {
+    transform: rotateY(90deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(180deg);
+  }
+}
+
+@keyframes flipDarkBefore {
+  0% {
+    transform: rotateY(90deg);
+  }
+  50% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(0deg);
+  }
+}
+
+@keyframes flipDarkAfter {
+  0% {
+    transform: rotateY(180deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(90deg);
+  }
+}
