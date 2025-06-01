@@ -1,14 +1,13 @@
 import clsx from "clsx";
-import { useEffect, useState } from "react";
 
 import styles from "./ColorSchemeToggle.module.scss";
 import { useColorScheme } from "./useColorScheme";
 
 export function ColorSchemeToggle() {
-  const { isDark, setIsDark } = useColorScheme();
+  const { colorScheme, setColorScheme } = useColorScheme();
 
   const toggleColorScheme = () => {
-    setIsDark(!isDark);
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
   };
 
   return (
@@ -19,7 +18,7 @@ export function ColorSchemeToggle() {
       <input
         id={styles.ColorSchemeToggle}
         type="checkbox"
-        checked={isDark}
+        checked={colorScheme === "dark"}
         onChange={toggleColorScheme}
         onKeyDown={(e) => {
           if (e.key === "Enter") toggleColorScheme();

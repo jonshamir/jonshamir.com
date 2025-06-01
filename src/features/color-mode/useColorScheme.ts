@@ -1,37 +1,45 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useLocalStorage, useMediaQuery } from "usehooks-ts";
 
 import faviconDark from "../../../public/favicon-dark.png";
 import faviconLight from "../../../public/favicon-light.png";
 
+type ColorScheme = "dark" | "light";
+
 export function useColorScheme() {
-  const systemPrefersDark = useMediaQuery("(prefers-color-scheme: dark)");
-  const [isDark, setIsDark] = useLocalStorage(
-    "color-scheme",
-    systemPrefersDark
-  );
+  const [colorScheme, rawSetColorScheme] = useState<ColorScheme>();
 
-  const value = useMemo(
-    () => (isDark === undefined ? !!systemPrefersDark : isDark),
-    [isDark, systemPrefersDark]
-  );
+  useEffect(() => {
+    const root = window.document.documentElement;
+    const initialColorValue = root.classList.contains("dark")
+      ? "dark"
+      : "light";
+    rawSetColorScheme(initialColorValue);
+  }, []);
 
-  // useEffect(() => {
-  //   const favicon = document.querySelector(
-  //     'link[rel="icon"]'
-  //   ) as HTMLLinkElement;
-  //   if (favicon === null) return;
-  //   if (isDark) {
-  //     document.documentElement.classList.add("dark");
-  //     favicon.href = faviconDark.src;
-  //   } else {
-  //     document.documentElement.classList.remove("dark");
-  //     favicon.href = faviconLight.src;
-  //   }
-  // }, [isDark]);
+  const setColorScheme = (value: ColorScheme) => {
+    rawSetColorScheme(value);
+    window.localStorage.setItem("color-scheme", value);
+    const root = window.document.documentElement;
+    root.classList.remove("dark", "light");
+    root.classList.add(value);
+  };
+
+  // update favicon
+  useEffect(() => {
+    const favicon = document.querySelector(
+      'link[rel="icon"]'
+    ) as HTMLLinkElement;
+    if (favicon === null) return;
+    if (colorScheme === "dark") {
+      favicon.href = faviconDark.src;
+    } else {
+      favicon.href = faviconLight.src;
+    }
+  }, [colorScheme]);
 
   return {
-    isDark: value,
-    setIsDark
+    colorScheme,
+    setColorScheme
   };
 }
