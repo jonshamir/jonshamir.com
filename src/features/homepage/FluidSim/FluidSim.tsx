@@ -1,13 +1,13 @@
 import { useEffect, useRef } from "react";
 
-import { useColorTheme } from "../../theme/useColorTheme";
 import styles from "./FluidSim.module.scss";
 import FluidSimManager from "./modules/FluidSimManager";
 
 let fluidSimManager: FluidSimManager | null = null;
 
 export function FluidSim() {
-  const { isDark } = useColorTheme();
+  // const { isDark } = useColorTheme();
+  const isDark = false;
   const canvasRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-.ThemeToggleContainer {
+.ColorSchemeToggleContainer {
   cursor: pointer;
   padding: 8px;
   display: block;
@@ -9,7 +9,7 @@
   --rounding-medium: 500px;
 }
 
-#ThemeToggle {
+#ColorSchemeToggle {
   appearance: none;
   -webkit-appearance: none;
 
@@ -40,7 +40,7 @@
     background-color: var(--color-text);
     border-radius: 999px 0 0 999px;
 
-    animation: flipLight 0s step-end forwards;
+    animation: flipLight 0.15s step-end forwards;
   }
 
   &::after {
@@ -48,32 +48,23 @@
     border-radius: 999px;
     transform: scaleX(0.4);
 
-    animation: rotateLight 0s ease-in-out forwards;
+    animation: rotateLight 0.3s ease-in-out forwards;
   }
 }
 
-:global(.dark) #ThemeToggle {
+:global(.dark) #ColorSchemeToggle {
   background-color: var(--color-text);
 
   &::before {
     background-color: var(--color-bg);
 
-    animation: flipDark 0s step-end forwards;
+    animation: flipDark 0.15s step-end forwards;
   }
 
   &::after {
     background-color: var(--color-text);
 
-    animation: rotateDark 0s ease-in-out forwards;
-  }
-}
-
-.loaded #ThemeToggle {
-  &::before {
-    animation-duration: 0.15s;
-  }
-  &::after {
-    animation-duration: 0.3s;
+    animation: rotateDark 0.3s ease-in-out forwards;
   }
 }
 
