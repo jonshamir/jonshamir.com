@@ -3,7 +3,6 @@ import "katex/dist/katex.min.css";
 import "../styles/main.css";
 
 import type { Metadata } from "next";
-import Script from "next/script";
 import { Suspense } from "react";
 
 import { Nav } from "../components/Nav/Nav";

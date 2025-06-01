@@ -6,7 +6,7 @@
   --foreground-color: #ccc;
   --background-color: #222;
 
-  &.isDark {
+  &.dark {
     --foreground-color: #222;
     --background-color: #ccc;
   }
@@ -62,16 +62,16 @@
   box-shadow: -1px 0px 0 0px var(--foreground-color);
 }
 
-.isDark .ThemeToggle {
+.dark .ThemeToggle {
   background-color: var(--foreground-color);
 }
 
-.isDark .ThemeToggle::before {
+.dark .ThemeToggle::before {
   animation: flipDarkBefore var(--duration) ease-in forwards;
   background-color: var(--background-color);
 }
 
-.isDark .ThemeToggle::after {
+.dark .ThemeToggle::after {
   animation: flipDarkAfter var(--duration) ease-out forwards;
   background-color: var(--background-color);
   box-shadow: none;

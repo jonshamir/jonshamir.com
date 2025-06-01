@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import { useLocalStorage, useMediaQuery } from "usehooks-ts";
+import { useEffect, useState } from "react";
 
 import faviconDark from "../../../public/favicon-dark.png";
 import faviconLight from "../../../public/favicon-light.png";
