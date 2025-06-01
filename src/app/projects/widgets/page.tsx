@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 
-import screenshotImage from "../../../public/projects/widgets/screenshot.png";
 import WeatherIcons from "./weather.svg";
 
 export default function Page() {
@@ -26,9 +25,11 @@ export default function Page() {
       </p>
       <figure className="full-bleed">
         <Image
-          src={screenshotImage}
+          src="/projects/widgets/screenshot.png"
           alt="Screenshot of Widgets Bar"
           style={{ maxWidth: "1000px", height: "auto" }}
+          width={1000}
+          height={600}
         />
         <figcaption>
           Screenshot of Widgets Bar running on Apple Safari 8
