@@ -41,12 +41,12 @@ export default function RootLayout({
             __html: `
               (function() {
                 //alert('No UI for you!');
-                function getInitialColorMode() {
-                  const persistedColorPreference = window.localStorage.getItem('color-mode');
-                  const hasPersistedPreference = typeof persistedColorPreference === 'string';
+                function getInitialColorScheme() {
+                  const persistedColorScheme = window.localStorage.getItem('color-scheme');
+                  const hasPersistedPreference = typeof persistedColorScheme === 'string';
 
                   if (hasPersistedPreference) {
-                    return persistedColourPreference;
+                    return persistedColorScheme;
                   }
 
                   const mql = window.matchMedia('(prefers-color-scheme: dark)');
@@ -59,10 +59,10 @@ export default function RootLayout({
                   return 'light';
                 }
 
-                const colorMode = getInitialColorMode();
-                console.log(colorMode);
+                const colorScheme = getInitialColorScheme();
+                console.log(colorScheme);
 
-                if (colorMode === 'dark') {
+                if (colorScheme === 'dark') {
                   document.documentElement.classList.add('dark');
                 }
               })();
