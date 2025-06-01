@@ -13,19 +13,19 @@ export function ThemeToggle() {
     setIsDark(!isDark);
   };
 
-  useEffect(() => {
-    const favicon = document.querySelector(
-      'link[rel="icon"]'
-    ) as HTMLLinkElement;
-    if (favicon === null) return;
-    if (isDark) {
-      document.body.classList.add("dark");
-      favicon.href = faviconDark.src;
-    } else {
-      document.body.classList.remove("dark");
-      favicon.href = faviconLight.src;
-    }
-  }, [isDark]);
+  // useEffect(() => {
+  //   const favicon = document.querySelector(
+  //     'link[rel="icon"]'
+  //   ) as HTMLLinkElement;
+  //   if (favicon === null) return;
+  //   if (isDark) {
+  //     document.body.classList.add("dark");
+  //     favicon.href = faviconDark.src;
+  //   } else {
+  //     document.body.classList.remove("dark");
+  //     favicon.href = faviconLight.src;
+  //   }
+  // }, [isDark]);
 
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
 

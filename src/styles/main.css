@@ -5,7 +5,7 @@
 @import "satoshi.css";
 @import "supreme.css";
 
-body {
+:root {
   --content-max-width: 50rem;
   --transition-defaults: 200ms ease-out;
 
@@ -23,17 +23,19 @@ body {
   --color-bg-rgb: 237, 231, 229;
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
+}
 
-  &.dark {
-    --color-link: #7a8eff;
+.dark {
+  --color-link: #7a8eff;
 
-    --color-text: #e0dacf;
-    --color-text-rgb: 224, 218, 207;
+  --color-text: #e0dacf;
+  --color-text-rgb: 224, 218, 207;
 
-    --color-bg: #2f3138;
-    --color-bg-rgb: 47, 49, 56;
-  }
+  --color-bg: #2f3138;
+  --color-bg-rgb: 47, 49, 56;
+}
 
+body {
   background-color: var(--color-bg);
 
   @media (prefers-color-scheme: light) {
