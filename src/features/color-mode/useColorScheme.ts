@@ -24,6 +24,10 @@ export function useColorScheme() {
     root.classList.add(value);
   };
 
+  const toggleColorScheme = () => {
+    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  };
+
   // update favicon
   useEffect(() => {
     const favicon = document.querySelector(
@@ -39,6 +43,7 @@ export function useColorScheme() {
 
   return {
     colorScheme,
-    setColorScheme
+    setColorScheme,
+    toggleColorScheme
   };
 }
