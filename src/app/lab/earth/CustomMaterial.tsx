@@ -140,7 +140,7 @@ export function CustomMaterial(props: {
   bumpMap: THREE.Texture;
   cloudMap: THREE.Texture;
 }) {
-  const materialRef = useRef();
+  const materialRef = useRef<THREE.Material>(null);
 
   const uniforms = useMemo(
     () => ({
