@@ -1,8 +1,8 @@
 import clsx from "clsx";
+import { useEffect, useState } from "react";
 
 import styles from "./ColorSchemeToggle.module.scss";
 import { useColorScheme } from "./useColorScheme";
-import { useEffect, useState } from "react";
 
 export function ColorSchemeToggle() {
   const { colorScheme, toggleColorScheme } = useColorScheme();
