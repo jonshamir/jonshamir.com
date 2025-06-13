@@ -26,7 +26,8 @@ const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex]
+    rehypePlugins: [rehypeKatex],
+    format: "mdx"
   }
 });
 
