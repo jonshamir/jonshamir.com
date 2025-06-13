@@ -7,7 +7,7 @@ import styles from "./MainLogo.module.scss";
 export function MainLogo({
   parentRef
 }: {
-  parentRef: React.RefObject<HTMLDivElement>;
+  parentRef: React.RefObject<HTMLElement | null>;
 }) {
   const logoRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();

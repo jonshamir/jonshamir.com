@@ -22,18 +22,18 @@ export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
   }, []);
 
   const pathname = usePathname();
-  const logoRef = useRef(null);
+  const logoRef = useRef<HTMLDivElement>(null);
 
   return (
     <>
       {isMounted && (
         <nav className={styles.Nav}>
           <div>
-            <Link href="/" passHref legacyBehavior>
-              <a style={{ marginTop: "-0.5rem" }} ref={logoRef}>
+            <div ref={logoRef} style={{ marginTop: "-0.5rem" }}>
+              <Link href="/">
                 <MainLogo parentRef={logoRef} />
-              </a>
-            </Link>
+              </Link>
+            </div>
             <div style={{ flexGrow: 1 }} />
 
             <div className={styles.Wrapper}>
@@ -41,17 +41,12 @@ export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
                 NAV_ITEMS.map((item) => (
                   <Link
                     href={item.href}
-                    passHref
-                    legacyBehavior
                     key={item.href}
+                    className={clsx("clickable", {
+                      [styles.ActiveLink]: pathname === item.href
+                    })}
                   >
-                    <a
-                      className={clsx("clickable", {
-                        [styles.ActiveLink]: pathname === item.href
-                      })}
-                    >
-                      {item.title}
-                    </a>
+                    {item.title}
                   </Link>
                 ))}
               <ColorSchemeToggle />
