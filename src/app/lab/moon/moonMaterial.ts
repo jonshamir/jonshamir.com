@@ -1,11 +1,4 @@
 import { shaderMaterial } from "@react-three/drei";
-import { ReactThreeFiber } from "@react-three/fiber";
-import * as THREE from "three";
-
-interface MoonMaterialProps {
-  albedoMap?: THREE.Texture;
-  bumpMap?: THREE.Texture;
-}
 
 export const MoonMaterial = shaderMaterial(
   {
@@ -134,15 +127,3 @@ export const MoonMaterial = shaderMaterial(
     }
 `
 );
-
-declare global {
-  /* eslint-disable-next-line @typescript-eslint/no-namespace */
-  namespace JSX {
-    interface IntrinsicElements {
-      moonMaterial: ReactThreeFiber.Object3DNode<
-        MoonMaterialProps,
-        MoonMaterialProps
-      >;
-    }
-  }
-}

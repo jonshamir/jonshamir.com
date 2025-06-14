@@ -1,6 +1,10 @@
 "use client";
 
-import Canvas from "./Canvas";
+import dynamic from "next/dynamic";
+
+const Canvas = dynamic(() => import("./Canvas"), {
+  ssr: false
+});
 
 export default function Page() {
   return (
