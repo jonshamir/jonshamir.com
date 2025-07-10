@@ -19,9 +19,9 @@ export default function Page() {
       <div className={styles.IntroSection}>
         <InlineLogoPlaceholder />
         <h1>
-          Hi, I&rsquo;m Jon <span>aka Yonatan</span>
+          Hi, I&rsquo;m Jon <span>Yonatan</span>
         </h1>
-        <p style={{ lineHeight: "1.8rem" }}>
+        <p style={{ lineHeight: "1.6rem" }}>
           I work at the intersection of technology and design. I have experience
           building products, data visualizations, and interactive 3D graphics.
         </p>

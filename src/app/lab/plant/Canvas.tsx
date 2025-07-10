@@ -1,4 +1,7 @@
+"use client";
+
 import { OrbitControls } from "@react-three/drei";
+import { Leva } from "leva";
 import { useControls } from "leva";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
@@ -10,9 +13,12 @@ export default function PlantCanvas() {
   });
 
   return (
-    <ThreeCanvas camera={{ fov: 15, position: [0, 8, -9] }}>
-      <OrbitControls />
-      <Plant age={currAge} position={[0, -0.5, 0]} />
-    </ThreeCanvas>
+    <>
+      <Leva />
+      <ThreeCanvas camera={{ fov: 15, position: [0, 8, -9] }}>
+        <OrbitControls />
+        <Plant age={currAge} position={[0, -0.5, 0]} />
+      </ThreeCanvas>
+    </>
   );
 }
