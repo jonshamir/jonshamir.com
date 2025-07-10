@@ -10,12 +10,12 @@ import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
 
 const NAV_ITEMS = [
-  { title: "About", href: "/" },
-  { title: "Writing", href: "/writing" },
+  { title: "Home", href: "/" },
+  { title: "Posts", href: "/writing" },
   { title: "Lab", href: "/lab" }
 ];
 
-export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
+export function Nav({ showNavItems = true }: { showNavItems?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
