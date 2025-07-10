@@ -2,6 +2,7 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
+import { BlurPass, Resizer, KernelSize, Resolution } from "postprocessing";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { Moon } from "./Moon";
@@ -23,9 +24,10 @@ export default function Earth() {
             <>
               <Bloom
                 intensity={0.3}
-                luminanceThreshold={0.01}
-                luminanceSmoothing={0.25}
-                kernelSize={4}
+                luminanceThreshold={0.1}
+                kernelSize={KernelSize.LARGE}
+                radius={1}
+                levels={5}
               />
               <Noise opacity={0.05} />
             </>
