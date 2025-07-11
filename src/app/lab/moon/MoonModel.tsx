@@ -9,7 +9,7 @@ import { MoonMaterial } from "./moonMaterial";
 
 extend({ MoonMaterial, RoundedBoxGeometry });
 
-export function Moon() {
+export function MoonModel() {
   const ref = useRef<THREE.Group>(null);
   const [albedo] = useLoader(TextureLoader, ["/textures/MoonAlbedo.png"]);
   const [bump] = useLoader(TextureLoader, ["/textures/MoonHeight.png"]);
@@ -18,7 +18,7 @@ export function Moon() {
 
   useFrame(() => {
     if (ref.current) {
-      // ref.current.rotation.y += 0.001;
+      ref.current.rotation.y += 0.001;
     }
   });
 
