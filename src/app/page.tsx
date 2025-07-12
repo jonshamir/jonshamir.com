@@ -21,8 +21,16 @@ export default function Page() {
       <p>
         <a href="mailto:jon@studio-normal.com">Let&rsquo;s work together!</a>
       </p>
-      <p>{"."}</p>
-      <video src="homepage/earth.mp4" autoPlay muted loop playsInline />
+      <figure className="full-bleed">
+        <video
+          src="homepage/earth.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          style={{ maxWidth: "1000px", maxHeight: "500px" }}
+        />
+      </figure>
 
       <h3>Posts</h3>
       <PostList />
