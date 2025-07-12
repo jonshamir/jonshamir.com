@@ -29,7 +29,7 @@ export function Nav({ showNavItems = true }: { showNavItems?: boolean }) {
       {isMounted && (
         <nav className={styles.Nav}>
           <div>
-            <div ref={logoRef} style={{ marginTop: "-0.5rem" }}>
+            <div ref={logoRef}>
               <Link href="/">
                 <MainLogo parentRef={logoRef} />
               </Link>

@@ -24,11 +24,11 @@ export default function Page() {
       </div>
       <h3>Posts</h3>
       <PostList />
+
       <h3>Projects</h3>
       <ProjectList />
-      <br />
-      <br />
 
+      <h3>Contact</h3>
       <div className={styles.SocialLinks}>
         {SOCIAL_LINKS.map((link) => (
           <a
