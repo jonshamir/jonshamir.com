@@ -25,24 +25,3 @@
   }
 }
 
-.SocialLinks {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  padding-top: 1rem;
-
-  & a {
-    padding: 0.5rem;
-    border-radius: var(--rounding-full);
-  }
-
-  & svg {
-    width: 1.2rem;
-    height: 1.2rem;
-  }
-
-  & path {
-    transition: fill var(--transition-defaults);
-    fill: var(--color-text);
-  }
-}

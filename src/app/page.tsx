@@ -3,7 +3,7 @@ import React from "react";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
-import { SOCIAL_LINKS } from "../data/social";
+import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
@@ -30,20 +30,7 @@ export default function Page() {
       <h3>Projects</h3>
       <ProjectList />
       <p />
-      <h3>Contact</h3>
-      <div className={styles.SocialLinks}>
-        {SOCIAL_LINKS.map((link) => (
-          <a
-            key={link.label}
-            href={link.href}
-            target="_blank"
-            rel="noreferrer"
-            className="clickable"
-          >
-            {React.createElement(link.icon)}
-          </a>
-        ))}
-      </div>
+      <SocialLinks />
       <EmailFormWrapper />
     </>
   );
