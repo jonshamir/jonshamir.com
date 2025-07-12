@@ -1,17 +1,12 @@
-"use client";
-
-import clsx from "clsx";
 import Link from "next/link";
 import React from "react";
-import { QueryClient, QueryClientProvider } from "react-query";
 
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
+import { PostList } from "../components/PostList/PostList";
 import projectData from "../data/projects";
 import { SOCIAL_LINKS } from "../data/social";
-import { EmailForm } from "../features/homepage/EmailForm/EmailForm";
+import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
-
-const queryClient = new QueryClient();
 
 export default function Page() {
   return (
@@ -29,6 +24,7 @@ export default function Page() {
         <video src="homepage/earth.mp4" autoPlay muted loop playsInline />
       </div>
       <h3>Posts</h3>
+      <PostList />
       <h3>Projects</h3>
       {projectData.map((project) => (
         <Link href={`projects/${project.slug}`} key={project.slug}>
@@ -54,9 +50,7 @@ export default function Page() {
           </a>
         ))}
       </div>
-      <QueryClientProvider client={queryClient}>
-        <EmailForm />
-      </QueryClientProvider>
+      <EmailFormWrapper />
     </>
   );
 }
