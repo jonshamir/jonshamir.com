@@ -1,4 +1,4 @@
-import clsx from "clsx";
+import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
