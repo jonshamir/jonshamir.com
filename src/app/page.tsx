@@ -47,16 +47,13 @@ export default function Page() {
       {projectData.map((project) => (
         <Link
           href={`projects/${project.slug}`}
-          passHref
-          legacyBehavior
           key={project.slug}
+          className={clsx("clickable", styles.ProjectItem)}
         >
-          <a className={clsx("clickable", styles.ProjectItem)}>
-            <div className={styles.info}>
-              <strong>{project.name}</strong>
-              <span>{project.subtitle}</span>
-            </div>
-          </a>
+          <div className={styles.info}>
+            <strong>{project.name}</strong>
+            <span>{project.subtitle}</span>
+          </div>
         </Link>
       ))}
 
