@@ -10,24 +10,26 @@ import styles from "./page.module.css";
 export default function Page() {
   return (
     <>
-      <div className={styles.IntroSection}>
-        <InlineLogoPlaceholder />
-        <h1>
-          Hi, I&rsquo;m Jon <span>Yonatan</span>
-        </h1>
-        <p style={{ lineHeight: "1.6rem" }}>
-          I work at the intersection of technology and design. I have experience
-          building products, data visualizations, and interactive 3D graphics.
-        </p>
-        <p>Let&rsquo;s work together!</p>
-        <video src="homepage/earth.mp4" autoPlay muted loop playsInline />
-      </div>
+      <InlineLogoPlaceholder />
+      <h1 className={styles.intro}>
+        Hi, I&rsquo;m Jon <span>Yonatan</span>
+      </h1>
+      <p style={{ lineHeight: "1.6rem" }}>
+        I work at the intersection of technology and design. I have experience
+        building products, data visualizations, and interactive 3D graphics.
+      </p>
+      <p>
+        <a href="mailto:jon@studio-normal.com">Let&rsquo;s work together!</a>
+      </p>
+      <p>{"."}</p>
+      <video src="homepage/earth.mp4" autoPlay muted loop playsInline />
+
       <h3>Posts</h3>
       <PostList />
-
+      <p />
       <h3>Projects</h3>
       <ProjectList />
-
+      <p />
       <h3>Contact</h3>
       <div className={styles.SocialLinks}>
         {SOCIAL_LINKS.map((link) => (
@@ -39,7 +41,6 @@ export default function Page() {
             className="clickable"
           >
             {React.createElement(link.icon)}
-            {/* <span>{link.label}</span> */}
           </a>
         ))}
       </div>
