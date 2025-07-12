@@ -3,7 +3,7 @@ import React from "react";
 
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
-import projectData from "../data/projects";
+import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SOCIAL_LINKS } from "../data/social";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
@@ -26,13 +26,7 @@ export default function Page() {
       <h3>Posts</h3>
       <PostList />
       <h3>Projects</h3>
-      {projectData.map((project) => (
-        <Link href={`projects/${project.slug}`} key={project.slug}>
-          <div className={styles.info}>
-            <strong>{project.name}</strong> - <span>{project.subtitle}</span>
-          </div>
-        </Link>
-      ))}
+      <ProjectList />
       <br />
       <br />
 
