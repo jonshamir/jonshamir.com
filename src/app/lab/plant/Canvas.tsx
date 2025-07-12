@@ -1,8 +1,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { Leva } from "leva";
-import { useControls } from "leva";
+import { Leva, useControls } from "leva";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { Plant } from "./Plant";
