@@ -27,36 +27,33 @@ export default function Page() {
         </p>
         <p>Let&rsquo;s work together!</p>
         <video src="homepage/earth.mp4" autoPlay muted loop playsInline />
-        <div className={styles.SocialLinks}>
-          {SOCIAL_LINKS.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              target="_blank"
-              rel="noreferrer"
-              className="clickable"
-            >
-              {React.createElement(link.icon)}
-              {/* <span>{link.label}</span> */}
-            </a>
-          ))}
-        </div>
       </div>
       <h3>Posts</h3>
       <h3>Projects</h3>
       {projectData.map((project) => (
-        <Link
-          href={`projects/${project.slug}`}
-          key={project.slug}
-          className={clsx("clickable", styles.ProjectItem)}
-        >
+        <Link href={`projects/${project.slug}`} key={project.slug}>
           <div className={styles.info}>
-            <strong>{project.name}</strong>
-            <span>{project.subtitle}</span>
+            <strong>{project.name}</strong> - <span>{project.subtitle}</span>
           </div>
         </Link>
       ))}
+      <br />
+      <br />
 
+      <div className={styles.SocialLinks}>
+        {SOCIAL_LINKS.map((link) => (
+          <a
+            key={link.label}
+            href={link.href}
+            target="_blank"
+            rel="noreferrer"
+            className="clickable"
+          >
+            {React.createElement(link.icon)}
+            {/* <span>{link.label}</span> */}
+          </a>
+        ))}
+      </div>
       <QueryClientProvider client={queryClient}>
         <EmailForm />
       </QueryClientProvider>

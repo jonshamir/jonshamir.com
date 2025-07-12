@@ -35,40 +35,6 @@
   }
 }
 
-.ProjectItem {
-  display: block;
-  cursor: pointer;
-  text-decoration: none;
-  position: relative;
-  padding: 0.3rem;
-  margin: 0.2rem 0;
-  color: var(--color-text);
-
-  &:hover {
-    text-decoration: none;
-    .info {
-      transform: translateX(0.4em);
-    }
-  }
-
-  &:active {
-    .info {
-      transform: translateX(0.2em);
-    }
-  }
-
-  .info {
-    transition: transform var(--transition-defaults);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-
-    & span {
-      opacity: 0.6;
-    }
-  }
-}
-
 .SocialLinks {
   display: flex;
   flex-direction: row;
