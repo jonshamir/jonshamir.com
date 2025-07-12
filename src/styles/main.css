@@ -19,7 +19,7 @@
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
 
-  --color-bg: #eaeaea;
+  --color-bg: #f3f1ee;
   --color-bg-rgb: 237, 231, 229;
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
