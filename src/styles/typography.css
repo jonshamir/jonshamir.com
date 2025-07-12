@@ -88,8 +88,13 @@ blockquote {
 
 /* Links */
 a {
-  color: var(--color-link);
-  text-decoration: none;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--color-text-rgb), 0.4);
+  text-underline-offset: 0.1em;
+  transition:
+    color var(--transition-defaults),
+    text-decoration-color var(--transition-defaults);
 
   &:hover {
     text-decoration: underline;
