@@ -26,7 +26,11 @@ export default function Page() {
           muted
           loop
           playsInline
-          style={{ maxWidth: "1000px", maxHeight: "500px" }}
+          style={{
+            maxWidth: "1000px",
+            maxHeight: "500px",
+            backgroundColor: "var(--color-secondary)"
+          }}
         />
       </figure>
 
