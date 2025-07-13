@@ -1,5 +1,3 @@
-import React from "react";
-
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";

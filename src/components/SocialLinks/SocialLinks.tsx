@@ -1,5 +1,3 @@
-import React from "react";
-
 import { SOCIAL_LINKS } from "../../data/social";
 import styles from "./SocialLinks.module.css";
 
