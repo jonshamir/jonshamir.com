@@ -1,3 +1,5 @@
+import { createElement } from "react";
+
 import { SOCIAL_LINKS } from "../../data/social";
 import styles from "./SocialLinks.module.css";
 
@@ -12,7 +14,7 @@ export function SocialLinks() {
           rel="noreferrer"
           className="clickable"
         >
-          {React.createElement(link.icon)}
+          {createElement(link.icon)}
         </a>
       ))}
     </div>
