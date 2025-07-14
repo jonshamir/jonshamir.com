@@ -1,6 +1,7 @@
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
+import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
@@ -27,21 +28,8 @@ export default function Page() {
         <a href="mailto:jon@studio-normal.com">Let&rsquo;s work together!</a>
       </p>
 
-      <figure className="full-bleed">
-        <video
-          src="homepage/earth.mp4"
-          autoPlay
-          muted
-          loop
-          playsInline
-          style={{
-            maxWidth: "1000px",
-            maxHeight: "500px",
-            width: "auto",
-            backgroundColor: "var(--color-secondary)"
-          }}
-        />
-      </figure>
+      <SelectedWork />
+
       <SocialLinks />
 
       <p></p>
