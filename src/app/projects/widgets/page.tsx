@@ -14,7 +14,7 @@ export default function Page() {
         height={100}
       />
       <h1>Widgets Bar</h1>
-      <span className="description">Extension toolbar for Apple Safari</span>
+      <p className="description">Extension toolbar for Apple Safari</p>
 
       <p>
         Widgets Bar was a browser extension for{" "}

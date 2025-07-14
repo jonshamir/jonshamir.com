@@ -5,7 +5,7 @@ export default function Page() {
     <>
       <img src="/projects/herb-tree/hero.png" alt="" className="cover" />
       <h1>Herbarium</h1>
-      <span className="description">Interactive botanic visualization</span>
+      <p className="description">Interactive botanic visualization</p>
       <p>
         An online index of culinary herbs, created as the final project for my
         Visual Communication degree. The plants are organized according to their

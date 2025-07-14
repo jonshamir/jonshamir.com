@@ -11,7 +11,7 @@ export default function Page() {
         <br />
       </p>
       <h1>Unity CG</h1>
-      <span className="description">Teaching Computer Graphics in Unity</span>
+      <p className="description">Teaching Computer Graphics in Unity</p>
 
       <Earth />
 

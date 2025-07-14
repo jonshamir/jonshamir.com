@@ -9,16 +9,20 @@ export default function Page() {
   return (
     <>
       <InlineLogoPlaceholder />
-      <h1 className={styles.intro}>
-        Hi, I&rsquo;m Jon <span>Yonatan</span>
-      </h1>
-      <p style={{ lineHeight: "1.6rem" }}>
+
+      <p className={styles.intro}>
+        <b>
+          Hi, I&rsquo;m Jon <span>(Yonatan)</span>
+        </b>
+      </p>
+      <p>
         I work at the intersection of technology and design. I have experience
         building products, data visualizations, and interactive 3D graphics.
       </p>
       <p>
         <a href="mailto:jon@studio-normal.com">Let&rsquo;s work together!</a>
       </p>
+
       <figure className="full-bleed">
         <video
           src="homepage/earth.mp4"
@@ -29,10 +33,14 @@ export default function Page() {
           style={{
             maxWidth: "1000px",
             maxHeight: "500px",
+            width: "auto",
             backgroundColor: "var(--color-secondary)"
           }}
         />
       </figure>
+      <SocialLinks />
+
+      <p></p>
 
       <h3>Posts</h3>
       <PostList />

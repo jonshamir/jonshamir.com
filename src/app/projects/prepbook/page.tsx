@@ -4,7 +4,7 @@ export default function Page() {
   return (
     <>
       <h1>Prepbook</h1>
-      <span className="description">Clever recipe notebook</span>
+      <p className="description">Clever recipe notebook</p>
       <p>
         <a
           href="https://prepbook.app"

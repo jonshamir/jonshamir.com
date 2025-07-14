@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <>
       <h1>Spacetop</h1>
-      <span className="description">Augmented reality laptop OS</span>
+      <p className="description">Augmented reality laptop OS</p>
       <p>
         Spacetop is a spatial operating system, designed to work with a
         keyboard, mouse and augmented reality glasses as a display. Unlike other

@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <>
       <h1>Muser</h1>
-      <span className="description">Smart music visualizer</span>
+      <p className="description">Smart music visualizer</p>
       <p>
         <a
           href="https://jonshamir.github.io/muser/"

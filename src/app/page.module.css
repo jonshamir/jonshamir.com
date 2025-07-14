@@ -1,4 +1,6 @@
 .intro {
+  cursor: help;
+
   & span {
     display: inline-block;
     font-family: var(--font-body);
@@ -10,7 +12,6 @@
     transition:
       transform var(--transition-defaults),
       opacity var(--transition-defaults);
-    cursor: help;
     line-height: 1rem;
 
     @media screen and (max-width: 40rem) {
@@ -24,4 +25,3 @@
     transform: scale(1);
   }
 }
-

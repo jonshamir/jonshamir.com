@@ -6,7 +6,7 @@ export default function Page() {
   return (
     <>
       <h1>Leaf Map</h1>
-      <span className="description">Interactive map of leaf shapes</span>
+      <p className="description">Interactive map of leaf shapes</p>
       <p>
         <a
           href="https://jonshamir.github.io/leaf-map/"
