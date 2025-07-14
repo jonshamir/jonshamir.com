@@ -1,27 +1,38 @@
 .intro {
   cursor: help;
 
-  & span {
-    display: inline-block;
-    font-family: var(--font-body);
-    font-weight: 500;
-    font-size: 1rem;
-    opacity: 0;
-    transform: scale(0.9);
-    transform-origin: left;
+  .name {
+    position: relative;
+  }
+
+  .jon,
+  .yonatan {
     transition:
       transform var(--transition-defaults),
       opacity var(--transition-defaults);
-    line-height: 1rem;
-
-    @media screen and (max-width: 40rem) {
-      opacity: 0.5;
-      transform: scale(1);
-    }
+    position: absolute;
+    left: 0.3rem;
   }
 
-  &:hover span {
-    opacity: 0.6;
-    transform: scale(1);
+  .jon {
+    opacity: 1;
+    transform: rotateX(0);
+  }
+
+  .yonatan {
+    opacity: 0;
+    transform: rotateX(90deg) translateY(100%);
+  }
+
+  &:hover {
+    .jon {
+      opacity: 0;
+      transform: rotateX(90deg) translateY(-100%);
+    }
+
+    .yonatan {
+      opacity: 1;
+      transform: rotateX(0);
+    }
   }
 }

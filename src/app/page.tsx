@@ -12,7 +12,11 @@ export default function Page() {
 
       <p className={styles.intro}>
         <b>
-          Hi, I&rsquo;m Jon <span>(Yonatan)</span>
+          Hi, I&rsquo;m{" "}
+          <span className={styles.name}>
+            <span className={styles.jon}> Jon</span>
+            <span className={styles.yonatan}> Yonatan</span>
+          </span>
         </b>
       </p>
       <p>
