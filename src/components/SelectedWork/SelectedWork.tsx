@@ -4,12 +4,15 @@ import { useState } from "react";
 
 const videos = [
   "homepage/herbs.mp4",
+  "homepage/scopus.mp4",
   "homepage/earth.mp4",
   "homepage/muser.mp4"
 ];
 
 export function SelectedWork() {
-  const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
+  const [currentVideoIndex, setCurrentVideoIndex] = useState(() =>
+    Math.floor(Math.random() * videos.length)
+  );
 
   const handleVideoEnd = () => {
     setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videos.length);
