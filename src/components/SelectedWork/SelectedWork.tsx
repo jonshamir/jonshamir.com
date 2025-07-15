@@ -16,7 +16,7 @@ export function SelectedWork() {
   };
 
   return (
-    <figure className="full-bleed">
+    <figure className="full-bleed" style={{ height: "500px" }}>
       <video
         src={videos[currentVideoIndex]}
         autoPlay
@@ -25,8 +25,8 @@ export function SelectedWork() {
         onEnded={handleVideoEnd}
         style={{
           maxWidth: "1000px",
-          maxHeight: "500px",
-          width: "100%"
+          width: "100%",
+          height: "100%"
         }}
       />
     </figure>
