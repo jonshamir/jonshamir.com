@@ -29,8 +29,10 @@
     "react-dom": "19.1.0",
     "react-query": "^3.39.3",
     "rehype-katex": "^7.0.1",
+    "rehype-pretty-code": "^0.14.1",
     "remark-math": "^6.0.0",
     "sass": "^1.89.2",
+    "shiki": "^3.8.0",
     "three": "^0.166.1",
     "three-custom-shader-material": "^6.3.7",
     "usehooks-ts": "^3.1.1"

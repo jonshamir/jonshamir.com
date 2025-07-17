@@ -10,20 +10,20 @@ Part of the fun of working on a personal website is to spend unnecessary amounts
 
 The basic idea is quite simple - using CSS variables I define my color palette of the site. The dark version of these colors is overriden when the document gets the the `.dark` class:
 
-```
-  :root {
-    --foreground-color: #ddd;
-    --background-color: #111;
-  }
-  &.dark {
-    --foreground-color: #111;
-    --background-color: #ddd;
-  }
+```css
+:root {
+  --foreground-color: #ddd;
+  --background-color: #111;
+}
+&.dark {
+  --foreground-color: #111;
+  --background-color: #ddd;
+}
 
-  body {
-    background-color: var(--background-color);
-    color: var(--foreground-color);
-  }
+body {
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+}
 ```
 
 When adding and removing the `.dark` class, the browser automatically updates all the elements using the variable:
@@ -32,7 +32,7 @@ SHOW DEMO here
 
 To get a nice transition between the modes, I like to define a `--transition-defaults` and wherever I use one of the theme colors, I add a corresponding transition. Using the defaults variable ensures the colors all change in the same timing
 
-```
+```css
   :root {
     ...
     --transition-defaults: 150ms ease-out;

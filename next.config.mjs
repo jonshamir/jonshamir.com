@@ -1,5 +1,6 @@
 import nextMDX from "@next/mdx";
 import rehypeKatex from "rehype-katex";
+import rehypePrettyCode from "rehype-pretty-code";
 import remarkMath from "remark-math";
 
 const nextConfig = {
@@ -26,7 +27,14 @@ const withMDX = nextMDX({
   extension: /\.mdx?$/,
   options: {
     remarkPlugins: [remarkMath],
-    rehypePlugins: [rehypeKatex],
+    rehypePlugins: [
+      rehypeKatex,
+      [rehypePrettyCode, {
+        theme: "github-dark",
+        defaultLang: "plaintext",
+        grid: false
+      }]
+    ],
     format: "mdx"
   }
 });
