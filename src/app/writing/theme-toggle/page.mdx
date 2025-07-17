@@ -1,21 +1,59 @@
 import { ThemeToggleDemo } from "./ThemeToggleDemo";
 
-# Implementing dark mode for this site
+# Animated dark mode with CSS
 
 How to implement dark mode in a static Next.js site with some bells and wistles
 
-Part of the fun of working on a personal website is to spend unnecessary amounts of time on small details. So I wanted to find a unique way to implement the obligatory dark / light mode. You can check out the final result by clicking the small icon in the upper-left hand corner. The colors should quickly crossfade, while the icon itself does a little spherical animation to invert its colors, inspired by [the moon](link).
+Part of the fun of working on a personal website is to spend unnecessary amounts of time on small details. I wanted to find a unique way to implement the obligatory dark / light mode. You can check out the final result by clicking the small icon in the upper-left hand corner. The colors should quickly crossfade, while the icon itself does a little spherical animation to invert its colors, inspired by [the moon](link).
 
-The site is a static next.js generated blog. If you are interested in the details of how dark mode is implemented, I highly reccommend Josh Comeau's [ Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/), and I go into more details at the end.
+## Dark mode with CSS variables
 
-## Dark mode with React & static nextjs
+The basic idea is quite simple - using CSS variables I define my color palette of the site. The dark version of these colors is overriden when the document gets the the `.dark` class:
+
+```
+  :root {
+    --foreground-color: #ddd;
+    --background-color: #111;
+  }
+  &.dark {
+    --foreground-color: #111;
+    --background-color: #ddd;
+  }
+
+  body {
+    background-color: var(--background-color);
+    color: var(--foreground-color);
+  }
+```
+
+When adding and removing the `.dark` class, the browser automatically updates all the elements using the variable:
+
+SHOW DEMO here
+
+To get a nice transition between the modes, I like to define a `--transition-defaults` and wherever I use one of the theme colors, I add a corresponding transition. Using the defaults variable ensures the colors all change in the same timing
+
+```
+  :root {
+    ...
+    --transition-defaults: 150ms ease-out;
+  }
+  body {
+    transition:
+      background-color var(--transition-defaults),
+      color var(--transition-defaults);
+  }
+```
+
+SHOW DEMO here
+
+This site is a statically generated using next.js generated blog. I will overview the implementation here, but if you are interested in the details of how dark mode is implemented, I highly reccommend Josh Comeau's [ Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/), and I go into more details at the end.
+
+Also inspired by:
+https://www.mattstobbs.com/elderjs-dark-mode/
 
 - Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
 - useColorScheme Hook
 - ColorSchemeToggle component
-
-Also inspired by:
-https://www.mattstobbs.com/elderjs-dark-mode/
 
 ## Animated transition
 

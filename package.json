@@ -21,8 +21,6 @@
     "@types/mdx": "^2.0.13",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
-    "embla-carousel": "^8.6.0",
-    "embla-carousel-react": "^8.6.0",
     "interactjs": "^1.10.27",
     "leva": "0.9.33",
     "next": "^15.3.5",

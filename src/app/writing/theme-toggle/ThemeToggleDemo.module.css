@@ -3,12 +3,12 @@
   --border-width: 4px;
   --size: 60px;
 
-  --foreground-color: #ddd;
-  --background-color: #111;
+  --foreground-color: rgb(221, 221, 221);
+  --background-color: rgb(17, 17, 17);
 
   &.dark {
-    --foreground-color: #111;
-    --background-color: #ddd;
+    --foreground-color: rgb(17, 17, 17);
+    --background-color: rgb(221, 221, 221);
   }
 
   border-radius: var(--rounding-medium);

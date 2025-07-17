@@ -37,18 +37,8 @@
 
 body {
   background-color: var(--color-bg);
-
-  @media (prefers-color-scheme: light) {
-    background-color: var(--color-bg);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    background-color: var(--color-bg);
-  }
-
-  /* font-family: "Supreme Variable", sans-serif; */
-
   color: var(--color-text);
+
   transition:
     color var(--transition-defaults),
     background-color var(--transition-defaults);
