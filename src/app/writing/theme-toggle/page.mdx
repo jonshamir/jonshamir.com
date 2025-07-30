@@ -6,9 +6,9 @@ How to implement dark mode in a static Next.js site with some bells and wistles
 
 Part of the fun of working on a personal website is to spend unnecessary amounts of time on small details. I wanted to find a unique way to implement the obligatory dark / light mode. You can check out the final result by clicking the small icon in the upper-left hand corner. The colors should quickly crossfade, while the icon itself does a little spherical animation to invert its colors, inspired by [the moon](link).
 
-## Dark mode with CSS variables
+## Dark mode with CSS custom properies
 
-The basic idea is quite simple - using CSS variables I define my color palette of the site. The dark version of these colors is overriden when the document gets the the `.dark` class:
+Using CSS custom properies (a.k.a. CSS Variables) we define our "light" color palette, while the dark version of these colors is overriden undet the `.dark` class selector:
 
 ```css
 :root {
@@ -26,11 +26,13 @@ body {
 }
 ```
 
-When adding and removing the `.dark` class, the browser automatically updates all the elements using the variable:
+When adding and removing the `.dark` class, the browser will automatically updates all the elements using these colors:
 
-SHOW DEMO here
+<ThemeToggleDemo showToggle isAnimated={false}>
+  Hello World
+</ThemeToggleDemo>
 
-To get a nice transition between the modes, I like to define a `--transition-defaults` and wherever I use one of the theme colors, I add a corresponding transition. Using the defaults variable ensures the colors all change in the same timing
+To get a nice animation between the modes, we need to declare a transition on the properties using the theme colors. I like to define a `--transition-defaults` variable which I can reuse to keep the timing consistent:
 
 ```css
   :root {
@@ -44,7 +46,9 @@ To get a nice transition between the modes, I like to define a `--transition-def
   }
 ```
 
-SHOW DEMO here
+<ThemeToggleDemo showToggle isAnimated={true}>
+  {"Hello World"}
+</ThemeToggleDemo>
 
 This site is a statically generated using next.js generated blog. I will overview the implementation here, but if you are interested in the details of how dark mode is implemented, I highly reccommend Josh Comeau's [ Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/), and I go into more details at the end.
 
@@ -69,7 +73,7 @@ For this website I wanted to create a nice theme toggle.
 I originally created a CSS animation to represent the phases of the moon a long time ago. A while bac
 In this post I'm going to break down the creation of the dark mode toggle in this website, which has sort of a 3D effect to it, inspired by the moon. you can try it out here:
 
-<ThemeToggleDemo />
+<ThemeToggleDemo showToggle />
 _Demo embed_ https://codepen.io/shamir/pen/YGbbNX
 
 So how does it work?

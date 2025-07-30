@@ -1,5 +1,6 @@
 .ThemeToggleDemo {
-  --duration: 0.5s;
+  --duration: 0s;
+  --transition-timing: var(--duration) ease-out;
   --border-width: 4px;
   --size: 60px;
 
@@ -13,11 +14,20 @@
 
   border-radius: var(--rounding-medium);
   background-color: var(--background-color);
-  transition: background-color var(--duration) ease-out;
+  color: var(--foreground-color);
+  transition:
+    background-color var(--transition-timing),
+    color var(--transition-timing);
   padding: 40px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.animated {
+  --duration: 0.5s;
 }
 
 .ThemeToggle {
