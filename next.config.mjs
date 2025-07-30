@@ -29,24 +29,32 @@ const withMDX = nextMDX({
     remarkPlugins: [remarkMath],
     rehypePlugins: [
       rehypeKatex,
-      [rehypePrettyCode, {
-        theme: "github-dark",
-        defaultLang: "plaintext",
-        grid: false,
-        onVisitLine(node) {
-          // Prevent lines from collapsing in `display: grid` mode, and allow empty
-          // lines to be copy/pasted
-          if (node.children.length === 0) {
-            node.children = [{ type: 'text', value: ' ' }];
+      [
+        rehypePrettyCode,
+        {
+          // theme: "github-dark",
+          // keepBackground: false,
+          theme: {
+            dark: "github-dark",
+            light: "github-light"
+          },
+          defaultLang: "plaintext",
+          grid: false,
+          onVisitLine(node) {
+            // Prevent lines from collapsing in `display: grid` mode, and allow empty
+            // lines to be copy/pasted
+            if (node.children.length === 0) {
+              node.children = [{ type: "text", value: " " }];
+            }
+          },
+          onVisitHighlightedLine(node) {
+            node.properties.className.push("line--highlighted");
+          },
+          onVisitHighlightedChars(node) {
+            node.properties.className.push("chars--highlighted");
           }
-        },
-        onVisitHighlightedLine(node) {
-          node.properties.className.push('line--highlighted');
-        },
-        onVisitHighlightedChars(node) {
-          node.properties.className.push('chars--highlighted');
         }
-      }]
+      ]
     ],
     format: "mdx"
   }
