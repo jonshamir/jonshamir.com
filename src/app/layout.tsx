@@ -1,4 +1,4 @@
-import "@fontsource-variable/work-sans";
+import "@fontsource-variable/manrope";
 import "katex/dist/katex.min.css";
 import "../styles/main.css";
 
