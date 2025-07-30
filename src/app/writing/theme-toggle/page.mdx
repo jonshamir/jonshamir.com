@@ -40,15 +40,15 @@ When adding and removing the `.dark` class, the browser will automatically updat
 To get a nice animation between the modes, we need to declare a transition on the properties using the theme colors. I like to define a `--transition-defaults` variable which I can reuse to keep the timing consistent:
 
 ```css
-  :root {
-    ...
-    --transition-defaults: 150ms ease-out;
-  }
-  body {
-    transition:
-      background-color var(--transition-defaults),
-      color var(--transition-defaults);
-  }
+:root {
+  ...
+  --transition-defaults: 150ms ease-out;
+}
+body {
+  transition:
+    background-color var(--transition-defaults),
+    color var(--transition-defaults);
+}
 ```
 
 <ThemeToggleDemo showToggle isAnimated={true}>
