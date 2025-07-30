@@ -35,9 +35,9 @@ export function useColorScheme() {
     ) as HTMLLinkElement;
     if (favicon === null) return;
     if (colorScheme === "dark") {
-      favicon.href = String(faviconDark.src);
+      favicon.href = faviconDark.src;
     } else {
-      favicon.href = String(faviconLight.src);
+      favicon.href = faviconLight.src;
     }
   }, [colorScheme]);
 
