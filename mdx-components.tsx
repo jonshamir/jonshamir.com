@@ -6,15 +6,14 @@ function isExternalLink(href: string): boolean {
 
 function CustomLink(props: React.ComponentProps<"a">): JSX.Element {
   const { href, children, className, ...rest } = props;
+  const isExternal = href && isExternalLink(href);
 
   return (
     <a
       href={href}
-      className={
-        href && isExternalLink(href)
-          ? `outlink ${className || ""}`.trim()
-          : className
-      }
+      className={isExternal ? `outlink ${className || ""}`.trim() : className}
+      target={isExternal ? "_blank" : undefined}
+      rel={isExternal ? "noreferrer" : undefined}
       {...rest}
     >
       {children}
