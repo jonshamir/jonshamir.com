@@ -27,11 +27,13 @@ export default function Page() {
 
       <SelectedWork />
 
+      <SocialLinks />
+
       <p></p>
 
-      {/* <h3>Posts</h3>
+      <h3>Posts</h3>
       <PostList />
-      <p /> */}
+      <p />
       <h3>Projects</h3>
       <ProjectList />
       <p />
