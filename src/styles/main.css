@@ -58,12 +58,19 @@ body {
 
 .outlink {
   &::after {
-    content: " ↗";
+    content: " ↗";
     font-family: "Satoshi";
     font-weight: 700;
     font-size: 0.8em;
-    transition: transform var(--transition-defaults);
+    transition: color var(--transition-defaults);
     transform: translate(0, 0.15em);
+    color: rgba(var(--color-text-rgb), 0.5);
+  }
+
+  &:hover {
+    &::after {
+      color: rgba(var(--color-text-rgb), 1);
+    }
   }
 }
 
