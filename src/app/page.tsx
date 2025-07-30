@@ -1,4 +1,5 @@
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
+import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
@@ -27,11 +28,13 @@ export default function Page() {
 
       <SelectedWork />
 
+      <SocialLinks />
+
       <p></p>
 
-      {/* <h3>Posts</h3>
+      <h3>Posts</h3>
       <PostList />
-      <p /> */}
+      <p />
       <h3>Projects</h3>
       <ProjectList />
       <p />
