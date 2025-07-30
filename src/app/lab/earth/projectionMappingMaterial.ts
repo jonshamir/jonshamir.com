@@ -154,10 +154,10 @@ declare global {
   /* eslint-disable-next-line @typescript-eslint/no-namespace */
   namespace JSX {
     interface IntrinsicElements {
-      projectionMappingMaterial: ReactThreeFiber.Object3DNode<
-        ProjectionMappingMaterialProps,
-        ProjectionMappingMaterialProps
-      >;
+      projectionMappingMaterial: ReactThreeFiber.ThreeElement<
+        typeof ProjectionMappingMaterial
+      > &
+        ProjectionMappingMaterialProps;
     }
   }
 }
