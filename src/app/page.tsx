@@ -10,15 +10,13 @@ export default function Page() {
     <>
       <InlineLogoPlaceholder />
 
-      <p className={styles.intro}>
-        <b>
-          Hi, I&rsquo;m{" "}
-          <span className={styles.name}>
-            <span className={styles.jon}> Jon</span>
-            <span className={styles.yonatan}> Yonatan</span>
-          </span>
-        </b>
-      </p>
+      <h2 className={styles.intro}>
+        Hi, I&rsquo;m{" "}
+        <span className={styles.name}>
+          <span className={styles.jon}> Jon</span>
+          <span className={styles.yonatan}> Yonatan</span>
+        </span>
+      </h2>
       <p>
         I work at the intersection of technology and design. I have experience
         building products, data visualizations, and interactive 3D graphics.
