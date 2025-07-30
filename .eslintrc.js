@@ -92,5 +92,5 @@ module.exports = {
       }
     ]
   },
-  ignorePatterns: ["**/*.js", "**/*.md"]
+  ignorePatterns: ["**/*.js", "**/*.md", "**/*.mdx"]
 };

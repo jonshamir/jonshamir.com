@@ -1,4 +1,4 @@
-import "@fontsource-variable/work-sans";
+import "@fontsource-variable/manrope";
 import "katex/dist/katex.min.css";
 import "../styles/main.css";
 
@@ -39,7 +39,6 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                //alert('No UI for you!');
                 function getInitialColorScheme() {
                   const persistedColorScheme = window.localStorage.getItem('color-scheme');
                   const hasPersistedPreference = typeof persistedColorScheme === 'string';
@@ -59,7 +58,6 @@ export default function RootLayout({
                 }
 
                 const colorScheme = getInitialColorScheme();
-                console.log(colorScheme);
 
                 if (colorScheme === 'dark') {
                   document.documentElement.classList.add('dark');

@@ -1,0 +1,42 @@
+pre[data-theme] {
+  padding: 0.5rem;
+  border-radius: var(--rounding-medium);
+  overflow-x: auto;
+  width: 100%;
+  background-color: rgba(var(--color-text-rgb), 0.05);
+  outline: 1px solid rgba(var(--color-text-rgb), 0.15);
+  transition:
+    background-color var(--transition-defaults),
+    outline var(--transition-defaults);
+}
+
+code[data-theme] {
+  font-family: "Fira Code", monospace;
+}
+
+[data-line] {
+  padding: 0 0.2rem;
+}
+
+.line--highlighted {
+  background-color: rgba(255, 255, 0, 0.1);
+}
+
+code {
+  border-radius: var(--rounding-small);
+  padding: 0.1em 0.05em;
+}
+
+code[data-theme*=" "],
+code[data-theme*=" "] span {
+  color: var(--shiki-light);
+  transition: color var(--transition-defaults);
+}
+
+.dark {
+  code[data-theme*=" "],
+  code[data-theme*=" "] span {
+    color: var(--shiki-dark);
+    transition: color var(--transition-defaults);
+  }
+}

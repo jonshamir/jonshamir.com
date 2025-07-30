@@ -1,5 +1,5 @@
 import { OrbitControls } from "@react-three/drei";
-import { useControls } from "leva";
+import { Leva, useControls } from "leva";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { BlurredRect } from "./BlurredRect";
@@ -45,23 +45,26 @@ export default function RectCanvas() {
   });
 
   return (
-    <ThreeCanvas
-      camera={{ position: [0, 0, 10], zoom: 3.5 }}
-      isFullscreen={true}
-    >
-      <OrbitControls enablePan={false} />
-      <ShadowRect
-        size={controls.size}
-        color={controls.color}
-        radius={controls.radius}
-        offset={controls.blur}
-      />
-      <Rect
-        size={{ x: 10, y: 5 }}
-        color="#999"
-        radius={1}
-        position={[0, 0, -0.01]}
-      />
-    </ThreeCanvas>
+    <>
+      <Leva />
+      <ThreeCanvas
+        camera={{ position: [0, 0, 10], zoom: 3.5 }}
+        isFullscreen={true}
+      >
+        <OrbitControls enablePan={false} />
+        <ShadowRect
+          size={controls.size}
+          color={controls.color}
+          radius={controls.radius}
+          offset={controls.blur}
+        />
+        <Rect
+          size={{ x: 10, y: 5 }}
+          color="#999"
+          radius={1}
+          position={[0, 0, -0.01]}
+        />
+      </ThreeCanvas>
+    </>
   );
 }

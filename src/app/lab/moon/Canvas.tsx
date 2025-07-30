@@ -2,11 +2,12 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
+import { KernelSize } from "postprocessing";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
-import { Moon } from "./Moon";
+import { MoonModel } from "./MoonModel";
 
-export default function Earth() {
+export default function Moon() {
   const postProcessing = true;
   return (
     <>
@@ -17,15 +18,16 @@ export default function Earth() {
       >
         <color attach="background" args={["#101010"]} />
         <OrbitControls enablePan={false} enableZoom={true} />
-        <Moon />
+        <MoonModel />
         <EffectComposer>
           {postProcessing ? (
             <>
               <Bloom
                 intensity={0.3}
-                luminanceThreshold={0.01}
-                luminanceSmoothing={0.25}
-                kernelSize={4}
+                luminanceThreshold={0.1}
+                kernelSize={KernelSize.LARGE}
+                radius={1}
+                levels={5}
               />
               <Noise opacity={0.05} />
             </>

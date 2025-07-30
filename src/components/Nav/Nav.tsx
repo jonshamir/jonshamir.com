@@ -1,6 +1,6 @@
 "use client";
 
-import clsx from "clsx";
+import { clsx } from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -10,8 +10,8 @@ import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
 
 const NAV_ITEMS = [
-  { title: "About", href: "/" },
-  { title: "Writing", href: "/writing" },
+  { title: "Home", href: "/" },
+  { title: "Posts", href: "/writing" },
   { title: "Lab", href: "/lab" }
 ];
 
@@ -29,7 +29,7 @@ export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
       {isMounted && (
         <nav className={styles.Nav}>
           <div>
-            <div ref={logoRef} style={{ marginTop: "-0.5rem" }}>
+            <div ref={logoRef}>
               <Link href="/">
                 <MainLogo parentRef={logoRef} />
               </Link>

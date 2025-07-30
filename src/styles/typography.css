@@ -1,5 +1,5 @@
 :root {
-  --font-titles: "Satoshi", sans-serif;
+  --font-titles: "Manrope", sans-serif;
   --font-body: "Supreme-Variable", sans-serif;
 
   font-family: var(--font-body);
@@ -17,7 +17,7 @@
 
 p {
   max-width: 40em;
-  margin: 0.6rem 0;
+  margin: 0.4rem 0;
 }
 
 i {
@@ -27,6 +27,7 @@ i {
 ul,
 ol {
   margin-top: 0.5rem;
+  padding-inline-start: 1.5rem;
 }
 
 li {
@@ -44,40 +45,37 @@ h3,
 h4,
 h5,
 h6 {
-  margin-top: 0.5rem;
+  margin-top: 0.6em;
+  margin-bottom: 0.2em;
   font-family: var(--font-titles);
-  font-weight: 500;
   font-optical-sizing: auto;
 }
 
 h1 {
-  font-size: 2.5em;
-  font-weight: 500;
+  font-size: 1.8em;
   line-height: 1.2em;
 }
 
 h2 {
-  font-size: 2em;
-  font-weight: 550;
+  font-size: 1.4em;
 }
 
 h3 {
-  font-size: 1.5em;
-  font-weight: 550;
+  font-size: 1.2em;
 }
 
 h4 {
-  font-size: 1.2em;
-  font-weight: 600;
+  font-size: 1em;
+  font-weight: 800;
 }
 
 h5 {
-  font-size: 1em;
-  font-weight: 700;
+  font-size: 0.85em;
+  font-weight: 800;
 }
 
 h6 {
-  font-size: 0.83em;
+  font-size: 0.8em;
   font-weight: 800;
 }
 
@@ -88,8 +86,13 @@ blockquote {
 
 /* Links */
 a {
-  color: var(--color-link);
-  text-decoration: none;
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--color-text-rgb), 0.35);
+  text-underline-offset: 0.1em;
+  transition:
+    color var(--transition-defaults),
+    text-decoration-color var(--transition-defaults);
 
   &:hover {
     text-decoration: underline;
@@ -150,6 +153,7 @@ button,
   background-color: var(--color-accent);
   color: white;
   transition: background-color var(--transition-defaults);
+  text-decoration: none;
 
   &:hover {
     background-color: var(--color-link);
@@ -170,9 +174,6 @@ fieldset {
 /* Misc */
 .description {
   opacity: 0.7;
-  /* font-style: italic; */
-  margin-bottom: 0.5rem;
-  font-size: 1.4em;
 }
 
 figure {

@@ -15,10 +15,7 @@ export default function Page() {
     <>
       <h1>Lab</h1>
       <p>Small projects & experiments</p>
-      <p>
-        <br />
-      </p>
-      <div style={{ display: "flex", gap: "1rem" }}>
+      <div style={{ display: "flex", flexWrap: "wrap" }}>
         {EXPERIMENTS.map((e) => (
           <LabItem
             key={e.slug}

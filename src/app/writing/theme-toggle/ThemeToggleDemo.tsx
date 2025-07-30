@@ -1,17 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 
 import styles from "./ThemeToggleDemo.module.css";
 
-export function ThemeToggleDemo() {
+type ThemeToggleDemoProps = {
+  showToggle: boolean;
+  isAnimated: boolean;
+  children: ReactNode;
+};
+
+export function ThemeToggleDemo({
+  showToggle,
+  isAnimated,
+  children
+}: ThemeToggleDemoProps) {
   const [isDark, setIsDark] = useState(false);
   return (
-    <div className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}`}>
-      <button
-        className={`${styles.ThemeToggle}`}
-        onClick={() => setIsDark(!isDark)}
-      />
+    <div
+      className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
+    >
+      {children}
+      {showToggle && (
+        <button
+          className={`${styles.ThemeToggle}`}
+          onClick={() => setIsDark(!isDark)}
+        />
+      )}
     </div>
   );
 }

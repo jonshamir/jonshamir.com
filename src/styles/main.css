@@ -4,10 +4,11 @@
 @import "muser.css";
 @import "satoshi.css";
 @import "supreme.css";
+@import "code.css";
 
 :root {
   --content-max-width: 50rem;
-  --transition-defaults: 200ms ease-out;
+  --transition-defaults: 150ms ease-out;
 
   --rounding-small: 0.4rem;
   --rounding-medium: 0.6rem;
@@ -19,7 +20,7 @@
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
 
-  --color-bg: #ede7e5;
+  --color-bg: #f3f1ee;
   --color-bg-rgb: 237, 231, 229;
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
@@ -31,24 +32,14 @@
   --color-text: #e0dacf;
   --color-text-rgb: 224, 218, 207;
 
-  --color-bg: #2f3138;
+  --color-bg: #212223;
   --color-bg-rgb: 47, 49, 56;
 }
 
 body {
   background-color: var(--color-bg);
-
-  @media (prefers-color-scheme: light) {
-    background-color: var(--color-bg);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    background-color: var(--color-bg);
-  }
-
-  /* font-family: "Supreme Variable", sans-serif; */
-
   color: var(--color-text);
+
   transition:
     color var(--transition-defaults),
     background-color var(--transition-defaults);
@@ -67,12 +58,19 @@ body {
 
 .outlink {
   &::after {
-    content: " ↗";
+    content: " ↗";
     font-family: "Satoshi";
     font-weight: 700;
     font-size: 0.8em;
-    transition: transform var(--transition-defaults);
+    transition: color var(--transition-defaults);
     transform: translate(0, 0.15em);
+    color: rgba(var(--color-text-rgb), 0.5);
+  }
+
+  &:hover {
+    &::after {
+      color: rgba(var(--color-text-rgb), 1);
+    }
   }
 }
 
@@ -100,7 +98,9 @@ body {
 }
 
 .inlinePreview {
-  display: inline;
+  display: inline-block;
+  height: 1.4em;
+  line-height: 1.4em;
   cursor: help;
   color: rgba(var(--color-text-rgb));
   transition:
@@ -110,7 +110,7 @@ body {
   white-space: nowrap;
   display: inline-block;
   background-color: rgba(var(--color-text-rgb), 0.1);
-  padding: 0 0.4em;
+  padding: 0 0.6em;
   margin: 0.1em 0;
   border-radius: var(--rounding-full);
 }

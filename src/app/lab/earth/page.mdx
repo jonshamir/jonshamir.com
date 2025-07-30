@@ -1,11 +1,11 @@
-import CanvasWrapper from "./CanvasWrapper";
+import Canvas from "./Canvas";
 
 # Earth Projections
 
-<span className="description">
+<p className="description">
   This is an experiment implementing a spherical projection mapping shader in
   WebGL
-</span>
+</p>
 
 Usually, textures are mapped to 3D meshes using _explicit UV mapping_ - each vertex is assigned specific UV (texture-space) coordinates. However, UV coordinates can also be calculated procedurally from vertex positions.
 
@@ -13,7 +13,7 @@ Usually, textures are mapped to 3D meshes using _explicit UV mapping_ - each ver
 
 Click the shapes to see the Earth projected onto them using spherical projection mapping:
 
-<CanvasWrapper />
+<Canvas />
 
 In the case of spherical projection mapping, we map each vertex to a point on a sphere, ignoring the radius. Given cartesian coordinates $$(x,y,z)$$ of a vertex we want to find its spherical coordinates $$(r,\theta,\phi)$$:
 
