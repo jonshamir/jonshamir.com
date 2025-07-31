@@ -26,7 +26,7 @@
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 }
 
-.dark {
+:root.dark {
   --color-link: #7a8eff;
 
   --color-text: #e0dacf;

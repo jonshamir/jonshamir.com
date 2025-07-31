@@ -20,7 +20,8 @@ Using CSS custom properies (a.k.a. CSS Variables) we define our "light" color pa
   --foreground-color: #ddd;
   --background-color: #111;
 }
-&.dark {
+
+:root.dark {
   --foreground-color: #111;
   --background-color: #ddd;
 }
@@ -44,6 +45,7 @@ To get a nice animation between the modes, we need to declare a transition on th
   ...
   --transition-defaults: 400ms ease-out;
 }
+
 body {
   transition:
     background-color var(--transition-defaults),
@@ -103,8 +105,6 @@ CSS
 .ThemeToggle {
   --size: 60px;
   --border-width: 2px;
-  --foreground-color: #ccc;
-  --background-color: #222;
 }
 ```
 

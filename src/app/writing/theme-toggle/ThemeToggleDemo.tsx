@@ -17,16 +17,18 @@ export function ThemeToggleDemo({
 }: ThemeToggleDemoProps) {
   const [isDark, setIsDark] = useState(false);
   return (
-    <div
-      className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
-    >
-      {children}
-      {showToggle && (
-        <button
-          className={`${styles.ThemeToggle}`}
-          onClick={() => setIsDark(!isDark)}
-        />
-      )}
-    </div>
+    <figure>
+      <div
+        className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
+      >
+        {children}
+        {showToggle && (
+          <button
+            className={`${styles.ThemeToggle}`}
+            onClick={() => setIsDark(!isDark)}
+          />
+        )}
+      </div>
+    </figure>
   );
 }
