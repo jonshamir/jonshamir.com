@@ -20,7 +20,7 @@
   --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
 
-  --color-bg: #f3f1ee;
+  --color-bg: #e8e3e1;
   --color-bg-rgb: 237, 231, 229;
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
