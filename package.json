@@ -21,6 +21,7 @@
     "@types/mdx": "^2.0.13",
     "clsx": "^2.1.1",
     "d3": "^7.9.0",
+    "feather-icons": "^4.29.2",
     "interactjs": "^1.10.27",
     "leva": "0.9.33",
     "next": "^15.3.5",
@@ -35,6 +36,7 @@
     "shiki": "^3.8.0",
     "three": "^0.166.1",
     "three-custom-shader-material": "^6.3.7",
+    "unist-util-visit": "^5.0.0",
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {

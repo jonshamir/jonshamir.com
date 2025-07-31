@@ -2,7 +2,9 @@ import "@fontsource-variable/manrope";
 import "katex/dist/katex.min.css";
 import "../styles/main.css";
 
+import { readFileSync } from "fs";
 import type { Metadata } from "next";
+import { join } from "path";
 import { Suspense } from "react";
 
 import { Nav } from "../components/Nav/Nav";
@@ -25,6 +27,11 @@ export const metadata: Metadata = {
     images: { url: "https://jonshamir.com/profile.png", alt: "Jon Shamir" }
   }
 };
+
+const featherSprite = readFileSync(
+  join(process.cwd(), "node_modules/feather-icons/dist/feather-sprite.svg"),
+  "utf8"
+);
 
 export default function RootLayout({
   children
@@ -69,6 +76,7 @@ export default function RootLayout({
       </head>
       <AnalyticsProvider>
         <body>
+          <div dangerouslySetInnerHTML={{ __html: featherSprite }} hidden />
           <Suspense fallback={null}>
             <PageViewTracker />
           </Suspense>
