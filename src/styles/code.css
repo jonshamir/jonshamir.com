@@ -76,10 +76,6 @@ code[data-theme*=" "] span {
   background: rgba(var(--color-text-rgb), 0.15);
 }
 
-.copy-button:active {
-  transform: scale(0.9);
-}
-
 .copy-button:disabled {
   opacity: 1;
   visibility: visible;
