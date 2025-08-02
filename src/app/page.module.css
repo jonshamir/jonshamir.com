@@ -1,5 +1,6 @@
 .intro {
   cursor: help;
+  animation-delay: 0.2s !important;
 
   .name {
     position: relative;
@@ -34,5 +35,19 @@
       opacity: 1;
       transform: rotateX(0);
     }
+  }
+}
+
+.fadeIn {
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in 0.35s forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }

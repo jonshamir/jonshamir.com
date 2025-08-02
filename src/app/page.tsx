@@ -10,18 +10,18 @@ export default function Page() {
     <>
       <InlineLogoPlaceholder />
 
-      <h2 className={styles.intro}>
+      <h2 className={`${styles.intro} ${styles.fadeIn}`}>
         Hi, I&rsquo;m{" "}
         <span className={styles.name}>
           <span className={styles.jon}> Jon</span>
           <span className={styles.yonatan}> Yonatan</span>
         </span>
       </h2>
-      <p>
+      <p className={styles.fadeIn}>
         I work at the intersection of technology and design. I have experience
         building products, data visualizations, and interactive 3D graphics.
       </p>
-      <p>
+      <p className={styles.fadeIn}>
         <a href="mailto:jon@studio-normal.com">Let&rsquo;s work together!</a>
       </p>
 

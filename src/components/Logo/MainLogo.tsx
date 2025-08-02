@@ -30,7 +30,7 @@ export function MainLogo({
 
   // Transform calculations
   useEffect(() => {
-    if (logoRef.current === null) return;
+    if (!logoRef.current) return;
 
     const placeholder = document.getElementById("InlineLogoPlaceholder");
 

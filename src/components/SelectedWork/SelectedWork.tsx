@@ -3,7 +3,6 @@
 import { useState } from "react";
 
 const videos = [
-  // "homepage/cavorite.mp4",
   "/homepage/herbs.mp4",
   "/homepage/scopus.mp4",
   "/homepage/earth.mp4",
