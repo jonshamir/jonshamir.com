@@ -5,7 +5,7 @@ import { ReactNode, useState } from "react";
 import styles from "./ThemeToggleDemo.module.css";
 
 type ThemeToggleDemoProps = {
-  showFullToggle: boolean;
+  showFancyToggle: boolean;
   isAnimated: boolean;
   children: ReactNode;
 };

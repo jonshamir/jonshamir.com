@@ -1,16 +1,33 @@
 import { ThemeToggleDemo } from "./ThemeToggleDemo";
+import { transform } from "next/dist/build/swc/generated-native";
 
-# Animated dark mode with CSS
+# Animated dark mode transition with CSS
 
-How to implement an animated dark mode transition using CSS custom properties
+For my website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result by clicking the small icon in the upper-left corner - colors should quickly crossfade, while the toggle itself does a little spherical animation to invert its colors.
 
-Part of the fun of working on a personal website is to spend unnecessary amounts of time on small details. For this site, I wanted to have a nice transition to reduce the harshness when switching betwewen light & dark mode.
+This site is a statically generated Next.js React app.
 
-You can check out the final result by clicking the small icon in the upper-left hand corner. The colors should quickly crossfade, while the icon itself does a little spherical animation to invert its colors.
+I will be focusing on the CSS implementation of the effect. The implementation of the logic itself in React is mostly based on Josh Comeau’s [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs’s post](https://www.mattstobbs.com/elderjs-dark-mode/).
 
-I wanted to share my technique here, it is very much inspired by Josh Comeau's [ Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/), and
+- Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
+- useColorScheme Hook
+- ColorSchemeToggle component
 
-Also inspired by [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/)
+<svg className="sun-and-moon" width="48" height="48" viewBox="0 0 24 24">
+  <circle
+    class="sun"
+    cx="12"
+    cy="12"
+    r="8"
+    mask="url(#moon-mask)"
+    fill="currentColor"
+  />
+
+  <mask class="moon" id="moon-mask">
+    <rect x="0" y="0" width="100%" height="100%" fill="white" />
+    <path d="M 12 5 A 7 7 0 0 1 12 19" fill="black" />
+  </mask>
+</svg>
 
 ## Defining the color palette and transition
 
@@ -31,13 +48,13 @@ body.dark {
 }
 ```
 
-When adding / removing the `.dark` class from the document, the browser will automatically update all the elements using the variables we defined:
+When the `.dark` class is added or removed, the browser will automatically update all the elements using the variables we defined:
 
 <ThemeToggleDemo isAnimated={false}>
   Click to toggle `.dark` class:
 </ThemeToggleDemo>
 
-To get a nice animation between the color modes, we can declare a transition for any property using the variables. For consistency across a website, I like to define a `--transition-defaults` variable which I can reuse:
+To get a nice animation between the color modes, we can declare a transition for any property using the variables. For consistency between different elements, I like to define a `--transition-defaults` variable which I can reuse:
 
 ```css
 body {
@@ -54,18 +71,8 @@ body {
   Click to toggle `.dark` class:
 </ThemeToggleDemo>
 
-This site is a statically generated using next.js generated blog. I will overview the implementation here, but if you are interested in the details of how dark mode is implemented, I highly recommend Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/), and I go into more details at the end.
+## Creating the fancy toggle
 
-Also inspired by:
-https://www.mattstobbs.com/elderjs-dark-mode/
-
-- Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
-- useColorScheme Hook
-- ColorSchemeToggle component
-
-## Making the fancy toggle
-
-So how does it work?
 The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color
 On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
@@ -73,7 +80,7 @@ On animating, the hidden inner circle is animated to a scale of scaleX(1), then 
 <ThemeToggleDemo showToggle />
 _Demo embed_ https://codepen.io/shamir/pen/YGbbNX
 
-## The Setup
+### The Setup
 
 HTML button element
 
@@ -93,7 +100,7 @@ CSS
 }
 ```
 
-## The Animation
+### Animating the toggle
 
 The animation is split into 4 parts:
 

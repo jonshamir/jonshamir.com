@@ -4,12 +4,15 @@
   --border-width: 4px;
   --size: 60px;
 
-  --foreground-color: rgb(221, 221, 221);
-  --background-color: rgb(17, 17, 17);
+  --foreground-rgb: 221, 221, 221;
+  --background-rgb: 17, 17, 17;
+
+  --foreground-color: rgb(var(--foreground-rgb));
+  --background-color: rgb(var(--background-rgb));
 
   &.dark {
-    --foreground-color: rgb(17, 17, 17);
-    --background-color: rgb(221, 221, 221);
+    --foreground-rgb: 17, 17, 17;
+    --background-rgb: 221, 221, 221;
   }
 
   width: 100%;
@@ -35,25 +38,25 @@
 }
 
 .ThemeToggleDemo button {
-  background-color: var(--foreground-color);
-  border: none;
-  color: var(--background-color);
+  color: var(--foreground-color);
+  background-color: rgba(var(--foreground-rgb), 0.2);
+  border: 2px solid rgba(var(--foreground-rgb), 0.2);
   transition:
     color var(--transition-timing),
-    background-color var(--transition-timing);
+    background-color var(--transition-timing),
+    border-color var(--transition-timing);
   outline: none;
-  opacity: 0.5;
 }
 
 .ThemeToggleDemo button:hover,
 .ThemeToggleDemo button:focus {
-  background-color: var(--foreground-color);
-  color: var(--background-color);
+  color: var(--foreground-color);
   outline: none;
+  border: 2px solid rgba(var(--foreground-rgb), 0.2);
 }
 
 .ThemeToggleDemo button:hover {
-  opacity: 0.7;
+  background-color: rgba(var(--foreground-rgb), 0.3);
 }
 
 .animated {
