@@ -1,5 +1,4 @@
 import { ThemeToggleDemo } from "./ThemeToggleDemo";
-import { transform } from "next/dist/build/swc/generated-native";
 
 # Animated dark mode transition with CSS
 
@@ -25,7 +24,7 @@ I will be focusing on the CSS implementation of the effect. The implementation o
 
   <mask class="moon" id="moon-mask">
     <rect x="0" y="0" width="100%" height="100%" fill="white" />
-    <path d="M 12 5 A 7 7 0 0 1 12 19" fill="black" />
+    <path d="M 12 5 A 7 7 0 0 1 12 19" fill="black" style={{transformOrigin: "center", transform: "rotateY(180deg)"}} />
   </mask>
 </svg>
 
