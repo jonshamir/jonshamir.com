@@ -5,13 +5,13 @@ import { ReactNode, useState } from "react";
 import styles from "./ThemeToggleDemo.module.css";
 
 type ThemeToggleDemoProps = {
-  showToggle: boolean;
+  showFullToggle: boolean;
   isAnimated: boolean;
   children: ReactNode;
 };
 
 export function ThemeToggleDemo({
-  showToggle,
+  showFullToggle,
   isAnimated,
   children
 }: ThemeToggleDemoProps) {
@@ -22,7 +22,12 @@ export function ThemeToggleDemo({
         className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
       >
         {children}
-        {showToggle && (
+        {!showFullToggle && (
+          <button onClick={() => setIsDark(!isDark)}>
+            {isDark ? "Set Dark Mode" : "Set Light Mode"}
+          </button>
+        )}
+        {showFullToggle && (
           <button
             className={`${styles.ThemeToggle}`}
             onClick={() => setIsDark(!isDark)}

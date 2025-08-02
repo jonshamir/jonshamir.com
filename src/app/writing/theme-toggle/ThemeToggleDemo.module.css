@@ -27,6 +27,35 @@
   gap: 0.5rem;
 }
 
+.ThemeToggleDemo code[data-theme*=" "] span {
+  color: var(--foreground-color);
+  transition:
+    background-color var(--transition-timing),
+    color var(--transition-timing);
+}
+
+.ThemeToggleDemo button {
+  background-color: var(--foreground-color);
+  border: none;
+  color: var(--background-color);
+  transition:
+    color var(--transition-timing),
+    background-color var(--transition-timing);
+  outline: none;
+  opacity: 0.5;
+}
+
+.ThemeToggleDemo button:hover,
+.ThemeToggleDemo button:focus {
+  background-color: var(--foreground-color);
+  color: var(--background-color);
+  outline: none;
+}
+
+.ThemeToggleDemo button:hover {
+  opacity: 0.7;
+}
+
 .animated {
   --duration: 0.4s;
 }

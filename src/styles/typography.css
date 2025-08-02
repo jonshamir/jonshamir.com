@@ -90,7 +90,7 @@ blockquote {
 a {
   color: var(--color-text);
   text-decoration: underline;
-  text-decoration-color: rgba(var(--color-text-rgb), 0.35);
+  text-decoration-color: rgba(var(--color-text-rgb), 0.4);
   text-underline-offset: 0.1em;
   transition:
     color var(--transition-defaults),

@@ -63,7 +63,7 @@ body {
     font-weight: 800;
     font-size: 0.7em;
     transition: color var(--transition-defaults);
-    color: rgba(var(--color-text-rgb), 0.5);
+    color: rgba(var(--color-text-rgb), 0.4);
   }
 
   &:hover {
