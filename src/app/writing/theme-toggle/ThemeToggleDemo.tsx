@@ -11,7 +11,7 @@ type ThemeToggleDemoProps = {
 };
 
 export function ThemeToggleDemo({
-  showFullToggle,
+  showFancyToggle,
   isAnimated,
   children
 }: ThemeToggleDemoProps) {
@@ -22,12 +22,12 @@ export function ThemeToggleDemo({
         className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
       >
         {children}
-        {!showFullToggle && (
+        {!showFancyToggle && (
           <button onClick={() => setIsDark(!isDark)}>
             {isDark ? "Set Dark Mode" : "Set Light Mode"}
           </button>
         )}
-        {showFullToggle && (
+        {showFancyToggle && (
           <button
             className={`${styles.ThemeToggle}`}
             onClick={() => setIsDark(!isDark)}
