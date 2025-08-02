@@ -1,6 +1,6 @@
 import { ThemeToggleDemo } from "./ThemeToggleDemo";
 
-# Animated dark mode transition with CSS
+# Animated Dark Mode Transition with CSS
 
 For my website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result by clicking the small icon in the upper-left corner - colors should quickly crossfade, while the toggle itself does a little spherical animation to invert its colors.
 
@@ -28,7 +28,7 @@ I will be focusing on the CSS implementation of the effect. The implementation o
   </mask>
 </svg>
 
-## Defining the color palette and transition
+## Defining the Color Palette and Transition
 
 Using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)) we define our light color palette, while the dark versions of these colors are overriden under the `.dark` class selector:
 
@@ -70,7 +70,7 @@ body {
   Click to toggle `.dark` class:
 </ThemeToggleDemo>
 
-## Creating the fancy toggle
+## Creating the Fancy Toggle
 
 The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color
