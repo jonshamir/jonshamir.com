@@ -12,7 +12,6 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  border: 1px solid rgba(var(--color-text-rgb), 0.5);
 }
 
 .colorBoxes {
@@ -38,4 +37,6 @@
 .colorPicker {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
 }
