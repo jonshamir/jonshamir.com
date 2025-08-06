@@ -174,6 +174,143 @@ function rgbToHex([r, g, b]: [number, number, number]): string {
   return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
+function DeltaEGraph({
+  foregroundColor,
+  backgroundColor
+}: {
+  foregroundColor: string;
+  backgroundColor: string;
+}) {
+  const width = 400;
+  const height = 200;
+  const margin = { top: 20, right: 20, bottom: 40, left: 60 };
+  const chartWidth = width - margin.left - margin.right;
+  const chartHeight = height - margin.top - margin.bottom;
+
+  const alphaValues = Array.from({ length: 20 }, (_, i) => i / 19);
+  const deltaEValues = alphaValues.map((alpha) =>
+    calculateColorDifference(foregroundColor, backgroundColor, alpha)
+  );
+
+  const maxDeltaE = Math.max(...deltaEValues);
+  const minDeltaE = Math.min(...deltaEValues);
+
+  const points = alphaValues
+    .map((alpha, i) => {
+      const x = alpha * chartWidth + margin.left;
+      const y =
+        margin.top +
+        (1 - (deltaEValues[i] - minDeltaE) / (maxDeltaE - minDeltaE)) *
+          chartHeight;
+      return `${x},${y}`;
+    })
+    .join(" ");
+
+  return (
+    <div className={styles.graph}>
+      <svg width={width} height={height}>
+        <g>
+          <line
+            x1={margin.left}
+            y1={margin.top}
+            x2={margin.left}
+            y2={height - margin.bottom}
+            stroke="#666"
+            strokeWidth={1}
+          />
+          <line
+            x1={margin.left}
+            y1={height - margin.bottom}
+            x2={width - margin.right}
+            y2={height - margin.bottom}
+            stroke="#666"
+            strokeWidth={1}
+          />
+
+          <text
+            x={margin.left / 2}
+            y={height / 2}
+            textAnchor="middle"
+            transform={`rotate(-90 ${margin.left / 2} ${height / 2})`}
+            fontSize="12"
+            fill="#666"
+          >
+            Delta-E 2000
+          </text>
+          <text
+            x={width / 2}
+            y={height - 5}
+            textAnchor="middle"
+            fontSize="12"
+            fill="#666"
+          >
+            Alpha
+          </text>
+
+          <text
+            x={margin.left - 10}
+            y={margin.top + 5}
+            textAnchor="end"
+            fontSize="10"
+            fill="#666"
+          >
+            {maxDeltaE.toFixed(1)}
+          </text>
+          <text
+            x={margin.left - 10}
+            y={height - margin.bottom + 5}
+            textAnchor="end"
+            fontSize="10"
+            fill="#666"
+          >
+            {minDeltaE.toFixed(1)}
+          </text>
+
+          <text
+            x={margin.left}
+            y={height - margin.bottom + 20}
+            textAnchor="middle"
+            fontSize="10"
+            fill="#666"
+          >
+            0
+          </text>
+          <text
+            x={width - margin.right}
+            y={height - margin.bottom + 20}
+            textAnchor="middle"
+            fontSize="10"
+            fill="#666"
+          >
+            1
+          </text>
+
+          <polyline
+            fill="none"
+            stroke="#0070f3"
+            strokeWidth={2}
+            points={points}
+          />
+
+          {alphaValues.map((alpha, i) => (
+            <circle
+              key={i}
+              cx={alpha * chartWidth + margin.left}
+              cy={
+                margin.top +
+                (1 - (deltaEValues[i] - minDeltaE) / (maxDeltaE - minDeltaE)) *
+                  chartHeight
+              }
+              r={3}
+              fill="#0070f3"
+            />
+          ))}
+        </g>
+      </svg>
+    </div>
+  );
+}
+
 export function ContrastPicker() {
   const [foregroundColor, setForegroundColor] = useState("#ffffff");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
@@ -190,26 +327,51 @@ export function ContrastPicker() {
     alpha
   );
 
+  const swapColors = () => {
+    const temp = foregroundColor;
+    setForegroundColor(backgroundColor);
+    setBackgroundColor(temp);
+  };
+
   return (
     <figure>
-      <div
-        className={styles.ContrastPicker}
-        style={{ backgroundColor: backgroundColor }}
-      >
-        <div
-          className={styles.box}
-          style={{
-            backgroundColor: alpha === 1 ? foregroundColor : blendedHex
-          }}
+      <div className={styles.ContrastPicker}>
+        <div className={styles.colorBoxes}>
+          <div
+            className={styles.box}
+            style={{
+              backgroundColor
+            }}
+          >
+            <div style={{ backgroundColor: blendedHex }} />
+          </div>
+          <div
+            className={styles.box}
+            style={{
+              backgroundColor: foregroundColor
+            }}
+          >
+            <div style={{ backgroundColor }} />
+          </div>
+        </div>
+        <p>
+          Delta-E 2000: {deltaE.toFixed(2)}
+          <br />
+          Alpha: {alpha.toFixed(2)}
+        </p>
+        <DeltaEGraph
+          foregroundColor={foregroundColor}
+          backgroundColor={backgroundColor}
         />
-        <p>Delta-E 2000: {deltaE.toFixed(2)}</p>
-        <p>Alpha: {alpha.toFixed(2)}</p>
         <div className={styles.colorPicker}>
           <input
             type="color"
             value={foregroundColor}
             onChange={(e) => setForegroundColor(e.target.value)}
           />
+          <button onClick={swapColors} className={styles.swapButton}>
+            ⇄
+          </button>
           <input
             type="color"
             value={backgroundColor}
