@@ -133,12 +133,36 @@ function calculateDeltaE2000(
   return deltaE;
 }
 
-function calculateColorDifference(color1: string, color2: string): number {
-  const rgb1 = hexToRgb(color1);
-  const rgb2 = hexToRgb(color2);
+function blendColors(
+  foreground: [number, number, number],
+  background: [number, number, number],
+  alpha: number
+): [number, number, number] {
+  const blendedR = Math.round(
+    foreground[0] * alpha + background[0] * (1 - alpha)
+  );
+  const blendedG = Math.round(
+    foreground[1] * alpha + background[1] * (1 - alpha)
+  );
+  const blendedB = Math.round(
+    foreground[2] * alpha + background[2] * (1 - alpha)
+  );
 
-  const xyz1 = rgbToXyz(rgb1);
-  const xyz2 = rgbToXyz(rgb2);
+  return [blendedR, blendedG, blendedB];
+}
+
+function calculateColorDifference(
+  foregroundColor: string,
+  backgroundColor: string,
+  alpha: number = 1
+): number {
+  const foregroundRgb = hexToRgb(foregroundColor);
+  const backgroundRgb = hexToRgb(backgroundColor);
+
+  const blendedRgb = blendColors(foregroundRgb, backgroundRgb, alpha);
+
+  const xyz1 = rgbToXyz(blendedRgb);
+  const xyz2 = rgbToXyz(backgroundRgb);
 
   const lab1 = xyzToLab(xyz1);
   const lab2 = xyzToLab(xyz2);
@@ -146,30 +170,58 @@ function calculateColorDifference(color1: string, color2: string): number {
   return calculateDeltaE2000(lab1, lab2);
 }
 
-export function ContrastPicker() {
-  const [color1, setColor1] = useState("rgb(0, 0, 0)");
-  const [color2, setColor2] = useState("#ffffff");
+function rgbToHex([r, g, b]: [number, number, number]): string {
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
+}
 
-  const deltaE = calculateColorDifference(color1, color2);
+export function ContrastPicker() {
+  const [foregroundColor, setForegroundColor] = useState("#ffffff");
+  const [backgroundColor, setBackgroundColor] = useState("#000000");
+  const [alpha, setAlpha] = useState(1);
+
+  const foregroundRgb = hexToRgb(foregroundColor);
+  const backgroundRgb = hexToRgb(backgroundColor);
+  const blendedRgb = blendColors(foregroundRgb, backgroundRgb, alpha);
+  const blendedHex = rgbToHex(blendedRgb);
+
+  const deltaE = calculateColorDifference(
+    foregroundColor,
+    backgroundColor,
+    alpha
+  );
 
   return (
     <figure>
       <div
         className={styles.ContrastPicker}
-        style={{ backgroundColor: color1 }}
+        style={{ backgroundColor: backgroundColor }}
       >
-        <div className={styles.box} style={{ backgroundColor: color2 }} />
+        <div
+          className={styles.box}
+          style={{
+            backgroundColor: alpha === 1 ? foregroundColor : blendedHex
+          }}
+        />
         <p>Delta-E 2000: {deltaE.toFixed(2)}</p>
+        <p>Alpha: {alpha.toFixed(2)}</p>
         <div className={styles.colorPicker}>
           <input
             type="color"
-            value={color1}
-            onChange={(e) => setColor1(e.target.value)}
+            value={foregroundColor}
+            onChange={(e) => setForegroundColor(e.target.value)}
           />
           <input
             type="color"
-            value={color2}
-            onChange={(e) => setColor2(e.target.value)}
+            value={backgroundColor}
+            onChange={(e) => setBackgroundColor(e.target.value)}
+          />
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.01"
+            value={alpha}
+            onChange={(e) => setAlpha(parseFloat(e.target.value))}
           />
         </div>
       </div>
