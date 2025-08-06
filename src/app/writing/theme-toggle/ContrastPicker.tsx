@@ -349,6 +349,7 @@ export function ContrastPicker() {
   const [foregroundColor, setForegroundColor] = useState("#ffffff");
   const [backgroundColor, setBackgroundColor] = useState("#000000");
   const [alpha, setAlpha] = useState(1);
+  const [usePerceptualAdjustment, setUsePerceptualAdjustment] = useState(true);
 
   const foregroundRgb = hexToRgb(foregroundColor);
   const backgroundRgb = hexToRgb(backgroundColor);
@@ -361,10 +362,16 @@ export function ContrastPicker() {
     alpha
   );
 
-  const alpha2 = findMatchingAlpha(deltaE, backgroundColor, foregroundColor);
+  const alpha2 = usePerceptualAdjustment 
+    ? findMatchingAlpha(deltaE, backgroundColor, foregroundColor)
+    : alpha;
   const flippedForegroundRgb = hexToRgb(backgroundColor);
   const flippedBackgroundRgb = hexToRgb(foregroundColor);
-  const flippedBlendedRgb = blendColors(flippedForegroundRgb, flippedBackgroundRgb, alpha2);
+  const flippedBlendedRgb = blendColors(
+    flippedForegroundRgb,
+    flippedBackgroundRgb,
+    alpha2
+  );
   const flippedBlendedHex = rgbToHex(flippedBlendedRgb);
 
   const swapColors = () => {
@@ -402,6 +409,16 @@ export function ContrastPicker() {
           <br />
           Alpha2 (flipped): {alpha2.toFixed(2)}
         </p>
+        <div className={styles.checkbox}>
+          <label>
+            <input
+              type="checkbox"
+              checked={usePerceptualAdjustment}
+              onChange={(e) => setUsePerceptualAdjustment(e.target.checked)}
+            />
+            Perceptual adjustment (Delta-E matching)
+          </label>
+        </div>
         <DeltaEGraph
           foregroundColor={foregroundColor}
           backgroundColor={backgroundColor}
