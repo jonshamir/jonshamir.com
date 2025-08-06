@@ -1,0 +1,27 @@
+.ContrastPicker {
+  width: 100%;
+  border-radius: var(--rounding-medium);
+  background-color: var(--background-color);
+  color: var(--foreground-color);
+  transition:
+    background-color var(--transition-timing),
+    color var(--transition-timing);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid rgba(var(--color-text-rgb), 0.5);
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  border-radius: var(--rounding-medium);
+}
+
+.colorPicker {
+  display: flex;
+  gap: 0.5rem;
+}

@@ -1,4 +1,5 @@
 import { ThemeToggleDemo } from "./ThemeToggleDemo";
+import { ContrastPicker } from "./ContrastPicker";
 
 # Animated Dark Mode Transition with CSS
 
@@ -11,22 +12,6 @@ I will be focusing on the CSS implementation of the effect. The implementation o
 - Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
 - useColorScheme Hook
 - ColorSchemeToggle component
-
-<svg className="sun-and-moon" width="48" height="48" viewBox="0 0 24 24">
-  <circle
-    class="sun"
-    cx="12"
-    cy="12"
-    r="8"
-    mask="url(#moon-mask)"
-    fill="currentColor"
-  />
-
-  <mask class="moon" id="moon-mask">
-    <rect x="0" y="0" width="100%" height="100%" fill="white" />
-    <path d="M 12 5 A 7 7 0 0 1 12 19" fill="black" style={{transformOrigin: "center", transform: "rotateY(180deg)"}} />
-  </mask>
-</svg>
 
 ## Defining the Color Palette and Transition
 
@@ -69,6 +54,17 @@ body {
 <ThemeToggleDemo isAnimated={true}>
   Click to toggle `.dark` class:
 </ThemeToggleDemo>
+
+## Using RGB, RGBA
+
+that is a very nice way to ease the conversion of the UI to a different color theme
+
+## Contrast ratio
+
+calculating the Contrast
+Making light and dark contrast equal perceptually
+
+<ContrastPicker />
 
 ## Creating the Fancy Toggle
 
