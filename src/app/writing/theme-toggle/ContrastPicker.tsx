@@ -174,6 +174,40 @@ function rgbToHex([r, g, b]: [number, number, number]): string {
   return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`;
 }
 
+function findMatchingAlpha(
+  targetDeltaE: number,
+  foregroundColor: string,
+  backgroundColor: string
+): number {
+  const alphaValues = Array.from({ length: 20 }, (_, i) => i / 19);
+  const deltaEValues = alphaValues.map((alpha) =>
+    calculateColorDifference(foregroundColor, backgroundColor, alpha)
+  );
+
+  let closestIndex = 0;
+  let closestDiff = Math.abs(deltaEValues[0] - targetDeltaE);
+
+  for (let i = 1; i < deltaEValues.length; i++) {
+    const diff = Math.abs(deltaEValues[i] - targetDeltaE);
+    if (diff < closestDiff) {
+      closestDiff = diff;
+      closestIndex = i;
+    }
+  }
+
+  if (closestIndex === 0 || closestIndex === deltaEValues.length - 1) {
+    return alphaValues[closestIndex];
+  }
+
+  const alpha1 = alphaValues[closestIndex - 1];
+  const alpha2 = alphaValues[closestIndex + 1];
+  const deltaE1 = deltaEValues[closestIndex - 1];
+  const deltaE2 = deltaEValues[closestIndex + 1];
+
+  const t = (targetDeltaE - deltaE1) / (deltaE2 - deltaE1);
+  return alpha1 + t * (alpha2 - alpha1);
+}
+
 function DeltaEGraph({
   foregroundColor,
   backgroundColor
@@ -327,6 +361,12 @@ export function ContrastPicker() {
     alpha
   );
 
+  const alpha2 = findMatchingAlpha(deltaE, backgroundColor, foregroundColor);
+  const flippedForegroundRgb = hexToRgb(backgroundColor);
+  const flippedBackgroundRgb = hexToRgb(foregroundColor);
+  const flippedBlendedRgb = blendColors(flippedForegroundRgb, flippedBackgroundRgb, alpha2);
+  const flippedBlendedHex = rgbToHex(flippedBlendedRgb);
+
   const swapColors = () => {
     const temp = foregroundColor;
     setForegroundColor(backgroundColor);
@@ -346,18 +386,21 @@ export function ContrastPicker() {
             <div style={{ backgroundColor: blendedHex }} />
           </div>
           <div
+            id="flipped"
             className={styles.box}
             style={{
               backgroundColor: foregroundColor
             }}
           >
-            <div style={{ backgroundColor }} />
+            <div style={{ backgroundColor: flippedBlendedHex }} />
           </div>
         </div>
         <p>
           Delta-E 2000: {deltaE.toFixed(2)}
           <br />
           Alpha: {alpha.toFixed(2)}
+          <br />
+          Alpha2 (flipped): {alpha2.toFixed(2)}
         </p>
         <DeltaEGraph
           foregroundColor={foregroundColor}
