@@ -64,15 +64,13 @@ that is a very nice way to ease the conversion of the UI to a different color th
 calculating the Contrast
 Making light and dark contrast equal perceptually
 
-<ContrastPicker />
-
 ## Creating the Fancy Toggle
 
 The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color
 On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
 
-<ThemeToggleDemo showToggle />
+<ThemeToggleDemo showToggle isAnimated />
 _Demo embed_ https://codepen.io/shamir/pen/YGbbNX
 
 ### The Setup
