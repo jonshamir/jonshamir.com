@@ -3,29 +3,29 @@ import { useEffect, useState } from "react";
 import faviconDark from "../../../public/favicon-dark.png";
 import faviconLight from "../../../public/favicon-light.png";
 
-type ColorScheme = "dark" | "light";
+type ColorMode = "dark" | "light";
 
-export function useColorScheme() {
-  const [colorScheme, rawSetColorScheme] = useState<ColorScheme>();
+export function useColorMode() {
+  const [colorMode, rawSetColorMode] = useState<ColorMode>();
 
   useEffect(() => {
     const root = window.document.documentElement;
     const initialColorValue = root.classList.contains("dark")
       ? "dark"
       : "light";
-    rawSetColorScheme(initialColorValue);
+    rawSetColorMode(initialColorValue);
   }, []);
 
-  const setColorScheme = (value: ColorScheme) => {
-    rawSetColorScheme(value);
-    window.localStorage.setItem("color-scheme", value);
+  const setColorMode = (value: ColorMode) => {
+    rawSetColorMode(value);
+    window.localStorage.setItem("color-mode", value);
     const root = window.document.documentElement;
     root.classList.remove("dark", "light");
     root.classList.add(value);
   };
 
-  const toggleColorScheme = () => {
-    setColorScheme(colorScheme === "dark" ? "light" : "dark");
+  const toggleColorMode = () => {
+    setColorMode(colorMode === "dark" ? "light" : "dark");
   };
 
   // update favicon
@@ -34,16 +34,16 @@ export function useColorScheme() {
       'link[rel="icon"]'
     ) as HTMLLinkElement;
     if (favicon === null) return;
-    if (colorScheme === "dark") {
+    if (colorMode === "dark") {
       favicon.href = faviconDark.src;
     } else {
       favicon.href = faviconLight.src;
     }
-  }, [colorScheme]);
+  }, [colorMode]);
 
   return {
-    colorScheme,
-    setColorScheme,
-    toggleColorScheme
+    colorMode,
+    setColorMode,
+    toggleColorMode
   };
 }

@@ -1,7 +1,7 @@
 import { clsx } from "clsx";
 import { useEffect, useState } from "react";
 
-import styles from "./ColorSchemeToggle.module.scss";
+import styles from "./ColorModeToggle.module.scss";
 import { useColorMode } from "./useColorMode";
 
 export function ColorModeToggle() {

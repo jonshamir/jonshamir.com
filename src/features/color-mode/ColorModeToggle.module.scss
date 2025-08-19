@@ -1,4 +1,4 @@
-.ColorSchemeToggleContainer {
+.ColorModeToggleContainer {
   cursor: pointer;
   padding: 8px;
   display: block;
@@ -9,7 +9,7 @@
   --rounding-medium: 500px;
 }
 
-#ColorSchemeToggle {
+#ColorModeToggle {
   appearance: none;
   -webkit-appearance: none;
 
@@ -52,7 +52,7 @@
   }
 }
 
-:global(.dark) #ColorSchemeToggle {
+:global(.dark) #ColorModeToggle {
   background-color: var(--color-text);
 
   &::before {
@@ -68,7 +68,7 @@
   }
 }
 
-.loaded #ColorSchemeToggle {
+.loaded #ColorModeToggle {
   &::before {
     animation-duration: 0.15s;
   }
