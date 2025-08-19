@@ -39,7 +39,7 @@ export function ThemeToggleDemo({
                 className="base"
                 cx="12"
                 cy="12"
-                r="7.9"
+                r="7.8"
                 mask="url(#half-mask)"
                 stroke="currentColor"
                 strokeWidth="2"

@@ -1,6 +1,6 @@
 .ThemeToggleDemo {
   --duration: 0s;
-  --half-duration: calc(var(--duration) / 2);
+  --duration1: calc(var(--duration) * 1);
   --transition-timing: var(--duration) ease-out;
   --border-width: 4px;
   --size: 60px;
@@ -76,36 +76,100 @@
 .LeftSide,
 .RightSide {
   transform-origin: center;
-  transition: transform var(--duration) ease-out;
 }
 
 .LeftSide {
-  fill: var(--foreground-color);
-  transform: rotateY(90deg);
-  transition:
-    transform var(--duration) ease-out var(--half-duration),
-    fill 0s ease-out 0s;
+  animation: rotateLeft var(--duration1) ease-out 0s forwards;
 }
 
 .RightSide {
-  fill: var(--foreground-color);
-  transform: rotateY(0deg);
-  transition-delay: 0s;
-  transition-timing-function: ease-in;
+  animation: rotateRight var(--duration1) ease-out 0s forwards;
 }
 
 .dark {
   .LeftSide {
-    fill: rgba(0, 0, 0, 0);
-    transform: rotateY(180deg);
-    transition:
-      transform var(--duration) ease-out 0s,
-      fill var(--half-duration) ease-out var(--duration);
+    animation: rotateLeft1 var(--duration1) ease-out 0s forwards;
   }
 
   .RightSide {
-    fill: var(--background-color);
+    animation: rotateRight1 var(--duration1) ease-out 0s forwards;
+  }
+}
+
+@keyframes rotateLeft {
+  0% {
+    transform: rotateY(180deg);
+    fill: rgba(var(--background-rgb), 0);
+  }
+  1% {
+    fill: var(--foreground-color);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  98% {
+    fill: var(--foreground-color);
+  }
+  99% {
     transform: rotateY(90deg);
-    transition: transform var(--duration) ease-in 0s;
+    fill: rgba(var(--background-rgb), 0);
+  }
+  100% {
+    transform: rotateY(180deg);
+    fill: rgba(var(--background-rgb), 0);
+  }
+}
+
+@keyframes rotateRight {
+  0% {
+    transform: rotateY(90deg);
+    fill: var(--foreground-color);
+  }
+  99% {
+    transform: rotateY(0deg);
+    fill: var(--foreground-color);
+  }
+  100% {
+    transform: rotateY(90deg);
+    fill: var(--foreground-color);
+  }
+}
+
+@keyframes rotateLeft1 {
+  0% {
+    transform: rotateY(180deg);
+    fill: rgba(var(--background-rgb), 0);
+  }
+  1% {
+    fill: var(--foreground-color);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  98% {
+    fill: var(--foreground-color);
+  }
+  99% {
+    transform: rotateY(90deg);
+    fill: rgba(var(--background-rgb), 0);
+  }
+  100% {
+    transform: rotateY(180deg);
+    fill: rgba(var(--background-rgb), 0);
+  }
+}
+
+@keyframes rotateRight1 {
+  0% {
+    transform: rotateY(90deg);
+    fill: var(--foreground-color);
+  }
+  99% {
+    transform: rotateY(0deg);
+    fill: var(--foreground-color);
+  }
+  100% {
+    transform: rotateY(90deg);
+    fill: var(--foreground-color);
   }
 }
