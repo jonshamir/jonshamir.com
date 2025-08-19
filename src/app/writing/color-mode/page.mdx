@@ -1,0 +1,174 @@
+import { ColorModeToggleDemo } from "./ColorModeToggleDemo";
+import { ContrastPicker } from "./ContrastPicker";
+
+# Animated Dark Mode Transition with CSS
+
+For my website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result by clicking the small icon in the upper-left corner - colors should quickly crossfade, while the toggle itself does a little spherical animation to invert its colors.
+
+This site is a statically generated Next.js React app.
+
+I will be focusing on the CSS implementation of the effect. The implementation of the logic itself in React is mostly based on Josh Comeau’s [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs’s post](https://www.mattstobbs.com/elderjs-dark-mode/).
+
+- Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
+- useColorMode Hook
+- ColorModeToggle component
+
+## Naming - Color theme? scheme? palette? mode?
+
+I believe naming things is very important especially in code. There are various ways to name this feature, and I went into a little rabbit hole trying to find the correct name!
+
+CSS uses `prefers-color-scheme: light | dark` (not `prefers-color-mode`, interestingly!).
+
+Android:
+Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
+
+iOS / SwiftUI:
+`ColorScheme.light`, `ColorScheme.dark`
+
+Material UI (MUI):
+`palette.mode = 'light' | 'dark'`
+
+Chakra UI:
+`colorMode = 'light' | 'dark'` and `useColorMode()` hook.
+
+Tailwind CSS:
+Uses `dark:` prefix (no explicit variable).
+Config has `darkMode: 'media' | 'class'`.
+
+VS Code:
+`"workbench.colorTheme": "Dark+ (default dark)"`
+
+Flutter uses Brightness.light / Brightness.dark but many libraries expose colorMode.
+
+### Color palette - the collection of available colors
+
+like a painter’s palette
+
+### Color theme - the full design package
+
+Fonts,spacing, styling
+
+## Color scheme - set of colors
+
+Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
+
+Use Case: When the focus is on a coordinated set of UI colors — useful if you allow multiple schemes, like “Solarized Dark” vs “Dracula”.
+
+## color mode - binary option
+
+Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
+
+## Defining the Color Palette and Transition
+
+Using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)) we define our light color palette, while the dark versions of these colors are overriden under the `.dark` class selector:
+
+```css
+body {
+  --foreground-color: #ddd;
+  --background-color: #111;
+
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+}
+
+body.dark {
+  --foreground-color: #111;
+  --background-color: #ddd;
+}
+```
+
+When the `.dark` class is added or removed, the browser will automatically update all the elements using the variables we defined:
+
+<ColorModeToggleDemo isAnimated={false}>
+  Click to toggle `.dark` class:
+</ColorModeToggleDemo>
+
+To get a nice animation between the color modes, we can declare a transition for any property using the variables. For consistency between different elements, I like to define a `--transition-defaults` variable which I can reuse:
+
+```css
+body {
+  // ...
+  --transition-defaults: 400ms ease-out;
+
+  transition:
+    background-color var(--transition-defaults),
+    color var(--transition-defaults);
+}
+```
+
+<ColorModeToggleDemo isAnimated={true}>
+  Click to toggle `.dark` class:
+</ColorModeToggleDemo>
+
+## Using RGB, RGBA
+
+that is a very nice way to ease the conversion of the UI to a different color theme
+
+## Contrast ratio
+
+calculating the Contrast
+Making light and dark contrast equal perceptually
+
+## Creating the Fancy Toggle
+
+different toggles:
+
+- Sun / moon
+- Half circle
+- Apple thing
+
+The nice thing is that it sort of behaves like a toggle - with the white part moving from side to side
+while the icon itself stays the same shape in negative
+
+The idea is to have 2 halves
+There is a hidden circle in the middle with scaleX(0), with each half being one color
+On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
+
+<ColorModeToggleDemo showToggle isAnimated />
+_Demo embed_ https://codepen.io/shamir/pen/YGbbNX
+
+### The Setup
+
+HTML button element
+
+```html
+<button class="ThemeToggle">
+  <span class="ThemeToggle__half ThemeToggle__half--left"></span>
+  <span class="ThemeToggle__half ThemeToggle__half--right"></span>
+</button>
+```
+
+CSS
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+}
+```
+
+### Animating the toggle
+
+The animation is split into 4 parts:
+
+1. The initial state
+2. The first half of the animation
+3. The second half of the animation
+4. The final state
+
+## Final touches - the gap
+
+The gap is created by the border-width and the size of the button.
+
+box shadow trick
+
+```css
+.ThemeToggle {
+  --size: 60px;
+  --border-width: 2px;
+}
+```
+
+## Final touches - favicon
+
+dynamic favicon

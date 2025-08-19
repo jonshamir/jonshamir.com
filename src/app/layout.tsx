@@ -46,12 +46,12 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
-                function getInitialColorScheme() {
-                  const persistedColorScheme = window.localStorage.getItem('color-scheme');
-                  const hasPersistedPreference = typeof persistedColorScheme === 'string';
+                function getInitialColorMode() {
+                  const persistedColorMode = window.localStorage.getItem('color-mode');
+                  const hasPersistedPreference = typeof persistedColorMode === 'string';
 
                   if (hasPersistedPreference) {
-                    return persistedColorScheme;
+                    return persistedColorMode;
                   }
 
                   const mql = window.matchMedia('(prefers-color-scheme: dark)');
@@ -64,9 +64,9 @@ export default function RootLayout({
                   return 'light';
                 }
 
-                const colorScheme = getInitialColorScheme();
+                const colorMode = getInitialColorMode();
 
-                if (colorScheme === 'dark') {
+                if (colorMode === 'dark') {
                   document.documentElement.classList.add('dark');
                 }
               })();

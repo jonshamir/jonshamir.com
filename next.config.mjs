@@ -1,6 +1,6 @@
 import nextMDX from "@next/mdx";
 
-import { mdxConfig } from "./src/features/mdx/config.js";
+import { mdxConfig } from "./src/features/mdx/config.mjs";
 
 const nextConfig = {
   basePath: "",

@@ -1,0 +1,117 @@
+.ColorModeToggleContainer {
+  cursor: pointer;
+  padding: 5px;
+  display: block;
+  margin: 0;
+  line-height: 0;
+  background: none;
+  border: none;
+  outline: none !important;
+
+  --rounding-medium: 500px; /* Override default rounding */
+  --duration: 0s;
+}
+
+.loaded {
+  --duration: 0.4s;
+}
+
+.ColorModeToggle {
+  color: var(--color-text);
+  transition: color var(--transition-defaults);
+}
+
+.RightSideBG {
+  fill: var(--color-text);
+  transition: fill var(--duration) ease-out;
+  transform-origin: center;
+  transform: scale(1.1);
+}
+
+.LeftSide,
+.RightSide {
+  fill: var(--color-bg);
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  animation-duration: var(--duration);
+}
+
+.LeftSide {
+  animation-name: rotateLeft;
+  animation-direction: normal;
+}
+
+.RightSide {
+  animation-name: rotateRight;
+  animation-direction: normal;
+}
+
+.dark {
+  .LeftSide,
+  .RightSide {
+    fill: var(--color-text);
+  }
+
+  .LeftSide {
+    animation-name: rotateLeftDark;
+  }
+
+  .RightSide {
+    animation-name: rotateRightDark;
+  }
+}
+
+@keyframes rotateLeftDark {
+  0% {
+    transform: rotateY(180deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(90deg);
+  }
+}
+
+@keyframes rotateLeft {
+  0% {
+    transform: rotateY(90deg);
+  }
+  50% {
+    transform: rotateY(180deg);
+  }
+  99% {
+    transform: rotateY(180deg);
+  }
+  100% {
+    transform: rotateY(90deg);
+  }
+}
+
+@keyframes rotateRightDark {
+  0% {
+    transform: rotateY(90deg);
+  }
+  80% {
+    transform: rotateY(0deg);
+  }
+  99% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(90deg);
+  }
+}
+
+@keyframes rotateRight {
+  0% {
+    transform: rotateY(0deg);
+  }
+  50% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(90deg);
+  }
+}

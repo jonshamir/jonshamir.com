@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { ColorSchemeToggle } from "../../features/color-mode/ColorSchemeToggle";
+import { ColorModeToggle } from "../../features/color-mode/ColorModeToggle";
 import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
 
@@ -49,7 +49,7 @@ export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
                     {item.title}
                   </Link>
                 ))}
-              <ColorSchemeToggle />
+              <ColorModeToggle />
             </div>
           </div>
         </nav>
