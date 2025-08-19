@@ -43,6 +43,7 @@ export function ThemeToggleDemo({
                 mask="url(#half-mask)"
                 stroke="currentColor"
                 strokeWidth="2"
+                fill="none"
               />
               <path
                 className={styles.RightSideBG}
