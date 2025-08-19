@@ -77,19 +77,18 @@
   fill: var(--foreground-color);
   transform-origin: center;
   animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
   animation-duration: var(--duration);
 }
 
 .LeftSide {
   animation-name: rotateLeft;
   animation-direction: normal;
-  animation-timing-function: ease-in;
 }
 
 .RightSide {
   animation-name: rotateRight;
   animation-direction: normal;
-  animation-timing-function: ease-out;
 }
 
 .dark {
@@ -100,12 +99,10 @@
 
   .LeftSide {
     animation-name: rotateLeftDark;
-    animation-timing-function: ease-out;
   }
 
   .RightSide {
     animation-name: rotateRightDark;
-    animation-timing-function: ease-in;
   }
 }
 
