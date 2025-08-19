@@ -28,10 +28,7 @@ export function ThemeToggleDemo({
           </button>
         )}
         {showToggle && (
-          <button
-            onClick={() => setIsDark(!isDark)}
-            style={{ background: "transparent" }}
-          >
+          <button onClick={() => setIsDark(!isDark)}>
             <svg
               className={styles.ThemeToggle}
               width="48"
