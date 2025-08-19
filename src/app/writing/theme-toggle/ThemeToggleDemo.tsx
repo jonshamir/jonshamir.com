@@ -36,11 +36,9 @@ export function ThemeToggleDemo({
               viewBox="0 0 24 24"
             >
               <circle
-                className="base"
                 cx="12"
                 cy="12"
-                r="7.8"
-                mask="url(#half-mask)"
+                r="7.85"
                 stroke="currentColor"
                 strokeWidth="2"
                 fill="none"

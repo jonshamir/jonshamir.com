@@ -32,7 +32,7 @@
   gap: 0.5rem;
 
   &.animated {
-    --duration: 0.4s;
+    --duration: 2.4s;
   }
 }
 
