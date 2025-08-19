@@ -14,22 +14,35 @@ export function ColorModeToggle() {
   }, []);
 
   return (
-    <label
-      htmlFor={styles.ColorModeToggle}
+    <button
       className={clsx("clickable", styles.ColorModeToggleContainer, {
-        [styles.loaded]: isLoaded
+        [styles.loaded]: isLoaded,
+        [styles.dark]: colorMode === "dark"
       })}
+      onClick={toggleColorMode}
+      onKeyDown={(e) => {
+        if (e.key === "Enter") toggleColorMode();
+      }}
+      aria-label="Dark mode toggle"
     >
-      <input
-        id={styles.ColorModeToggle}
-        type="checkbox"
-        checked={colorMode === "dark"}
-        onChange={toggleColorMode}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") toggleColorMode();
-        }}
-        aria-label="Dark mode toggle"
-      />
-    </label>
+      <svg
+        className={styles.ColorModeToggle}
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          cx="12"
+          cy="12"
+          r="8"
+          stroke="currentColor"
+          strokeWidth="2"
+          fill="none"
+        />
+        <path className={styles.RightSideBG} d="M 12 5 A 7 7 0 0 1 12 19" />
+        <path className={styles.LeftSide} d="M 12 5 A 7 7 0 0 1 12 19" />
+        <path className={styles.RightSide} d="M 12 5 A 7 7 0 0 1 12 19" />
+      </svg>
+    </button>
   );
 }

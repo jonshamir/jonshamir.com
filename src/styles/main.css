@@ -8,7 +8,7 @@
 
 :root {
   --content-max-width: 50rem;
-  --transition-defaults: 150ms ease-out;
+  --transition-defaults: 250ms ease-out;
 
   --rounding-small: 0.4rem;
   --rounding-medium: 0.6rem;
