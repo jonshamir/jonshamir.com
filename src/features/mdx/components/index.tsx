@@ -6,7 +6,9 @@ function isExternalLink(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
 }
 
-export function CustomLink(props: React.ComponentProps<"a">): JSX.Element {
+export function CustomLink(
+  props: React.ComponentProps<"a">
+): React.ReactElement {
   const { href, children, className, ...rest } = props;
   const isExternal = href && isExternalLink(href);
 
@@ -23,7 +25,9 @@ export function CustomLink(props: React.ComponentProps<"a">): JSX.Element {
   );
 }
 
-export function CustomPre(props: React.ComponentProps<"pre">): JSX.Element {
+export function CustomPre(
+  props: React.ComponentProps<"pre">
+): React.ReactElement {
   const { children, raw, ...rest } = props as React.ComponentProps<"pre"> & {
     raw?: string;
   };
