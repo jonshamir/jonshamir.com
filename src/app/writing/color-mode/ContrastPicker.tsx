@@ -362,7 +362,7 @@ export function ContrastPicker() {
     alpha
   );
 
-  const alpha2 = usePerceptualAdjustment 
+  const alpha2 = usePerceptualAdjustment
     ? findMatchingAlpha(deltaE, backgroundColor, foregroundColor)
     : alpha;
   const flippedForegroundRgb = hexToRgb(backgroundColor);
