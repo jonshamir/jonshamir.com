@@ -13,7 +13,50 @@ I will be focusing on the CSS implementation of the effect. The implementation o
 - useColorScheme Hook
 - ColorSchemeToggle component
 
-## Color theme? scheme? palette? mode?
+## Naming - Color theme? scheme? palette? mode?
+
+I believe naming things is very important especially in code. There are various ways to name this feature, and I went into a little rabbit hole trying to find the correct name!
+
+CSS uses `prefers-color-scheme: light | dark` (not `prefers-color-mode`, interestingly!).
+
+Android:
+Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
+
+iOS / SwiftUI:
+`ColorScheme.light`, `ColorScheme.dark`
+
+Material UI (MUI):
+`palette.mode = 'light' | 'dark'`
+
+Chakra UI:
+`colorMode = 'light' | 'dark'` and `useColorMode()` hook.
+
+Tailwind CSS:
+Uses `dark:` prefix (no explicit variable).
+Config has `darkMode: 'media' | 'class'`.
+
+VS Code:
+`"workbench.colorTheme": "Dark+ (default dark)"`
+
+Flutter uses Brightness.light / Brightness.dark but many libraries expose colorMode.
+
+### Color palette - the collection of available colors
+
+like a painter’s palette
+
+### Color theme - the full design package
+
+Fonts,spacing, styling
+
+## Color scheme - set of colors
+
+Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
+
+Use Case: When the focus is on a coordinated set of UI colors — useful if you allow multiple schemes, like “Solarized Dark” vs “Dracula”.
+
+## color mode - binary option
+
+Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
 
 ## Defining the Color Palette and Transition
 
@@ -67,6 +110,12 @@ calculating the Contrast
 Making light and dark contrast equal perceptually
 
 ## Creating the Fancy Toggle
+
+different toggles:
+
+- Sun / moon
+- Half circle
+- Apple thing
 
 The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color

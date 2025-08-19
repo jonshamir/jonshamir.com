@@ -32,7 +32,7 @@
   gap: 0.5rem;
 
   &.animated {
-    --duration: 2.4s;
+    --duration: 0.4s;
   }
 }
 
@@ -70,6 +70,8 @@
 .RightSideBG {
   fill: var(--foreground-color);
   transition: fill var(--transition-timing);
+  transform-origin: center;
+  transform: scale(1.01);
 }
 
 .LeftSide,
@@ -129,6 +131,9 @@
 @keyframes rotateRight {
   0% {
     transform: rotateY(90deg);
+  }
+  80% {
+    transform: rotateY(0deg);
   }
   99% {
     transform: rotateY(0deg);

@@ -38,7 +38,7 @@ export function ThemeToggleDemo({
               <circle
                 cx="12"
                 cy="12"
-                r="7.85"
+                r="8"
                 stroke="currentColor"
                 strokeWidth="2"
                 fill="none"
