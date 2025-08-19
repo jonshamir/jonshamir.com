@@ -37,6 +37,37 @@
   }
 }
 
+.ThemeToggleDemo code[data-theme*=" "] span {
+  color: var(--foreground-color);
+  transition:
+    background-color var(--transition-timing),
+    color var(--transition-timing);
+}
+
+.ThemeToggleDemo button {
+  color: var(--foreground-color);
+  background-color: rgba(var(--foreground-rgb), 0.2);
+  border: 2px solid rgba(var(--foreground-rgb), 0.2);
+  transition:
+    color var(--transition-timing),
+    background-color var(--transition-timing),
+    border-color var(--transition-timing);
+  outline: none;
+}
+
+.ThemeToggleDemo button:hover,
+.ThemeToggleDemo button:focus {
+  color: var(--foreground-color);
+  outline: none;
+  border: 2px solid rgba(var(--foreground-rgb), 0.2);
+}
+
+.ThemeToggleDemo button:hover {
+  background-color: rgba(var(--foreground-rgb), 0.3);
+}
+
+/* ====================== */
+
 .RightSideBG {
   fill: var(--foreground-color);
   transition: fill var(--transition-timing);
@@ -77,33 +108,4 @@
     transform: rotateY(90deg);
     transition: transform var(--duration) ease-in 0s;
   }
-}
-
-.ThemeToggleDemo code[data-theme*=" "] span {
-  color: var(--foreground-color);
-  transition:
-    background-color var(--transition-timing),
-    color var(--transition-timing);
-}
-
-.ThemeToggleDemo button {
-  color: var(--foreground-color);
-  background-color: rgba(var(--foreground-rgb), 0.2);
-  border: 2px solid rgba(var(--foreground-rgb), 0.2);
-  transition:
-    color var(--transition-timing),
-    background-color var(--transition-timing),
-    border-color var(--transition-timing);
-  outline: none;
-}
-
-.ThemeToggleDemo button:hover,
-.ThemeToggleDemo button:focus {
-  color: var(--foreground-color);
-  outline: none;
-  border: 2px solid rgba(var(--foreground-rgb), 0.2);
-}
-
-.ThemeToggleDemo button:hover {
-  background-color: rgba(var(--foreground-rgb), 0.3);
 }
