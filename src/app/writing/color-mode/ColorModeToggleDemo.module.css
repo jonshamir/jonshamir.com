@@ -1,4 +1,4 @@
-.ThemeToggleDemo {
+.ColorModeToggleDemo {
   --duration: 0s;
   --transition-timing: var(--duration) ease-out;
 
@@ -14,7 +14,7 @@
   }
 }
 
-.ThemeToggleDemo {
+.ColorModeToggleDemo {
   width: 100%;
   border-radius: var(--rounding-medium);
   background-color: var(--background-color);
@@ -34,14 +34,14 @@
   }
 }
 
-.ThemeToggleDemo code[data-theme*=" "] span {
+.ColorModeToggleDemo code[data-theme*=" "] span {
   color: var(--foreground-color);
   transition:
     background-color var(--transition-timing),
     color var(--transition-timing);
 }
 
-.ThemeToggleDemo button {
+.ColorModeToggleDemo button {
   color: var(--foreground-color);
   background-color: rgba(var(--foreground-rgb), 0.05);
   border: 2px solid rgba(var(--foreground-rgb), 0.05);
@@ -52,14 +52,14 @@
   outline: none;
 }
 
-.ThemeToggleDemo button:hover,
-.ThemeToggleDemo button:focus {
+.ColorModeToggleDemo button:hover,
+.ColorModeToggleDemo button:focus {
   color: var(--foreground-color);
   outline: none;
   border: 2px solid rgba(var(--foreground-rgb), 0.05);
 }
 
-.ThemeToggleDemo button:hover {
+.ColorModeToggleDemo button:hover {
   background-color: rgba(var(--foreground-rgb), 0.1);
 }
 

@@ -2,24 +2,24 @@
 
 import { ReactNode, useState } from "react";
 
-import styles from "./ThemeToggleDemo.module.css";
+import styles from "./ColorModeToggleDemo.module.css";
 
-type ThemeToggleDemoProps = {
+type ColorModeToggleDemoProps = {
   showToggle: boolean;
   isAnimated: boolean;
   children: ReactNode;
 };
 
-export function ThemeToggleDemo({
+export function ColorModeToggleDemo({
   showToggle,
   isAnimated,
   children
-}: ThemeToggleDemoProps) {
+}: ColorModeToggleDemoProps) {
   const [isDark, setIsDark] = useState(false);
   return (
     <figure>
       <div
-        className={`${styles.ThemeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
+        className={`${styles.ColorModeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
       >
         {children}
         {!showToggle && (
@@ -30,7 +30,7 @@ export function ThemeToggleDemo({
         {showToggle && (
           <button onClick={() => setIsDark(!isDark)}>
             <svg
-              className={styles.ThemeToggle}
+              className={styles.ColorModeToggle}
               width="48"
               height="48"
               viewBox="0 0 24 24"

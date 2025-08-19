@@ -1,4 +1,4 @@
-import { ThemeToggleDemo } from "./ThemeToggleDemo";
+import { ColorModeToggleDemo } from "./ColorModeToggleDemo";
 import { ContrastPicker } from "./ContrastPicker";
 
 # Animated Dark Mode Transition with CSS
@@ -79,9 +79,9 @@ body.dark {
 
 When the `.dark` class is added or removed, the browser will automatically update all the elements using the variables we defined:
 
-<ThemeToggleDemo isAnimated={false}>
+<ColorModeToggleDemo isAnimated={false}>
   Click to toggle `.dark` class:
-</ThemeToggleDemo>
+</ColorModeToggleDemo>
 
 To get a nice animation between the color modes, we can declare a transition for any property using the variables. For consistency between different elements, I like to define a `--transition-defaults` variable which I can reuse:
 
@@ -96,9 +96,9 @@ body {
 }
 ```
 
-<ThemeToggleDemo isAnimated={true}>
+<ColorModeToggleDemo isAnimated={true}>
   Click to toggle `.dark` class:
-</ThemeToggleDemo>
+</ColorModeToggleDemo>
 
 ## Using RGB, RGBA
 
@@ -121,7 +121,7 @@ The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color
 On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
 
-<ThemeToggleDemo showToggle isAnimated />
+<ColorModeToggleDemo showToggle isAnimated />
 _Demo embed_ https://codepen.io/shamir/pen/YGbbNX
 
 ### The Setup
