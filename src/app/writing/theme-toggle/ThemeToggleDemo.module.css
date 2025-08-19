@@ -1,8 +1,6 @@
 .ThemeToggleDemo {
   --duration: 0s;
   --transition-timing: var(--duration) ease-out;
-  --border-width: 4px;
-  --size: 60px;
 
   --foreground-rgb: 221, 221, 221;
   --background-rgb: 17, 17, 17;
