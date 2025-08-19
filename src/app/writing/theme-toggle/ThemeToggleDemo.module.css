@@ -36,6 +36,15 @@
   }
 }
 
+.ThemeToggle circle {
+  fill: rgba(0, 0, 0, 0);
+}
+
+.RightSideBG {
+  fill: var(--foreground-color);
+  transition: fill var(--transition-timing);
+}
+
 .LeftSide,
 .RightSide {
   fill: var(--foreground-color);
@@ -46,8 +55,12 @@
 
 .LeftSide {
   transform: rotateY(90deg);
-  transition-delay: calc(var(--duration) * 0.5);
-  transition-timing-function: ease-out;
+  transition:
+    transform var(--duration) ease-out calc(var(--duration) * 0.5),
+    fill 0s ease-out 0s;
+
+  /* transition-delay: calc(var(--duration) * 0.5);
+  transition-timing-function: ease-out; */
 }
 
 .RightSide {
@@ -63,8 +76,13 @@
   }
   .LeftSide {
     transform: rotateY(180deg);
-    transition-delay: 0s;
-    transition-timing-function: ease-in;
+    transition:
+      transform var(--duration) ease-out calc(var(--duration) * 0.5),
+      fill var(--duration) ease-out var(--duration);
+
+    /* transition-delay: 0s;
+    transition-timing-function: ease-in; */
+    fill: rgba(0, 0, 0, 0);
   }
   .RightSide {
     transform: rotateY(90deg);

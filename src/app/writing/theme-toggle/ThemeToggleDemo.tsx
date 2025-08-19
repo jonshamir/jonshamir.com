@@ -30,7 +30,7 @@ export function ThemeToggleDemo({
         {showToggle && (
           <button onClick={() => setIsDark(!isDark)}>
             <svg
-              className="theme-toggle"
+              className={styles.ThemeToggle}
               width="48"
               height="48"
               viewBox="0 0 24 24"
@@ -43,6 +43,10 @@ export function ThemeToggleDemo({
                 mask="url(#half-mask)"
                 stroke="currentColor"
                 strokeWidth="2"
+              />
+              <path
+                className={styles.RightSideBG}
+                d="M 12 5 A 7 7 0 0 1 12 19"
               />
               <path className={styles.LeftSide} d="M 12 5 A 7 7 0 0 1 12 19" />
               <path className={styles.RightSide} d="M 12 5 A 7 7 0 0 1 12 19" />
