@@ -69,13 +69,13 @@
     transform: rotateY(180deg);
     transition:
       transform var(--duration) ease-out 0s,
-      fill var(--duration) ease-out var(--half-duration);
+      fill var(--half-duration) ease-out var(--duration);
   }
 
   .RightSide {
     fill: var(--background-color);
     transform: rotateY(90deg);
-    transition: transform var(--duration) ease-out 0s;
+    transition: transform var(--duration) ease-in 0s;
   }
 }
 
