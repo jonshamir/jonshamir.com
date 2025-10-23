@@ -3,11 +3,11 @@ import { ContrastPicker } from "./ContrastPicker";
 
 # Animated Dark Mode Transition with CSS
 
-For my website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result by clicking the small icon in the upper-left corner - colors should quickly crossfade, while the toggle itself does a little spherical animation to invert its colors.
+For this website, I wanted to have a nice animation when switching between light and dark mode. You can check out the final result by clicking the small icon in the upper-left corner - colors should quickly cross-fade, while the toggle itself does a little spherical animation to invert its colors.
 
-This site is a statically generated Next.js React app.
+In this post I will explain how I implemented the effect and the little icon using CSS & SVG.
 
-I will be focusing on the CSS implementation of the effect. The implementation of the logic itself in React is mostly based on Josh Comeau’s [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs’s post](https://www.mattstobbs.com/elderjs-dark-mode/).
+I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau’s [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs’s post](https://www.mattstobbs.com/elderjs-dark-mode/).
 
 - Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
 - useColorMode Hook
