@@ -1,25 +1,22 @@
 import fs from "fs";
-import Link from "next/link";
 import path from "path";
 
-interface PostMetadata {
+export interface PostMetadata {
   date: string;
   description: string;
 }
 
-interface Post {
+export interface Post {
   slug: string;
   title: string;
   date: string;
   description: string;
 }
 
-export function PostList() {
-  // Get all directories in the writing folder
+export function getAllPosts(): Post[] {
   const postsDirectory = path.join(process.cwd(), "src/app/writing");
   const items = fs.readdirSync(postsDirectory, { withFileTypes: true });
 
-  // Filter for directories and read their MDX files
   const posts = items
     .filter(
       (item) =>
@@ -98,13 +95,41 @@ export function PostList() {
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date, newest first
 
-  return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.slug}>
-          <Link href={`/writing/${post.slug}`}>{post.title}</Link>
-        </li>
-      ))}
-    </ul>
-  );
+  return posts;
+}
+
+export function generateRssFeed(): string {
+  const posts = getAllPosts();
+  const siteUrl = "https://jonshamir.com";
+  const siteTitle = "Jon Shamir";
+  const siteDescription = "Jon Shamir portfolio website";
+
+  const rssItems = posts
+    .map((post) => {
+      const postUrl = `${siteUrl}/writing/${post.slug}`;
+      const pubDate = new Date(post.date).toUTCString();
+
+      return `
+    <item>
+      <title><![CDATA[${post.title}]]></title>
+      <link>${postUrl}</link>
+      <guid isPermaLink="true">${postUrl}</guid>
+      <description><![CDATA[${post.description}]]></description>
+      <pubDate>${pubDate}</pubDate>
+    </item>`;
+    })
+    .join("");
+
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title><![CDATA[${siteTitle}]]></title>
+    <link>${siteUrl}</link>
+    <description><![CDATA[${siteDescription}]]></description>
+    <language>en-us</language>
+    <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+    <atom:link href="${siteUrl}/rss.xml" rel="self" type="application/rss+xml"/>
+    ${rssItems}
+  </channel>
+</rss>`;
 }
