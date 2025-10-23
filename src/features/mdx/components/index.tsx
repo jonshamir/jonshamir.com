@@ -1,6 +1,7 @@
 import React from "react";
 
 import { CopyButton } from "./CopyButton";
+import { TableOfContents } from "./TableOfContents";
 
 function isExternalLink(href: string): boolean {
   return href.startsWith("http://") || href.startsWith("https://");
@@ -61,3 +62,5 @@ export function CustomPre(
     </div>
   );
 }
+
+export { TableOfContents };

@@ -1,5 +1,6 @@
 import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
 import { visit } from "unist-util-visit";
 
@@ -62,6 +63,7 @@ const forwardRawContentPlugin = () => (tree) => {
 export const mdxConfig = {
   remarkPlugins: [remarkMath],
   rehypePlugins: [
+    rehypeSlug,
     rehypeKatex,
     extractRawCodePlugin,
     [

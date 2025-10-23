@@ -7,11 +7,13 @@ For this website, I wanted to have a nice animation when switching between light
 
 In this post I will explain how I implemented the effect and the little icon using CSS & SVG.
 
-I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau’s [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs’s post](https://www.mattstobbs.com/elderjs-dark-mode/).
+I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/).
 
 - Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
 - useColorMode Hook
 - ColorModeToggle component
+
+<TableOfContents />
 
 ## Naming - Color theme? scheme? palette? mode?
 
@@ -48,13 +50,13 @@ like a painter’s palette
 
 Fonts,spacing, styling
 
-## Color scheme - set of colors
+### Color scheme - set of colors
 
 Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
 
 Use Case: When the focus is on a coordinated set of UI colors — useful if you allow multiple schemes, like “Solarized Dark” vs “Dracula”.
 
-## color mode - binary option
+### color mode - binary option
 
 Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
 
@@ -155,19 +157,6 @@ The animation is split into 4 parts:
 2. The first half of the animation
 3. The second half of the animation
 4. The final state
-
-## Final touches - the gap
-
-The gap is created by the border-width and the size of the button.
-
-box shadow trick
-
-```css
-.ThemeToggle {
-  --size: 60px;
-  --border-width: 2px;
-}
-```
 
 ## Final touches - favicon
 

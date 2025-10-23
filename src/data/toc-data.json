@@ -1,0 +1,34 @@
+{
+  "writing/color-mode": [
+    {
+      "depth": 2,
+      "text": "Naming - Color theme? scheme? palette? mode?",
+      "id": "naming---color-theme-scheme-palette-mode"
+    },
+    {
+      "depth": 2,
+      "text": "Defining the Color Palette and Transition",
+      "id": "defining-the-color-palette-and-transition"
+    },
+    {
+      "depth": 2,
+      "text": "Using RGB, RGBA",
+      "id": "using-rgb-rgba"
+    },
+    {
+      "depth": 2,
+      "text": "Contrast ratio",
+      "id": "contrast-ratio"
+    },
+    {
+      "depth": 2,
+      "text": "Creating the Fancy Toggle",
+      "id": "creating-the-fancy-toggle"
+    },
+    {
+      "depth": 2,
+      "text": "Final touches - favicon",
+      "id": "final-touches---favicon"
+    }
+  ]
+}
