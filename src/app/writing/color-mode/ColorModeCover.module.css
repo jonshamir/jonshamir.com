@@ -1,0 +1,23 @@
+.ColorModeCover {
+  padding: 1rem;
+
+  background-color: #555;
+}
+
+.RightSide,
+.LeftSide {
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  animation-duration: var(--duration);
+}
+
+.LeftSide {
+  transform: rotateY(180deg);
+}
+
+.MoonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

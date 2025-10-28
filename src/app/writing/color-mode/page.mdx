@@ -1,36 +1,57 @@
+import { ColorModeCover } from "./ColorModeCover";
 import { ColorModeToggleDemo } from "./ColorModeToggleDemo";
 import { ContrastPicker } from "./ContrastPicker";
 
 export const metadata = {
-  date: '2024-10-15',
-  description: 'How I implemented an animated dark mode toggle using CSS with smooth color transitions and a fancy spherical animation.'
+  date: "2024-10-15",
+  description:
+    "How I implemented an animated dark mode toggle using CSS with smooth color transitions and a fancy spherical animation."
 };
+
+<ColorModeCover />
 
 # Animated Dark Mode Transition with CSS
 
-For this website, I wanted to have a nice animation when switching between light and dark mode. You can check out the final result by clicking the small icon in the upper-left corner - colors should quickly cross-fade, while the toggle itself does a little spherical animation to invert its colors.
+For this website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result by clicking the small icon in the top-left corner - colors should quickly cross-fade, while the button itself does a little spherical animation.
 
-In this post I will explain how I implemented the effect and the little icon using CSS & SVG.
-
-I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/).
-
-- Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
-- useColorMode Hook
-- ColorModeToggle component
+In this post I will explain how I implemented the effect and the little icon animation using CSS & SVG.
 
 <TableOfContents />
 
-## Naming - Color theme? scheme? palette? mode?
+## Naming - Color Theme? Scheme? Mode?
 
-I believe naming things is very important especially in code. There are various ways to name this feature, and I went into a little rabbit hole trying to find the correct name!
+First thing's first - how to name this feature? (Please skip ahead if you want to get to the technical details)
 
-CSS uses `prefers-color-scheme: light | dark` (not `prefers-color-mode`, interestingly!).
+Should it be "color mode" or "color theme"? what is a "scheme" anyway? I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
 
-Android:
-Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
+I found 3 commonly used names - Color Theme, Color Scheme and Color mode, as well as some less common options such as "UIUserInterfaceStyle.light/.dark;" (UIKit) or Flutter uses Brightness.light / Brightness.dark.
+
+### Color Theme - the full design package
+
+VS Code:
+`"workbench.colorTheme": "Dark+ (default dark)"`
+
+Material UI (MUI)
+“palette mode” (light/dark) e.g. `theme.palette.mode='dark'`
+
+Jetpack Compose (Android)
+“light theme” / “dark theme” (Material 3 ColorScheme); use `isSystemInDarkTheme()` to pick light/dark
+
+### Color Scheme - set of colors
+
+Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
+
+CSS uses `prefers-color-scheme: light | dark`
 
 iOS / SwiftUI:
 `ColorScheme.light`, `ColorScheme.dark`
+
+### Color Mode - binary option
+
+Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
+
+Android:
+Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
 
 Material UI (MUI):
 `palette.mode = 'light' | 'dark'`
@@ -42,32 +63,17 @@ Tailwind CSS:
 Uses `dark:` prefix (no explicit variable).
 Config has `darkMode: 'media' | 'class'`.
 
-VS Code:
-`"workbench.colorTheme": "Dark+ (default dark)"`
+## Setup
 
-Flutter uses Brightness.light / Brightness.dark but many libraries expose colorMode.
+I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are free to take a look at the source code of this site as well if interested.
 
-### Color palette - the collection of available colors
-
-like a painter’s palette
-
-### Color theme - the full design package
-
-Fonts,spacing, styling
-
-### Color scheme - set of colors
-
-Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
-
-Use Case: When the focus is on a coordinated set of UI colors — useful if you allow multiple schemes, like “Solarized Dark” vs “Dracula”.
-
-### color mode - binary option
-
-Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
+- Inline script tag - the key was to use \<script\> instead of nextjs \<Script\>, and put it in the head instead of the beginning of the body
+- useColorMode Hook
+- ColorModeToggle component
 
 ## Defining the Color Palette and Transition
 
-Using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)) we define our light color palette, while the dark versions of these colors are overriden under the `.dark` class selector:
+When working in the web, I like to use CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)) to define the color palette. The light colors are defined by default, while the dark versions of these colors are overridden under the `.dark` class selector:
 
 ```css
 body {
@@ -90,7 +96,7 @@ When the `.dark` class is added or removed, the browser will automatically updat
   Click to toggle `.dark` class:
 </ColorModeToggleDemo>
 
-To get a nice animation between the color modes, we can declare a transition for any property using the variables. For consistency between different elements, I like to define a `--transition-defaults` variable which I can reuse:
+To get a nice animation between the color modes, we can declare a transition for any property using the variables. In order to keep the timing consistent, I define a `--transition-defaults` variable which I can reuse:
 
 ```css
 body {
@@ -110,11 +116,6 @@ body {
 ## Using RGB, RGBA
 
 that is a very nice way to ease the conversion of the UI to a different color theme
-
-## Contrast ratio
-
-calculating the Contrast
-Making light and dark contrast equal perceptually
 
 ## Creating the Fancy Toggle
 
