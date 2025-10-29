@@ -5,6 +5,7 @@ import path from "path";
 interface PostMetadata {
   date: string;
   description: string;
+  hidden?: boolean;
 }
 
 interface Post {
@@ -12,6 +13,7 @@ interface Post {
   title: string;
   date: string;
   description: string;
+  hidden?: boolean;
 }
 
 export function PostList() {
@@ -50,7 +52,8 @@ export function PostList() {
         );
         const metadata: PostMetadata = {
           date: new Date().toISOString().split("T")[0], // fallback to today
-          description: title // fallback to title
+          description: title, // fallback to title
+          hidden: false // default to visible
         };
 
         if (metadataMatch) {
@@ -71,13 +74,20 @@ export function PostList() {
           if (descMatch) {
             metadata.description = descMatch[1];
           }
+
+          // Extract hidden
+          const hiddenMatch = metadataContent.match(/hidden:\s*(true|false)/);
+          if (hiddenMatch) {
+            metadata.hidden = hiddenMatch[1] === "true";
+          }
         }
 
         return {
           slug: dir.name,
           title,
           date: metadata.date,
-          description: metadata.description
+          description: metadata.description,
+          hidden: metadata.hidden
         } satisfies Post;
       } catch (error) {
         console.error(`Error reading ${dir.name}:`, error);
@@ -92,10 +102,12 @@ export function PostList() {
           description: dir.name
             .split("-")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ")
+            .join(" "),
+          hidden: false
         } satisfies Post;
       }
     })
+    .filter((post) => !post.hidden) // Filter out hidden posts
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date, newest first
 
   return (

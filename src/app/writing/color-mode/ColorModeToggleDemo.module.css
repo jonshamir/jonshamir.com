@@ -60,7 +60,9 @@
 }
 
 .ColorModeToggleDemo button:hover {
-  background-color: rgba(var(--foreground-rgb), 0.1);
+  border: 2px solid rgba(var(--foreground-rgb), 0.2);
+
+  background-color: rgba(var(--foreground-rgb), 0.05);
 }
 
 /* ====================== */

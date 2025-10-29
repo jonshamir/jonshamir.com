@@ -12,13 +12,15 @@ export const metadata = {
 
 # Animated Dark Mode Transition with CSS
 
-For this website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result here:
+For my website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result here:
 
-<ColorModeToggleDemo showToggle isAnimated />
+<ColorModeToggleDemo showToggle isAnimated>
+  Click the button to toggle modes:
+</ColorModeToggleDemo>
 
-Unless I redesigned this site, you can also see the effect by clicking the small icon in the top-left corner - colors should quickly cross-fade, while the button itself does a little spherical animation.
+You can also see the effect by clicking the small icon in the top-left corner (Unless I redesigned this site...) Colors should quickly cross-fade, while the button itself does a little spherical animation.
 
-In this post I will explain how I implemented the effect and the little icon animation using CSS & SVG.
+In this post I will explain how I implemented this using CSS & SVG.
 
 <TableOfContents />
 
@@ -26,11 +28,11 @@ In this post I will explain how I implemented the effect and the little icon ani
 
 First thing's first - how to name this feature? (Please skip ahead if you want to get to the technical details)
 
-Should it be "color mode" or "color theme"? what is a "scheme" anyway? I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
+I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
 
-I found 3 commonly used names - Color Theme, Color Scheme and Color mode, as well as some less common options such as "UIUserInterfaceStyle.light/.dark;" (UIKit) or Flutter uses Brightness.light / Brightness.dark.
+I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (I'm looking at you, UIKit). I'll focus on the 3 prevalent options:
 
-### Color Theme - the full design package
+### Color Theme
 
 VS Code:
 `"workbench.colorTheme": "Dark+ (default dark)"`
@@ -41,7 +43,7 @@ Material UI (MUI)
 Jetpack Compose (Android)
 “light theme” / “dark theme” (Material 3 ColorScheme); use `isSystemInDarkTheme()` to pick light/dark
 
-### Color Scheme - set of colors
+### Color Scheme
 
 Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
 
@@ -50,7 +52,7 @@ CSS uses `prefers-color-scheme: light | dark`
 iOS / SwiftUI:
 `ColorScheme.light`, `ColorScheme.dark`
 
-### Color Mode - binary option
+### Color Mode
 
 Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
 
@@ -117,9 +119,11 @@ body {
   Click to toggle `.dark` class:
 </ColorModeToggleDemo>
 
-## Using RGB, RGBA
+## Using Transparency
 
-that is a very nice way to ease the conversion of the UI to a different color theme
+By using transparent colors, we can build up the UI without fiddling with more color definitions - just foreground and background. To achieve this, I like to define the color RGB values in a separate variable, then reuse it inside `rgba()` color definitions:
+
+This works especially for monochromatic color schemes.
 
 ## Creating the Fancy Toggle
 
