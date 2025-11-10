@@ -1,6 +1,8 @@
 import { Matrix4, QuadraticBezierCurve3, Shape, Vector3 } from "three";
 import { lerp } from "three/src/math/MathUtils.js";
 
+const SEGMENTS = 8;
+
 export const crossSectionShape = new Shape();
 crossSectionShape.moveTo(0, -1 / 2);
 crossSectionShape.lineTo(1 * 2, 0);
@@ -19,29 +21,16 @@ function rotatePointToPlane(x: number, y: number, normal: Vector3): Vector3 {
 // Gets vertices in a circle around a given center, rotated by the given normal vector
 function getLayerVertices(center: Vector3, radius = 0.1, normal?: Vector3) {
   const points: number[] = [];
-  const segments = 8; // You can adjust this for the smoothness of the circle
+  const segments = SEGMENTS; // You can adjust this for the smoothness of the circle
 
   for (let i = 0; i < segments; i++) {
     const theta = (i / segments) * Math.PI * 2;
     const x = radius * Math.cos(theta);
-    const y = radius * Math.sin(theta) * 0.1;
+    const y = radius * Math.sin(theta) * 0.1 - Math.abs(x) * 0.4;
     const p = rotatePointToPlane(x, y, normal || new Vector3(0, 0, 1));
     points.push(center.x + p.x, center.y + p.y, center.z + p.z);
   }
-  return points;
-}
 
-function connectLayers(l1: number[], l2: number[]) {
-  const points: number[] = [];
-  for (let i = 0; i < l1.length; i += 3) {
-    points.push(l1[i], l1[i + 1], l1[i + 2]);
-    points.push(l2[i + 3] || l2[0], l2[i + 4] || l2[1], l2[i + 5] || l2[2]);
-    points.push(l2[i], l2[i + 1], l2[i + 2]);
-
-    points.push(l1[i], l1[i + 1], l1[i + 2]);
-    points.push(l1[i + 3] || l1[0], l1[i + 4] || l1[1], l1[i + 5] || l1[2]);
-    points.push(l2[i + 3] || l2[0], l2[i + 4] || l2[1], l2[i + 5] || l2[2]);
-  }
   return points;
 }
 
@@ -51,23 +40,38 @@ export function getLeafVertices(
   curve: QuadraticBezierCurve3,
   age: number
 ) {
-  let points: number[] = [];
-
   const n = samples;
   const radius = 0.12 * age;
+  const segments = SEGMENTS;
 
-  let prevLayer: number[] = [];
+  // Build all vertices first (shared vertices for smooth shading)
+  const allVertices: number[] = [];
   for (let i = 0; i < n + 1; i++) {
     const t = i / n;
     const p = curve.getPointAt(t);
     const tangent = curve.getTangentAt(t);
     const r = lerp(radius, 0, Math.pow(t, 2));
     const layer = getLayerVertices(p, r, tangent);
-
-    if (i > 0) points = points.concat(connectLayers(prevLayer, layer));
-    prevLayer = layer;
+    allVertices.push(...layer);
   }
-  return points;
+
+  // Build indices to create triangles with shared vertices
+  const indices: number[] = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < segments; j++) {
+      const curr = i * segments + j;
+      const next = i * segments + ((j + 1) % segments);
+      const currNext = (i + 1) * segments + j;
+      const nextNext = (i + 1) * segments + ((j + 1) % segments);
+
+      // First triangle
+      indices.push(curr, nextNext, currNext);
+      // Second triangle
+      indices.push(curr, next, nextNext);
+    }
+  }
+
+  return { vertices: allVertices, indices };
 }
 
 export const range = (

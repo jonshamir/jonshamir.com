@@ -31,21 +31,27 @@ export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
       new Vector3(0, 0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
       new Vector3(0, 0, length) // End point
     );
-    const p = new Float32Array(
-      getLeafVertices(curveSamples, curve, growingStage)
+    const { vertices, indices } = getLeafVertices(
+      curveSamples,
+      curve,
+      growingStage
     );
+
     if (meshRef.current) {
-      meshRef.current.geometry = new BufferGeometry();
-      meshRef.current.geometry.setAttribute(
+      const geometry = new BufferGeometry();
+      geometry.setAttribute(
         "position",
-        new BufferAttribute(p, 3)
+        new BufferAttribute(new Float32Array(vertices), 3)
       );
+      geometry.setIndex(indices);
+      geometry.computeVertexNormals(); // Compute smooth normals
+      meshRef.current.geometry = geometry;
     }
   }, [growingStage, dyingStage]);
 
   return (
     <mesh {...props} ref={meshRef}>
-      <meshNormalMaterial flatShading={true} />
+      <meshNormalMaterial flatShading={false} />
     </mesh>
   );
 }
