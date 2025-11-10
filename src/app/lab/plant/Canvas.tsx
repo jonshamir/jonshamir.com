@@ -3,7 +3,7 @@
 import { OrbitControls } from "@react-three/drei";
 import { Leva, useControls } from "leva";
 import { useEffect, useMemo } from "react";
-import { Color, PCFSoftShadowMap, VSMShadowMap } from "three";
+import { Color, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { GroundMaterial } from "./groundMaterial";
@@ -36,20 +36,20 @@ export default function PlantCanvas() {
       <ThreeCanvas
         camera={{ fov: 15, position: [0, 0, -10] }}
         isFullscreen={true}
-        shadows={{ type: VSMShadowMap }}
+        shadows={{ type: PCFSoftShadowMap }}
       >
         <OrbitControls />
         <directionalLight
           position={[5, 10, 5]}
           intensity={1.5}
           castShadow
-          shadow-mapSize-width={2048}
-          shadow-mapSize-height={2048}
+          shadow-mapSize-width={4096}
+          shadow-mapSize-height={4096}
           shadow-camera-far={50}
-          shadow-camera-left={-5}
-          shadow-camera-right={5}
-          shadow-camera-top={5}
-          shadow-camera-bottom={-5}
+          shadow-camera-left={-3}
+          shadow-camera-right={3}
+          shadow-camera-top={3}
+          shadow-camera-bottom={-3}
           shadow-normalBias={0.0}
           shadow-bias={-0.0012}
           shadow-radius={2}

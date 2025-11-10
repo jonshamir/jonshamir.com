@@ -145,6 +145,8 @@ void main() {
     color *= lighting * finalShadow;
     color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.08;
 
+    color += finalShadow *(1.0 - isFacingLight) * vec3(0.8, 1.0, 0.3) * 0.3;
+
     // Add specular highlights
     #if NUM_DIR_LIGHTS > 0
         vec3 viewDir = normalize(vViewPosition);
