@@ -1,6 +1,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
 import { Leva, useControls } from "leva";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
@@ -9,12 +10,36 @@ import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { GroundMaterial } from "./groundMaterial";
 import { Plant } from "./Plant";
 
+function SceneBackground({ color }: { color: string }) {
+  const { scene } = useThree();
+
+  useEffect(() => {
+    scene.background = new Color(color);
+  }, [color, scene]);
+
+  return null;
+}
+
 export default function PlantCanvas() {
-  const { currAge, groundColor, shadowColor, lightPitch, lightYaw } = useControls({
+  const {
+    currAge,
+    backgroundColor,
+    groundColor,
+    shadowColor,
+    lightPitch,
+    lightYaw
+  } = useControls({
     currAge: { value: 19, min: 0, max: 200 },
+    backgroundColor: { value: "#12121a" },
     groundColor: { value: "#3e2f26" },
     shadowColor: { value: "#16141d" },
-    lightPitch: { value: 60, min: 0, max: 90, step: 1, label: "Light Pitch (°)" },
+    lightPitch: {
+      value: 60,
+      min: 0,
+      max: 90,
+      step: 1,
+      label: "Light Pitch (°)"
+    },
     lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
   });
 
@@ -53,6 +78,7 @@ export default function PlantCanvas() {
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
+        <SceneBackground color={backgroundColor} />
         <OrbitControls />
         <directionalLight
           position={lightPosition}
