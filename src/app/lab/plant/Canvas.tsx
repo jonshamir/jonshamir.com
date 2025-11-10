@@ -14,9 +14,12 @@ export default function PlantCanvas() {
   return (
     <>
       <Leva />
-      <ThreeCanvas camera={{ fov: 15, position: [0, 0, -5] }}>
+      <ThreeCanvas
+        camera={{ fov: 15, position: [0, 0, -10] }}
+        isFullscreen={true}
+      >
         <OrbitControls />
-        <Plant age={currAge} position={[0, -0.5, 0]} />
+        <Plant age={currAge} position={[0, -1, 0]} />
       </ThreeCanvas>
     </>
   );
