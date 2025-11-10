@@ -4,10 +4,10 @@ import { Color } from "three";
 export const LeafMaterial = shaderMaterial(
   {
     age: 1.0,
-    baseColor: new Color(0.2, 0.6, 0.2),
-    tipColor: new Color(0.4, 0.8, 0.3),
-    topColor: new Color(0.3, 0.7, 0.25),
-    bottomColor: new Color(0.15, 0.5, 0.15)
+    baseColor: new Color(0.2, 0.4, 0.24),
+    tipColor: new Color(0.4, 0.7, 0.3),
+    topColor: new Color(0.5, 0.6, 0.25),
+    bottomColor: new Color(0.15, 0.2, 0.15)
   },
   /* glsl */ ` // Vertex shader
     attribute float localX;
@@ -60,7 +60,7 @@ export const LeafMaterial = shaderMaterial(
         float ambient = 0.4;
         float lighting = ambient + diffuse * 0.6;
 
-        color *= lighting;
+        //color *= lighting;
 
         gl_FragColor = vec4(color, 1.0);
     }
