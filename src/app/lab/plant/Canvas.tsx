@@ -11,7 +11,7 @@ import { Plant } from "./Plant";
 
 export default function PlantCanvas() {
   const { currAge, groundColor, shadowColor } = useControls({
-    currAge: { value: 18, min: 0, max: 200 },
+    currAge: { value: 19, min: 0, max: 200 },
     groundColor: { value: "#3e2f26" },
     shadowColor: { value: "#16141d" }
   });
@@ -50,9 +50,7 @@ export default function PlantCanvas() {
           shadow-camera-right={3}
           shadow-camera-top={3}
           shadow-camera-bottom={-3}
-          shadow-normalBias={0.0}
-          shadow-bias={-0.0012}
-          shadow-radius={2}
+          shadow-normalBias={0.02}
         />
         <ambientLight intensity={0.4} />
         <Plant age={currAge} position={[0, -1, 0]} />
