@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   BufferAttribute,
   BufferGeometry,
@@ -10,10 +10,6 @@ import {
 
 import { getLeafVertices } from "./utils";
 import { LeafMaterial } from "./leafMaterial";
-import { extend } from "@react-three/fiber";
-
-// Extend R3F to recognize our custom shader material
-extend({ LeafMaterial });
 
 const { pow } = Math;
 
@@ -28,6 +24,17 @@ const curveSamples = 12;
 
 export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
   const meshRef = useRef<Mesh>(null);
+  const materialRef = useRef<LeafMaterial>(null);
+
+  // Create material once
+  const material = useMemo(() => new LeafMaterial(), []);
+
+  // Update material age when growingStage changes
+  useEffect(() => {
+    if (materialRef.current) {
+      materialRef.current.age = growingStage;
+    }
+  }, [growingStage]);
 
   useEffect(() => {
     const length = 1 - 0.1 * pow(growingStage, 1);
@@ -70,8 +77,8 @@ export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
   }, [growingStage, dyingStage]);
 
   return (
-    <mesh {...props} ref={meshRef}>
-      <leafMaterial age={growingStage} />
+    <mesh {...props} ref={meshRef} castShadow receiveShadow>
+      <primitive object={material} ref={materialRef} attach="material" />
     </mesh>
   );
 }
