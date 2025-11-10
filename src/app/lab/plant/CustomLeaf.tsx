@@ -8,8 +8,8 @@ import {
   Vector3
 } from "three";
 
-import { getLeafVertices } from "./utils";
 import { LeafMaterial } from "./leafMaterial";
+import { getLeafVertices } from "./utils";
 
 const { pow } = Math;
 

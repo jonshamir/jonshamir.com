@@ -14,9 +14,12 @@ varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
 
+#if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
+    varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
+#endif
+
 void main() {
     vUv = uv;
-    vNormal = normalize(normalMatrix * normal);
     vLocalX = localX;
     vLocalY = localY;
     vLocalZ = localZ;
@@ -24,9 +27,26 @@ void main() {
     #include <begin_vertex>
     #include <beginnormal_vertex>
     #include <defaultnormal_vertex>
+
+    vNormal = normalize(normalMatrix * normal);
+
     #include <project_vertex>
     #include <worldpos_vertex>
     #include <shadowmap_vertex>
+
+    // Calculate flipped shadow coordinates for translucency effect
+    #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
+        // Reuse shadowWorldNormal that was already calculated by shadowmap_vertex
+        vec3 flippedShadowWorldNormal = -shadowWorldNormal;
+        vec4 flippedShadowWorldPosition;
+
+        #pragma unroll_loop_start
+        for (int i = 0; i < NUM_DIR_LIGHT_SHADOWS; i++) {
+            flippedShadowWorldPosition = worldPosition + vec4(flippedShadowWorldNormal * directionalLightShadows[i].shadowNormalBias, 0);
+            vDirectionalShadowCoordFlipped[i] = directionalShadowMatrix[i] * flippedShadowWorldPosition;
+        }
+        #pragma unroll_loop_end
+    #endif
 }
 `;
 
@@ -49,6 +69,11 @@ uniform vec3 baseColor;
 uniform vec3 tipColor;
 uniform vec3 topColor;
 uniform vec3 bottomColor;
+uniform float translucency;
+
+#if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
+    varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
+#endif
 
 void main() {
     // Base-to-tip gradient (using localZ: 0 at base, 1 at tip)
@@ -61,19 +86,58 @@ void main() {
     // Blend the two gradients
     vec3 color = mix(colorAlongLength, topBottomColor, 0.3);
 
-    // Simple lighting using normal
-    vec3 lightDirection = normalize(vec3(0.5, 1.0, 0.5));
-    float diffuse = max(dot(vNormal, lightDirection), 0.0);
-    float ambient = 0.4;
-    float lighting = ambient + diffuse * 0.6;
+    // Simple lighting using the directional light from the scene
+    #if NUM_DIR_LIGHTS > 0
+        // Use the first directional light from the scene
+        vec3 lightDirection = directionalLights[0].direction;
+        float NdotL = dot(vNormal, lightDirection);
+        float diffuse = max(NdotL, 0.0);
+        float ambient = 0.4;
+        float lighting = ambient + diffuse * 0.6;
+    #else
+        // Fallback if no directional lights
+        float lighting = 1.0;
+    #endif
 
     // Calculate shadow
     float shadowMask = getShadowMask();
 
+    // Translucency effect: determine if surface is facing away from light
+    // If NdotL < 0, the surface is facing away from the light (backside)
+    float isFacingLight = step(0.0, NdotL); // 1.0 if facing light, 0.0 if facing away
+
+    float finalShadow = shadowMask;
+
+    #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
+        // Sample shadow from opposite side for translucency
+        DirectionalLightShadow directionalLight = directionalLightShadows[0];
+        float backShadow = getShadow(
+            directionalShadowMap[0],
+            directionalLight.shadowMapSize,
+            directionalLight.shadowIntensity,
+            directionalLight.shadowBias,
+            directionalLight.shadowRadius,
+            vDirectionalShadowCoordFlipped[0]
+        );
+
+        // Invert back shadow: where shadow exists on opposite side, light passes through
+        float transmittedShadow = backShadow * 0.8;
+
+        // Account for leaf thickness
+        //transmittedLight *= 1.0 - abs(vLocalX);
+
+        // Apply translucency effect to backside (not facing light)
+        finalShadow = mix(
+            transmittedShadow, // Backside: add transmitted light
+            shadowMask, // Front side: normal shadow
+            isFacingLight
+        );
+    #endif
+
     vec3 shadowColor = vec3(0.06, 0.1, 0.15);
 
-    color *= lighting * shadowMask;
-    color += shadowColor * (1.0 - shadowMask);
+    color *= lighting * finalShadow;
+    color += shadowColor * (1.0 - finalShadow);
 
     gl_FragColor = vec4(color, 1.0);
 }
@@ -89,7 +153,8 @@ export class LeafMaterial extends ShaderMaterial {
           baseColor: { value: new Color(0.2, 0.4, 0.24) },
           tipColor: { value: new Color(0.4, 0.7, 0.3) },
           topColor: { value: new Color(0.5, 0.6, 0.25) },
-          bottomColor: { value: new Color(0.15, 0.2, 0.15) }
+          bottomColor: { value: new Color(0.15, 0.2, 0.15) },
+          translucency: { value: 0.6 }
         }
       ]),
       vertexShader,
@@ -132,5 +197,12 @@ export class LeafMaterial extends ShaderMaterial {
   }
   get bottomColor(): Color {
     return this.uniforms.bottomColor.value as Color;
+  }
+
+  set translucency(value: number) {
+    this.uniforms.translucency.value = value;
+  }
+  get translucency(): number {
+    return this.uniforms.translucency.value as number;
   }
 }
