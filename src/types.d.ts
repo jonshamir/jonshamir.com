@@ -6,6 +6,14 @@ interface MoonMaterialProps {
   bumpMap?: THREE.Texture;
 }
 
+interface LeafMaterialProps {
+  age?: number;
+  baseColor?: THREE.Color;
+  tipColor?: THREE.Color;
+  topColor?: THREE.Color;
+  bottomColor?: THREE.Color;
+}
+
 declare global {
   namespace React {
     namespace JSX {
@@ -13,6 +21,10 @@ declare global {
         moonMaterial: ReactThreeFiber.Object3DNode<
           MoonMaterialProps,
           MoonMaterialProps
+        >;
+        leafMaterial: ReactThreeFiber.Object3DNode<
+          LeafMaterialProps,
+          LeafMaterialProps
         >;
       }
     }

@@ -46,6 +46,10 @@ export function getLeafVertices(
 
   // Build all vertices first (shared vertices for smooth shading)
   const allVertices: number[] = [];
+  const localX: number[] = [];
+  const localY: number[] = [];
+  const localZ: number[] = [];
+
   for (let i = 0; i < n + 1; i++) {
     const t = i / n;
     const p = curve.getPointAt(t);
@@ -53,6 +57,20 @@ export function getLeafVertices(
     const r = lerp(radius, 0, Math.pow(t, 2));
     const layer = getLayerVertices(p, r, tangent);
     allVertices.push(...layer);
+
+    // Calculate normalized local coordinates for each vertex in this layer
+    for (let j = 0; j < segments; j++) {
+      const theta = (j / segments) * Math.PI * 2;
+
+      // localZ: 0 at base (i=0), 1 at tip (i=n)
+      localZ.push(t);
+
+      // localX: -1 to +1 based on cos(theta) (left to right around cross-section)
+      localX.push(Math.cos(theta));
+
+      // localY: -1 to +1 based on sin(theta) (bottom to top around cross-section)
+      localY.push(Math.sin(theta));
+    }
   }
 
   // Build indices to create triangles with shared vertices
@@ -71,7 +89,7 @@ export function getLeafVertices(
     }
   }
 
-  return { vertices: allVertices, indices };
+  return { vertices: allVertices, indices, localX, localY, localZ };
 }
 
 export const range = (

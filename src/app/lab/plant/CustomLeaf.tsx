@@ -9,6 +9,11 @@ import {
 } from "three";
 
 import { getLeafVertices } from "./utils";
+import { LeafMaterial } from "./leafMaterial";
+import { extend } from "@react-three/fiber";
+
+// Extend R3F to recognize our custom shader material
+extend({ LeafMaterial });
 
 const { pow } = Math;
 
@@ -31,7 +36,7 @@ export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
       new Vector3(0, 0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
       new Vector3(0, 0, length) // End point
     );
-    const { vertices, indices } = getLeafVertices(
+    const { vertices, indices, localX, localY, localZ } = getLeafVertices(
       curveSamples,
       curve,
       growingStage
@@ -45,13 +50,28 @@ export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
       );
       geometry.setIndex(indices);
       geometry.computeVertexNormals(); // Compute smooth normals
+
+      // Add custom attributes for shader
+      geometry.setAttribute(
+        "localX",
+        new BufferAttribute(new Float32Array(localX), 1)
+      );
+      geometry.setAttribute(
+        "localY",
+        new BufferAttribute(new Float32Array(localY), 1)
+      );
+      geometry.setAttribute(
+        "localZ",
+        new BufferAttribute(new Float32Array(localZ), 1)
+      );
+
       meshRef.current.geometry = geometry;
     }
   }, [growingStage, dyingStage]);
 
   return (
     <mesh {...props} ref={meshRef}>
-      <meshNormalMaterial flatShading={false} />
+      <leafMaterial age={growingStage} />
     </mesh>
   );
 }
