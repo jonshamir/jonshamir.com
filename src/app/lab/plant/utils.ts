@@ -24,7 +24,7 @@ function getLayerVertices(center: Vector3, radius = 0.1, normal?: Vector3) {
   for (let i = 0; i < segments; i++) {
     const theta = (i / segments) * Math.PI * 2;
     const x = radius * Math.cos(theta);
-    const y = radius * Math.sin(theta) * 0.3;
+    const y = radius * Math.sin(theta) * 0.1;
     const p = rotatePointToPlane(x, y, normal || new Vector3(0, 0, 1));
     points.push(center.x + p.x, center.y + p.y, center.z + p.z);
   }
