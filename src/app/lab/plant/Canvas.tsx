@@ -8,13 +8,13 @@ import { Plant } from "./Plant";
 
 export default function PlantCanvas() {
   const { currAge } = useControls({
-    currAge: { value: 35, min: 0, max: 200 }
+    currAge: { value: 18, min: 0, max: 200 }
   });
 
   return (
     <>
       <Leva />
-      <ThreeCanvas camera={{ fov: 15, position: [0, 8, -9] }}>
+      <ThreeCanvas camera={{ fov: 15, position: [0, 0, -5] }}>
         <OrbitControls />
         <Plant age={currAge} position={[0, -0.5, 0]} />
       </ThreeCanvas>

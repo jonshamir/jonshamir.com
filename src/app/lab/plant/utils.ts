@@ -54,7 +54,7 @@ export function getLeafVertices(
   let points: number[] = [];
 
   const n = samples;
-  const radius = 0.22 * age;
+  const radius = 0.12 * age;
 
   let prevLayer: number[] = [];
   for (let i = 0; i < n + 1; i++) {

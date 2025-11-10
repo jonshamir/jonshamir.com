@@ -10,6 +10,8 @@ import {
 
 import { getLeafVertices } from "./utils";
 
+const { pow } = Math;
+
 interface LeafProps {
   position?: [number, number, number];
   growingStage: number; // 0 = new, 1 = fully grown
@@ -23,10 +25,10 @@ export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
   const meshRef = useRef<Mesh>(null);
 
   useEffect(() => {
-    const length = 1 * growingStage * (1 - dyingStage);
+    const length = 1 - 0.1 * pow(growingStage, 1);
     const curve = new QuadraticBezierCurve3(
       new Vector3(0, 0, 0), // Start point
-      new Vector3(0, -0.3 * Math.pow(growingStage, 10), 0.5 * length), // Control point
+      new Vector3(0, 0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
       new Vector3(0, 0, length) // End point
     );
     const p = new Float32Array(
