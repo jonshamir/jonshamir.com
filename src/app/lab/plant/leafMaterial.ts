@@ -143,7 +143,7 @@ void main() {
     vec3 shadowColor = vec3(0.06, 0.1, 0.15);
 
     color *= lighting * finalShadow;
-    color += shadowColor * (1.0 - finalShadow);
+    color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.08;
 
     // Add specular highlights
     #if NUM_DIR_LIGHTS > 0
