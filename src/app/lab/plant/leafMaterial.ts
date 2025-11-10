@@ -13,6 +13,7 @@ varying vec3 vNormal;
 varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
+varying vec3 vViewPosition;
 
 #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
     varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
@@ -33,6 +34,9 @@ void main() {
     #include <project_vertex>
     #include <worldpos_vertex>
     #include <shadowmap_vertex>
+
+    // Calculate view position for subsurface scattering
+    vViewPosition = -mvPosition.xyz;
 
     // Calculate flipped shadow coordinates for translucency effect
     #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
@@ -63,6 +67,7 @@ varying vec3 vNormal;
 varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
+varying vec3 vViewPosition;
 
 uniform float age;
 uniform vec3 baseColor;
@@ -139,6 +144,25 @@ void main() {
 
     color *= lighting * finalShadow;
     color += shadowColor * (1.0 - finalShadow);
+
+    // Add specular highlights
+    #if NUM_DIR_LIGHTS > 0
+        vec3 viewDir = normalize(vViewPosition);
+        vec3 lightDir = directionalLights[0].direction;
+
+        // Calculate half vector for Blinn-Phong specular
+        vec3 halfVector = normalize(lightDir + viewDir);
+        float specular = pow(max(dot(vNormal, halfVector), 0.0), 32.0);
+
+        // Only apply specular on front-facing surfaces
+        specular *= isFacingLight;
+
+        // Modulate by shadow
+        specular *= finalShadow;
+
+        // Add subtle specular highlight
+        color += vec3(1.0, 1.0, 0.9) * specular * 0.4;
+    #endif
 
     gl_FragColor = vec4(color, 1.0);
 }

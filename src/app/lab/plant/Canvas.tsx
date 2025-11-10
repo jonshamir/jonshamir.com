@@ -2,14 +2,33 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { Leva, useControls } from "leva";
+import { useEffect, useMemo } from "react";
+import { Color } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { GroundMaterial } from "./groundMaterial";
 import { Plant } from "./Plant";
 
 export default function PlantCanvas() {
-  const { currAge } = useControls({
-    currAge: { value: 18, min: 0, max: 200 }
+  const { currAge, groundColor, shadowColor } = useControls({
+    currAge: { value: 18, min: 0, max: 200 },
+    groundColor: { value: "#3e2f26" },
+    shadowColor: { value: "#16141d" }
   });
+
+  const groundMaterial = useMemo(() => new GroundMaterial(), []);
+
+  useEffect(() => {
+    const color = new Color(groundColor);
+    color.convertLinearToSRGB();
+    groundMaterial.baseColor = color;
+  }, [groundColor, groundMaterial]);
+
+  useEffect(() => {
+    const color = new Color(shadowColor);
+    color.convertLinearToSRGB();
+    groundMaterial.shadowColor = color;
+  }, [shadowColor, groundMaterial]);
 
   return (
     <>
@@ -35,6 +54,14 @@ export default function PlantCanvas() {
         />
         <ambientLight intensity={0.4} />
         <Plant age={currAge} position={[0, -1, 0]} />
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, -0.95, 0]}
+          receiveShadow
+        >
+          <planeGeometry args={[10, 10]} />
+          <primitive object={groundMaterial} attach="material" />
+        </mesh>
       </ThreeCanvas>
     </>
   );
