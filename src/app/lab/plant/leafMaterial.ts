@@ -103,8 +103,9 @@ void main() {
     float shadowMask = getShadowMask();
 
     // Translucency effect: determine if surface is facing away from light
-    // If NdotL < 0, the surface is facing away from the light (backside)
-    float isFacingLight = step(0.0, NdotL); // 1.0 if facing light, 0.0 if facing away
+    // Use smoothstep for gradual transition between front and back
+    // NdotL range: -1 (facing away) to 1 (facing towards)
+    float isFacingLight = smoothstep(-0.2, 0.2, NdotL); // Gradual transition around NdotL = 0
 
     float finalShadow = shadowMask;
 
