@@ -10,11 +10,26 @@ import { GroundMaterial } from "./groundMaterial";
 import { Plant } from "./Plant";
 
 export default function PlantCanvas() {
-  const { currAge, groundColor, shadowColor } = useControls({
+  const { currAge, groundColor, shadowColor, lightPitch, lightYaw, lightDistance } = useControls({
     currAge: { value: 19, min: 0, max: 200 },
     groundColor: { value: "#3e2f26" },
-    shadowColor: { value: "#16141d" }
+    shadowColor: { value: "#16141d" },
+    lightPitch: { value: 60, min: 0, max: 90, step: 1, label: "Light Pitch (°)" },
+    lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" },
+    lightDistance: { value: 12, min: 5, max: 30, step: 0.5, label: "Light Distance" }
   });
+
+  // Convert pitch/yaw to cartesian coordinates
+  const lightPosition: [number, number, number] = useMemo(() => {
+    const pitchRad = (lightPitch * Math.PI) / 180;
+    const yawRad = (lightYaw * Math.PI) / 180;
+
+    const x = lightDistance * Math.cos(pitchRad) * Math.cos(yawRad);
+    const y = lightDistance * Math.sin(pitchRad);
+    const z = lightDistance * Math.cos(pitchRad) * Math.sin(yawRad);
+
+    return [x, y, z];
+  }, [lightPitch, lightYaw, lightDistance]);
 
   const groundMaterial = useMemo(() => new GroundMaterial(), []);
 
@@ -40,7 +55,7 @@ export default function PlantCanvas() {
       >
         <OrbitControls />
         <directionalLight
-          position={[5, 10, 5]}
+          position={lightPosition}
           intensity={1.5}
           castShadow
           shadow-mapSize-width={4096}
