@@ -3,7 +3,7 @@
 import { OrbitControls } from "@react-three/drei";
 import { Leva, useControls } from "leva";
 import { useEffect, useMemo } from "react";
-import { Color, PCFShadowMap, PCFSoftShadowMap, VSMShadowMap } from "three";
+import { Color, PCFSoftShadowMap } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { GroundMaterial } from "./groundMaterial";
