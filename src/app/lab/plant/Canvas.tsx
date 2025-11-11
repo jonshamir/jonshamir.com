@@ -1,7 +1,6 @@
 "use client";
 
-import { OrbitControls } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { OrbitControls, StatsGl } from "@react-three/drei";
 import { Leva, useControls } from "leva";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
@@ -14,16 +13,6 @@ import { Plant } from "./Plant";
 import { SimpleFlower } from "./SimpleFlower";
 
 const GOLDEN_ANGLE = 2.39996;
-
-function SceneBackground({ color }: { color: string }) {
-  const { scene } = useThree();
-
-  useEffect(() => {
-    scene.background = new Color(color);
-  }, [color, scene]);
-
-  return null;
-}
 
 export default function PlantCanvas() {
   const {
@@ -146,7 +135,7 @@ export default function PlantCanvas() {
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
-        <SceneBackground color={backgroundColor} />
+        <StatsGl className="stats-gl" />
         <OrbitControls />
         <directionalLight
           position={lightPosition}
