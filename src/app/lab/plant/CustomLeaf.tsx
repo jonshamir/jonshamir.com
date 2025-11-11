@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import {
   BufferAttribute,
   BufferGeometry,
+  Color,
   Euler,
   Mesh,
   QuadraticBezierCurve3,
@@ -18,11 +19,21 @@ interface LeafProps {
   growingStage: number; // 0 = new, 1 = fully grown
   dyingStage: number; // 0 = not dying, 1 = dead
   rotation?: Euler;
+  baseColor?: Color;
+  shadowColor?: Color;
+  subsurfaceColor?: Color;
 }
 
 const curveSamples = 12;
 
-export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
+export function CustomLeaf({
+  growingStage,
+  dyingStage,
+  baseColor,
+  shadowColor,
+  subsurfaceColor,
+  ...props
+}: LeafProps) {
   const meshRef = useRef<Mesh>(null);
   const materialRef = useRef<LeafMaterial>(null);
 
@@ -35,6 +46,25 @@ export function CustomLeaf({ growingStage, dyingStage, ...props }: LeafProps) {
       materialRef.current.age = growingStage;
     }
   }, [growingStage]);
+
+  // Update material colors
+  useEffect(() => {
+    if (materialRef.current && baseColor) {
+      materialRef.current.baseColor = baseColor;
+    }
+  }, [baseColor]);
+
+  useEffect(() => {
+    if (materialRef.current && shadowColor) {
+      materialRef.current.shadowColor = shadowColor;
+    }
+  }, [shadowColor]);
+
+  useEffect(() => {
+    if (materialRef.current && subsurfaceColor) {
+      materialRef.current.subsurfaceColor = subsurfaceColor;
+    }
+  }, [subsurfaceColor]);
 
   useEffect(() => {
     const length = 1 - 0.1 * pow(growingStage, 1);

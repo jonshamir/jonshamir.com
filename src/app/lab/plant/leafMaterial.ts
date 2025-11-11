@@ -75,6 +75,8 @@ uniform vec3 tipColor;
 uniform vec3 topColor;
 uniform vec3 bottomColor;
 uniform float translucency;
+uniform vec3 shadowColor;
+uniform vec3 subsurfaceColor;
 
 #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
     varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
@@ -140,12 +142,10 @@ void main() {
         );
     #endif
 
-    vec3 shadowColor = vec3(0.06, 0.1, 0.15);
-
     color *= lighting * finalShadow;
-    color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.08;
+    color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.3;
 
-    color += finalShadow *(1.0 - isFacingLight) * vec3(0.8, 1.0, 0.3) * 0.3;
+    color += finalShadow *(1.0 - isFacingLight) * subsurfaceColor * 0.3;
 
     // Add specular highlights
     #if NUM_DIR_LIGHTS > 0
@@ -181,7 +181,9 @@ export class LeafMaterial extends ShaderMaterial {
           tipColor: { value: new Color(0.4, 0.7, 0.3) },
           topColor: { value: new Color(0.5, 0.6, 0.25) },
           bottomColor: { value: new Color(0.15, 0.2, 0.15) },
-          translucency: { value: 0.6 }
+          translucency: { value: 0.6 },
+          shadowColor: { value: new Color(0.06, 0.1, 0.15) },
+          subsurfaceColor: { value: new Color(0.8, 1.0, 0.3) }
         }
       ]),
       vertexShader,
@@ -231,5 +233,19 @@ export class LeafMaterial extends ShaderMaterial {
   }
   get translucency(): number {
     return this.uniforms.translucency.value as number;
+  }
+
+  set shadowColor(value: Color) {
+    this.uniforms.shadowColor.value = value;
+  }
+  get shadowColor(): Color {
+    return this.uniforms.shadowColor.value as Color;
+  }
+
+  set subsurfaceColor(value: Color) {
+    this.uniforms.subsurfaceColor.value = value;
+  }
+  get subsurfaceColor(): Color {
+    return this.uniforms.subsurfaceColor.value as Color;
   }
 }

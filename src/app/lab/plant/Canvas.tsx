@@ -25,14 +25,20 @@ export default function PlantCanvas() {
     currAge,
     backgroundColor,
     groundColor,
-    shadowColor,
+    groundShadowColor,
+    plantBaseColor,
+    plantShadowColor,
+    plantSubsurfaceColor,
     lightPitch,
     lightYaw
   } = useControls({
     currAge: { value: 19, min: 0, max: 200 },
-    backgroundColor: { value: "#12121a" },
-    groundColor: { value: "#3e2f26" },
-    shadowColor: { value: "#16141d" },
+    backgroundColor: { value: "#26334b" },
+    groundColor: { value: "#7c4b2c" },
+    groundShadowColor: { value: "#262238" },
+    plantBaseColor: { value: "#335e3d" },
+    plantShadowColor: { value: "#1f3f45" },
+    plantSubsurfaceColor: { value: "#ccff4d" },
     lightPitch: {
       value: 60,
       min: 0,
@@ -65,10 +71,29 @@ export default function PlantCanvas() {
   }, [groundColor, groundMaterial]);
 
   useEffect(() => {
-    const color = new Color(shadowColor);
+    const color = new Color(groundShadowColor);
     color.convertLinearToSRGB();
     groundMaterial.shadowColor = color;
-  }, [shadowColor, groundMaterial]);
+  }, [groundShadowColor, groundMaterial]);
+
+  // Convert plant colors from hex to Color objects
+  const plantBaseColorObj = useMemo(() => {
+    const color = new Color(plantBaseColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [plantBaseColor]);
+
+  const plantShadowColorObj = useMemo(() => {
+    const color = new Color(plantShadowColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [plantShadowColor]);
+
+  const plantSubsurfaceColorObj = useMemo(() => {
+    const color = new Color(plantSubsurfaceColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [plantSubsurfaceColor]);
 
   return (
     <>
@@ -94,7 +119,13 @@ export default function PlantCanvas() {
           shadow-normalBias={0.02}
         />
         <ambientLight intensity={0.4} />
-        <Plant age={currAge} position={[0, -1, 0]} />
+        <Plant
+          age={currAge}
+          position={[0, -1, 0]}
+          baseColor={plantBaseColorObj}
+          shadowColor={plantShadowColorObj}
+          subsurfaceColor={plantSubsurfaceColorObj}
+        />
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
           position={[0, -0.95, 0]}

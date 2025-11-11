@@ -1,5 +1,5 @@
 import { useControls } from "leva";
-import { Euler } from "three";
+import { Color, Euler } from "three";
 
 import { CustomLeaf } from "./CustomLeaf";
 import { pseudoRandom, range, saturate } from "./utils";
@@ -12,9 +12,18 @@ interface PlantProps {
   age: number;
   position?: [number, number, number];
   rotation?: Euler;
+  baseColor?: Color;
+  shadowColor?: Color;
+  subsurfaceColor?: Color;
 }
 
-export function Plant({ age: n, ...props }: PlantProps) {
+export function Plant({
+  age: n,
+  baseColor,
+  shadowColor,
+  subsurfaceColor,
+  ...props
+}: PlantProps) {
   const { matureAge, basePitch, baseYaw, layerHeight } = useControls("Plant ", {
     matureAge: { value: 50, min: 1, max: 300, step: 1 },
     basePitch: { value: -1.55, min: -Math.PI, max: Math.PI },
@@ -47,6 +56,9 @@ export function Plant({ age: n, ...props }: PlantProps) {
             dyingStage={dyingStage}
             position={[0, y, 0]}
             rotation={rotation}
+            baseColor={baseColor}
+            shadowColor={shadowColor}
+            subsurfaceColor={subsurfaceColor}
           />
         );
       })}
