@@ -10,7 +10,10 @@ const vertexShader = /* glsl */ `
 #include <common>
 #include <shadowmap_pars_vertex>
 
+attribute float localZ;
+
 varying vec3 vNormal;
+varying float vLayer;
 
 void main() {
     #include <begin_vertex>
@@ -18,6 +21,7 @@ void main() {
     #include <defaultnormal_vertex>
 
     vNormal = normalize(normalMatrix * normal);
+    vLayer = localZ;
 
     #include <project_vertex>
     #include <worldpos_vertex>
@@ -34,6 +38,7 @@ const fragmentShader = /* glsl */ `
 #include <shadowmask_pars_fragment>
 
 varying vec3 vNormal;
+varying float vLayer;
 
 uniform vec3 baseColor;
 uniform vec3 shadowColor;
@@ -53,8 +58,16 @@ void main() {
 
     // Calculate shadow and blend with shadow color
     float shadowMask = getShadowMask();
-    color = mix(shadowColor, color, shadowMask);
+    // float aoShadow = smoothstep(0.0, 0.6, vLayer);
+    float rimHeight = 0.745;
+    float aoShadow = smoothstep(rimHeight, rimHeight - 0.3, vLayer) + step(rimHeight, vLayer);
+    aoShadow *= smoothstep(0.0, 0.3, vLayer);
+    
+    vec3 shadowFinalColor = mix(shadowColor*0.85, shadowColor, aoShadow);
 
+    color = mix(shadowFinalColor, color, shadowMask);
+
+    
     gl_FragColor = vec4(color, 1.0);
 }
 `;

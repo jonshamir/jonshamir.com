@@ -29,7 +29,7 @@ export default function PlantCanvas() {
       groundColor: { value: "#7c4b2c", label: "Ground Color" },
       groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
       shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
-      shadowPlaneColor: { value: "#13102a", label: "Shadow Plane Color" },
+      shadowPlaneColor: { value: "#050314", label: "Shadow Plane Color" },
       lightPitch: {
         value: 60,
         min: 0,
@@ -84,7 +84,7 @@ export default function PlantCanvas() {
     "Pot Colors",
     {
       potBaseColor: { value: "#cc8866", label: "Base Color" },
-      potShadowColor: { value: "#262238", label: "Shadow Color" }
+      potShadowColor: { value: "#201d2e", label: "Shadow Color" }
     },
     { collapsed: true }
   );
@@ -318,7 +318,7 @@ export default function PlantCanvas() {
             receiveShadow
           >
             <planeGeometry args={[10, 10]} />
-            <shadowMaterial color={shadowPlaneColorObj} opacity={0.5} />
+            <shadowMaterial color={shadowPlaneColorObj} opacity={0.3} />
           </mesh>
         )}
       </ThreeCanvas>
