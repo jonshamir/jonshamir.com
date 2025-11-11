@@ -335,36 +335,6 @@ export function getFlowerVertices(
     }
   }
 
-  // Add petal vertices at the tip (midpoint between edge vertices, extended outward)
-  const petalLength = tipRadius * 3; // How far petals extend from cylinder
-  const tipY = height;
-
-  for (let j = 0; j < sides; j++) {
-    // Calculate midpoint angle between current and next edge vertex
-    const theta1 = (j / sides) * Math.PI * 2;
-    const theta2 = ((j + 1) / sides) * Math.PI * 2;
-    const thetaMid = (theta1 + theta2) / 2;
-
-    const x = petalLength * Math.cos(thetaMid);
-    const z = petalLength * Math.sin(thetaMid);
-
-    allVertices.push(x, tipY, z);
-
-    // Local coordinates for petals
-    localZ.push(1.0); // At the tip
-    localX.push(Math.cos(thetaMid));
-    localY.push(Math.sin(thetaMid));
-
-    // Color attributes
-    vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
-    vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
-    vertexSubsurfaceColors.push(
-      subsurfaceColor[0],
-      subsurfaceColor[1],
-      subsurfaceColor[2]
-    );
-  }
-
   // Build indices to create triangles
   const indices: number[] = [];
 
@@ -383,17 +353,73 @@ export function getFlowerVertices(
     }
   }
 
-  // Petal triangles - connect last layer edge to petal tips
-  const lastLayerStart = segments * sides;
-  const petalStart = n * sides;
+  // Add petal vertices as separate geometry for flat shading
+  // Each petal gets its own 3 vertices (not shared with cylinder)
+  const petalLength = tipRadius * 3; // How far petals extend from cylinder
+  const tipY = height;
 
   for (let j = 0; j < sides; j++) {
-    const currEdge = lastLayerStart + j;
-    const nextEdge = lastLayerStart + ((j + 1) % sides);
-    const petalTip = petalStart + j;
+    // Get the positions of the two edge vertices from the cylinder
+    const theta1 = (j / sides) * Math.PI * 2;
+    const theta2 = ((j + 1) / sides) * Math.PI * 2;
+    const thetaMid = (theta1 + theta2) / 2;
 
-    // Triangle forming the petal - tip is at midpoint angle between the two edges
-    indices.push(currEdge, nextEdge, petalTip);
+    const edgeRadius = lerp(baseRadius, tipRadius, 1.0);
+    const edge1X = edgeRadius * Math.cos(theta1);
+    const edge1Z = edgeRadius * Math.sin(theta1);
+    const edge2X = edgeRadius * Math.cos(theta2);
+    const edge2Z = edgeRadius * Math.sin(theta2);
+
+    const petalTipX = petalLength * Math.cos(thetaMid);
+    const petalTipZ = petalLength * Math.sin(thetaMid);
+
+    // Add 3 separate vertices for this petal triangle
+    // Vertex 1: First edge
+    allVertices.push(edge1X, tipY, edge1Z);
+    localZ.push(1.0);
+    localX.push(Math.cos(theta1));
+    localY.push(Math.sin(theta1));
+    vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
+    vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
+    vertexSubsurfaceColors.push(
+      subsurfaceColor[0],
+      subsurfaceColor[1],
+      subsurfaceColor[2]
+    );
+
+    // Vertex 2: Second edge
+    allVertices.push(edge2X, tipY, edge2Z);
+    localZ.push(1.0);
+    localX.push(Math.cos(theta2));
+    localY.push(Math.sin(theta2));
+    vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
+    vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
+    vertexSubsurfaceColors.push(
+      subsurfaceColor[0],
+      subsurfaceColor[1],
+      subsurfaceColor[2]
+    );
+
+    // Vertex 3: Petal tip
+    allVertices.push(petalTipX, tipY, petalTipZ);
+    localZ.push(1.0);
+    localX.push(Math.cos(thetaMid));
+    localY.push(Math.sin(thetaMid));
+    vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
+    vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
+    vertexSubsurfaceColors.push(
+      subsurfaceColor[0],
+      subsurfaceColor[1],
+      subsurfaceColor[2]
+    );
+
+    // Add triangle indices for this petal
+    const petalVertexStart = n * sides + j * 3;
+    indices.push(
+      petalVertexStart,
+      petalVertexStart + 1,
+      petalVertexStart + 2
+    );
   }
 
   return {
