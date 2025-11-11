@@ -1,4 +1,4 @@
-import { Color, ShaderMaterial, UniformsLib, UniformsUtils } from "three";
+import { ShaderMaterial, UniformsLib, UniformsUtils } from "three";
 
 const vertexShader = /* glsl */ `
 #include <common>
@@ -82,9 +82,6 @@ varying vec3 vShadowColor;
 varying vec3 vSubsurfaceColor;
 
 uniform float age;
-uniform vec3 tipColor;
-uniform vec3 topColor;
-uniform vec3 bottomColor;
 uniform float translucency;
 
 #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
@@ -183,9 +180,6 @@ export class PlantMaterial extends ShaderMaterial {
         UniformsLib.lights,
         {
           age: { value: 1.0 },
-          tipColor: { value: new Color(0.4, 0.7, 0.3) },
-          topColor: { value: new Color(0.5, 0.6, 0.25) },
-          bottomColor: { value: new Color(0.15, 0.2, 0.15) },
           translucency: { value: 0.6 }
         }
       ]),
@@ -201,27 +195,6 @@ export class PlantMaterial extends ShaderMaterial {
   }
   get age(): number {
     return this.uniforms.age.value as number;
-  }
-
-  set tipColor(value: Color) {
-    this.uniforms.tipColor.value = value;
-  }
-  get tipColor(): Color {
-    return this.uniforms.tipColor.value as Color;
-  }
-
-  set topColor(value: Color) {
-    this.uniforms.topColor.value = value;
-  }
-  get topColor(): Color {
-    return this.uniforms.topColor.value as Color;
-  }
-
-  set bottomColor(value: Color) {
-    this.uniforms.bottomColor.value = value;
-  }
-  get bottomColor(): Color {
-    return this.uniforms.bottomColor.value as Color;
   }
 
   set translucency(value: number) {
