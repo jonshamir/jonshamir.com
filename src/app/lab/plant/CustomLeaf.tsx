@@ -51,7 +51,7 @@ export function CustomLeaf({
     const length = 1 - 0.1 * pow(growingStage, 1);
     const curve = new QuadraticBezierCurve3(
       new Vector3(0, 0, 0), // Start point
-      new Vector3(0, 0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
+      new Vector3(0, -0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
       new Vector3(0, 0, length) // End point
     );
     const {

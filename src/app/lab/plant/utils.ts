@@ -60,7 +60,7 @@ export function getLeafVertices(
     const t = i / n;
     const p = curve.getPointAt(t);
     const tangent = curve.getTangentAt(t);
-    const r = lerp(radius, 0, Math.pow(t, 2));
+    const r = lerp(radius, 0, easeInExpo(t));
     const layer = getLayerVertices(p, r, tangent);
     allVertices.push(...layer);
 
@@ -216,6 +216,10 @@ export function getStemVertices(
     vertexShadowColors,
     vertexSubsurfaceColors
   };
+}
+
+function easeInExpo(x: number): number {
+  return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
 }
 
 export const range = (

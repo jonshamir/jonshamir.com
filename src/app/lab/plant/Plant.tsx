@@ -23,7 +23,7 @@ export function Plant({
   ...props
 }: PlantProps) {
   const { matureAge, basePitch, baseYaw, layerHeight } = useControls("Plant ", {
-    matureAge: { value: 50, min: 1, max: 300, step: 1 },
+    matureAge: { value: 30, min: 1, max: 300, step: 1 },
     basePitch: { value: -1.55, min: -Math.PI, max: Math.PI },
     baseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
     layerHeight: { value: 0.01, min: 0, max: 0.2 }
