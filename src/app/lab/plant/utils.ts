@@ -1,7 +1,7 @@
 import { Matrix4, QuadraticBezierCurve3, Shape, Vector3 } from "three";
 import { lerp } from "three/src/math/MathUtils.js";
 
-const SEGMENTS = 8;
+const SEGMENTS = 12;
 
 export const crossSectionShape = new Shape();
 crossSectionShape.moveTo(0, -1 / 2);
@@ -44,7 +44,7 @@ export function getLeafVertices(
   subsurfaceColor: [number, number, number] = [0.8, 1.0, 0.3]
 ) {
   const n = samples;
-  const radius = 0.12 * age;
+  const radius = 0.08 * Math.pow(age, 0.5);
   const segments = SEGMENTS;
 
   // Build all vertices first (shared vertices for smooth shading)
