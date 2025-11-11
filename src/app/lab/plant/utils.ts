@@ -585,9 +585,9 @@ export function getPotVertices(
     const i1 = bottomInner + j;
     const i2 = bottomInner + ((j + 1) % sides);
 
-    // Bottom wall triangles
-    indices.push(o1, i1, i2);
-    indices.push(o1, i2, o2);
+    // Bottom wall triangles (horizontal ring, viewed from outside)
+    indices.push(o1, i2, i1);
+    indices.push(o1, o2, i2);
   }
 
   // Add top rim face (horizontal surface at the top)
@@ -616,9 +616,9 @@ export function getPotVertices(
     const i1 = topInner + j;
     const i2 = topInner + ((j + 1) % sides);
 
-    // Top rim wall triangles (reversed winding for top face)
-    indices.push(o1, i2, i1);
-    indices.push(o1, o2, i2);
+    // Top rim wall triangles (horizontal ring, viewed from outside)
+    indices.push(o1, i1, i2);
+    indices.push(o1, i2, o2);
   }
 
   return {
