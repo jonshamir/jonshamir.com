@@ -69,23 +69,23 @@ export default function PlantCanvas() {
     potRimThickness,
     potThickness
   } = useControls("Pot Dimensions", {
-    potHeight: { value: 0.8, min: 0.1, max: 2.0, step: 0.05, label: "Height" },
+    potHeight: { value: 0.5, min: 0.1, max: 2.0, step: 0.05, label: "Height" },
     potBottomRadius: {
-      value: 0.3,
+      value: 0.25,
       min: 0.1,
       max: 1.0,
       step: 0.05,
       label: "Bottom Radius"
     },
     potTopRadius: {
-      value: 0.5,
+      value: 0.3,
       min: 0.1,
       max: 1.0,
       step: 0.05,
       label: "Top Radius"
     },
     potRimHeight: {
-      value: 0.1,
+      value: 0.15,
       min: 0.01,
       max: 0.5,
       step: 0.01,
@@ -189,7 +189,7 @@ export default function PlantCanvas() {
     <>
       <Leva />
       <ThreeCanvas
-        camera={{ fov: 15, position: [0, 0, -13], near: 0.01 }}
+        camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
@@ -261,7 +261,7 @@ export default function PlantCanvas() {
           position={[0, -0.95, 0]}
           receiveShadow
         >
-          <circleGeometry args={[0.48, 64]} />
+          <circleGeometry args={[0.2, 64]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
       </ThreeCanvas>
