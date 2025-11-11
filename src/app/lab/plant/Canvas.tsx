@@ -92,7 +92,7 @@ export default function PlantCanvas() {
         label: "Height"
       },
       potBottomRadius: {
-        value: 0.25,
+        value: 0.2,
         min: 0.1,
         max: 1.0,
         step: 0.05,
@@ -106,21 +106,21 @@ export default function PlantCanvas() {
         label: "Top Radius"
       },
       potRimHeight: {
-        value: 0.15,
+        value: 0.13,
         min: 0.01,
         max: 0.5,
         step: 0.01,
         label: "Rim Height"
       },
       potRimThickness: {
-        value: 0.05,
+        value: 0.03,
         min: 0.01,
         max: 0.2,
         step: 0.01,
         label: "Rim Thickness"
       },
       potThickness: {
-        value: 0.03,
+        value: 0.01,
         min: 0.01,
         max: 0.1,
         step: 0.01,
@@ -281,7 +281,7 @@ export default function PlantCanvas() {
         />
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, -0.95, 0]}
+          position={[0, -0.93, 0]}
           receiveShadow
         >
           <circleGeometry args={[0.3, 64]} />
