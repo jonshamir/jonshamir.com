@@ -54,21 +54,15 @@ export default function PlantCanvas() {
     lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
   });
 
-  const {
-    flowerCount,
-    flowerMatureAge,
-    flowerBasePitch,
-    flowerBaseYaw,
-    flowerLayerHeight,
-    flowerColor
-  } = useControls("Flowers", {
-    flowerCount: { value: 10, min: 0, max: 50, step: 1 },
-    flowerMatureAge: { value: 30, min: 1, max: 200, step: 1 },
-    flowerBasePitch: { value: -1.2, min: -Math.PI, max: Math.PI },
-    flowerBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-    flowerLayerHeight: { value: 0.02, min: 0, max: 0.3 },
-    flowerColor: { value: "#ff69b4" }
-  });
+  const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight, fColor } =
+    useControls("Flowers", {
+      fCount: { value: 24, min: 0, max: 50, step: 1 },
+      fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
+      fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
+      fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
+      fLayerHeight: { value: 0.02, min: 0, max: 0.3 },
+      fColor: { value: "#ff69b4" }
+    });
 
   // Convert pitch/yaw to cartesian coordinates
   const lightPosition: [number, number, number] = useMemo(() => {
@@ -117,11 +111,11 @@ export default function PlantCanvas() {
   }, [plantSubsurfaceColor]);
 
   // Convert flower color from hex to Color object
-  const flowerColorObj = useMemo(() => {
-    const color = new Color(flowerColor);
+  const fColorObj = useMemo(() => {
+    const color = new Color(fColor);
     color.convertLinearToSRGB();
     return color;
-  }, [flowerColor]);
+  }, [fColor]);
 
   return (
     <>
@@ -161,15 +155,15 @@ export default function PlantCanvas() {
           shadowColor={plantShadowColorObj}
           subsurfaceColor={plantSubsurfaceColorObj}
           renderFlower={(tipPosition, flowerScale, curve) => (
-            <group position={[0, 0, 0]}>
+            <group>
               <PhyllotaxisSpawner
-                count={flowerCount}
-                matureAge={flowerMatureAge}
-                baseYaw={flowerBaseYaw}
-                basePitch={flowerBasePitch}
-                layerHeight={-flowerLayerHeight}
+                count={fCount}
+                matureAge={fMatureAge}
+                baseYaw={fBaseYaw}
+                basePitch={fBasePitch}
+                layerHeight={-fLayerHeight}
                 curve={curve}
-                baseColor={flowerColorObj}
+                baseColor={fColorObj}
                 renderElement={(spawnProps) => (
                   <SimpleFlower
                     key={spawnProps.index}

@@ -221,3 +221,65 @@ export function pseudoRandom(n: number): number {
   // Get the hash value using xorHash
   return xorHash(str) * 2 - 1;
 }
+
+/**
+ * Creates a 6-sided cylindrical flower geometry
+ * @param height - Height of the cylinder
+ * @param baseRadius - Radius at the base
+ * @param tipRadius - Radius at the tip
+ * @param segments - Number of height segments (default: 2)
+ * @returns Object containing vertices, indices, and local coordinates
+ */
+export function getFlowerVertices(
+  height: number = 0.15,
+  baseRadius: number = 0.005,
+  tipRadius: number = 0.002,
+  segments: number = 2
+) {
+  const sides = 6; // 6-sided cylinder
+  const n = segments + 1; // Number of layers
+
+  const allVertices: number[] = [];
+  const localX: number[] = [];
+  const localY: number[] = [];
+  const localZ: number[] = [];
+
+  // Create vertices layer by layer along the height
+  for (let i = 0; i < n; i++) {
+    const t = i / segments;
+    const y = t * height;
+    const radius = lerp(baseRadius, tipRadius, t);
+
+    // Create a circular layer of vertices
+    for (let j = 0; j < sides; j++) {
+      const theta = (j / sides) * Math.PI * 2;
+      const x = radius * Math.cos(theta);
+      const z = radius * Math.sin(theta);
+
+      allVertices.push(x, y, z);
+
+      // Local coordinates for shader
+      localZ.push(t); // 0 at base, 1 at tip
+      localX.push(Math.cos(theta)); // -1 to +1 around cylinder
+      localY.push(Math.sin(theta)); // -1 to +1 around cylinder
+    }
+  }
+
+  // Build indices to create triangles
+  const indices: number[] = [];
+  for (let i = 0; i < segments; i++) {
+    for (let j = 0; j < sides; j++) {
+      const curr = i * sides + j;
+      const next = i * sides + ((j + 1) % sides);
+      const currNext = (i + 1) * sides + j;
+      const nextNext = (i + 1) * sides + ((j + 1) % sides);
+
+      // First triangle
+      indices.push(curr, nextNext, currNext);
+      // Second triangle
+      indices.push(curr, next, nextNext);
+    }
+  }
+
+  return { vertices: allVertices, indices, localX, localY, localZ };
+}
