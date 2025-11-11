@@ -59,7 +59,7 @@ void main() {
     // Calculate shadow and blend with shadow color
     float shadowMask = getShadowMask();
     // float aoShadow = smoothstep(0.0, 0.6, vLayer);
-    float rimHeight = 0.745;
+    float rimHeight = 0.73;
     float aoShadow = smoothstep(rimHeight, rimHeight - 0.3, vLayer) + step(rimHeight, vLayer);
     aoShadow *= smoothstep(0.0, 0.3, vLayer);
 

@@ -100,35 +100,35 @@ export default function PlantCanvas() {
     "Pot Dimensions",
     {
       potHeight: {
-        value: 0.5,
+        value: 0.4,
         min: 0.1,
         max: 2.0,
         step: 0.05,
         label: "Height"
       },
       potBottomRadius: {
-        value: 0.2,
+        value: 0.15,
         min: 0.1,
         max: 1.0,
         step: 0.05,
         label: "Bottom Radius"
       },
       potTopRadius: {
-        value: 0.3,
+        value: 0.25,
         min: 0.1,
         max: 1.0,
         step: 0.05,
         label: "Top Radius"
       },
       potRimHeight: {
-        value: 0.13,
+        value: 0.11,
         min: 0.01,
         max: 0.5,
         step: 0.01,
         label: "Rim Height"
       },
       potRimThickness: {
-        value: 0.03,
+        value: 0.02,
         min: 0.01,
         max: 0.2,
         step: 0.01,
@@ -303,18 +303,18 @@ export default function PlantCanvas() {
         />
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, -0.93, 0]}
+          position={[0, -0.88, 0]}
           receiveShadow
           castShadow
         >
-          <circleGeometry args={[0.3, 64]} />
+          <circleGeometry args={[potTopRadius, 64]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
         {/* Transparent ground plane for catching shadows */}
         {shadowPlaneEnabled && (
           <mesh
             rotation={[-Math.PI / 2, 0, 0]}
-            position={[0, -1.3, 0]}
+            position={[0, -1.2, 0]}
             receiveShadow
           >
             <planeGeometry args={[10, 10]} />
