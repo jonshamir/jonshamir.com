@@ -45,7 +45,7 @@ export function SimpleFlower({
   useEffect(() => {
     const height = 0.15;
     const baseRadius = 0.005;
-    const tipRadius = 0.02;
+    const tipRadius = 0.015;
     const segments = 2;
 
     const {
