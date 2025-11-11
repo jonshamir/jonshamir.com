@@ -1,6 +1,6 @@
 import {
   Color,
-  DoubleSide,
+  FrontSide,
   ShaderMaterial,
   UniformsLib,
   UniformsUtils
@@ -62,8 +62,9 @@ void main() {
     float rimHeight = 0.745;
     float aoShadow = smoothstep(rimHeight, rimHeight - 0.3, vLayer) + step(rimHeight, vLayer);
     aoShadow *= smoothstep(0.0, 0.3, vLayer);
-    
+
     vec3 shadowFinalColor = mix(shadowColor*0.85, shadowColor, aoShadow);
+    shadowFinalColor = mix(shadowColor*0.75, shadowFinalColor, smoothstep(0.0, 0.05, vLayer));
 
     color = mix(shadowFinalColor, color, shadowMask);
 
@@ -85,7 +86,7 @@ export class PotMaterial extends ShaderMaterial {
       vertexShader,
       fragmentShader,
       lights: true,
-      side: DoubleSide
+      side: FrontSide
     });
   }
 

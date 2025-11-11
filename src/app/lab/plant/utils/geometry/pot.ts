@@ -86,7 +86,9 @@ export function getPotVertices(
     const y = t * bodyHeight;
     const outerRadius = lerp(bottomRadius, topRadius, t);
     const innerRadius = outerRadius - potThickness;
-    bodyRings.push(addRing(y, outerRadius, innerRadius, t * (bodyHeight / height)));
+    bodyRings.push(
+      addRing(y, outerRadius, innerRadius, t * (bodyHeight / height))
+    );
   }
 
   // Create transition layer (outer surface expanding to rim)
@@ -99,7 +101,9 @@ export function getPotVertices(
     const y = bodyHeight;
     const outerRadius = lerp(topRadius, topRadius + rimThickness, t);
     const innerRadius = topRadius - potThickness;
-    transitionRings.push(addRing(y, outerRadius, innerRadius, bodyHeight / height));
+    transitionRings.push(
+      addRing(y, outerRadius, innerRadius, bodyHeight / height)
+    );
   }
 
   // Create rim (from top of body to top of pot)
@@ -217,41 +221,102 @@ export function getPotVertices(
     }
   }
 
-  // Add solid bottom face with separate vertices for hard shading
+  // Add bottom face - solid disc from center to outer edge
+  // This creates a simple, closed bottom for the pot
   const bottomCenterIndex = vertexIndex;
-  const bottomOuterOriginal = bodyRings[0].outerStart;
 
-  // Create center vertex
-  allVertices.push(0, 0, 0);
+  // Create center vertex at y=potThickness (inside the pot)
+  allVertices.push(0, potThickness, 0);
   localZ.push(0);
   localX.push(0);
   localY.push(0);
   vertexIndex++;
 
-  // Create ring of vertices for the bottom outer edge
-  const bottomFaceOuterStart = vertexIndex;
+  // Create ring of vertices at the inner edge (inner radius, y=potThickness)
+  const bottomInnerRingStart = vertexIndex;
+  const bottomInnerOriginal = bodyRings[0].outerStart;
+
   for (let j = 0; j < sides; j++) {
     const theta = (j / sides) * Math.PI * 2;
-    const origIndex = bottomOuterOriginal + j;
-    // Copy position from original outer ring
+    const origIndex = bottomInnerOriginal + j;
     const x = allVertices[origIndex * 3];
-    const y = allVertices[origIndex * 3 + 1];
     const z = allVertices[origIndex * 3 + 2];
 
-    allVertices.push(x, y, z);
+    allVertices.push(x, 0, z);
     localZ.push(0);
     localX.push(Math.cos(theta));
     localY.push(Math.sin(theta));
     vertexIndex++;
   }
 
-  // Build bottom face triangles (solid disc from center to outer edge)
+  // Build bottom face triangles (center to inner ring, visible from above)
   for (let j = 0; j < sides; j++) {
-    const o1 = bottomFaceOuterStart + j;
-    const o2 = bottomFaceOuterStart + ((j + 1) % sides);
+    const i1 = bottomInnerRingStart + j;
+    const i2 = bottomInnerRingStart + ((j + 1) % sides);
 
-    // Bottom face triangles (visible from below, winding counter-clockwise from below)
-    indices.push(bottomCenterIndex, o2, o1);
+    // Bottom face triangles (normal pointing up, visible from above/inside pot)
+    indices.push(bottomCenterIndex, i1, i2);
+  }
+
+  // Connect inner ring at potThickness to inner ring at y=0 (vertical cylinder wall)
+  const innerWallBottomRing = bodyRings[0].innerStart;
+  for (let j = 0; j < sides; j++) {
+    const top1 = bottomInnerRingStart + j;
+    const top2 = bottomInnerRingStart + ((j + 1) % sides);
+    const bottom1 = innerWallBottomRing + j;
+    const bottom2 = innerWallBottomRing + ((j + 1) % sides);
+
+    // Vertical wall (inward-facing normal)
+    indices.push(top1, bottom1, bottom2);
+    indices.push(top1, bottom2, top2);
+  }
+
+  // Simple bottom disc at y=0 - center to outer edge (matching the outer wall exactly)
+  const bottomExteriorCenterIndex = vertexIndex;
+
+  // Center vertex at y=0
+  allVertices.push(0, 0, 0);
+  localZ.push(0);
+  localX.push(0);
+  localY.push(0);
+  vertexIndex++;
+
+  // Outer ring vertices at y=0 - copy positions from body outer ring
+  const bottomExteriorOuterStart = vertexIndex;
+  const bodyOuterBottom = bodyRings[0].outerStart;
+
+  for (let j = 0; j < sides; j++) {
+    const theta = (j / sides) * Math.PI * 2;
+    const origIndex = bodyOuterBottom + j;
+    const x = allVertices[origIndex * 3];
+    const z = allVertices[origIndex * 3 + 2];
+
+    allVertices.push(x, 0, z);
+    localZ.push(0);
+    localX.push(Math.cos(theta));
+    localY.push(Math.sin(theta));
+    vertexIndex++;
+  }
+
+  // Build bottom disc triangles (visible from below)
+  for (let j = 0; j < sides; j++) {
+    const o1 = bottomExteriorOuterStart + j;
+    const o2 = bottomExteriorOuterStart + ((j + 1) % sides);
+
+    // Normal pointing down (clockwise from above = counter-clockwise from below)
+    indices.push(bottomExteriorCenterIndex, o2, o1);
+  }
+
+  // Connect bottom disc outer edge to body outer wall (both at y=0)
+  for (let j = 0; j < sides; j++) {
+    const disc1 = bottomExteriorOuterStart + j;
+    const disc2 = bottomExteriorOuterStart + ((j + 1) % sides);
+    const body1 = bodyOuterBottom + j;
+    const body2 = bodyOuterBottom + ((j + 1) % sides);
+
+    // Zero-height connection (outward-facing normal)
+    indices.push(disc1, disc2, body2);
+    indices.push(disc1, body2, body1);
   }
 
   // Add top rim wall (connecting outer and inner rings at top) with separate vertices
