@@ -7,6 +7,7 @@ import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
 import { Plant } from "./Plant";
 
@@ -120,6 +121,13 @@ export default function PlantCanvas() {
         <ambientLight intensity={0.4} />
         <Plant
           age={currAge}
+          position={[0, -1, 0]}
+          baseColor={plantBaseColorObj}
+          shadowColor={plantShadowColorObj}
+          subsurfaceColor={plantSubsurfaceColorObj}
+        />
+        <FlowerStem
+          growingStage={1}
           position={[0, -1, 0]}
           baseColor={plantBaseColorObj}
           shadowColor={plantShadowColorObj}

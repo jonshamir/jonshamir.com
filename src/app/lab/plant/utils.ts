@@ -92,6 +92,84 @@ export function getLeafVertices(
   return { vertices: allVertices, indices, localX, localY, localZ };
 }
 
+// Gets vertices in a circle (for cylindrical stems) around a given center, rotated by the given normal vector
+function getCircularLayerVertices(
+  center: Vector3,
+  radius = 0.1,
+  normal?: Vector3,
+  segments: number = 12
+) {
+  const points: number[] = [];
+
+  for (let i = 0; i < segments; i++) {
+    const theta = (i / segments) * Math.PI * 2;
+    const x = radius * Math.cos(theta);
+    const y = radius * Math.sin(theta);
+    const p = rotatePointToPlane(x, y, normal || new Vector3(0, 0, 1));
+    points.push(center.x + p.x, center.y + p.y, center.z + p.z);
+  }
+
+  return points;
+}
+
+export function getStemVertices(
+  samples: number,
+  curve: QuadraticBezierCurve3,
+  age: number,
+  baseRadius: number = 0.05,
+  tipRadius: number = 0.02
+) {
+  const n = samples;
+  const segments = 12; // More segments for smoother cylinder
+
+  // Build all vertices first (shared vertices for smooth shading)
+  const allVertices: number[] = [];
+  const localX: number[] = [];
+  const localY: number[] = [];
+  const localZ: number[] = [];
+
+  for (let i = 0; i < n + 1; i++) {
+    const t = i / n;
+    const p = curve.getPointAt(t);
+    const tangent = curve.getTangentAt(t);
+    const r = lerp(baseRadius, tipRadius, Math.pow(t, 1.5)) * age;
+    const layer = getCircularLayerVertices(p, r, tangent, segments);
+    allVertices.push(...layer);
+
+    // Calculate normalized local coordinates for each vertex in this layer
+    for (let j = 0; j < segments; j++) {
+      const theta = (j / segments) * Math.PI * 2;
+
+      // localZ: 0 at base (i=0), 1 at tip (i=n)
+      localZ.push(t);
+
+      // localX: -1 to +1 based on cos(theta) (left to right around cross-section)
+      localX.push(Math.cos(theta));
+
+      // localY: -1 to +1 based on sin(theta) (bottom to top around cross-section)
+      localY.push(Math.sin(theta));
+    }
+  }
+
+  // Build indices to create triangles with shared vertices
+  const indices: number[] = [];
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < segments; j++) {
+      const curr = i * segments + j;
+      const next = i * segments + ((j + 1) % segments);
+      const currNext = (i + 1) * segments + j;
+      const nextNext = (i + 1) * segments + ((j + 1) % segments);
+
+      // First triangle
+      indices.push(curr, nextNext, currNext);
+      // Second triangle
+      indices.push(curr, next, nextNext);
+    }
+  }
+
+  return { vertices: allVertices, indices, localX, localY, localZ };
+}
+
 export const range = (
   start: number,
   end: number,
