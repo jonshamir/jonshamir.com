@@ -134,7 +134,7 @@ export default function PlantCanvas() {
         label: "Rim Height"
       },
       potRimThickness: {
-        value: 0.02,
+        value: 0.025,
         min: 0.01,
         max: 0.2,
         step: 0.01,
