@@ -15,27 +15,20 @@ import { SimpleFlower } from "./SimpleFlower";
 const GOLDEN_ANGLE = 2.39996;
 
 export default function PlantCanvas() {
-  const {
-    currAge,
-    backgroundColor,
-    groundColor,
-    groundShadowColor,
-    lightPitch,
-    lightYaw
-  } = useControls({
-    currAge: { value: 19, min: 0, max: 200 },
-    backgroundColor: { value: "#26334b" },
-    groundColor: { value: "#7c4b2c" },
-    groundShadowColor: { value: "#262238" },
-    lightPitch: {
-      value: 60,
-      min: 0,
-      max: 90,
-      step: 1,
-      label: "Light Pitch (°)"
-    },
-    lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
-  });
+  const { currAge, groundColor, groundShadowColor, lightPitch, lightYaw } =
+    useControls({
+      currAge: { value: 19, min: 0, max: 200 },
+      groundColor: { value: "#7c4b2c" },
+      groundShadowColor: { value: "#262238" },
+      lightPitch: {
+        value: 60,
+        min: 0,
+        max: 90,
+        step: 1,
+        label: "Light Pitch (°)"
+      },
+      lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
+    });
 
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
