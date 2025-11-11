@@ -73,6 +73,7 @@ export function SimpleFlower({
     );
     geometry.setIndex(indices);
     geometry.computeVertexNormals();
+    geometry.computeBoundingSphere();
 
     // Add custom attributes for shader
     geometry.setAttribute(

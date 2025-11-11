@@ -29,7 +29,7 @@ export default function PlantCanvas() {
       groundColor: { value: "#7c4b2c", label: "Ground Color" },
       groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
       shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
-      shadowPlaneColor: { value: "#050314", label: "Shadow Plane Color" },
+      shadowPlaneColor: { value: "#010007", label: "Shadow Plane Color" },
       lightPitch: {
         value: 60,
         min: 0,
@@ -37,7 +37,13 @@ export default function PlantCanvas() {
         step: 1,
         label: "Light Pitch (°)"
       },
-      lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
+      lightYaw: {
+        value: 130,
+        min: 0,
+        max: 360,
+        step: 1,
+        label: "Light Yaw (°)"
+      }
     },
     { collapsed: true }
   );
