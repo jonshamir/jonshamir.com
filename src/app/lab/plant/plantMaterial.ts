@@ -94,14 +94,7 @@ uniform float translucency;
 void main() {
     // Base-to-tip gradient (using localZ: 0 at base, 1 at tip)
     // Use vertex base color instead of uniform
-    vec3 colorAlongLength = mix(vBaseColor, tipColor, vLocalZ);
-
-    // Top-to-bottom gradient (using localY: -1 at bottom, 1 at top)
-    float topBottomMix = (vLocalY + 1.0) * 0.5; // Remap from [-1,1] to [0,1]
-    vec3 topBottomColor = mix(bottomColor, topColor, topBottomMix);
-
-    // Blend the two gradients
-    vec3 color = mix(colorAlongLength, topBottomColor, 0.3);
+    vec3 color = mix(vBaseColor*0.7, vBaseColor, vLocalZ);
 
     // Simple lighting using the directional light from the scene
     #if NUM_DIR_LIGHTS > 0
@@ -153,9 +146,12 @@ void main() {
     #endif
 
     color *= lighting * finalShadow;
+
+    // Color the shadow
     color += vShadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.2;
 
-    color += finalShadow *(1.0 - isFacingLight) * vSubsurfaceColor * 0.3;
+    // Add subsurface scattering
+    color += finalShadow * (1.0 - isFacingLight) * vSubsurfaceColor * 0.3;
 
     // Add specular highlights
     #if NUM_DIR_LIGHTS > 0

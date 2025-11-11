@@ -33,17 +33,17 @@ export default function PlantCanvas() {
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
     {
-      leafBaseColor: { value: "#335e3d", label: "Base Color" },
+      leafBaseColor: { value: "#458052", label: "Base Color" },
       leafShadowColor: { value: "#1f3438", label: "Shadow Color" },
-      leafSubsurfaceColor: { value: "#ccff4d", label: "Subsurface Color" }
+      leafSubsurfaceColor: { value: "#b7ff00", label: "Subsurface Color" }
     }
   );
 
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
     useControls("Flower Colors", {
-      flowerBaseColor: { value: "#ff69b4", label: "Base Color" },
-      flowerShadowColor: { value: "#801a4d", label: "Shadow Color" },
-      flowerSubsurfaceColor: { value: "#ffb3e6", label: "Subsurface Color" }
+      flowerBaseColor: { value: "#e861a5", label: "Base Color" },
+      flowerShadowColor: { value: "#691551", label: "Shadow Color" },
+      flowerSubsurfaceColor: { value: "#ff00aa", label: "Subsurface Color" }
     });
 
   const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
