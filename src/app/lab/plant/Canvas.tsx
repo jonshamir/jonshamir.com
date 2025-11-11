@@ -16,11 +16,20 @@ import { SimpleFlower } from "./SimpleFlower";
 const GOLDEN_ANGLE = 2.39996;
 
 export default function PlantCanvas() {
-  const { currAge, groundColor, groundShadowColor, lightPitch, lightYaw } =
-    useControls({
-      currAge: { value: 19, min: 0, max: 200 },
-      groundColor: { value: "#7c4b2c" },
-      groundShadowColor: { value: "#13121a" },
+  const {
+    groundColor,
+    groundShadowColor,
+    shadowPlaneEnabled,
+    shadowPlaneColor,
+    lightPitch,
+    lightYaw
+  } = useControls(
+    "Environment",
+    {
+      groundColor: { value: "#7c4b2c", label: "Ground Color" },
+      groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
+      shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
+      shadowPlaneColor: { value: "#13102a", label: "Shadow Plane Color" },
       lightPitch: {
         value: 60,
         min: 0,
@@ -29,7 +38,13 @@ export default function PlantCanvas() {
         label: "Light Pitch (°)"
       },
       lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
-    });
+    },
+    { collapsed: true }
+  );
+
+  const { currAge } = useControls({
+    currAge: { value: 19, min: 0, max: 200 }
+  });
 
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
@@ -208,6 +223,13 @@ export default function PlantCanvas() {
     return color;
   }, [potShadowColor]);
 
+  // Convert shadow plane color from hex to Color object
+  const shadowPlaneColorObj = useMemo(() => {
+    const color = new Color(shadowPlaneColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [shadowPlaneColor]);
+
   return (
     <>
       <Leva />
@@ -287,6 +309,17 @@ export default function PlantCanvas() {
           <circleGeometry args={[0.3, 64]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
+        {/* Transparent ground plane for catching shadows */}
+        {shadowPlaneEnabled && (
+          <mesh
+            rotation={[-Math.PI / 2, 0, 0]}
+            position={[0, -1.3, 0]}
+            receiveShadow
+          >
+            <planeGeometry args={[10, 10]} />
+            <shadowMaterial color={shadowPlaneColorObj} opacity={0.5} />
+          </mesh>
+        )}
       </ThreeCanvas>
     </>
   );
