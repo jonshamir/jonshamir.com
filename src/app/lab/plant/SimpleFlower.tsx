@@ -65,7 +65,6 @@ export function SimpleFlower({
   const scale = growingStage * 0.8;
 
   // Fade out when dying
-  const opacity = 1 - dyingStage;
 
   return (
     <mesh
@@ -78,7 +77,6 @@ export function SimpleFlower({
       <meshStandardMaterial
         color={baseColor}
         transparent
-        opacity={opacity}
         roughness={0.6}
         metalness={0.1}
       />
