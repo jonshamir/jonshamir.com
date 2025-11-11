@@ -37,29 +37,42 @@ export default function PlantCanvas() {
       leafBaseColor: { value: "#458052", label: "Base Color" },
       leafShadowColor: { value: "#1f3438", label: "Shadow Color" },
       leafSubsurfaceColor: { value: "#b7ff00", label: "Subsurface Color" }
-    }
+    },
+    { collapsed: true }
   );
 
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
-    useControls("Flower Colors", {
-      flowerBaseColor: { value: "#a8b2f8", label: "Base Color" },
-      flowerShadowColor: { value: "#5258ba", label: "Shadow Color" },
-      flowerSubsurfaceColor: { value: "#6300ff", label: "Subsurface Color" }
-    });
+    useControls(
+      "Flower Colors",
+      {
+        flowerBaseColor: { value: "#a8b2f8", label: "Base Color" },
+        flowerShadowColor: { value: "#5258ba", label: "Shadow Color" },
+        flowerSubsurfaceColor: { value: "#6300ff", label: "Subsurface Color" }
+      },
+      { collapsed: true }
+    );
 
   const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
-    useControls("Flowers", {
-      fCount: { value: 28, min: 0, max: 50, step: 1 },
-      fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
-      fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
-      fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-      fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
-    });
+    useControls(
+      "Flowers",
+      {
+        fCount: { value: 28, min: 0, max: 50, step: 1 },
+        fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
+        fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
+        fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
+        fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
+      },
+      { collapsed: true }
+    );
 
-  const { potBaseColor, potShadowColor } = useControls("Pot Colors", {
-    potBaseColor: { value: "#cc8866", label: "Base Color" },
-    potShadowColor: { value: "#262238", label: "Shadow Color" }
-  });
+  const { potBaseColor, potShadowColor } = useControls(
+    "Pot Colors",
+    {
+      potBaseColor: { value: "#cc8866", label: "Base Color" },
+      potShadowColor: { value: "#262238", label: "Shadow Color" }
+    },
+    { collapsed: true }
+  );
 
   const {
     potHeight,
@@ -68,44 +81,54 @@ export default function PlantCanvas() {
     potRimHeight,
     potRimThickness,
     potThickness
-  } = useControls("Pot Dimensions", {
-    potHeight: { value: 0.5, min: 0.1, max: 2.0, step: 0.05, label: "Height" },
-    potBottomRadius: {
-      value: 0.25,
-      min: 0.1,
-      max: 1.0,
-      step: 0.05,
-      label: "Bottom Radius"
+  } = useControls(
+    "Pot Dimensions",
+    {
+      potHeight: {
+        value: 0.5,
+        min: 0.1,
+        max: 2.0,
+        step: 0.05,
+        label: "Height"
+      },
+      potBottomRadius: {
+        value: 0.25,
+        min: 0.1,
+        max: 1.0,
+        step: 0.05,
+        label: "Bottom Radius"
+      },
+      potTopRadius: {
+        value: 0.3,
+        min: 0.1,
+        max: 1.0,
+        step: 0.05,
+        label: "Top Radius"
+      },
+      potRimHeight: {
+        value: 0.15,
+        min: 0.01,
+        max: 0.5,
+        step: 0.01,
+        label: "Rim Height"
+      },
+      potRimThickness: {
+        value: 0.05,
+        min: 0.01,
+        max: 0.2,
+        step: 0.01,
+        label: "Rim Thickness"
+      },
+      potThickness: {
+        value: 0.03,
+        min: 0.01,
+        max: 0.1,
+        step: 0.01,
+        label: "Wall Thickness"
+      }
     },
-    potTopRadius: {
-      value: 0.3,
-      min: 0.1,
-      max: 1.0,
-      step: 0.05,
-      label: "Top Radius"
-    },
-    potRimHeight: {
-      value: 0.15,
-      min: 0.01,
-      max: 0.5,
-      step: 0.01,
-      label: "Rim Height"
-    },
-    potRimThickness: {
-      value: 0.05,
-      min: 0.01,
-      max: 0.2,
-      step: 0.01,
-      label: "Rim Thickness"
-    },
-    potThickness: {
-      value: 0.03,
-      min: 0.01,
-      max: 0.1,
-      step: 0.01,
-      label: "Wall Thickness"
-    }
-  });
+    { collapsed: true }
+  );
 
   // Convert pitch/yaw to cartesian coordinates
   const lightPosition: [number, number, number] = useMemo(() => {
