@@ -160,14 +160,15 @@ export default function PlantCanvas() {
           baseColor={plantBaseColorObj}
           shadowColor={plantShadowColorObj}
           subsurfaceColor={plantSubsurfaceColorObj}
-          renderFlower={(tipPosition, flowerScale) => (
-            <group position={[tipPosition.x, tipPosition.y, tipPosition.z]}>
+          renderFlower={(tipPosition, flowerScale, curve) => (
+            <group position={[0, 0, 0]}>
               <PhyllotaxisSpawner
                 count={flowerCount}
                 matureAge={flowerMatureAge}
                 baseYaw={flowerBaseYaw}
                 basePitch={flowerBasePitch}
                 layerHeight={-flowerLayerHeight}
+                curve={curve}
                 baseColor={flowerColorObj}
                 renderElement={(spawnProps) => (
                   <SimpleFlower

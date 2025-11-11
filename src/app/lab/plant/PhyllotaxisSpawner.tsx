@@ -1,5 +1,5 @@
 import { ReactElement } from "react";
-import { Color, Euler } from "three";
+import { Color, Curve, Euler, Vector3 } from "three";
 
 import { pseudoRandom, range, saturate } from "./utils";
 
@@ -23,6 +23,7 @@ interface PhyllotaxisSpawnerProps {
   baseYaw: number;
   basePitch: number;
   layerHeight: number;
+  curve?: Curve<Vector3>; // Optional curve to position elements along
   baseColor?: Color;
   shadowColor?: Color;
   subsurfaceColor?: Color;
@@ -37,6 +38,7 @@ export function PhyllotaxisSpawner({
   baseYaw,
   basePitch,
   layerHeight,
+  curve,
   baseColor,
   shadowColor,
   subsurfaceColor,
@@ -58,14 +60,29 @@ export function PhyllotaxisSpawner({
         rotation.order = "YXZ";
 
         // position
-        const y = Math.pow(growingStage, 0.3) * i * layerHeight;
+        let position: [number, number, number];
+        if (curve) {
+          // Position along the curve based on arc length (distance along curve)
+          // Start from the end of the curve (t=1) and go backwards
+          const distance =
+            Math.pow(growingStage, 0.3) * i * Math.abs(layerHeight);
+          const curveLength = curve.getLength() || 1; // Fallback to 1 if getLength fails
+          const tFromStart = Math.min(Math.max(distance / curveLength, 0), 1);
+          const t = 1 - tFromStart; // Reverse direction: start from tip (t=1)
+          const point = curve.getPointAt(t);
+          position = [point.x, point.y, point.z];
+        } else {
+          // Default linear positioning
+          const y = Math.pow(growingStage, 0.3) * i * layerHeight;
+          position = [0, y, 0];
+        }
 
         return renderElement({
           index: i,
           age,
           growingStage,
           dyingStage,
-          position: [0, y, 0],
+          position,
           rotation,
           baseColor,
           shadowColor,

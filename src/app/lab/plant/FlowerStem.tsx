@@ -3,6 +3,7 @@ import {
   BufferAttribute,
   BufferGeometry,
   Color,
+  Curve,
   Euler,
   Group,
   Mesh,
@@ -22,7 +23,11 @@ interface FlowerStemProps {
   subsurfaceColor?: Color;
   baseRadius?: number;
   tipRadius?: number;
-  renderFlower?: (tipPosition: Vector3, flowerScale: number) => ReactNode;
+  renderFlower?: (
+    tipPosition: Vector3,
+    flowerScale: number,
+    curve: Curve<Vector3>
+  ) => ReactNode;
 }
 
 const curveSamples = 16;
@@ -41,9 +46,16 @@ export function FlowerStem({
   const stemMeshRef = useRef<Mesh>(null);
   const materialRef = useRef<LeafMaterial>(null);
 
-  // State to track tip position for custom flower rendering
+  // State to track tip position and curve for custom flower rendering
   const [tipPosition, setTipPosition] = useState(new Vector3(0, 0, 0));
   const [flowerScale, setFlowerScale] = useState(0);
+  const [stemCurve, setStemCurve] = useState<Curve<Vector3>>(
+    new QuadraticBezierCurve3(
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0)
+    )
+  );
 
   // Create material once for the stem
   const stemMaterial = useMemo(() => new LeafMaterial(), []);
@@ -117,9 +129,10 @@ export function FlowerStem({
       stemMeshRef.current.geometry = geometry;
     }
 
-    // Update tip position and flower scale for custom rendering
+    // Update tip position, curve, and flower scale for custom rendering
     const tipPoint = curve.getPointAt(1);
     setTipPosition(tipPoint);
+    setStemCurve(curve);
 
     const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
     setFlowerScale(newFlowerScale);
@@ -132,7 +145,7 @@ export function FlowerStem({
         <primitive object={stemMaterial} ref={materialRef} attach="material" />
       </mesh>
       {/* Flower */}
-      {renderFlower && renderFlower(tipPosition, flowerScale)}
+      {renderFlower && renderFlower(tipPosition, flowerScale, stemCurve)}
     </group>
   );
 }
