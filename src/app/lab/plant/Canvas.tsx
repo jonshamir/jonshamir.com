@@ -131,7 +131,7 @@ export default function PlantCanvas() {
           position={[0, -0.95, 0]}
           receiveShadow
         >
-          <planeGeometry args={[10, 10]} />
+          <circleGeometry args={[2, 32]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
       </ThreeCanvas>
