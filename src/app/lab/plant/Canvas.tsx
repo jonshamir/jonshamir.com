@@ -89,7 +89,7 @@ export default function PlantCanvas() {
   const { potBaseColor, potShadowColor } = useControls(
     "Pot Colors",
     {
-      potBaseColor: { value: "#cc8866", label: "Base Color" },
+      potBaseColor: { value: "#ad826c", label: "Base Color" },
       potShadowColor: { value: "#201d2e", label: "Shadow Color" }
     },
     { collapsed: true }
