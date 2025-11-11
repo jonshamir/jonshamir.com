@@ -31,9 +31,6 @@ export default function PlantCanvas() {
     backgroundColor,
     groundColor,
     groundShadowColor,
-    plantBaseColor,
-    plantShadowColor,
-    plantSubsurfaceColor,
     lightPitch,
     lightYaw
   } = useControls({
@@ -41,9 +38,6 @@ export default function PlantCanvas() {
     backgroundColor: { value: "#26334b" },
     groundColor: { value: "#7c4b2c" },
     groundShadowColor: { value: "#262238" },
-    plantBaseColor: { value: "#335e3d" },
-    plantShadowColor: { value: "#1f3438" },
-    plantSubsurfaceColor: { value: "#ccff4d" },
     lightPitch: {
       value: 60,
       min: 0,
@@ -54,14 +48,29 @@ export default function PlantCanvas() {
     lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
   });
 
-  const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight, fColor } =
+  const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
+    "Leaf Colors",
+    {
+      leafBaseColor: { value: "#335e3d", label: "Base Color" },
+      leafShadowColor: { value: "#1f3438", label: "Shadow Color" },
+      leafSubsurfaceColor: { value: "#ccff4d", label: "Subsurface Color" }
+    }
+  );
+
+  const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
+    useControls("Flower Colors", {
+      flowerBaseColor: { value: "#ff69b4", label: "Base Color" },
+      flowerShadowColor: { value: "#801a4d", label: "Shadow Color" },
+      flowerSubsurfaceColor: { value: "#ffb3e6", label: "Subsurface Color" }
+    });
+
+  const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
     useControls("Flowers", {
-      fCount: { value: 24, min: 0, max: 50, step: 1 },
+      fCount: { value: 28, min: 0, max: 50, step: 1 },
       fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
       fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
       fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-      fLayerHeight: { value: 0.02, min: 0, max: 0.3 },
-      fColor: { value: "#ff69b4" }
+      fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
     });
 
   // Convert pitch/yaw to cartesian coordinates
@@ -91,37 +100,49 @@ export default function PlantCanvas() {
     groundMaterial.shadowColor = color;
   }, [groundShadowColor, groundMaterial]);
 
-  // Convert plant colors from hex to Color objects
-  const plantBaseColorObj = useMemo(() => {
-    const color = new Color(plantBaseColor);
+  // Convert leaf colors from hex to Color objects
+  const leafBaseColorObj = useMemo(() => {
+    const color = new Color(leafBaseColor);
     color.convertLinearToSRGB();
     return color;
-  }, [plantBaseColor]);
+  }, [leafBaseColor]);
 
-  const plantShadowColorObj = useMemo(() => {
-    const color = new Color(plantShadowColor);
+  const leafShadowColorObj = useMemo(() => {
+    const color = new Color(leafShadowColor);
     color.convertLinearToSRGB();
     return color;
-  }, [plantShadowColor]);
+  }, [leafShadowColor]);
 
-  const plantSubsurfaceColorObj = useMemo(() => {
-    const color = new Color(plantSubsurfaceColor);
+  const leafSubsurfaceColorObj = useMemo(() => {
+    const color = new Color(leafSubsurfaceColor);
     color.convertLinearToSRGB();
     return color;
-  }, [plantSubsurfaceColor]);
+  }, [leafSubsurfaceColor]);
 
-  // Convert flower color from hex to Color object
-  const fColorObj = useMemo(() => {
-    const color = new Color(fColor);
+  // Convert flower colors from hex to Color objects
+  const flowerBaseColorObj = useMemo(() => {
+    const color = new Color(flowerBaseColor);
     color.convertLinearToSRGB();
     return color;
-  }, [fColor]);
+  }, [flowerBaseColor]);
+
+  const flowerShadowColorObj = useMemo(() => {
+    const color = new Color(flowerShadowColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [flowerShadowColor]);
+
+  const flowerSubsurfaceColorObj = useMemo(() => {
+    const color = new Color(flowerSubsurfaceColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [flowerSubsurfaceColor]);
 
   return (
     <>
       <Leva />
       <ThreeCanvas
-        camera={{ fov: 15, position: [0, 0, -10] }}
+        camera={{ fov: 15, position: [0, 0, -13] }}
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
@@ -144,16 +165,16 @@ export default function PlantCanvas() {
         <Plant
           age={currAge}
           position={[0, -1, 0]}
-          baseColor={plantBaseColorObj}
-          shadowColor={plantShadowColorObj}
-          subsurfaceColor={plantSubsurfaceColorObj}
+          baseColor={leafBaseColorObj}
+          shadowColor={leafShadowColorObj}
+          subsurfaceColor={leafSubsurfaceColorObj}
         />
         <FlowerStem
           growingStage={1}
           position={[0, -1, 0]}
-          baseColor={plantBaseColorObj}
-          shadowColor={plantShadowColorObj}
-          subsurfaceColor={plantSubsurfaceColorObj}
+          baseColor={leafBaseColorObj}
+          shadowColor={leafShadowColorObj}
+          subsurfaceColor={leafSubsurfaceColorObj}
           renderFlower={(tipPosition, flowerScale, curve) => (
             <group>
               <PhyllotaxisSpawner
@@ -163,7 +184,9 @@ export default function PlantCanvas() {
                 basePitch={fBasePitch}
                 layerHeight={-fLayerHeight}
                 curve={curve}
-                baseColor={fColorObj}
+                baseColor={flowerBaseColorObj}
+                shadowColor={flowerShadowColorObj}
+                subsurfaceColor={flowerSubsurfaceColorObj}
                 renderElement={(spawnProps) => (
                   <SimpleFlower
                     key={spawnProps.index}

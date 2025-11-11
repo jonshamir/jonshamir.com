@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { BufferAttribute, BufferGeometry, Color, Euler, Mesh } from "three";
 
+import { PlantMaterial } from "./plantMaterial";
 import { getFlowerVertices } from "./utils";
 
 interface SimpleFlowerProps {
@@ -15,28 +16,44 @@ interface SimpleFlowerProps {
 
 export function SimpleFlower({
   growingStage,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dyingStage,
   position = [0, 0, 0],
   rotation,
-  baseColor = new Color("#ff69b4")
+  baseColor = new Color("#ff69b4"),
+  shadowColor = new Color("#801a4d"),
+  subsurfaceColor = new Color("#ffb3e6")
 }: SimpleFlowerProps) {
   const meshRef = useRef<Mesh>(null);
 
-  // Create geometry once
+  // Create geometry and material once
   const geometry = useMemo(() => new BufferGeometry(), []);
+  const material = useMemo(() => new PlantMaterial(), []);
 
-  // Update geometry when growingStage changes
+  // Update geometry when growingStage or colors change
   useEffect(() => {
     const height = 0.15;
     const baseRadius = 0.005;
     const tipRadius = 0.02;
     const segments = 2;
 
-    const { vertices, indices, localX, localY, localZ } = getFlowerVertices(
+    const {
+      vertices,
+      indices,
+      localX,
+      localY,
+      localZ,
+      vertexBaseColors,
+      vertexShadowColors,
+      vertexSubsurfaceColors
+    } = getFlowerVertices(
       height,
       baseRadius,
       tipRadius,
-      segments
+      segments,
+      [baseColor.r, baseColor.g, baseColor.b],
+      [shadowColor.r, shadowColor.g, shadowColor.b],
+      [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b]
     );
 
     geometry.setAttribute(
@@ -46,7 +63,7 @@ export function SimpleFlower({
     geometry.setIndex(indices);
     geometry.computeVertexNormals();
 
-    // Add custom attributes for potential shader use
+    // Add custom attributes for shader
     geometry.setAttribute(
       "localX",
       new BufferAttribute(new Float32Array(localX), 1)
@@ -59,7 +76,21 @@ export function SimpleFlower({
       "localZ",
       new BufferAttribute(new Float32Array(localZ), 1)
     );
-  }, [geometry, growingStage]);
+
+    // Add color attributes
+    geometry.setAttribute(
+      "vertexBaseColor",
+      new BufferAttribute(new Float32Array(vertexBaseColors), 3)
+    );
+    geometry.setAttribute(
+      "vertexShadowColor",
+      new BufferAttribute(new Float32Array(vertexShadowColors), 3)
+    );
+    geometry.setAttribute(
+      "vertexSubsurfaceColor",
+      new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
+    );
+  }, [geometry, growingStage, baseColor, shadowColor, subsurfaceColor]);
 
   // Scale the flower based on growing stage
   const scale = growingStage * 0.8;
@@ -73,13 +104,9 @@ export function SimpleFlower({
       rotation={rotation}
       scale={[scale, scale, scale]}
       geometry={geometry}
-    >
-      <meshStandardMaterial
-        color={baseColor}
-        transparent
-        roughness={0.6}
-        metalness={0.1}
-      />
-    </mesh>
+      material={material}
+      castShadow
+      receiveShadow
+    />
   );
 }

@@ -38,7 +38,10 @@ function getLayerVertices(center: Vector3, radius = 0.1, normal?: Vector3) {
 export function getLeafVertices(
   samples: number,
   curve: QuadraticBezierCurve3,
-  age: number
+  age: number,
+  baseColor: [number, number, number] = [0.2, 0.4, 0.24],
+  shadowColor: [number, number, number] = [0.06, 0.1, 0.15],
+  subsurfaceColor: [number, number, number] = [0.8, 1.0, 0.3]
 ) {
   const n = samples;
   const radius = 0.12 * age;
@@ -49,6 +52,9 @@ export function getLeafVertices(
   const localX: number[] = [];
   const localY: number[] = [];
   const localZ: number[] = [];
+  const vertexBaseColors: number[] = [];
+  const vertexShadowColors: number[] = [];
+  const vertexSubsurfaceColors: number[] = [];
 
   for (let i = 0; i < n + 1; i++) {
     const t = i / n;
@@ -70,6 +76,15 @@ export function getLeafVertices(
 
       // localY: -1 to +1 based on sin(theta) (bottom to top around cross-section)
       localY.push(Math.sin(theta));
+
+      // Color attributes (same for all vertices in leaves)
+      vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
+      vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
+      vertexSubsurfaceColors.push(
+        subsurfaceColor[0],
+        subsurfaceColor[1],
+        subsurfaceColor[2]
+      );
     }
   }
 
@@ -89,7 +104,16 @@ export function getLeafVertices(
     }
   }
 
-  return { vertices: allVertices, indices, localX, localY, localZ };
+  return {
+    vertices: allVertices,
+    indices,
+    localX,
+    localY,
+    localZ,
+    vertexBaseColors,
+    vertexShadowColors,
+    vertexSubsurfaceColors
+  };
 }
 
 // Gets vertices in a circle (for cylindrical stems) around a given center, rotated by the given normal vector
@@ -117,7 +141,10 @@ export function getStemVertices(
   curve: QuadraticBezierCurve3,
   age: number,
   baseRadius: number = 0.05,
-  tipRadius: number = 0.02
+  tipRadius: number = 0.02,
+  baseColor: [number, number, number] = [0.2, 0.4, 0.24],
+  shadowColor: [number, number, number] = [0.06, 0.1, 0.15],
+  subsurfaceColor: [number, number, number] = [0.8, 1.0, 0.3]
 ) {
   const n = samples;
   const segments = 12; // More segments for smoother cylinder
@@ -127,6 +154,9 @@ export function getStemVertices(
   const localX: number[] = [];
   const localY: number[] = [];
   const localZ: number[] = [];
+  const vertexBaseColors: number[] = [];
+  const vertexShadowColors: number[] = [];
+  const vertexSubsurfaceColors: number[] = [];
 
   for (let i = 0; i < n + 1; i++) {
     const t = i / n;
@@ -148,6 +178,15 @@ export function getStemVertices(
 
       // localY: -1 to +1 based on sin(theta) (bottom to top around cross-section)
       localY.push(Math.sin(theta));
+
+      // Color attributes (same for all vertices in stems)
+      vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
+      vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
+      vertexSubsurfaceColors.push(
+        subsurfaceColor[0],
+        subsurfaceColor[1],
+        subsurfaceColor[2]
+      );
     }
   }
 
@@ -167,7 +206,16 @@ export function getStemVertices(
     }
   }
 
-  return { vertices: allVertices, indices, localX, localY, localZ };
+  return {
+    vertices: allVertices,
+    indices,
+    localX,
+    localY,
+    localZ,
+    vertexBaseColors,
+    vertexShadowColors,
+    vertexSubsurfaceColors
+  };
 }
 
 export const range = (
@@ -228,13 +276,19 @@ export function pseudoRandom(n: number): number {
  * @param baseRadius - Radius at the base
  * @param tipRadius - Radius at the tip
  * @param segments - Number of height segments (default: 2)
+ * @param baseColor - RGB color for the base (default: pink)
+ * @param shadowColor - RGB color for shadows (default: dark pink)
+ * @param subsurfaceColor - RGB color for subsurface scattering (default: light pink)
  * @returns Object containing vertices, indices, and local coordinates
  */
 export function getFlowerVertices(
   height: number = 0.15,
   baseRadius: number = 0.005,
   tipRadius: number = 0.002,
-  segments: number = 2
+  segments: number = 2,
+  baseColor: [number, number, number] = [1.0, 0.41, 0.71],
+  shadowColor: [number, number, number] = [0.5, 0.1, 0.3],
+  subsurfaceColor: [number, number, number] = [1.0, 0.7, 0.9]
 ) {
   const sides = 6; // 6-sided cylinder
   const n = segments + 1; // Number of layers
@@ -243,6 +297,9 @@ export function getFlowerVertices(
   const localX: number[] = [];
   const localY: number[] = [];
   const localZ: number[] = [];
+  const vertexBaseColors: number[] = [];
+  const vertexShadowColors: number[] = [];
+  const vertexSubsurfaceColors: number[] = [];
 
   // Create vertices layer by layer along the height
   for (let i = 0; i < n; i++) {
@@ -262,6 +319,15 @@ export function getFlowerVertices(
       localZ.push(t); // 0 at base, 1 at tip
       localX.push(Math.cos(theta)); // -1 to +1 around cylinder
       localY.push(Math.sin(theta)); // -1 to +1 around cylinder
+
+      // Color attributes (same for all vertices in flowers)
+      vertexBaseColors.push(baseColor[0], baseColor[1], baseColor[2]);
+      vertexShadowColors.push(shadowColor[0], shadowColor[1], shadowColor[2]);
+      vertexSubsurfaceColors.push(
+        subsurfaceColor[0],
+        subsurfaceColor[1],
+        subsurfaceColor[2]
+      );
     }
   }
 
@@ -281,5 +347,14 @@ export function getFlowerVertices(
     }
   }
 
-  return { vertices: allVertices, indices, localX, localY, localZ };
+  return {
+    vertices: allVertices,
+    indices,
+    localX,
+    localY,
+    localZ,
+    vertexBaseColors,
+    vertexShadowColors,
+    vertexSubsurfaceColors
+  };
 }

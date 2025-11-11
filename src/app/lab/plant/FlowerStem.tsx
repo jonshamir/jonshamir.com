@@ -11,7 +11,7 @@ import {
   Vector3
 } from "three";
 
-import { LeafMaterial } from "./leafMaterial";
+import { PlantMaterial } from "./plantMaterial";
 import { getStemVertices } from "./utils";
 
 interface FlowerStemProps {
@@ -34,9 +34,9 @@ const curveSamples = 16;
 
 export function FlowerStem({
   growingStage,
-  baseColor,
-  shadowColor,
-  subsurfaceColor,
+  baseColor = new Color(0.2, 0.4, 0.24),
+  shadowColor = new Color(0.06, 0.1, 0.15),
+  subsurfaceColor = new Color(0.8, 1.0, 0.3),
   baseRadius = 0.015,
   tipRadius = 0.008,
   renderFlower,
@@ -44,7 +44,7 @@ export function FlowerStem({
 }: FlowerStemProps) {
   const groupRef = useRef<Group>(null);
   const stemMeshRef = useRef<Mesh>(null);
-  const materialRef = useRef<LeafMaterial>(null);
+  const materialRef = useRef<PlantMaterial>(null);
 
   // State to track tip position and curve for custom flower rendering
   const [tipPosition, setTipPosition] = useState(new Vector3(0, 0, 0));
@@ -58,7 +58,7 @@ export function FlowerStem({
   );
 
   // Create material once for the stem
-  const stemMaterial = useMemo(() => new LeafMaterial(), []);
+  const stemMaterial = useMemo(() => new PlantMaterial(), []);
 
   // Update material age when growingStage changes
   useEffect(() => {
@@ -66,25 +66,6 @@ export function FlowerStem({
       materialRef.current.age = growingStage;
     }
   }, [growingStage]);
-
-  // Update material colors
-  useEffect(() => {
-    if (materialRef.current && baseColor) {
-      materialRef.current.baseColor = baseColor;
-    }
-  }, [baseColor]);
-
-  useEffect(() => {
-    if (materialRef.current && shadowColor) {
-      materialRef.current.shadowColor = shadowColor;
-    }
-  }, [shadowColor]);
-
-  useEffect(() => {
-    if (materialRef.current && subsurfaceColor) {
-      materialRef.current.subsurfaceColor = subsurfaceColor;
-    }
-  }, [subsurfaceColor]);
 
   // Update stem geometry and flower position
   useEffect(() => {
@@ -95,12 +76,24 @@ export function FlowerStem({
       new Vector3(-0.1, length, 0) // End point
     );
 
-    const { vertices, indices, localX, localY, localZ } = getStemVertices(
+    const {
+      vertices,
+      indices,
+      localX,
+      localY,
+      localZ,
+      vertexBaseColors,
+      vertexShadowColors,
+      vertexSubsurfaceColors
+    } = getStemVertices(
       curveSamples,
       curve,
       growingStage,
       baseRadius,
-      tipRadius
+      tipRadius,
+      [baseColor.r, baseColor.g, baseColor.b],
+      [shadowColor.r, shadowColor.g, shadowColor.b],
+      [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b]
     );
 
     if (stemMeshRef.current) {
@@ -126,6 +119,20 @@ export function FlowerStem({
         new BufferAttribute(new Float32Array(localZ), 1)
       );
 
+      // Add color attributes
+      geometry.setAttribute(
+        "vertexBaseColor",
+        new BufferAttribute(new Float32Array(vertexBaseColors), 3)
+      );
+      geometry.setAttribute(
+        "vertexShadowColor",
+        new BufferAttribute(new Float32Array(vertexShadowColors), 3)
+      );
+      geometry.setAttribute(
+        "vertexSubsurfaceColor",
+        new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
+      );
+
       stemMeshRef.current.geometry = geometry;
     }
 
@@ -136,7 +143,14 @@ export function FlowerStem({
 
     const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
     setFlowerScale(newFlowerScale);
-  }, [growingStage, baseRadius, tipRadius]);
+  }, [
+    growingStage,
+    baseRadius,
+    tipRadius,
+    baseColor,
+    shadowColor,
+    subsurfaceColor
+  ]);
 
   return (
     <group {...props} ref={groupRef}>

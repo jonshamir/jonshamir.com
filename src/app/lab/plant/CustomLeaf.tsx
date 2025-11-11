@@ -9,7 +9,7 @@ import {
   Vector3
 } from "three";
 
-import { LeafMaterial } from "./leafMaterial";
+import { PlantMaterial } from "./plantMaterial";
 import { getLeafVertices } from "./utils";
 
 const { pow } = Math;
@@ -29,16 +29,16 @@ const curveSamples = 12;
 export function CustomLeaf({
   growingStage,
   dyingStage,
-  baseColor,
-  shadowColor,
-  subsurfaceColor,
+  baseColor = new Color(0.2, 0.4, 0.24),
+  shadowColor = new Color(0.06, 0.1, 0.15),
+  subsurfaceColor = new Color(0.8, 1.0, 0.3),
   ...props
 }: LeafProps) {
   const meshRef = useRef<Mesh>(null);
-  const materialRef = useRef<LeafMaterial>(null);
+  const materialRef = useRef<PlantMaterial>(null);
 
   // Create material once
-  const material = useMemo(() => new LeafMaterial(), []);
+  const material = useMemo(() => new PlantMaterial(), []);
 
   // Update material age when growingStage changes
   useEffect(() => {
@@ -47,25 +47,6 @@ export function CustomLeaf({
     }
   }, [growingStage]);
 
-  // Update material colors
-  useEffect(() => {
-    if (materialRef.current && baseColor) {
-      materialRef.current.baseColor = baseColor;
-    }
-  }, [baseColor]);
-
-  useEffect(() => {
-    if (materialRef.current && shadowColor) {
-      materialRef.current.shadowColor = shadowColor;
-    }
-  }, [shadowColor]);
-
-  useEffect(() => {
-    if (materialRef.current && subsurfaceColor) {
-      materialRef.current.subsurfaceColor = subsurfaceColor;
-    }
-  }, [subsurfaceColor]);
-
   useEffect(() => {
     const length = 1 - 0.1 * pow(growingStage, 1);
     const curve = new QuadraticBezierCurve3(
@@ -73,10 +54,22 @@ export function CustomLeaf({
       new Vector3(0, 0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
       new Vector3(0, 0, length) // End point
     );
-    const { vertices, indices, localX, localY, localZ } = getLeafVertices(
+    const {
+      vertices,
+      indices,
+      localX,
+      localY,
+      localZ,
+      vertexBaseColors,
+      vertexShadowColors,
+      vertexSubsurfaceColors
+    } = getLeafVertices(
       curveSamples,
       curve,
-      growingStage
+      growingStage,
+      [baseColor.r, baseColor.g, baseColor.b],
+      [shadowColor.r, shadowColor.g, shadowColor.b],
+      [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b]
     );
 
     if (meshRef.current) {
@@ -102,9 +95,23 @@ export function CustomLeaf({
         new BufferAttribute(new Float32Array(localZ), 1)
       );
 
+      // Add color attributes
+      geometry.setAttribute(
+        "vertexBaseColor",
+        new BufferAttribute(new Float32Array(vertexBaseColors), 3)
+      );
+      geometry.setAttribute(
+        "vertexShadowColor",
+        new BufferAttribute(new Float32Array(vertexShadowColors), 3)
+      );
+      geometry.setAttribute(
+        "vertexSubsurfaceColor",
+        new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
+      );
+
       meshRef.current.geometry = geometry;
     }
-  }, [growingStage, dyingStage]);
+  }, [growingStage, dyingStage, baseColor, shadowColor, subsurfaceColor]);
 
   return (
     <mesh {...props} ref={meshRef} castShadow receiveShadow>

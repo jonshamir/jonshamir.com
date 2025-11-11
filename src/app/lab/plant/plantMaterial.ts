@@ -7,6 +7,9 @@ const vertexShader = /* glsl */ `
 attribute float localX;
 attribute float localY;
 attribute float localZ;
+attribute vec3 vertexBaseColor;
+attribute vec3 vertexShadowColor;
+attribute vec3 vertexSubsurfaceColor;
 
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -14,6 +17,9 @@ varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
 varying vec3 vViewPosition;
+varying vec3 vBaseColor;
+varying vec3 vShadowColor;
+varying vec3 vSubsurfaceColor;
 
 #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
     varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
@@ -24,6 +30,9 @@ void main() {
     vLocalX = localX;
     vLocalY = localY;
     vLocalZ = localZ;
+    vBaseColor = vertexBaseColor;
+    vShadowColor = vertexShadowColor;
+    vSubsurfaceColor = vertexSubsurfaceColor;
 
     #include <begin_vertex>
     #include <beginnormal_vertex>
@@ -68,15 +77,15 @@ varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
 varying vec3 vViewPosition;
+varying vec3 vBaseColor;
+varying vec3 vShadowColor;
+varying vec3 vSubsurfaceColor;
 
 uniform float age;
-uniform vec3 baseColor;
 uniform vec3 tipColor;
 uniform vec3 topColor;
 uniform vec3 bottomColor;
 uniform float translucency;
-uniform vec3 shadowColor;
-uniform vec3 subsurfaceColor;
 
 #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
     varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
@@ -84,7 +93,8 @@ uniform vec3 subsurfaceColor;
 
 void main() {
     // Base-to-tip gradient (using localZ: 0 at base, 1 at tip)
-    vec3 colorAlongLength = mix(baseColor, tipColor, vLocalZ);
+    // Use vertex base color instead of uniform
+    vec3 colorAlongLength = mix(vBaseColor, tipColor, vLocalZ);
 
     // Top-to-bottom gradient (using localY: -1 at bottom, 1 at top)
     float topBottomMix = (vLocalY + 1.0) * 0.5; // Remap from [-1,1] to [0,1]
@@ -143,9 +153,9 @@ void main() {
     #endif
 
     color *= lighting * finalShadow;
-    color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.2;
+    color += vShadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.2;
 
-    color += finalShadow *(1.0 - isFacingLight) * subsurfaceColor * 0.3;
+    color += finalShadow *(1.0 - isFacingLight) * vSubsurfaceColor * 0.3;
 
     // Add specular highlights
     #if NUM_DIR_LIGHTS > 0
@@ -170,20 +180,17 @@ void main() {
 }
 `;
 
-export class LeafMaterial extends ShaderMaterial {
+export class PlantMaterial extends ShaderMaterial {
   constructor() {
     super({
       uniforms: UniformsUtils.merge([
         UniformsLib.lights,
         {
           age: { value: 1.0 },
-          baseColor: { value: new Color(0.2, 0.4, 0.24) },
           tipColor: { value: new Color(0.4, 0.7, 0.3) },
           topColor: { value: new Color(0.5, 0.6, 0.25) },
           bottomColor: { value: new Color(0.15, 0.2, 0.15) },
-          translucency: { value: 0.6 },
-          shadowColor: { value: new Color(0.06, 0.1, 0.15) },
-          subsurfaceColor: { value: new Color(0.8, 1.0, 0.3) }
+          translucency: { value: 0.6 }
         }
       ]),
       vertexShader,
@@ -198,13 +205,6 @@ export class LeafMaterial extends ShaderMaterial {
   }
   get age(): number {
     return this.uniforms.age.value as number;
-  }
-
-  set baseColor(value: Color) {
-    this.uniforms.baseColor.value = value;
-  }
-  get baseColor(): Color {
-    return this.uniforms.baseColor.value as Color;
   }
 
   set tipColor(value: Color) {
@@ -233,19 +233,5 @@ export class LeafMaterial extends ShaderMaterial {
   }
   get translucency(): number {
     return this.uniforms.translucency.value as number;
-  }
-
-  set shadowColor(value: Color) {
-    this.uniforms.shadowColor.value = value;
-  }
-  get shadowColor(): Color {
-    return this.uniforms.shadowColor.value as Color;
-  }
-
-  set subsurfaceColor(value: Color) {
-    this.uniforms.subsurfaceColor.value = value;
-  }
-  get subsurfaceColor(): Color {
-    return this.uniforms.subsurfaceColor.value as Color;
   }
 }
