@@ -413,12 +413,12 @@ export function getFlowerVertices(
       subsurfaceColor[2]
     );
 
-    // Add triangle indices for this petal
+    // Add triangle indices for this petal (counter-clockwise winding)
     const petalVertexStart = n * sides + j * 3;
     indices.push(
       petalVertexStart,
-      petalVertexStart + 1,
-      petalVertexStart + 2
+      petalVertexStart + 2,
+      petalVertexStart + 1
     );
   }
 
