@@ -336,7 +336,7 @@ export function getFlowerVertices(
   }
 
   // Add petal vertices at the tip (midpoint between edge vertices, extended outward)
-  const petalLength = tipRadius * 4; // How far petals extend from cylinder
+  const petalLength = tipRadius * 3; // How far petals extend from cylinder
   const tipY = height;
 
   for (let j = 0; j < sides; j++) {
@@ -376,10 +376,10 @@ export function getFlowerVertices(
       const currNext = (i + 1) * sides + j;
       const nextNext = (i + 1) * sides + ((j + 1) % sides);
 
-      // First triangle
-      indices.push(curr, nextNext, currNext);
-      // Second triangle
-      indices.push(curr, next, nextNext);
+      // First triangle (counter-clockwise winding)
+      indices.push(curr, currNext, nextNext);
+      // Second triangle (counter-clockwise winding)
+      indices.push(curr, nextNext, next);
     }
   }
 
@@ -393,7 +393,7 @@ export function getFlowerVertices(
     const petalTip = petalStart + j;
 
     // Triangle forming the petal - tip is at midpoint angle between the two edges
-    indices.push(currEdge, petalTip, nextEdge);
+    indices.push(currEdge, nextEdge, petalTip);
   }
 
   return {

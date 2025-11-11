@@ -1,9 +1,9 @@
 import { useEffect, useMemo, useRef } from "react";
 import {
-  BackSide,
   BufferAttribute,
   BufferGeometry,
   Color,
+  DoubleSide,
   Euler,
   Mesh
 } from "three";
@@ -37,7 +37,7 @@ export function SimpleFlower({
   const geometry = useMemo(() => new BufferGeometry(), []);
   const material = useMemo(() => {
     const mat = new PlantMaterial();
-    mat.side = BackSide;
+    mat.side = DoubleSide;
     return mat;
   }, []);
 
