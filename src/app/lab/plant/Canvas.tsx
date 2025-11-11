@@ -20,7 +20,7 @@ export default function PlantCanvas() {
     useControls({
       currAge: { value: 19, min: 0, max: 200 },
       groundColor: { value: "#7c4b2c" },
-      groundShadowColor: { value: "#262238" },
+      groundShadowColor: { value: "#13121a" },
       lightPitch: {
         value: 60,
         min: 0,
@@ -261,7 +261,7 @@ export default function PlantCanvas() {
           position={[0, -0.95, 0]}
           receiveShadow
         >
-          <circleGeometry args={[0.2, 64]} />
+          <circleGeometry args={[0.3, 64]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
       </ThreeCanvas>
