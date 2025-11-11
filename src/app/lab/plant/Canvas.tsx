@@ -10,6 +10,7 @@ import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
+import { Pot } from "./Pot";
 import { SimpleFlower } from "./SimpleFlower";
 
 const GOLDEN_ANGLE = 2.39996;
@@ -54,6 +55,57 @@ export default function PlantCanvas() {
       fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
       fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
     });
+
+  const { potBaseColor, potShadowColor } = useControls("Pot Colors", {
+    potBaseColor: { value: "#cc8866", label: "Base Color" },
+    potShadowColor: { value: "#262238", label: "Shadow Color" }
+  });
+
+  const {
+    potHeight,
+    potBottomRadius,
+    potTopRadius,
+    potRimHeight,
+    potRimThickness,
+    potThickness
+  } = useControls("Pot Dimensions", {
+    potHeight: { value: 0.8, min: 0.1, max: 2.0, step: 0.05, label: "Height" },
+    potBottomRadius: {
+      value: 0.3,
+      min: 0.1,
+      max: 1.0,
+      step: 0.05,
+      label: "Bottom Radius"
+    },
+    potTopRadius: {
+      value: 0.5,
+      min: 0.1,
+      max: 1.0,
+      step: 0.05,
+      label: "Top Radius"
+    },
+    potRimHeight: {
+      value: 0.1,
+      min: 0.01,
+      max: 0.5,
+      step: 0.01,
+      label: "Rim Height"
+    },
+    potRimThickness: {
+      value: 0.05,
+      min: 0.01,
+      max: 0.2,
+      step: 0.01,
+      label: "Rim Thickness"
+    },
+    potThickness: {
+      value: 0.03,
+      min: 0.01,
+      max: 0.1,
+      step: 0.01,
+      label: "Wall Thickness"
+    }
+  });
 
   // Convert pitch/yaw to cartesian coordinates
   const lightPosition: [number, number, number] = useMemo(() => {
@@ -120,6 +172,19 @@ export default function PlantCanvas() {
     return color;
   }, [flowerSubsurfaceColor]);
 
+  // Convert pot colors from hex to Color objects
+  const potBaseColorObj = useMemo(() => {
+    const color = new Color(potBaseColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [potBaseColor]);
+
+  const potShadowColorObj = useMemo(() => {
+    const color = new Color(potShadowColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [potShadowColor]);
+
   return (
     <>
       <Leva />
@@ -144,6 +209,17 @@ export default function PlantCanvas() {
           shadow-normalBias={0.02}
         />
         <ambientLight intensity={0.4} />
+        <Pot
+          position={[0, -0.8, 0]}
+          baseColor={potBaseColorObj}
+          shadowColor={potShadowColorObj}
+          height={potHeight}
+          bottomRadius={potBottomRadius}
+          topRadius={potTopRadius}
+          rimHeight={potRimHeight}
+          rimThickness={potRimThickness}
+          potThickness={potThickness}
+        />
         <Plant
           age={currAge}
           position={[0, -1, 0]}
@@ -185,7 +261,7 @@ export default function PlantCanvas() {
           position={[0, -0.95, 0]}
           receiveShadow
         >
-          <circleGeometry args={[0.8, 64]} />
+          <circleGeometry args={[0.48, 64]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
       </ThreeCanvas>
