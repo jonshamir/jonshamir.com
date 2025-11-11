@@ -217,22 +217,23 @@ export function getPotVertices(
     }
   }
 
-  // Add bottom face (solid disc at the bottom) with separate vertices for hard shading
-  const bottomFaceStart = vertexIndex;
+  // Add solid bottom face with separate vertices for hard shading
+  const bottomCenterIndex = vertexIndex;
+  const bottomOuterOriginal = bodyRings[0].outerStart;
 
-  // Create center vertex for bottom face
+  // Create center vertex
   allVertices.push(0, 0, 0);
   localZ.push(0);
   localX.push(0);
   localY.push(0);
   vertexIndex++;
 
-  // Create separate ring of vertices for the bottom face (duplicating inner ring positions)
-  const bottomInnerOriginal = bodyRings[0].innerStart;
+  // Create ring of vertices for the bottom outer edge
+  const bottomFaceOuterStart = vertexIndex;
   for (let j = 0; j < sides; j++) {
     const theta = (j / sides) * Math.PI * 2;
-    const origIndex = bottomInnerOriginal + j;
-    // Copy position from original inner ring
+    const origIndex = bottomOuterOriginal + j;
+    // Copy position from original outer ring
     const x = allVertices[origIndex * 3];
     const y = allVertices[origIndex * 3 + 1];
     const z = allVertices[origIndex * 3 + 2];
@@ -244,100 +245,17 @@ export function getPotVertices(
     vertexIndex++;
   }
 
-  // Build bottom face triangles
+  // Build bottom face triangles (solid disc from center to outer edge)
   for (let j = 0; j < sides; j++) {
-    const i1 = bottomFaceStart + 1 + j;
-    const i2 = bottomFaceStart + 1 + ((j + 1) % sides);
+    const o1 = bottomFaceOuterStart + j;
+    const o2 = bottomFaceOuterStart + ((j + 1) % sides);
 
-    // Bottom face triangles (pointing downward, so reversed winding)
-    indices.push(bottomFaceStart, i2, i1);
-  }
-
-  // Add bottom wall (connecting outer and inner rings at bottom) with separate vertices
-  const bottomWallOuterStart = vertexIndex;
-  const bottomWallInnerStart = vertexIndex + sides;
-
-  const bottomOuter = bodyRings[0].outerStart;
-
-  // Create separate vertices for bottom wall outer ring
-  for (let j = 0; j < sides; j++) {
-    const theta = (j / sides) * Math.PI * 2;
-    const origIndex = bottomOuter + j;
-    const x = allVertices[origIndex * 3];
-    const y = allVertices[origIndex * 3 + 1];
-    const z = allVertices[origIndex * 3 + 2];
-
-    allVertices.push(x, y, z);
-    localZ.push(0);
-    localX.push(Math.cos(theta));
-    localY.push(Math.sin(theta));
-    vertexIndex++;
-  }
-
-  // Create separate vertices for bottom wall inner ring
-  for (let j = 0; j < sides; j++) {
-    const theta = (j / sides) * Math.PI * 2;
-    const origIndex = bottomInnerOriginal + j;
-    const x = allVertices[origIndex * 3];
-    const y = allVertices[origIndex * 3 + 1];
-    const z = allVertices[origIndex * 3 + 2];
-
-    allVertices.push(x, y, z);
-    localZ.push(0);
-    localX.push(Math.cos(theta));
-    localY.push(Math.sin(theta));
-    vertexIndex++;
-  }
-
-  // Build bottom wall triangles
-  for (let j = 0; j < sides; j++) {
-    const o1 = bottomWallOuterStart + j;
-    const o2 = bottomWallOuterStart + ((j + 1) % sides);
-    const i1 = bottomWallInnerStart + j;
-    const i2 = bottomWallInnerStart + ((j + 1) % sides);
-
-    // Bottom wall triangles (horizontal ring, viewed from outside)
-    indices.push(o1, i2, i1);
-    indices.push(o1, o2, i2);
-  }
-
-  // Add top rim face (horizontal surface at the top) with separate vertices for hard shading
-  const topFaceStart = vertexIndex;
-
-  // Create center vertex for top face
-  allVertices.push(0, height, 0);
-  localZ.push(1);
-  localX.push(0);
-  localY.push(0);
-  vertexIndex++;
-
-  // Create separate ring of vertices for the top face (duplicating inner ring positions)
-  const topInnerOriginal = rimRings[rimRings.length - 1].innerStart;
-  for (let j = 0; j < sides; j++) {
-    const theta = (j / sides) * Math.PI * 2;
-    const origIndex = topInnerOriginal + j;
-    // Copy position from original inner ring
-    const x = allVertices[origIndex * 3];
-    const y = allVertices[origIndex * 3 + 1];
-    const z = allVertices[origIndex * 3 + 2];
-
-    allVertices.push(x, y, z);
-    localZ.push(1);
-    localX.push(Math.cos(theta));
-    localY.push(Math.sin(theta));
-    vertexIndex++;
-  }
-
-  // Build top face triangles
-  for (let j = 0; j < sides; j++) {
-    const i1 = topFaceStart + 1 + j;
-    const i2 = topFaceStart + 1 + ((j + 1) % sides);
-
-    // Top face triangles (pointing upward)
-    indices.push(topFaceStart, i1, i2);
+    // Bottom face triangles (visible from below, winding counter-clockwise from below)
+    indices.push(bottomCenterIndex, o2, o1);
   }
 
   // Add top rim wall (connecting outer and inner rings at top) with separate vertices
+  const topInnerOriginal = rimRings[rimRings.length - 1].innerStart;
   const topWallOuterStart = vertexIndex;
   const topWallInnerStart = vertexIndex + sides;
 

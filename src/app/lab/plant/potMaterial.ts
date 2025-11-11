@@ -1,4 +1,10 @@
-import { Color, ShaderMaterial, UniformsLib, UniformsUtils } from "three";
+import {
+  Color,
+  DoubleSide,
+  ShaderMaterial,
+  UniformsLib,
+  UniformsUtils
+} from "three";
 
 const vertexShader = /* glsl */ `
 #include <common>
@@ -65,7 +71,8 @@ export class PotMaterial extends ShaderMaterial {
       ]),
       vertexShader,
       fragmentShader,
-      lights: true
+      lights: true,
+      side: DoubleSide
     });
   }
 

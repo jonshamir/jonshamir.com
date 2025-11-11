@@ -305,6 +305,7 @@ export default function PlantCanvas() {
           rotation={[-Math.PI / 2, 0, 0]}
           position={[0, -0.93, 0]}
           receiveShadow
+          castShadow
         >
           <circleGeometry args={[0.3, 64]} />
           <primitive object={groundMaterial} attach="material" />
