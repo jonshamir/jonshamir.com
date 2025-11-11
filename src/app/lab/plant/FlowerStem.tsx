@@ -6,7 +6,6 @@ import {
   Euler,
   Group,
   Mesh,
-  MeshBasicMaterial,
   QuadraticBezierCurve3,
   Vector3
 } from "three";
@@ -40,7 +39,6 @@ export function FlowerStem({
 }: FlowerStemProps) {
   const groupRef = useRef<Group>(null);
   const stemMeshRef = useRef<Mesh>(null);
-  const flowerMeshRef = useRef<Mesh>(null);
   const materialRef = useRef<LeafMaterial>(null);
 
   // State to track tip position for custom flower rendering
@@ -49,16 +47,6 @@ export function FlowerStem({
 
   // Create material once for the stem
   const stemMaterial = useMemo(() => new LeafMaterial(), []);
-
-  // Create material for the flower (simple blue material)
-  const flowerMaterial = useMemo(
-    () =>
-      new MeshBasicMaterial({
-        color: 0x4d9eff,
-        side: 2 // DoubleSide
-      }),
-    []
-  );
 
   // Update material age when growingStage changes
   useEffect(() => {
@@ -91,8 +79,8 @@ export function FlowerStem({
     const length = 1.7 * growingStage;
     const curve = new QuadraticBezierCurve3(
       new Vector3(0, 0, 0), // Start point
-      new Vector3(-0.0, 0.6 * length, 0.1), // Control point (slight curve)
-      new Vector3(-0.0, length, 0) // End point
+      new Vector3(-0.05, 0.6 * length, 0.1), // Control point (slight curve)
+      new Vector3(-0.1, length, 0) // End point
     );
 
     const { vertices, indices, localX, localY, localZ } = getStemVertices(
@@ -135,13 +123,7 @@ export function FlowerStem({
 
     const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
     setFlowerScale(newFlowerScale);
-
-    // Position the placeholder flower at the tip of the stem (if using default)
-    if (flowerMeshRef.current && !renderFlower) {
-      flowerMeshRef.current.position.set(tipPoint.x, tipPoint.y, tipPoint.z);
-      flowerMeshRef.current.scale.setScalar(newFlowerScale * 0.1);
-    }
-  }, [growingStage, baseRadius, tipRadius, renderFlower]);
+  }, [growingStage, baseRadius, tipRadius]);
 
   return (
     <group {...props} ref={groupRef}>
@@ -149,15 +131,8 @@ export function FlowerStem({
       <mesh ref={stemMeshRef} castShadow receiveShadow>
         <primitive object={stemMaterial} ref={materialRef} attach="material" />
       </mesh>
-      {/* Custom flower or placeholder */}
-      {renderFlower ? (
-        renderFlower(tipPosition, flowerScale)
-      ) : (
-        <mesh ref={flowerMeshRef}>
-          <planeGeometry args={[1, 1]} />
-          <primitive object={flowerMaterial} attach="material" />
-        </mesh>
-      )}
+      {/* Flower */}
+      {renderFlower && renderFlower(tipPosition, flowerScale)}
     </group>
   );
 }

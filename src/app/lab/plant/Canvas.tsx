@@ -167,7 +167,7 @@ export default function PlantCanvas() {
                 matureAge={flowerMatureAge}
                 baseYaw={flowerBaseYaw}
                 basePitch={flowerBasePitch}
-                layerHeight={flowerLayerHeight}
+                layerHeight={-flowerLayerHeight}
                 baseColor={flowerColorObj}
                 renderElement={(spawnProps) => (
                   <SimpleFlower
