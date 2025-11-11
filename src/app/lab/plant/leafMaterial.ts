@@ -143,7 +143,7 @@ void main() {
     #endif
 
     color *= lighting * finalShadow;
-    color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.3;
+    color += shadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.2;
 
     color += finalShadow *(1.0 - isFacingLight) * subsurfaceColor * 0.3;
 

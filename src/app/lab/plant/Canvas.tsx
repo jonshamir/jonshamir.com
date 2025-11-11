@@ -37,7 +37,7 @@ export default function PlantCanvas() {
     groundColor: { value: "#7c4b2c" },
     groundShadowColor: { value: "#262238" },
     plantBaseColor: { value: "#335e3d" },
-    plantShadowColor: { value: "#1f3f45" },
+    plantShadowColor: { value: "#1f3438" },
     plantSubsurfaceColor: { value: "#ccff4d" },
     lightPitch: {
       value: 60,
@@ -103,7 +103,6 @@ export default function PlantCanvas() {
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
-        <SceneBackground color={backgroundColor} />
         <OrbitControls />
         <directionalLight
           position={lightPosition}
@@ -131,7 +130,7 @@ export default function PlantCanvas() {
           position={[0, -0.95, 0]}
           receiveShadow
         >
-          <circleGeometry args={[2, 32]} />
+          <circleGeometry args={[1, 64]} />
           <primitive object={groundMaterial} attach="material" />
         </mesh>
       </ThreeCanvas>
