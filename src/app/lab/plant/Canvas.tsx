@@ -124,7 +124,7 @@ export default function PlantCanvas() {
     <>
       <Leva />
       <ThreeCanvas
-        camera={{ fov: 15, position: [0, 0, -13] }}
+        camera={{ fov: 15, position: [0, 0, -13], near: 0.01 }}
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >

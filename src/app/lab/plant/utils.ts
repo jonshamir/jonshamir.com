@@ -344,10 +344,10 @@ export function getFlowerVertices(
       const currNext = (i + 1) * sides + j;
       const nextNext = (i + 1) * sides + ((j + 1) % sides);
 
-      // First triangle (counter-clockwise winding for front face)
-      indices.push(curr, currNext, nextNext);
-      // Second triangle (counter-clockwise winding for front face)
-      indices.push(curr, nextNext, next);
+      // First triangle
+      indices.push(curr, nextNext, currNext);
+      // Second triangle
+      indices.push(curr, next, nextNext);
     }
   }
 

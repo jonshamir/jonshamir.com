@@ -1,5 +1,12 @@
 import { useEffect, useMemo, useRef } from "react";
-import { BufferAttribute, BufferGeometry, Color, Euler, Mesh } from "three";
+import {
+  BackSide,
+  BufferAttribute,
+  BufferGeometry,
+  Color,
+  Euler,
+  Mesh
+} from "three";
 
 import { PlantMaterial } from "./plantMaterial";
 import { getFlowerVertices } from "./utils";
@@ -28,7 +35,11 @@ export function SimpleFlower({
 
   // Create geometry and material once
   const geometry = useMemo(() => new BufferGeometry(), []);
-  const material = useMemo(() => new PlantMaterial(), []);
+  const material = useMemo(() => {
+    const mat = new PlantMaterial();
+    mat.side = BackSide;
+    return mat;
+  }, []);
 
   // Update geometry when growingStage or colors change
   useEffect(() => {
