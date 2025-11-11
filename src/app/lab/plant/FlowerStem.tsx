@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   BufferAttribute,
   BufferGeometry,
@@ -23,6 +23,7 @@ interface FlowerStemProps {
   subsurfaceColor?: Color;
   baseRadius?: number;
   tipRadius?: number;
+  renderFlower?: (tipPosition: Vector3, flowerScale: number) => ReactNode;
 }
 
 const curveSamples = 16;
@@ -34,12 +35,17 @@ export function FlowerStem({
   subsurfaceColor,
   baseRadius = 0.015,
   tipRadius = 0.008,
+  renderFlower,
   ...props
 }: FlowerStemProps) {
   const groupRef = useRef<Group>(null);
   const stemMeshRef = useRef<Mesh>(null);
   const flowerMeshRef = useRef<Mesh>(null);
   const materialRef = useRef<LeafMaterial>(null);
+
+  // State to track tip position for custom flower rendering
+  const [tipPosition, setTipPosition] = useState(new Vector3(0, 0, 0));
+  const [flowerScale, setFlowerScale] = useState(0);
 
   // Create material once for the stem
   const stemMaterial = useMemo(() => new LeafMaterial(), []);
@@ -85,8 +91,8 @@ export function FlowerStem({
     const length = 1.7 * growingStage;
     const curve = new QuadraticBezierCurve3(
       new Vector3(0, 0, 0), // Start point
-      new Vector3(-0.05, 0.6 * length, 0.1), // Control point (slight curve)
-      new Vector3(-0.1, length, 0) // End point
+      new Vector3(-0.0, 0.6 * length, 0.1), // Control point (slight curve)
+      new Vector3(-0.0, length, 0) // End point
     );
 
     const { vertices, indices, localX, localY, localZ } = getStemVertices(
@@ -123,16 +129,19 @@ export function FlowerStem({
       stemMeshRef.current.geometry = geometry;
     }
 
-    // Position the flower at the tip of the stem
-    if (flowerMeshRef.current) {
-      const tipPoint = curve.getPointAt(1);
-      flowerMeshRef.current.position.set(tipPoint.x, tipPoint.y, tipPoint.z);
+    // Update tip position and flower scale for custom rendering
+    const tipPoint = curve.getPointAt(1);
+    setTipPosition(tipPoint);
 
-      // Scale flower with growth
-      const flowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
-      flowerMeshRef.current.scale.setScalar(flowerScale * 0.1);
+    const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
+    setFlowerScale(newFlowerScale);
+
+    // Position the placeholder flower at the tip of the stem (if using default)
+    if (flowerMeshRef.current && !renderFlower) {
+      flowerMeshRef.current.position.set(tipPoint.x, tipPoint.y, tipPoint.z);
+      flowerMeshRef.current.scale.setScalar(newFlowerScale * 0.1);
     }
-  }, [growingStage, baseRadius, tipRadius]);
+  }, [growingStage, baseRadius, tipRadius, renderFlower]);
 
   return (
     <group {...props} ref={groupRef}>
@@ -140,11 +149,15 @@ export function FlowerStem({
       <mesh ref={stemMeshRef} castShadow receiveShadow>
         <primitive object={stemMaterial} ref={materialRef} attach="material" />
       </mesh>
-      {/* Flower - simple blue quad */}
-      <mesh ref={flowerMeshRef}>
-        <planeGeometry args={[1, 1]} />
-        <primitive object={flowerMaterial} attach="material" />
-      </mesh>
+      {/* Custom flower or placeholder */}
+      {renderFlower ? (
+        renderFlower(tipPosition, flowerScale)
+      ) : (
+        <mesh ref={flowerMeshRef}>
+          <planeGeometry args={[1, 1]} />
+          <primitive object={flowerMaterial} attach="material" />
+        </mesh>
+      )}
     </group>
   );
 }

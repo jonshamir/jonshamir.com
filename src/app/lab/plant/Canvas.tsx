@@ -9,7 +9,11 @@ import { Color, PCFSoftShadowMap } from "three";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
+import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
+import { SimpleFlower } from "./SimpleFlower";
+
+const GOLDEN_ANGLE = 2.39996;
 
 function SceneBackground({ color }: { color: string }) {
   const { scene } = useThree();
@@ -48,6 +52,22 @@ export default function PlantCanvas() {
       label: "Light Pitch (°)"
     },
     lightYaw: { value: 45, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
+  });
+
+  const {
+    flowerCount,
+    flowerMatureAge,
+    flowerBasePitch,
+    flowerBaseYaw,
+    flowerLayerHeight,
+    flowerColor
+  } = useControls("Flowers", {
+    flowerCount: { value: 10, min: 0, max: 50, step: 1 },
+    flowerMatureAge: { value: 30, min: 1, max: 200, step: 1 },
+    flowerBasePitch: { value: -1.2, min: -Math.PI, max: Math.PI },
+    flowerBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
+    flowerLayerHeight: { value: 0.02, min: 0, max: 0.3 },
+    flowerColor: { value: "#ff69b4" }
   });
 
   // Convert pitch/yaw to cartesian coordinates
@@ -96,6 +116,13 @@ export default function PlantCanvas() {
     return color;
   }, [plantSubsurfaceColor]);
 
+  // Convert flower color from hex to Color object
+  const flowerColorObj = useMemo(() => {
+    const color = new Color(flowerColor);
+    color.convertLinearToSRGB();
+    return color;
+  }, [flowerColor]);
+
   return (
     <>
       <Leva />
@@ -104,6 +131,7 @@ export default function PlantCanvas() {
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
+        <SceneBackground color={backgroundColor} />
         <OrbitControls />
         <directionalLight
           position={lightPosition}
@@ -132,6 +160,25 @@ export default function PlantCanvas() {
           baseColor={plantBaseColorObj}
           shadowColor={plantShadowColorObj}
           subsurfaceColor={plantSubsurfaceColorObj}
+          renderFlower={(tipPosition, flowerScale) => (
+            <group position={[tipPosition.x, tipPosition.y, tipPosition.z]}>
+              <PhyllotaxisSpawner
+                count={flowerCount}
+                matureAge={flowerMatureAge}
+                baseYaw={flowerBaseYaw}
+                basePitch={flowerBasePitch}
+                layerHeight={flowerLayerHeight}
+                baseColor={flowerColorObj}
+                renderElement={(spawnProps) => (
+                  <SimpleFlower
+                    key={spawnProps.index}
+                    {...spawnProps}
+                    growingStage={spawnProps.growingStage * flowerScale}
+                  />
+                )}
+              />
+            </group>
+          )}
         />
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
