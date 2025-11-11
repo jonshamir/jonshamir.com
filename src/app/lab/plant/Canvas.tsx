@@ -42,7 +42,7 @@ export default function PlantCanvas() {
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
     useControls("Flower Colors", {
       flowerBaseColor: { value: "#e861a5", label: "Base Color" },
-      flowerShadowColor: { value: "#691551", label: "Shadow Color" },
+      flowerShadowColor: { value: "#571758", label: "Shadow Color" },
       flowerSubsurfaceColor: { value: "#ff00aa", label: "Subsurface Color" }
     });
 

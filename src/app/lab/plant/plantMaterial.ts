@@ -13,6 +13,7 @@ attribute vec3 vertexSubsurfaceColor;
 
 varying vec2 vUv;
 varying vec3 vNormal;
+varying vec3 vWorldUp;
 varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
@@ -39,6 +40,9 @@ void main() {
     #include <defaultnormal_vertex>
 
     vNormal = normalize(normalMatrix * normal);
+
+    // Transform world-space up direction to view space
+    vWorldUp = normalize(normalMatrix * vec3(0.0, 1.0, 0.0));
 
     #include <project_vertex>
     #include <worldpos_vertex>
@@ -73,6 +77,7 @@ const fragmentShader = /* glsl */ `
 
 varying vec2 vUv;
 varying vec3 vNormal;
+varying vec3 vWorldUp;
 varying float vLocalX;
 varying float vLocalY;
 varying float vLocalZ;
@@ -149,6 +154,9 @@ void main() {
 
     // Add subsurface scattering
     color += finalShadow * (1.0 - isFacingLight) * vSubsurfaceColor * 0.3;
+
+    // Add diffuse lighting from world-space up direction (sky)
+    color -= dot(vNormal, vWorldUp) * 0.05;
 
     // Add specular highlights
     #if NUM_DIR_LIGHTS > 0
