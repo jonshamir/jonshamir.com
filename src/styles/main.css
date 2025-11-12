@@ -148,3 +148,11 @@ body {
   opacity: 1;
   transform: translate(0, 0rem) rotate(0deg);
 }
+
+.stats-gl {
+  position: absolute;
+  top: 100vh;
+  right: 0;
+  z-index: 1000;
+  transform: translateY(-100%);
+}

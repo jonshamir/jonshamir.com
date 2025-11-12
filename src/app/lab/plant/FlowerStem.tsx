@@ -1,44 +1,64 @@
-import { useEffect, useMemo, useRef } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import {
   BufferAttribute,
   BufferGeometry,
   Color,
+  Curve,
   Euler,
+  Group,
   Mesh,
   QuadraticBezierCurve3,
   Vector3
 } from "three";
 
 import { PlantMaterial } from "./plantMaterial";
-import { getLeafVertices } from "./utils";
+import { getStemVertices } from "./utils";
 
-const { pow } = Math;
-
-interface LeafProps {
+interface FlowerStemProps {
   position?: [number, number, number];
   growingStage: number; // 0 = new, 1 = fully grown
-  dyingStage: number; // 0 = not dying, 1 = dead
   rotation?: Euler;
   baseColor?: Color;
   shadowColor?: Color;
   subsurfaceColor?: Color;
+  baseRadius?: number;
+  tipRadius?: number;
+  renderFlower?: (
+    tipPosition: Vector3,
+    flowerScale: number,
+    curve: Curve<Vector3>
+  ) => ReactNode;
 }
 
-const curveSamples = 12;
+const curveSamples = 16;
 
-export function CustomLeaf({
+export function FlowerStem({
   growingStage,
-  dyingStage,
   baseColor = new Color(0.2, 0.4, 0.24),
   shadowColor = new Color(0.06, 0.1, 0.15),
   subsurfaceColor = new Color(0.8, 1.0, 0.3),
+  baseRadius = 0.015,
+  tipRadius = 0.008,
+  renderFlower,
   ...props
-}: LeafProps) {
-  const meshRef = useRef<Mesh>(null);
+}: FlowerStemProps) {
+  const groupRef = useRef<Group>(null);
+  const stemMeshRef = useRef<Mesh>(null);
   const materialRef = useRef<PlantMaterial>(null);
 
-  // Create material once
-  const material = useMemo(() => new PlantMaterial(), []);
+  // State to track tip position and curve for custom flower rendering
+  const [tipPosition, setTipPosition] = useState(new Vector3(0, 0, 0));
+  const [flowerScale, setFlowerScale] = useState(0);
+  const [stemCurve, setStemCurve] = useState<Curve<Vector3>>(
+    new QuadraticBezierCurve3(
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0),
+      new Vector3(0, 0, 0)
+    )
+  );
+
+  // Create material once for the stem
+  const stemMaterial = useMemo(() => new PlantMaterial(), []);
 
   // Update material age when growingStage changes
   useEffect(() => {
@@ -47,13 +67,15 @@ export function CustomLeaf({
     }
   }, [growingStage]);
 
+  // Update stem geometry and flower position
   useEffect(() => {
-    const length = 1 - 0.1 * pow(growingStage, 1);
+    const length = 1.7 * growingStage;
     const curve = new QuadraticBezierCurve3(
       new Vector3(0, 0, 0), // Start point
-      new Vector3(0, -0.5 * Math.pow(growingStage, 10), 0.7 * length), // Control point
-      new Vector3(0, 0, length) // End point
+      new Vector3(-0.05, 0.6 * length, 0.1), // Control point (slight curve)
+      new Vector3(-0.1, length, 0) // End point
     );
+
     const {
       vertices,
       indices,
@@ -63,16 +85,18 @@ export function CustomLeaf({
       vertexBaseColors,
       vertexShadowColors,
       vertexSubsurfaceColors
-    } = getLeafVertices(
+    } = getStemVertices(
       curveSamples,
       curve,
       growingStage,
+      baseRadius,
+      tipRadius,
       [baseColor.r, baseColor.g, baseColor.b],
       [shadowColor.r, shadowColor.g, shadowColor.b],
       [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b]
     );
 
-    if (meshRef.current) {
+    if (stemMeshRef.current) {
       const geometry = new BufferGeometry();
       geometry.setAttribute(
         "position",
@@ -109,13 +133,33 @@ export function CustomLeaf({
         new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
       );
 
-      meshRef.current.geometry = geometry;
+      stemMeshRef.current.geometry = geometry;
     }
-  }, [growingStage, dyingStage, baseColor, shadowColor, subsurfaceColor]);
+
+    // Update tip position, curve, and flower scale for custom rendering
+    const tipPoint = curve.getPointAt(1);
+    setTipPosition(tipPoint);
+    setStemCurve(curve);
+
+    const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
+    setFlowerScale(newFlowerScale);
+  }, [
+    growingStage,
+    baseRadius,
+    tipRadius,
+    baseColor,
+    shadowColor,
+    subsurfaceColor
+  ]);
 
   return (
-    <mesh {...props} ref={meshRef} castShadow receiveShadow>
-      <primitive object={material} ref={materialRef} attach="material" />
-    </mesh>
+    <group {...props} ref={groupRef}>
+      {/* Stem */}
+      <mesh ref={stemMeshRef} castShadow receiveShadow>
+        <primitive object={stemMaterial} ref={materialRef} attach="material" />
+      </mesh>
+      {/* Flower */}
+      {renderFlower && renderFlower(tipPosition, flowerScale, stemCurve)}
+    </group>
   );
 }

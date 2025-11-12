@@ -4,7 +4,11 @@
       "Bash(rm:*)",
       "Bash(bun run lint:*)",
       "WebFetch(domain:rehype-pretty.pages.dev)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(bun run build:*)",
+      "Bash(bun run:*)",
+      "Bash(npx tsc:*)",
+      "Bash(bun eslint:*)"
     ],
     "deny": []
   }
