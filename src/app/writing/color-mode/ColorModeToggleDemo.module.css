@@ -1,3 +1,15 @@
+@property --background-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(var(--background-rgb));
+}
+
+@property --foreground-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: rgb(var(--background-rgb));
+}
+
 .ColorModeToggleDemo {
   --duration: 0s;
   --transition-timing: var(--duration) ease-out;
