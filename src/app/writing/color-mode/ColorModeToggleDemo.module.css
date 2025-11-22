@@ -32,6 +32,16 @@
   &.animated {
     --duration: 0.4s;
   }
+
+  &.growing button {
+    transform: scale(1);
+    color: inherit;
+    transition: transform var(--transition-timing);
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
 }
 
 .ColorModeToggleDemo code[data-theme*=" "] span {

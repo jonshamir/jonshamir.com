@@ -5,32 +5,32 @@ import { ContrastPicker } from "./ContrastPicker";
 export const metadata = {
   date: "2025-10-15",
   description:
-    "How I implemented an animated dark mode toggle using CSS with smooth color transitions and a fancy spherical animation."
+    "How I implemented an animated dark mode using CSS @property and a fancy toggle."
 };
 
 <ColorModeCover />
 
-# Animated Dark Mode Transition with CSS
+# Animated Dark Mode Transition with modern CSS
 
-For my website, I wanted to have a nice animation when switching between light and dark modes. You can check out the final result here:
+For my website, I wanted to have a smooth transition when switching between light and dark modes. You can check out the final result here:
 
 <ColorModeToggleDemo showToggle isAnimated>
   Click the button to toggle modes:
 </ColorModeToggleDemo>
 
-You can also see the effect by clicking the small icon in the top-left corner (Unless I redesigned this site...) Colors should quickly cross-fade, while the button itself does a little spherical animation.
+You can also see the effect by clicking the small icon in the top-left corner; colors should quickly cross-fade, while the button itself does a little spherical animation.
 
 In this post I will explain how I implemented this using CSS & SVG.
 
 <TableOfContents />
 
-## Naming - Color Theme? Scheme? Mode?
+## Naming - Theme, Scheme or Mode?
 
-First thing's first - how to name this feature?
+First things first - how do I name this feature?
 
 I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
 
-I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (I'm looking at you, UIKit). I'll focus on the 3 prevalent options:
+I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (ahem, UIKit). I'll focus on the 3 prevalent options:
 
 ### Color Theme
 
@@ -48,6 +48,8 @@ Jetpack Compose (Android)
 
 ### Color Scheme
 
+[Color Scheme](https://en.wikipedia.org/wiki/Color_scheme)
+
 A color scheme, from my understanding, is synonymous with a "color palette" - a set of colors designed to work well together. In this case, you could consider the light and dark colors to be a "scheme", or part of the overall "color scheme"
 Scheme - _An orderly combination of related parts._
 
@@ -59,6 +61,8 @@ iOS / SwiftUI:
 `ColorScheme.light`, `ColorScheme.dark`
 
 ### Color Mode
+
+[Mode (User Interface)](<https://en.wikipedia.org/wiki/Mode_(user_interface)>)
 
 Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
 
@@ -112,7 +116,7 @@ To get a nice animation between the color modes, we can declare a transition for
 
 ```css
 body {
-  // ...
+  /* ... */
   --transition-defaults: 400ms ease-out;
 
   transition:
@@ -124,6 +128,67 @@ body {
 <ColorModeToggleDemo isAnimated={true}>
   Click to toggle `.dark` class:
 </ColorModeToggleDemo>
+
+However, what if we want to add another transition to our button, say make it grow on hover?
+
+```css
+.button {
+  transform: scale(1);
+  transition: transform var(--transition-defaults);
+}
+
+.button:hover {
+  transform: scale(1.1);
+  transition: transform var(--transition-defaults);
+}
+```
+
+<ColorModeToggleDemo isAnimated={true} isGrowing={true}>
+  Click to toggle `.dark` class:
+</ColorModeToggleDemo>
+
+Try clicking the button again - the scale transitions nicely but colors change immediately! This is because the button's `transition: transform` declaration overrides the `transition: color` we had on our `body`.
+
+We can solve it by defining `transition: transform, color` but it can become cumbersome very quickly and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes this much simpler.
+
+## Using @property
+
+> The `@property` CSS at-rule is part of the CSS Houdini set of APIs. It allows developers to explicitly define CSS custom properties, allowing for property type checking and constraining, setting default values, and defining whether a custom property can inherit values or not.
+
+[@property on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property)
+
+Crucially for our use, it allows us to _transform_ custom css properties! we define our colors inside `@property` blocks with `syntax: "<color>"`:
+
+```css
+@property --foreground-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #ddd;
+}
+
+@property --background-color {
+  syntax: "<color>";
+  inherits: true;
+  initial-value: #111;
+}
+
+body {
+  --foreground-color: #ddd;
+  --background-color: #111;
+
+  color: var(--foreground-color);
+  background-color: var(--background-color);
+}
+
+body.dark {
+  --foreground-color: #111;
+  --background-color: #ddd;
+
+  transition:
+    --foreground-color var(--transition-defaults),
+    --background-color var(--transition-defaults);
+}
+```
 
 ## Using Transparency
 
