@@ -61,7 +61,7 @@ function toggleDarkMode() {
 ```
 
 <ColorModeToggleDemo isAnimated={false}>
-  Click to toggle `.dark` class:
+  Click to toggle dark class:
 </ColorModeToggleDemo>
 
 When the `dark` class is added or removed, the browser automatically updates all the elements that use the properties we defined! In this case, the text and background colors change.
@@ -82,7 +82,7 @@ body {
 ```
 
 <ColorModeToggleDemo isAnimated={true}>
-  Click to toggle `.dark` class:
+  Click to toggle dark class:
 </ColorModeToggleDemo>
 
 However, what if we want to add another transition to our button, say make it grow on hover?
@@ -99,8 +99,16 @@ However, what if we want to add another transition to our button, say make it gr
 }
 ```
 
-<ColorModeToggleDemo isAnimated={true} isGrowing={true}>
-  Click to toggle `.dark` class:
+<ColorModeToggleDemo
+  isAnimated={true}
+  isGrowing={true}
+  style={{
+    transition:
+      "background-color var(--transition-timing), color var(--transition-timing)",
+    color: "var(--foreground-color-raw)"
+  }}
+>
+  Click to toggle dark class:
 </ColorModeToggleDemo>
 
 Try clicking the button again - the scale transitions nicely but colors change immediately! This is because the button's `transition: transform` declaration overrides the `transition: color` we had on our `body`.

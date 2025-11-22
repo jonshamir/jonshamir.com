@@ -7,21 +7,24 @@ import styles from "./ColorModeToggleDemo.module.css";
 type ColorModeToggleDemoProps = {
   showToggle: boolean;
   isAnimated: boolean;
-  isGrowing: boolean;
+  isGrowing?: boolean;
   children: ReactNode;
+  style?: React.CSSProperties;
 };
 
 export function ColorModeToggleDemo({
   showToggle,
   isAnimated,
   isGrowing,
-  children
+  children,
+  style
 }: ColorModeToggleDemoProps) {
   const [isDark, setIsDark] = useState(false);
   return (
     <figure>
       <div
         className={`${styles.ColorModeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""} ${isGrowing ? styles.growing : ""}`}
+        style={style}
       >
         {children}
         {!showToggle && (
