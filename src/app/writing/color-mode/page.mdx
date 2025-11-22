@@ -26,13 +26,16 @@ In this post I will explain how I implemented this using CSS & SVG.
 
 ## Naming - Color Theme? Scheme? Mode?
 
-First thing's first - how to name this feature? (Please skip ahead if you want to get to the technical details)
+First thing's first - how to name this feature?
 
 I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
 
 I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (I'm looking at you, UIKit). I'll focus on the 3 prevalent options:
 
 ### Color Theme
+
+A theme can be defined as _A recurring idea; a motif_ - in the context of UI design, it is [usually](<https://en.wikipedia.org/wiki/Theme_(computing)>) refers to a "package" that contains fonts, colors, shapes and more.
+I feel that colors are _part_ of a UI theme, so the term "Color Theme" doesn't feel right to me.
 
 VS Code:
 `"workbench.colorTheme": "Dark+ (default dark)"`
@@ -45,7 +48,10 @@ Jetpack Compose (Android)
 
 ### Color Scheme
 
-Meaning: Typically refers to a structured set of colors chosen to work together harmoniously (background, foreground, accents). Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
+A color scheme, from my understanding, is synonymous with a "color palette" - a set of colors designed to work well together. In this case, you could consider the light and dark colors to be a "scheme", or part of the overall "color scheme"
+Scheme - _An orderly combination of related parts._
+
+Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
 
 CSS uses `prefers-color-scheme: light | dark`
 
