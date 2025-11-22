@@ -106,13 +106,13 @@ body.dark {
 }
 ```
 
-When the `.dark` class is added or removed, the browser will automatically update all the elements using the variables we defined:
+When the `.dark` class is added or removed, the browser will automatically update all the elements that use the properties we defined:
 
 <ColorModeToggleDemo isAnimated={false}>
   Click to toggle `.dark` class:
 </ColorModeToggleDemo>
 
-To get a nice animation between the color modes, we can declare a transition for any property using the variables. In order to keep the timing consistent, I define a `--transition-defaults` variable which I can reuse:
+To get a nice animation between the color modes, we can declare a transition for any property using the variables. In order to keep the timing consistent, I like to define `--transition-defaults` which I can reuse:
 
 ```css
 body {
