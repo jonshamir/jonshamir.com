@@ -24,61 +24,6 @@ In this post I will explain how I implemented this using CSS & SVG.
 
 <TableOfContents />
 
-## Naming - Theme, Scheme or Mode?
-
-First things first - how do I name this feature?
-
-I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
-
-I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (ahem, UIKit). I'll focus on the 3 prevalent options:
-
-### Color Theme
-
-A theme can be defined as _A recurring idea; a motif_ - in the context of UI design, it is [usually](<https://en.wikipedia.org/wiki/Theme_(computing)>) refers to a "package" that contains fonts, colors, shapes and more.
-I feel that colors are _part_ of a UI theme, so the term "Color Theme" doesn't feel right to me.
-
-VS Code:
-`"workbench.colorTheme": "Dark+ (default dark)"`
-
-Material UI (MUI)
-“palette mode” (light/dark) e.g. `theme.palette.mode='dark'`
-
-Jetpack Compose (Android)
-“light theme” / “dark theme” (Material 3 ColorScheme); use `isSystemInDarkTheme()` to pick light/dark
-
-### Color Scheme
-
-[Color Scheme](https://en.wikipedia.org/wiki/Color_scheme)
-
-A color scheme, from my understanding, is synonymous with a "color palette" - a set of colors designed to work well together. In this case, you could consider the light and dark colors to be a "scheme", or part of the overall "color scheme"
-Scheme - _An orderly combination of related parts._
-
-Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
-
-CSS uses `prefers-color-scheme: light | dark`
-
-iOS / SwiftUI:
-`ColorScheme.light`, `ColorScheme.dark`
-
-### Color Mode
-
-[Mode (User Interface)](<https://en.wikipedia.org/wiki/Mode_(user_interface)>)
-
-Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
-
-Android:
-Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
-
-Material UI (MUI):
-`palette.mode = 'light' | 'dark'`
-
-Chakra UI:
-`colorMode = 'light' | 'dark'` and `useColorMode()` hook.
-
-Tailwind CSS:
-Uses `dark:` prefix (no explicit variable).
-Config has `darkMode: 'media' | 'class'`.
-
 ## Setup - Defining the Color Palette
 
 I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are welcome to take a look at the source code of this site as well, if interested.
@@ -100,7 +45,7 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 }
 ```
 
-We can then toggle this class on the root element using Javascript, for example when a button is clicked:
+We can then toggle this class on the root element using Javascript when the user clicks the toggle button :
 
 ```js
 function toggleDarkMode() {
@@ -123,7 +68,7 @@ When the `dark` class is added or removed, the browser automatically updates all
 
 ## Animating the Transition
 
-To get a nice animation between the color modes, we can declare a CSS transition for any property using the variables - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define `--transition-defaults` which I can reuse:
+To get a nice animation between the color modes, we can declare a CSS transition for any property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-defaults` variable:
 
 ```css
 body {
@@ -257,3 +202,58 @@ The animation is split into 4 parts:
 ## Final touches - favicon
 
 dynamic favicon
+
+## Naming - Theme, Scheme or Mode?
+
+First things first - how do I name this feature?
+
+I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this!
+
+I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (ahem, UIKit). I'll focus on the 3 prevalent options:
+
+### Color Theme
+
+A theme can be defined as _A recurring idea; a motif_ - in the context of UI design, it is [usually](<https://en.wikipedia.org/wiki/Theme_(computing)>) refers to a "package" that contains fonts, colors, shapes and more.
+I feel that colors are _part_ of a UI theme, so the term "Color Theme" doesn't feel right to me.
+
+VS Code:
+`"workbench.colorTheme": "Dark+ (default dark)"`
+
+Material UI (MUI)
+“palette mode” (light/dark) e.g. `theme.palette.mode='dark'`
+
+Jetpack Compose (Android)
+“light theme” / “dark theme” (Material 3 ColorScheme); use `isSystemInDarkTheme()` to pick light/dark
+
+### Color Scheme
+
+[Color Scheme](https://en.wikipedia.org/wiki/Color_scheme)
+
+A color scheme, from my understanding, is synonymous with a "color palette" - a set of colors designed to work well together. In this case, you could consider the light and dark colors to be a "scheme", or part of the overall "color scheme"
+Scheme - _An orderly combination of related parts._
+
+Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
+
+CSS uses `prefers-color-scheme: light | dark`
+
+iOS / SwiftUI:
+`ColorScheme.light`, `ColorScheme.dark`
+
+### Color Mode
+
+[Mode (User Interface)](<https://en.wikipedia.org/wiki/Mode_(user_interface)>)
+
+Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
+
+Android:
+Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
+
+Material UI (MUI):
+`palette.mode = 'light' | 'dark'`
+
+Chakra UI:
+`colorMode = 'light' | 'dark'` and `useColorMode()` hook.
+
+Tailwind CSS:
+Uses `dark:` prefix (no explicit variable).
+Config has `darkMode: 'media' | 'class'`.
