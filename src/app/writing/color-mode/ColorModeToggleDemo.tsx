@@ -41,7 +41,7 @@ export function ColorModeToggleDemo({
                 cx="12"
                 cy="12"
                 r="8"
-                stroke="currentColor"
+                stroke="var(--foreground-color)"
                 strokeWidth="1.5"
                 fill="none"
               />

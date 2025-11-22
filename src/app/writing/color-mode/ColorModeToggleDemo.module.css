@@ -1,13 +1,13 @@
 @property --background-color {
   syntax: "<color>";
   inherits: true;
-  initial-value: rgb(var(--background-rgb));
+  initial-value: rgb(17, 17, 17);
 }
 
 @property --foreground-color {
   syntax: "<color>";
   inherits: true;
-  initial-value: rgb(var(--background-rgb));
+  initial-value: rgb(221, 221, 221);
 }
 
 .ColorModeToggleDemo {
@@ -17,12 +17,13 @@
   --foreground-rgb: 221, 221, 221;
   --background-rgb: 17, 17, 17;
 
-  --foreground-color: rgb(var(--foreground-rgb));
-  --background-color: rgb(var(--background-rgb));
+  transition:
+    --background-color var(--transition-timing),
+    --foreground-color var(--transition-timing);
 
   &.dark {
-    --foreground-rgb: 17, 17, 17;
-    --background-rgb: 221, 221, 221;
+    --foreground-color: rgb(17, 17, 17);
+    --background-color: rgb(221, 221, 221);
   }
 }
 
@@ -31,9 +32,6 @@
   border-radius: var(--rounding-medium);
   background-color: var(--background-color);
   color: var(--foreground-color);
-  transition:
-    background-color var(--transition-timing),
-    color var(--transition-timing);
   padding: 40px;
   display: flex;
   flex-direction: column;
@@ -56,49 +54,34 @@
   }
 }
 
-.ColorModeToggleDemo code[data-theme*=" "] span {
-  color: var(--foreground-color);
-  transition:
-    background-color var(--transition-timing),
-    color var(--transition-timing);
-}
-
-.ColorModeToggleDemo button {
-  color: var(--foreground-color);
-  background-color: rgba(var(--foreground-rgb), 0.05);
-  border: 2px solid rgba(var(--foreground-rgb), 0.05);
-  transition:
-    color var(--transition-timing),
-    background-color var(--transition-timing),
-    border-color var(--transition-timing);
-  outline: none;
-}
-
+.ColorModeToggleDemo button,
 .ColorModeToggleDemo button:hover,
 .ColorModeToggleDemo button:focus {
-  color: var(--foreground-color);
+  background: rgba(128, 128, 128, 0.01);
+  border: 2px solid rgba(128, 128, 128, 0.2);
   outline: none;
-  border: 2px solid rgba(var(--foreground-rgb), 0.05);
+  transition:
+    background-color var(--transition-timing),
+    border var(--transition-timing);
 }
 
 .ColorModeToggleDemo button:hover {
-  border: 2px solid rgba(var(--foreground-rgb), 0.2);
-
-  background-color: rgba(var(--foreground-rgb), 0.05);
+  background: rgba(128, 128, 128, 0.1);
+  border: 2px solid rgba(128, 128, 128, 0.3);
 }
 
 /* ====================== */
 
 .RightSideBG {
+  --duration: 0s;
   fill: var(--foreground-color);
-  transition: fill var(--transition-timing);
   transform-origin: center;
-  transform: scale(1.1);
+  transform: scale(1.1); /* to hide the seam */
 }
 
 .LeftSide,
 .RightSide {
-  fill: var(--foreground-color);
+  fill: rgb(221, 221, 221);
   transform-origin: center;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
@@ -116,11 +99,6 @@
 }
 
 .dark {
-  .LeftSide,
-  .RightSide {
-    fill: var(--background-color);
-  }
-
   .LeftSide {
     animation-name: rotateLeftDark;
   }
