@@ -1,33 +1,37 @@
-/* @property --background-color {
+@property --background-color-prop {
   syntax: "<color>";
   inherits: true;
   initial-value: rgb(17, 17, 17);
 }
 
-@property --foreground-color {
+@property --foreground-color-prop {
   syntax: "<color>";
   inherits: true;
   initial-value: rgb(221, 221, 221);
-} */
+}
 
 .ColorModeToggleDemo {
   --duration: 0s;
   --transition-timing: var(--duration) ease-out;
 
-  /* transition:
-    --background-color var(--transition-timing),
-    --foreground-color var(--transition-timing); */
-
   transition:
     background-color var(--transition-timing),
-    color var(--transition-timing);
+    color var(--transition-timing),
+    --background-color-prop var(--transition-timing),
+    --foreground-color-prop var(--transition-timing);
 
   --foreground-color: rgb(221, 221, 221);
   --background-color: rgb(17, 17, 17);
 
+  --foreground-color-prop: rgb(221, 221, 221);
+  --background-color-prop: rgb(17, 17, 17);
+
   &.dark {
     --foreground-color: rgb(17, 17, 17);
     --background-color: rgb(221, 221, 221);
+
+    --foreground-color-prop: rgb(17, 17, 17);
+    --background-color-prop: rgb(221, 221, 221);
   }
 }
 
@@ -54,7 +58,6 @@
     background-color: rgba(128, 128, 128, 0.1);
     border: 2px solid rgba(128, 128, 128, 0.3);
     outline: none;
-    transition: none;
   }
 
   .InvertedButton,
@@ -70,6 +73,13 @@
 
   .InvertedButton:hover {
     opacity: 1;
+  }
+
+  .InvertedButton.useAtProp,
+  .InvertedButton.useAtProp:hover,
+  .InvertedButton.useAtProp:focus {
+    background-color: var(--foreground-color-prop);
+    color: var(--background-color-prop);
   }
 }
 /* ====================== */

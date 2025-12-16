@@ -7,6 +7,7 @@ import styles from "./ColorModeToggleDemo.module.css";
 type ColorModeToggleDemoProps = {
   showToggle: boolean;
   isAnimated: boolean;
+  useAtProp: boolean;
   children: ReactNode;
   style?: React.CSSProperties;
 };
@@ -14,6 +15,7 @@ type ColorModeToggleDemoProps = {
 export function ColorModeToggleDemo({
   showToggle,
   isAnimated,
+  useAtProp,
   children,
   style
 }: ColorModeToggleDemoProps) {
@@ -28,7 +30,7 @@ export function ColorModeToggleDemo({
         {!showToggle && (
           <button
             onClick={() => setIsDark(!isDark)}
-            className={styles.InvertedButton}
+            className={`${styles.InvertedButton} ${useAtProp ? styles.useAtProp : ""}`}
           >
             {isDark ? "Set Dark Mode" : "Set Light Mode"}
           </button>
