@@ -3,7 +3,7 @@ import { ColorModeToggleDemo } from "./ColorModeToggleDemo";
 import { ContrastPicker } from "./ContrastPicker";
 
 export const metadata = {
-  date: "2025-10-15",
+  date: "2025-12-16",
   description:
     "How I implemented an animated dark mode using CSS @property and a fancy toggle."
 };
@@ -12,21 +12,19 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
-In this post I will explain how I to implement a smooth transition between light and dark mode, using CSS `@property`. I also create an icon that smoothly animates between the modes. You can check out the final result in this small demo:
+In this post I will explain how to implement a smooth transition between light and dark mode, using CSS `@property`. I also show how to create an icon that smoothly animates between the modes with a little spherical animation. You can see the effect by clicking the small icon in the top-right corner, or in this small demo sandbox:
 
 <ColorModeToggleDemo showToggle isAnimated>
   Click the button to toggle modes:
 </ColorModeToggleDemo>
 
-You can also see the effect by clicking the small icon in the top-left corner; colors should quickly cross-fade, while the button icon does a little spherical animation.
-
 I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are also welcome to take a look at the source code of this site.
 
 <TableOfContents />
 
-## Setup - Defining the Color Palette
+## Setup - Defining the Color Palette & Toggle
 
-The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override the values with their dark versions under the `.dark` class selector:
+The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override their values with dark colors under the `.dark` class selector:
 
 ```css
 :root {
@@ -43,9 +41,10 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 }
 ```
 
-When the user clicks the button, we toggle this class on the root element using JavaScript:
+We'll also add a simple button to switch the color mode - when a user clicks the button, we toggle the `dark` class on the root element using JavaScript:
 
 ```js
+// This is called when the button is clicked
 function toggleDarkMode() {
   const root = document.documentElement;
   const isDark = root.classList.contains("dark");
@@ -62,20 +61,20 @@ function toggleDarkMode() {
   Click to toggle dark class:
 </ColorModeToggleDemo>
 
-When the `dark` class is added or removed, the browser automatically updates all CSS rules that use the properties we defined! In this case, the text and background colors change.
+With the magic of CSS variables, the browser automatically updates all elements that use the colors we defined! In this case, the text and background colors change, as well as the button itself.
 
 ## Animating the Transition
 
-To get a nice animation between the color modes, we can declare a CSS transition for any property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-defaults` variable:
+To get a nice animation between the color modes, we can declare a CSS transition for any property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-timing` variable:
 
 ```css
-body {
+:root {
   /* ... */
-  --transition-defaults: 400ms ease-out;
+  --transition-timing: 400ms ease-out;
 
   transition:
-    background-color var(--transition-defaults),
-    color var(--transition-defaults);
+    background-color var(--transition-timing),
+    color var(--transition-timing);
 }
 ```
 
@@ -83,7 +82,9 @@ body {
   Click to toggle dark class:
 </ColorModeToggleDemo>
 
-The text and background colors cross-fade nicely, but our button still flashes immediately to the new colors! This is because our button has a `transition: opacity` which makes a nice hover effect but overrides the color `transition` we declared on our `body`.
+We did it - The text and background colors cross-fade nicely!
+
+But alas - our button still flashes immediately to the new colors. This is because we have a nice hover effect on the button that uses `transition: opacity` which overrides the `transition` we declared on our `:root`.
 
 ```css
 button {
@@ -93,7 +94,7 @@ button {
   opacity: 0.5;
 
   /* Overrides transition of color & background-color :( */
-  transition: opacity var(--transition-defaults);
+  transition: opacity var(--transition-timing);
 }
 
 button:hover {
@@ -106,13 +107,17 @@ We can solve it naively by defining a `transition` of all the properties togethe
 ```css
 button {
   transition:
-    opacity var(--transition-defaults),
-    background-color var(--transition-defaults),
-    color var(--transition-defaults);
+    opacity var(--transition-timing),
+    background-color var(--transition-timing),
+    color var(--transition-timing);
 }
 ```
 
-However, this can become cumbersome very quickly and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes this much simpler.
+However, this can become cumbersome very quickly and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes.
+
+_Find the offending element_
+
+Thankfully, there is a new CSS _at-rule_ that makes this much simpler.
 
 ## Using @property
 
@@ -136,22 +141,26 @@ Crucially for us, it allows us to _transition_ the css variables themselves! we 
   inherits: true;
   initial-value: #111;
 }
+```
 
-body {
+We then define their values as we did before, with the dark versions as well, but we declare a transition on the variables themselves rather than on specific properties that use them:
+
+```css
+:root {
   --foreground-color: #ddd;
   --background-color: #111;
 
   color: var(--foreground-color);
   background-color: var(--background-color);
-}
-
-body.dark {
-  --foreground-color: #111;
-  --background-color: #ddd;
 
   transition:
-    --foreground-color var(--transition-defaults),
-    --background-color var(--transition-defaults);
+    --foreground-color var(--transition-timing),
+    --background-color var(--transition-timing);
+}
+
+:root.dark {
+  --foreground-color: #111;
+  --background-color: #ddd;
 }
 ```
 
@@ -160,12 +169,6 @@ The result is a smooth transition wherever the variable is used, without having 
 <ColorModeToggleDemo isAnimated useAtProp>
   Click to toggle dark class:
 </ColorModeToggleDemo>
-
-## Using Transparency
-
-By using transparent colors, we can build up the UI without fiddling with more color definitions - just foreground and background. To achieve this, I like to define the color RGB values in a separate variable, then reuse it inside `rgba()` color definitions:
-
-This works especially for monochromatic color schemes.
 
 ## Creating the Fancy Toggle
 
