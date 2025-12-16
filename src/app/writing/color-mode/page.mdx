@@ -12,6 +12,8 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
+## Designing and implementing a modern dark mode feature
+
 In this post I will explain how to implement a smooth transition between light and dark mode, using CSS `@property`. I also show how to create an icon that smoothly animates between the modes with a little spherical animation. You can see the effect by clicking the small icon in the top-right corner, or in this small demo sandbox:
 
 <ColorModeToggleDemo showToggle isAnimated>
@@ -171,41 +173,88 @@ Finally, the result is a smooth animation wherever the variable is used, without
   Click to toggle dark class:
 </ColorModeToggleDemo>
 
+## System preferences and switching behavior
+
+Modern CSS allows us to query the users's preferred color scheme and use that to color our site.
+
+Some apps allow to pick "System" color theme as an option - however, I believe in sensible defaults, rather than let the user pick the color theme each time, the site should always use the preferred scheme. If the user wants to switch the theme using the toggle on my site, without changing the OS settings, I feel we can assume it is temporary fix for a particularly light or dark environment.
+
 ## Creating the Fancy Toggle
 
-different toggles:
+In general, the most commonly used icons to represent color modes are sum / moon or the half circle "contrast" thingy.
 
-- Sun / moon
-- Half circle
-- Apple thing
+There are multiple examples online of cool sun-to-moon animations:
 
-The nice thing is that it sort of behaves like a toggle - with the white part moving from side to side
-while the icon itself stays the same shape in negative
+However, I wanted something a bit different:
+
+<ColorModeToggleDemo showToggle isAnimated />
+
+The nice thing is that it sort of behaves like a "classic" switch UI - with the white part moving from side to side while the icon itself stays the same shape.
+
+### The Setup
 
 The idea is to have 2 halves
 There is a hidden circle in the middle with scaleX(0), with each half being one color
 On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
 
-<ColorModeToggleDemo showToggle isAnimated />
 _Demo embed_ https://codepen.io/shamir/pen/YGbbNX
 
 ### The Setup
 
-HTML button element
+I draw the icon using SVG, with a stroked `<circle>` creating the outline, and 3 copies of a semicircle drawn using `<path>`:
 
 ```html
-<button class="ThemeToggle">
-  <span class="ThemeToggle__half ThemeToggle__half--left"></span>
-  <span class="ThemeToggle__half ThemeToggle__half--right"></span>
-</button>
+<svg width="48" height="48" viewBox="0 0 24 24">
+  <circle
+    cx="12"
+    cy="12"
+    r="8"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    fill="none"
+  />
+  <path className="RightSideBG" d="M 12 5 A 7 7 0 0 1 12 19" />
+  <path className="LeftSide" d="M 12 5 A 7 7 0 0 1 12 19" />
+  <path className="RightSide" d="M 12 5 A 7 7 0 0 1 12 19" />
+</svg>
 ```
 
 CSS
 
 ```css
-.ThemeToggle {
-  --size: 60px;
-  --border-width: 2px;
+.RightSideBG {
+  fill: currentColor;
+  transform-origin: center;
+  transform: scale(1.1); /* to hide the seam */
+}
+
+.LeftSide,
+.RightSide {
+  fill: rgb(221, 221, 221);
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  animation-duration: var(--duration);
+}
+
+.LeftSide {
+  animation-name: rotateLeft;
+  animation-direction: normal;
+}
+
+.RightSide {
+  animation-name: rotateRight;
+  animation-direction: normal;
+}
+
+.dark {
+  .LeftSide {
+    animation-name: rotateLeftDark;
+  }
+
+  .RightSide {
+    animation-name: rotateRightDark;
+  }
 }
 ```
 
@@ -218,11 +267,7 @@ The animation is split into 4 parts:
 3. The second half of the animation
 4. The final state
 
-## Final touches - favicon
-
-dynamic favicon
-
-## Naming - Theme, Scheme or Mode?
+## Footnote: Naming - Theme, Scheme or Mode?
 
 First things first - how do I name this feature?
 
