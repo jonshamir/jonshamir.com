@@ -7,7 +7,6 @@ import styles from "./ColorModeToggleDemo.module.css";
 type ColorModeToggleDemoProps = {
   showToggle: boolean;
   isAnimated: boolean;
-  isGrowing?: boolean;
   children: ReactNode;
   style?: React.CSSProperties;
 };
@@ -15,7 +14,6 @@ type ColorModeToggleDemoProps = {
 export function ColorModeToggleDemo({
   showToggle,
   isAnimated,
-  isGrowing,
   children,
   style
 }: ColorModeToggleDemoProps) {
@@ -23,17 +21,23 @@ export function ColorModeToggleDemo({
   return (
     <figure>
       <div
-        className={`${styles.ColorModeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""} ${isGrowing ? styles.growing : ""}`}
+        className={`${styles.ColorModeToggleDemo} ${isDark ? styles.dark : ""}  ${isAnimated ? styles.animated : ""}`}
         style={style}
       >
         {children}
         {!showToggle && (
-          <button onClick={() => setIsDark(!isDark)}>
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className={styles.InvertedButton}
+          >
             {isDark ? "Set Dark Mode" : "Set Light Mode"}
           </button>
         )}
         {showToggle && (
-          <button onClick={() => setIsDark(!isDark)}>
+          <button
+            onClick={() => setIsDark(!isDark)}
+            className={styles.AnimatedButton}
+          >
             <svg
               className={styles.ColorModeToggle}
               width="48"
@@ -44,7 +48,7 @@ export function ColorModeToggleDemo({
                 cx="12"
                 cy="12"
                 r="8"
-                stroke="var(--foreground-color)"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 fill="none"
               />

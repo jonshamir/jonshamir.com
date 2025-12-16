@@ -12,23 +12,21 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
-For my website, I wanted to have a smooth transition when switching between light and dark modes. You can check out the final result in this small demo:
+In this post I will explain how I to implement a smooth transition between light and dark mode, using CSS `@property`. I also create an icon that smoothly animates between the modes. You can check out the final result in this small demo:
 
 <ColorModeToggleDemo showToggle isAnimated>
   Click the button to toggle modes:
 </ColorModeToggleDemo>
 
-You can also see the effect by clicking the small icon in the top-left corner; colors should quickly cross-fade, while the button itself does a little spherical animation.
+You can also see the effect by clicking the small icon in the top-left corner; colors should quickly cross-fade, while the button icon does a little spherical animation.
 
-In this post I will explain how I implemented this using CSS & SVG.
+I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are also welcome to take a look at the source code of this site.
 
 <TableOfContents />
 
 ## Setup - Defining the Color Palette
 
-I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are welcome to take a look at the source code of this site as well, if interested.
-
-The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)) and then override the colors with their dark versions under the `.dark` class selector:
+The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override the values with their dark versions under the `.dark` class selector:
 
 ```css
 :root {
@@ -45,7 +43,7 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 }
 ```
 
-We can then toggle this class on the root element using Javascript when the user clicks the toggle button :
+When the user clicks the button, we toggle this class on the root element using JavaScript:
 
 ```js
 function toggleDarkMode() {
@@ -64,7 +62,7 @@ function toggleDarkMode() {
   Click to toggle dark class:
 </ColorModeToggleDemo>
 
-When the `dark` class is added or removed, the browser automatically updates all the elements that use the properties we defined! In this case, the text and background colors change.
+When the `dark` class is added or removed, the browser automatically updates all CSS rules that use the properties we defined! In this case, the text and background colors change.
 
 ## Animating the Transition
 
@@ -85,7 +83,9 @@ body {
   Click to toggle dark class:
 </ColorModeToggleDemo>
 
-However, what if we want to add another transition to our button, say make it grow on hover?
+The text color and background cross-fade nicely, but our button still flashes immediately to the new color. We can try adding a transition to the button properties as well
+
+We can solve it by defining `transition: transform, color` but it can become cumbersome very quickly and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes this much simpler.
 
 ```css
 .button {
@@ -100,22 +100,17 @@ However, what if we want to add another transition to our button, say make it gr
 ```
 
 <ColorModeToggleDemo
-  isAnimated={true}
-  isGrowing={true}
-  style={{
-    transition:
-      "background-color var(--transition-timing), color var(--transition-timing)",
-    color: "var(--foreground-color-raw)"
-  }}
->
-  Click to toggle dark class:
+  isAnimated={true}>
+
+Click to toggle dark class:
+
 </ColorModeToggleDemo>
 
 Try clicking the button again - the scale transitions nicely but colors change immediately! This is because the button's `transition: transform` declaration overrides the `transition: color` we had on our `body`.
 
-We can solve it by defining `transition: transform, color` but it can become cumbersome very quickly and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes this much simpler.
-
 ## Using @property
+
+What if instead of transitioning the CSS properties that use the colors, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules!
 
 > The `@property` CSS at-rule is part of the CSS Houdini set of APIs. It allows developers to explicitly define CSS custom properties, allowing for property type checking and constraining, setting default values, and defining whether a custom property can inherit values or not.
 

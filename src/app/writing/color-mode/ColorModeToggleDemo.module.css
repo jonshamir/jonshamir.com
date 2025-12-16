@@ -1,4 +1,4 @@
-@property --background-color {
+/* @property --background-color {
   syntax: "<color>";
   inherits: true;
   initial-value: rgb(17, 17, 17);
@@ -8,23 +8,26 @@
   syntax: "<color>";
   inherits: true;
   initial-value: rgb(221, 221, 221);
-}
+} */
 
 .ColorModeToggleDemo {
   --duration: 0s;
   --transition-timing: var(--duration) ease-out;
 
-  transition:
+  /* transition:
     --background-color var(--transition-timing),
-    --foreground-color var(--transition-timing);
+    --foreground-color var(--transition-timing); */
 
-  --foreground-color-raw: rgb(221, 221, 221);
+  transition:
+    background-color var(--transition-timing),
+    color var(--transition-timing);
+
+  --foreground-color: rgb(221, 221, 221);
+  --background-color: rgb(17, 17, 17);
 
   &.dark {
     --foreground-color: rgb(17, 17, 17);
     --background-color: rgb(221, 221, 221);
-
-    --foreground-color-raw: rgb(17, 17, 17);
   }
 }
 
@@ -43,37 +46,36 @@
   &.animated {
     --duration: 0.4s;
   }
-}
 
-.ColorModeToggleDemo button,
-.ColorModeToggleDemo button:hover,
-.ColorModeToggleDemo button:focus {
-  background: rgba(128, 128, 128, 0.01);
-  border: 2px solid rgba(128, 128, 128, 0.2);
-  outline: none;
-  color: var(--foreground-color-raw);
-  transition: none;
-
-  &:hover {
-    background: rgba(128, 128, 128, 0.1);
+  button,
+  button:hover,
+  button:focus {
+    color: inherit;
+    background-color: rgba(128, 128, 128, 0.1);
     border: 2px solid rgba(128, 128, 128, 0.3);
+    outline: none;
+    transition: none;
+  }
+
+  .InvertedButton,
+  .InvertedButton:hover,
+  .InvertedButton:focus {
+    border: none;
+    background-color: var(--foreground-color);
+    color: var(--background-color);
+
+    opacity: 0.5;
+    transition: opacity 0.2s ease-out;
+  }
+
+  .InvertedButton:hover {
+    opacity: 1;
   }
 }
-
-.ColorModeToggleDemo.growing button {
-  transform: scale(1);
-  transition: transform 0.2s ease-out;
-
-  &:hover {
-    transform: scale(1.1);
-  }
-}
-
 /* ====================== */
 
 .RightSideBG {
-  --duration: 0s;
-  fill: var(--foreground-color);
+  fill: currentColor;
   transform-origin: center;
   transform: scale(1.1); /* to hide the seam */
 }
