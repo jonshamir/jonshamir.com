@@ -65,11 +65,10 @@ With the magic of CSS variables, the browser automatically updates all elements 
 
 ## Animating the Transition
 
-To get a nice animation between the color modes, we can declare a CSS transition for any property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-timing` variable:
+To get a nice animation between the modes, we can declare a CSS `transition` for every property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-timing` variable:
 
 ```css
 :root {
-  /* ... */
   --transition-timing: 400ms ease-out;
 
   transition:
@@ -84,21 +83,22 @@ To get a nice animation between the color modes, we can declare a CSS transition
 
 We did it - The text and background colors cross-fade nicely!
 
-But alas - our button still flashes immediately to the new colors. This is because we have a nice hover effect on the button that uses `transition: opacity` which overrides the `transition` we declared on our `:root`.
+But alas - our button still flashes immediately to the new colors. This is because we added some nice hover & active effects on the button which accidentally override the `transition` we declared on our `:root`:
 
 ```css
 button {
-  /* ... */
-  color: var(--background-color);
-  background-color: var(--foreground-color);
-  opacity: 0.5;
-
-  /* Overrides transition of color & background-color :( */
-  transition: opacity var(--transition-timing);
+  /* This overrides transition of color & background-color :( */
+  transition:
+    opacity 150ms ease-out,
+    transform 150ms ease-out;
 }
 
 button:hover {
   opacity: 1;
+}
+
+button:active {
+  transform: scale(0.95);
 }
 ```
 
@@ -107,21 +107,22 @@ We can solve it naively by defining a `transition` of all the properties togethe
 ```css
 button {
   transition:
-    opacity var(--transition-timing),
+    opacity 150ms ease-out,
+    transform 150ms ease-out,
     background-color var(--transition-timing),
     color var(--transition-timing);
 }
 ```
 
-However, this can become cumbersome very quickly and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes.
+However, this quickly becomes cumbersome and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes.
 
 _Find the offending element_
 
-Thankfully, there is a new CSS _at-rule_ that makes this much simpler.
+Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
 
 ## Using @property
 
-What if instead of transitioning the CSS properties that use the colors, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules!
+What if instead of transitioning each CSS property that uses a colors, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules!
 
 > The `@property` CSS at-rule is part of the CSS Houdini set of APIs. It allows developers to explicitly define CSS custom properties, allowing for property type checking and constraining, setting default values, and defining whether a custom property can inherit values or not.
 
@@ -143,7 +144,7 @@ Crucially for us, it allows us to _transition_ the css variables themselves! we 
 }
 ```
 
-We then define their values as we did before, with the dark versions as well, but we declare a transition on the variables themselves rather than on specific properties that use them:
+We then define the colors as we did before, keeping backwards compatibility. Them we declare a transition on the custom properties themselves rather than on the specific properties:
 
 ```css
 :root {
@@ -164,7 +165,7 @@ We then define their values as we did before, with the dark versions as well, bu
 }
 ```
 
-The result is a smooth transition wherever the variable is used, without having to think twice when using `transition`.
+Finally, the result is a smooth animation wherever the variable is used, without having to think twice when overriding `transition`:
 
 <ColorModeToggleDemo isAnimated useAtProp>
   Click to toggle dark class:
