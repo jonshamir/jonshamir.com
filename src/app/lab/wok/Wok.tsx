@@ -13,13 +13,19 @@ interface WokProps {
   depth?: number;
   flipSpeed?: number;
   flipAmplitude?: number;
+  phase1Weight?: number;
+  phase2Weight?: number;
+  phase3Weight?: number;
 }
 
 export function Wok({
   radius = 1.5,
   depth = 0.6,
   flipSpeed = 1.0,
-  flipAmplitude = 0.4
+  flipAmplitude = 0.4,
+  phase1Weight = 30,
+  phase2Weight = 30,
+  phase3Weight = 40
 }: WokProps) {
   const rigidBodyRef = useRef<RapierRigidBody>(null);
 
@@ -30,7 +36,10 @@ export function Wok({
 
   const { getRotation, getPosition } = useWokAnimation({
     speed: flipSpeed,
-    amplitude: flipAmplitude
+    amplitude: flipAmplitude,
+    phase1Weight,
+    phase2Weight,
+    phase3Weight
   });
 
   useFrame((state) => {

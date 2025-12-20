@@ -1,6 +1,6 @@
 "use client";
 
-import { RigidBody } from "@react-three/rapier";
+import { BallCollider, RigidBody } from "@react-three/rapier";
 import { useMemo, useState } from "react";
 
 import { FoodType, getRandomFoodType } from "./utils/foodTypes";
@@ -73,13 +73,15 @@ function FoodParticle({ particle }: FoodParticleProps) {
     <RigidBody
       position={particle.position}
       rotation={particle.rotation}
-      colliders="ball"
+      colliders={false}
       restitution={particle.type.restitution}
       friction={particle.type.friction}
       mass={particle.type.mass}
       linearDamping={0.5}
       angularDamping={0.5}
+      ccdEnabled
     >
+      <BallCollider args={[particle.type.colliderRadius]} />
       <mesh geometry={geometry} scale={particle.type.scale} castShadow>
         <meshStandardMaterial color={particle.type.color} roughness={0.7} />
       </mesh>

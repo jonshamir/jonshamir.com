@@ -15,15 +15,15 @@ export default function WokCanvas() {
     "Physics",
     {
       debug: { value: false, label: "Debug" },
-      gravity: { value: -9.81, min: -20, max: 0, step: 0.1, label: "Gravity" }
+      gravity: { value: -7, min: -20, max: 0, step: 0.1, label: "Gravity" }
     },
     { collapsed: true }
   );
 
   const { radius, depth, flipSpeed, flipAmplitude } = useControls("Wok", {
     radius: { value: 1.5, min: 0.5, max: 3, step: 0.1, label: "Radius" },
-    depth: { value: 0.6, min: 0.2, max: 1.5, step: 0.05, label: "Depth" },
-    flipSpeed: { value: 1.0, min: 0.1, max: 3, step: 0.1, label: "Flip Speed" },
+    depth: { value: 0.8, min: 0.2, max: 1.5, step: 0.05, label: "Depth" },
+    flipSpeed: { value: 0.8, min: 0.1, max: 3, step: 0.1, label: "Flip Speed" },
     flipAmplitude: {
       value: 0.4,
       min: 0.1,
@@ -33,10 +33,38 @@ export default function WokCanvas() {
     }
   });
 
+  const { phase1Weight, phase2Weight, phase3Weight } = useControls(
+    "Animation Phases",
+    {
+      phase1Weight: {
+        value: 60,
+        min: 5,
+        max: 60,
+        step: 5,
+        label: "Tilt Back"
+      },
+      phase2Weight: {
+        value: 20,
+        min: 5,
+        max: 60,
+        step: 5,
+        label: "Scoop"
+      },
+      phase3Weight: {
+        value: 35,
+        min: 5,
+        max: 60,
+        step: 5,
+        label: "Return"
+      }
+    },
+    { collapsed: true }
+  );
+
   const { particleCount } = useControls(
     "Particles",
     {
-      particleCount: { value: 50, min: 10, max: 200, step: 10, label: "Count" }
+      particleCount: { value: 100, min: 1, max: 400, step: 10, label: "Count" }
     },
     { collapsed: true }
   );
@@ -72,6 +100,9 @@ export default function WokCanvas() {
               depth={depth}
               flipSpeed={flipSpeed}
               flipAmplitude={flipAmplitude}
+              phase1Weight={phase1Weight}
+              phase2Weight={phase2Weight}
+              phase3Weight={phase3Weight}
             />
             <FoodParticles count={particleCount} wokRadius={radius * 0.8} />
           </Physics>

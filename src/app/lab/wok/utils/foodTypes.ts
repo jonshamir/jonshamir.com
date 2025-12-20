@@ -8,6 +8,7 @@ export interface FoodType {
   mass: number;
   restitution: number;
   friction: number;
+  colliderRadius: number;
 }
 
 export const FOOD_TYPES: FoodType[] = [
@@ -18,7 +19,8 @@ export const FOOD_TYPES: FoodType[] = [
     scale: [1, 1, 1],
     mass: 0.01,
     restitution: 0.1,
-    friction: 0.6
+    friction: 0.6,
+    colliderRadius: 0.035
   },
   {
     name: "carrot",
@@ -27,7 +29,8 @@ export const FOOD_TYPES: FoodType[] = [
     scale: [1, 1, 1],
     mass: 0.1,
     restitution: 0.2,
-    friction: 0.5
+    friction: 0.5,
+    colliderRadius: 0.06
   },
   {
     name: "pea",
@@ -36,7 +39,8 @@ export const FOOD_TYPES: FoodType[] = [
     scale: [1, 1, 1],
     mass: 0.05,
     restitution: 0.3,
-    friction: 0.4
+    friction: 0.4,
+    colliderRadius: 0.045
   },
   {
     name: "tofu",
@@ -45,7 +49,8 @@ export const FOOD_TYPES: FoodType[] = [
     scale: [1, 1, 1],
     mass: 0.15,
     restitution: 0.1,
-    friction: 0.7
+    friction: 0.7,
+    colliderRadius: 0.07
   },
   {
     name: "broccoli",
@@ -54,7 +59,8 @@ export const FOOD_TYPES: FoodType[] = [
     scale: [1, 0.8, 1],
     mass: 0.08,
     restitution: 0.15,
-    friction: 0.6
+    friction: 0.6,
+    colliderRadius: 0.065
   }
 ];
 
