@@ -16,6 +16,7 @@
     "@react-three/drei": "^9.122.0",
     "@react-three/fiber": "^9.0.0-alpha.8",
     "@react-three/postprocessing": "^3.0.4",
+    "@react-three/rapier": "^2.2.0",
     "@svgr/webpack": "^8.1.0",
     "@types/d3": "^7.4.3",
     "@types/mdx": "^2.0.13",
