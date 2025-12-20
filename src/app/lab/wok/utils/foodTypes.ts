@@ -17,10 +17,10 @@ export const FOOD_TYPES: FoodType[] = [
     geometry: () => new THREE.CapsuleGeometry(0.015, 0.03, 4, 8),
     color: "#f5f5dc",
     scale: [1, 1, 1],
-    mass: 0.01,
+    mass: 0.02,
     restitution: 0.1,
-    friction: 0.6,
-    colliderRadius: 0.035
+    friction: 0.8,
+    colliderRadius: 0.05
   },
   {
     name: "carrot",

@@ -88,5 +88,12 @@ export function useWokAnimation({
     };
 
     return { getRotation, getPosition };
-  }, [speed, amplitude, cycleDuration, phase1Weight, phase2Weight, phase3Weight]);
+  }, [
+    speed,
+    amplitude,
+    cycleDuration,
+    phase1Weight,
+    phase2Weight,
+    phase3Weight
+  ]);
 }

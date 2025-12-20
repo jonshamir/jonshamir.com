@@ -94,7 +94,12 @@ export default function WokCanvas() {
         />
 
         <Suspense fallback={null}>
-          <Physics gravity={[0, gravity, 0]} debug={debug}>
+          <Physics
+              gravity={[0, gravity, 0]}
+              debug={debug}
+              timeStep={1 / 120}
+              interpolate
+            >
             <Wok
               radius={radius}
               depth={depth}

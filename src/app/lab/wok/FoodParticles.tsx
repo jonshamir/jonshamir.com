@@ -79,7 +79,7 @@ function FoodParticle({ particle }: FoodParticleProps) {
       mass={particle.type.mass}
       linearDamping={0.5}
       angularDamping={0.5}
-      ccdEnabled
+      ccd
     >
       <BallCollider args={[particle.type.colliderRadius]} />
       <mesh geometry={geometry} scale={particle.type.scale} castShadow>
