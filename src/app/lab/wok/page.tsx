@@ -11,10 +11,7 @@ const Canvas = dynamic(() => import("./Canvas"), {
 export default function Page() {
   return (
     <>
-      <LabMenu
-        title="Wok Physics"
-        description="Physics simulation of a wok flipping food particles"
-      />
+      <LabMenu title="Wok Physics" description="yum" />
       <Canvas />
     </>
   );
