@@ -76,16 +76,6 @@ export default function WokCanvas() {
             <FoodParticles count={particleCount} wokRadius={radius * 0.8} />
           </Physics>
         </Suspense>
-
-        {/* Shadow-catching ground plane */}
-        <mesh
-          rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, -1.5, 0]}
-          receiveShadow
-        >
-          <planeGeometry args={[15, 15]} />
-          <shadowMaterial opacity={0.3} />
-        </mesh>
       </ThreeCanvas>
     </>
   );
