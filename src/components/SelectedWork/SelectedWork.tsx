@@ -5,6 +5,7 @@ import { useState } from "react";
 const videos = [
   "/homepage/herbs.mp4",
   "/homepage/scopus.mp4",
+  "/homepage/paint.mp4",
   "/homepage/earth.mp4",
   "/homepage/muser.mp4"
 ];
