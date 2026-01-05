@@ -90,11 +90,11 @@ code[data-theme*=" "] span {
 
 /* Style @property keyword with correct color (same as @media) */
 .at-rule {
-  color: #D73A49 !important; /* red/pink - same as @media in light mode */
+  color: #d73a49 !important; /* red/pink - same as @media in light mode */
 }
 
 .dark .at-rule {
-  color: #F97583 !important; /* red/pink - same as @media in dark mode */
+  color: #f97583 !important; /* red/pink - same as @media in dark mode */
 }
 
 /* Color preview swatches */
@@ -105,10 +105,11 @@ code[data-theme*=" "] span {
 .color-swatch::before {
   content: "";
   display: inline-block;
-  width: 0.7em;
-  height: 0.7em;
+  width: 0.8em;
+  height: 0.8em;
   margin-right: 0.3em;
-  border-radius: 50%;
+  margin-bottom: 0.1em;
+  border-radius: 999px;
   vertical-align: middle;
   background-color: var(--swatch-bg);
   border: 1px solid rgba(128, 128, 128, 0.4);
