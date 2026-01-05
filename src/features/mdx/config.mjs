@@ -16,7 +16,9 @@ const colorSwatchTransformer = () => ({
     if (!text) return;
 
     const match = text.match(colorRegex);
-    if (match && match[0] === text.trim()) {
+    // Allow trailing punctuation (semicolon, comma) after the color value
+    const trimmedText = text.trim().replace(/[;,]$/, "");
+    if (match && match[0] === trimmedText) {
       // This span contains only a color value - add class and CSS variable
       node.properties = node.properties || {};
       node.properties.className = [
