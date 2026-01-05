@@ -16,15 +16,19 @@ const colorSwatchTransformer = () => ({
     const text = node.children?.[0]?.value;
     if (!text) return;
 
-    // Add class for "property" keyword and replace with @property via CSS
+    // Replace "property " with "@property " and style the @property part
     if (text.trimStart().startsWith("property ")) {
-      node.properties = node.properties || {};
-      node.properties.className = [
-        ...(node.properties.className || []),
-        "at-rule"
-      ];
-      // Remove "property " from text, "@property " added via CSS ::before
+      // Create a styled span for "@property "
+      const atPropertySpan = {
+        type: "element",
+        tagName: "span",
+        properties: { className: ["at-rule"] },
+        children: [{ type: "text", value: "@property " }]
+      };
+      // Update remaining text (remove "property ")
       node.children[0].value = text.replace("property ", "");
+      // Insert the @property span before the remaining content
+      node.children.unshift(atPropertySpan);
     }
 
     const match = text.match(colorRegex);

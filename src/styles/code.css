@@ -88,13 +88,12 @@ code[data-theme*=" "] span {
   stroke: currentColor;
 }
 
-/* Display @property keyword with correct color */
-.at-rule::before {
-  content: "@property ";
+/* Style @property keyword with correct color */
+.at-rule {
   color: #D73A49; /* red/pink - same as @media in light mode */
 }
 
-.dark .at-rule::before {
+.dark .at-rule {
   color: #F97583; /* red/pink - same as @media in dark mode */
 }
 
