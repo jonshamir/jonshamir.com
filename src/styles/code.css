@@ -87,3 +87,30 @@ code[data-theme*=" "] span {
   height: 1rem;
   stroke: currentColor;
 }
+
+/* Style @property keyword with correct color (same as @media) */
+.at-rule {
+  color: #d73a49 !important; /* red/pink - same as @media in light mode */
+}
+
+.dark .at-rule {
+  color: #f97583 !important; /* red/pink - same as @media in dark mode */
+}
+
+/* Color preview swatches */
+.color-swatch {
+  position: relative;
+}
+
+.color-swatch::before {
+  content: "";
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 0.3em;
+  margin-bottom: 0.1em;
+  border-radius: 999px;
+  vertical-align: middle;
+  background-color: var(--swatch-bg);
+  border: 1px solid rgba(128, 128, 128, 0.4);
+}

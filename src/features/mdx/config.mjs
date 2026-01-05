@@ -4,6 +4,51 @@ import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
 import { visit } from "unist-util-visit";
 
+// Regex to match color values: hex (#fff, #ffffff), rgb(), rgba(), hsl(), hsla()
+const colorRegex =
+  /#(?:[0-9a-fA-F]{3,8})\b|rgba?\([^)]+\)|hsla?\([^)]+\)/g;
+
+// Shiki transformer to add color swatch circles next to color values
+// and handle @property display
+const colorSwatchTransformer = () => ({
+  name: "color-swatch",
+  span(node) {
+    const text = node.children?.[0]?.value;
+    if (!text) return;
+
+    // Replace "property " with "@property " and style the @property part
+    if (text.trimStart().startsWith("property ")) {
+      // Create a styled span for "@property "
+      const atPropertySpan = {
+        type: "element",
+        tagName: "span",
+        properties: { className: ["at-rule"] },
+        children: [{ type: "text", value: "@property " }]
+      };
+      // Update remaining text (remove "property ")
+      node.children[0].value = text.replace("property ", "");
+      // Insert the @property span before the remaining content
+      node.children.unshift(atPropertySpan);
+    }
+
+    const match = text.match(colorRegex);
+    // Allow trailing punctuation (semicolon, comma) after the color value
+    const trimmedText = text.trim().replace(/[;,]$/, "");
+    if (match && match[0] === trimmedText) {
+      // This span contains only a color value - add class and CSS variable
+      node.properties = node.properties || {};
+      node.properties.className = [
+        ...(node.properties.className || []),
+        "color-swatch"
+      ];
+      // Append CSS variable to existing style string
+      const existingStyle = node.properties.style || "";
+      const separator = existingStyle && !existingStyle.endsWith(";") ? ";" : "";
+      node.properties.style = `${existingStyle}${separator}--swatch-bg:${text.trim()};`;
+    }
+  }
+});
+
 // Extract raw code content before syntax highlighting
 const extractRawCodePlugin = () => (tree) => {
   visit(tree, (node) => {
@@ -73,6 +118,7 @@ export const mdxConfig = {
           dark: "github-dark",
           light: "github-light"
         },
+        transformers: [colorSwatchTransformer()],
         defaultLang: "plaintext",
         grid: false,
         onVisitLine(node) {
