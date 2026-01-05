@@ -9,7 +9,8 @@
       "Bash(bun run:*)",
       "Bash(npx tsc:*)",
       "Bash(bun eslint:*)",
-      "WebSearch"
+      "WebSearch",
+      "WebFetch(domain:github.com)"
     ],
     "deny": []
   }

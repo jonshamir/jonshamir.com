@@ -89,12 +89,18 @@ code[data-theme*=" "] span {
 }
 
 /* Color preview swatches */
-.shiki-color-highlight {
+.color-swatch {
+  position: relative;
+}
+
+.color-swatch::before {
+  content: "";
   display: inline-block;
   width: 0.7em;
   height: 0.7em;
-  margin-left: 0.2em;
-  border-radius: 2px;
+  margin-right: 0.3em;
+  border-radius: 50%;
   vertical-align: middle;
+  background-color: var(--swatch-bg);
   border: 1px solid rgba(128, 128, 128, 0.4);
 }

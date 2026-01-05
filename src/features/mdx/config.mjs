@@ -2,8 +2,34 @@ import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
-import { transformerColorHighlight } from "shiki-transformer-color-highlight";
 import { visit } from "unist-util-visit";
+
+// Regex to match color values: hex (#fff, #ffffff), rgb(), rgba(), hsl(), hsla()
+const colorRegex =
+  /#(?:[0-9a-fA-F]{3,8})\b|rgba?\([^)]+\)|hsla?\([^)]+\)/g;
+
+// Shiki transformer to add color swatch circles next to color values
+const colorSwatchTransformer = () => ({
+  name: "color-swatch",
+  span(node) {
+    const text = node.children?.[0]?.value;
+    if (!text) return;
+
+    const match = text.match(colorRegex);
+    if (match && match[0] === text.trim()) {
+      // This span contains only a color value - add class and CSS variable
+      node.properties = node.properties || {};
+      node.properties.className = [
+        ...(node.properties.className || []),
+        "color-swatch"
+      ];
+      // Append CSS variable to existing style string
+      const existingStyle = node.properties.style || "";
+      const separator = existingStyle && !existingStyle.endsWith(";") ? ";" : "";
+      node.properties.style = `${existingStyle}${separator}--swatch-bg:${text.trim()};`;
+    }
+  }
+});
 
 // Extract raw code content before syntax highlighting
 const extractRawCodePlugin = () => (tree) => {
@@ -74,7 +100,7 @@ export const mdxConfig = {
           dark: "github-dark",
           light: "github-light"
         },
-        transformers: [transformerColorHighlight()],
+        transformers: [colorSwatchTransformer()],
         defaultLang: "plaintext",
         grid: false,
         onVisitLine(node) {
