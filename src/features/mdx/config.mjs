@@ -16,13 +16,15 @@ const colorSwatchTransformer = () => ({
     const text = node.children?.[0]?.value;
     if (!text) return;
 
-    // Add @-prefix class for "property" keyword (to display @ via CSS)
+    // Add class for "property" keyword and replace with @property via CSS
     if (text.trimStart().startsWith("property ")) {
       node.properties = node.properties || {};
       node.properties.className = [
         ...(node.properties.className || []),
         "at-rule"
       ];
+      // Remove "property " from text, "@property " added via CSS ::before
+      node.children[0].value = text.replace("property ", "");
     }
 
     const match = text.match(colorRegex);

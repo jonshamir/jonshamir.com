@@ -88,9 +88,14 @@ code[data-theme*=" "] span {
   stroke: currentColor;
 }
 
-/* Display @ before "property" keyword for @property rules */
+/* Display @property keyword with correct color */
 .at-rule::before {
-  content: "@";
+  content: "@property ";
+  color: #D73A49; /* red/pink - same as @media in light mode */
+}
+
+.dark .at-rule::before {
+  color: #F97583; /* red/pink - same as @media in dark mode */
 }
 
 /* Color preview swatches */
