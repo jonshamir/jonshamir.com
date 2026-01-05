@@ -133,13 +133,13 @@ What if instead of transitioning each CSS property that uses a colors, we could 
 Crucially for us, it allows us to _transition_ the css variables themselves! we define our colors inside `@property` blocks with `syntax: "<color>"`:
 
 ```css
-@property --foreground-color {
+property --foreground-color {
   syntax: "<color>";
   inherits: true;
   initial-value: #111;
 }
 
-@property --background-color {
+property --background-color {
   syntax: "<color>";
   inherits: true;
   initial-value: #ddd;

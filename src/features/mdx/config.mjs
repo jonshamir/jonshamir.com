@@ -9,11 +9,21 @@ const colorRegex =
   /#(?:[0-9a-fA-F]{3,8})\b|rgba?\([^)]+\)|hsla?\([^)]+\)/g;
 
 // Shiki transformer to add color swatch circles next to color values
+// and handle @property display
 const colorSwatchTransformer = () => ({
   name: "color-swatch",
   span(node) {
     const text = node.children?.[0]?.value;
     if (!text) return;
+
+    // Add @-prefix class for "property" keyword (to display @ via CSS)
+    if (text.trimStart().startsWith("property ")) {
+      node.properties = node.properties || {};
+      node.properties.className = [
+        ...(node.properties.className || []),
+        "at-rule"
+      ];
+    }
 
     const match = text.match(colorRegex);
     // Allow trailing punctuation (semicolon, comma) after the color value

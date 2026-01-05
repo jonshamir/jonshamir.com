@@ -88,6 +88,11 @@ code[data-theme*=" "] span {
   stroke: currentColor;
 }
 
+/* Display @ before "property" keyword for @property rules */
+.at-rule::before {
+  content: "@";
+}
+
 /* Color preview swatches */
 .color-swatch {
   position: relative;
