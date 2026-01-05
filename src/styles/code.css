@@ -87,3 +87,14 @@ code[data-theme*=" "] span {
   height: 1rem;
   stroke: currentColor;
 }
+
+/* Color preview swatches */
+.shiki-color-highlight {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.2em;
+  border-radius: 2px;
+  vertical-align: middle;
+  border: 1px solid rgba(128, 128, 128, 0.4);
+}

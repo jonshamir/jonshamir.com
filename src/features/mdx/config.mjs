@@ -2,6 +2,7 @@ import rehypeKatex from "rehype-katex";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkMath from "remark-math";
+import { transformerColorHighlight } from "shiki-transformer-color-highlight";
 import { visit } from "unist-util-visit";
 
 // Extract raw code content before syntax highlighting
@@ -73,6 +74,7 @@ export const mdxConfig = {
           dark: "github-dark",
           light: "github-light"
         },
+        transformers: [transformerColorHighlight()],
         defaultLang: "plaintext",
         grid: false,
         onVisitLine(node) {
