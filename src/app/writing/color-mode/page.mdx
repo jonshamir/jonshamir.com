@@ -30,16 +30,16 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 
 ```css
 :root {
-  --foreground-color: #ddd;
-  --background-color: #111;
+  --foreground-color: #111;
+  --background-color: #ddd;
 
   color: var(--foreground-color);
   background-color: var(--background-color);
 }
 
 :root.dark {
-  --foreground-color: #111;
-  --background-color: #ddd;
+  --foreground-color: #ddd;
+  --background-color: #111;
 }
 ```
 
@@ -136,13 +136,13 @@ Crucially for us, it allows us to _transition_ the css variables themselves! we 
 @property --foreground-color {
   syntax: "<color>";
   inherits: true;
-  initial-value: #ddd;
+  initial-value: #111;
 }
 
 @property --background-color {
   syntax: "<color>";
   inherits: true;
-  initial-value: #111;
+  initial-value: #ddd;
 }
 ```
 
@@ -150,8 +150,8 @@ We then define the colors as we did before, keeping backwards compatibility. The
 
 ```css
 :root {
-  --foreground-color: #ddd;
-  --background-color: #111;
+  --foreground-color: #111;
+  --background-color: #ddd;
 
   color: var(--foreground-color);
   background-color: var(--background-color);
@@ -162,8 +162,8 @@ We then define the colors as we did before, keeping backwards compatibility. The
 }
 
 :root.dark {
-  --foreground-color: #111;
-  --background-color: #ddd;
+  --foreground-color: #ddd;
+  --background-color: #111;
 }
 ```
 
