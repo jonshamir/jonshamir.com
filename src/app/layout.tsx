@@ -81,7 +81,10 @@ export default function RootLayout({
             <PageViewTracker />
           </Suspense>
           <Nav />
-          <article className="wrapper">{children}</article>
+          <main className="main-grid">{children}</main>
+          <footer className="main-grid">
+            <p>Jon Shamir</p>
+          </footer>
         </body>
       </AnalyticsProvider>
     </html>
