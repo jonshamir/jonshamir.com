@@ -89,6 +89,7 @@ body {
 
   &:hover {
     background-color: rgba(var(--color-text-rgb), 0.1);
+    transition-duration: 100ms;
   }
 
   &:active {
