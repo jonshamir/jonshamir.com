@@ -23,7 +23,7 @@ export default function Page() {
         At it&apos;s peak, Widgets Bar was intalled by thousand of users and
         featured by apple in the official <em>Safari Extension Gallery</em>.
       </p>
-      <figure className="full-bleed">
+      <figure className="grid-full">
         <Image
           src="/projects/widgets/screenshot.png"
           alt="Screenshot of Widgets Bar"

@@ -2,7 +2,7 @@ import { SocialLinks } from "../SocialLinks/SocialLinks";
 
 export function Footer() {
   return (
-    <footer className="main-grid">
+    <footer className="grid">
       <div
         style={{
           display: "flex",

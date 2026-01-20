@@ -38,7 +38,7 @@ export default function Earth() {
     <>
       <MeshSelect value={baseMesh} onChange={setBaseMesh} />
       <ThreeCanvas
-        className="full-bleed"
+        className="grid-full"
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
         style={{ backgroundColor: "#101010" }}
       >

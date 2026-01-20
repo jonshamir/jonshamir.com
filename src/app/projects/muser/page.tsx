@@ -23,7 +23,7 @@ export default function Page() {
         history of music visualization. I researched, designed and built the
         project as part of my studies.
       </p>
-      <figure className="full-bleed">
+      <figure className="grid-full">
         <video
           src="/projects/muser/demo.mp4"
           style={{ maxHeight: "300px", height: "auto", maxWidth: "1000px" }}

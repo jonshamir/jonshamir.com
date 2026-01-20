@@ -15,7 +15,7 @@ export default function Page() {
         paradigms.
       </p>
 
-      <figure className="full-bleed">
+      <figure className="grid-full">
         <Image
           src="/projects/spacetop/hero.png"
           alt="Illustration of Spacetop being used on an airplane"
@@ -69,7 +69,7 @@ export default function Page() {
         The canvas itself can be panned and manipulated using touchpad gestures
         or keyboard shortcuts.
       </p>
-      <figure className="full-bleed">
+      <figure className="grid-full">
         <Image
           src="/projects/spacetop/nav.gif"
           alt="The canvas itself can be panned and zoomed by the user"

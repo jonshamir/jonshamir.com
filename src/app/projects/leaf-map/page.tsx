@@ -25,7 +25,7 @@ export default function Page() {
         species identification.
       </p>
 
-      <figure className="full-bleed">
+      <figure className="grid-full">
         <img
           src="/projects/leaf-map/hero.png"
           alt="Leaves sorted by shape"

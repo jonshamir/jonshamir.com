@@ -17,7 +17,6 @@
 }
 
 p {
-  max-width: 40em;
   margin: 0.5rem 0;
   text-wrap: pretty;
 }
@@ -203,7 +202,7 @@ figure {
     object-fit: cover;
   }
 
-  &.full-bleed {
+  &.grid-full {
     @media screen and (max-width: 40rem) {
       padding: 0;
       img,

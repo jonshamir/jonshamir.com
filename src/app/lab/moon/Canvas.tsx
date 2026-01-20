@@ -12,7 +12,7 @@ export default function Moon() {
   return (
     <>
       <ThreeCanvas
-        className="full-bleed"
+        className="grid-full"
         camera={{ position: [0, 0, 200], zoom: 40 }}
         style={{ backgroundColor: "#101010", height: "40rem" }}
       >

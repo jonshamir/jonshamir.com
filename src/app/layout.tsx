@@ -82,7 +82,7 @@ export default function RootLayout({
             <PageViewTracker />
           </Suspense>
           <Nav />
-          <main className="main-grid">{children}</main>
+          <main className="grid">{children}</main>
           <Footer />
         </body>
       </AnalyticsProvider>
