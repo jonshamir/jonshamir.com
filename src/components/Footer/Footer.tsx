@@ -7,7 +7,8 @@ export function Footer() {
         style={{
           display: "flex",
           flexDirection: "row",
-          alignItems: "center"
+          alignItems: "center",
+          justifyContent: "space-between"
         }}
       >
         <p>Jon Shamir</p>
