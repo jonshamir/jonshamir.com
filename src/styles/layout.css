@@ -2,8 +2,8 @@
 /* Based on Josh Comeau's technique + Ryan Mulligan's named lines */
 
 :root {
-  --grid-width-narrow: 40rem;
-  --grid-width-wide: 60rem;
+  --grid-width-narrow: 36rem;
+  --grid-width-wide: 56rem;
   --grid-gap: 1.5rem;
 }
 
@@ -11,9 +11,18 @@
   display: grid;
   grid-template-columns:
     [full-start] minmax(var(--grid-gap), 1fr)
-    [wide-start] minmax(0, calc((var(--grid-width-wide) - var(--grid-width-narrow)) / 2))
-    [narrow-start] min(var(--grid-width-narrow), calc(100% - 2 * var(--grid-gap)))
-    [narrow-end] minmax(0, calc((var(--grid-width-wide) - var(--grid-width-narrow)) / 2))
+    [wide-start] minmax(
+      0,
+      calc((var(--grid-width-wide) - var(--grid-width-narrow)) / 2)
+    )
+    [narrow-start] min(
+      var(--grid-width-narrow),
+      calc(100% - 2 * var(--grid-gap))
+    )
+    [narrow-end] minmax(
+      0,
+      calc((var(--grid-width-wide) - var(--grid-width-narrow)) / 2)
+    )
     [wide-end] minmax(var(--grid-gap), 1fr)
     [full-end];
   gap: 0 var(--grid-gap);
@@ -47,7 +56,7 @@ footer {
   font-size: 0.9rem;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 40rem) {
   .grid {
     gap: 0;
     grid-template-columns:
