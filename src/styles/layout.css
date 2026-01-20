@@ -65,4 +65,8 @@ footer {
       [narrow-end wide-end] var(--grid-gap)
       [full-end];
   }
+
+  .grid-wide {
+    grid-column: full;
+  }
 }

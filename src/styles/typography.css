@@ -196,8 +196,18 @@ figure {
 
   img,
   video {
+    border-radius: var(--rounding-small);
     width: 100%;
     object-fit: cover;
+  }
+}
+
+@media (max-width: 54rem) {
+  .grid-wide {
+    img,
+    video {
+      border-radius: 0;
+    }
   }
 }
 
