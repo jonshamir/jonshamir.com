@@ -23,11 +23,11 @@ export default function Page() {
         At it&apos;s peak, Widgets Bar was intalled by thousand of users and
         featured by apple in the official <em>Safari Extension Gallery</em>.
       </p>
-      <figure className="grid-full">
+      <figure className="grid-wide">
         <Image
           src="/projects/widgets/screenshot.png"
           alt="Screenshot of Widgets Bar"
-          style={{ maxWidth: "1000px", height: "auto" }}
+          style={{ height: "auto" }}
           width={1000}
           height={600}
         />

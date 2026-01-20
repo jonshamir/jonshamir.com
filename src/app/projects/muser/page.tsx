@@ -23,10 +23,10 @@ export default function Page() {
         history of music visualization. I researched, designed and built the
         project as part of my studies.
       </p>
-      <figure className="grid-full">
+      <figure className="grid-wide">
         <video
           src="/projects/muser/demo.mp4"
-          style={{ maxHeight: "300px", height: "auto", maxWidth: "1000px" }}
+          style={{ maxHeight: "300px", height: "auto" }}
           playsInline
           autoPlay
           muted

@@ -25,11 +25,11 @@ export default function Page() {
         species identification.
       </p>
 
-      <figure className="grid-full">
+      <figure className="grid-wide">
         <img
           src="/projects/leaf-map/hero.png"
           alt="Leaves sorted by shape"
-          style={{ maxHeight: "300px", height: "auto", maxWidth: "1000px" }}
+          style={{ maxHeight: "300px", height: "auto" }}
         />
       </figure>
 

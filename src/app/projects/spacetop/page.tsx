@@ -15,11 +15,11 @@ export default function Page() {
         paradigms.
       </p>
 
-      <figure className="grid-full">
+      <figure className="grid-wide">
         <Image
           src="/projects/spacetop/hero.png"
           alt="Illustration of Spacetop being used on an airplane"
-          style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
+          style={{ maxHeight: "450px", height: "auto" }}
           width={1000}
           height={450}
         />
@@ -69,11 +69,11 @@ export default function Page() {
         The canvas itself can be panned and manipulated using touchpad gestures
         or keyboard shortcuts.
       </p>
-      <figure className="grid-full">
+      <figure className="grid-wide">
         <Image
           src="/projects/spacetop/nav.gif"
           alt="The canvas itself can be panned and zoomed by the user"
-          style={{ maxHeight: "500px", height: "auto", maxWidth: "1000px" }}
+          style={{ maxHeight: "500px", height: "auto" }}
           width={1000}
           height={500}
         />
