@@ -70,3 +70,7 @@ footer {
     grid-column: full;
   }
 }
+
+main.grid {
+  margin-top: 4rem;
+}

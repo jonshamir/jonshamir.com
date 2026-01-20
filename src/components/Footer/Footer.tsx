@@ -4,6 +4,7 @@ export function Footer() {
   return (
     <footer className="grid">
       <div
+        className="grid-wide"
         style={{
           display: "flex",
           flexDirection: "row",
