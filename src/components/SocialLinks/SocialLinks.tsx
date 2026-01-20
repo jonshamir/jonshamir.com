@@ -15,6 +15,7 @@ export function SocialLinks() {
           className="clickable"
         >
           {createElement(link.icon)}
+          {link.label}
         </a>
       ))}
     </div>

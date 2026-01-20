@@ -1,7 +1,6 @@
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
-import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
@@ -35,7 +34,6 @@ export default function Page() {
       <h3>Projects</h3>
       <ProjectList />
       <p />
-      <SocialLinks />
       <EmailFormWrapper />
     </>
   );

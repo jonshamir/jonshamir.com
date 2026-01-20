@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { join } from "path";
 import { Suspense } from "react";
 
+import { Footer } from "../components/Footer/Footer";
 import { Nav } from "../components/Nav/Nav";
 import { AnalyticsProvider } from "../features/analytics/AnalyticsProvider";
 import PageViewTracker from "../features/analytics/PageViewTracker";
@@ -82,9 +83,7 @@ export default function RootLayout({
           </Suspense>
           <Nav />
           <main className="main-grid">{children}</main>
-          <footer className="main-grid">
-            <p>Jon Shamir</p>
-          </footer>
+          <Footer />
         </body>
       </AnalyticsProvider>
     </html>
