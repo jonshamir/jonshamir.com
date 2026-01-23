@@ -27,6 +27,11 @@ code {
   padding: 0.1em 0.05em;
 }
 
+:not(pre) > code {
+  background: rgba(var(--color-text-rgb), 0.1);
+  transition: background var(--transition-defaults);
+}
+
 code[data-theme*=" "] {
   --shiki-light: var(--color-text) !important;
   --shiki-dark: var(--color-text) !important;
