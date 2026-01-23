@@ -27,6 +27,11 @@ code {
   padding: 0.1em 0.05em;
 }
 
+code[data-theme*=" "] {
+  --shiki-light: var(--color-text) !important;
+  --shiki-dark: var(--color-text) !important;
+}
+
 code[data-theme*=" "],
 code[data-theme*=" "] span {
   color: var(--shiki-light);
