@@ -1,3 +1,6 @@
+import Image from "next/image";
+import dexelImg from "./dexel.jpg";
+
 export const metadata = {
   date: "2026-01-20",
   description: "Thoughts on a Button."
@@ -5,14 +8,23 @@ export const metadata = {
 
 # Thoughts on a Button
 
-I saw this painting by [Walter Dexel](https://www.walter-dexel.com/) at the museum and immediately something jumped at me:
+I saw a group of geometric portraits by [Walter Dexel](https://www.walter-dexel.com/) at the museum recently. Looking closer at one of them, something jumped at me:
 
-I'm pretty sure you can see it too - the shape on the shirt "feels" interactive - it's a close button!
+<figure>
+  <Image
+    src={dexelImg}
+    alt="Painting by Walter Dexel showing a figure with an X-shaped button on their shirt"
+    style={{ width: "100%", height: "auto" }}
+  />
+  <figcaption>Walter Dexel, 1933</figcaption>
+</figure>
 
-I think almost every person in the world today will first parse this as a "close button" and not a "clothes button"
-It's interesting to me that when the painting was draw, only X years ago, the "default" parsing was surly a regular button
+Can you see it? the shape on the striped shirt "feels" interactive - it's a close button!
 
-This also caused me to wonder where the UI element's name "button" may have originated - obviously machines have physical buttons but is that related to the clothes buttons?
+I think most people today will first parse this as a "close button" and not a "clothing button". It's interesting to think that when the painting was created in 1933, the "default" parsing was surely a regular button, but seeing this today it feels so modern and familiar.
 
-Well, not directly according to this site. But they share a common ancestor - the french baton meaning bud or protruding knob.
-That's it, thought it was interesting.
+This also caused me to wonder where the UI element's name "button" may have originated - obviously, machines have physical _buttons_ as well, but are they linguistically related to clothing buttons?
+
+Well, not directly according to this site. But they share a common ancestor - the french _bouton_, meaning bud or protruding knob or something that sticks out.
+
+That's it, just thought it was interesting.
