@@ -1,5 +1,6 @@
 import Image from "next/image";
 import dexelImg from "./dexel.jpg";
+import buttonsImg from "./buttons.png";
 
 export const metadata = {
   date: "2026-01-20",
@@ -22,6 +23,15 @@ I saw a group of geometric portraits by [Walter Dexel](https://www.walter-dexel.
 Can you see it? the shape on the striped shirt "feels" interactive - it's a close button!
 
 I think most people today will first parse this as a "close button" and not a "clothing button". It's interesting to think that when the painting was created in 1933, the "default" parsing was surely a regular button, but seeing this today it feels so modern and familiar.
+
+<figure>
+  <Image
+    src={buttonsImg}
+    alt="Button with X on them from iOS 26"
+    style={{ width: "100%", height: "auto" }}
+  />
+  <figcaption>Various buttons with x on them from iOS 26</figcaption>
+</figure>
 
 This also caused me to wonder where the UI element's name "button" may have originated - obviously, machines have physical _buttons_ as well, but are they linguistically related to clothing buttons?
 
