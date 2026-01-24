@@ -47,13 +47,6 @@ export default function Earth() {
         <EffectComposer>
           {postProcessing ? (
             <>
-              <Bloom
-                intensity={0.3}
-                luminanceThreshold={0.1}
-                kernelSize={KernelSize.LARGE}
-                radius={0.3}
-                levels={5}
-              />
               <Noise opacity={0.05} />
             </>
           ) : (
