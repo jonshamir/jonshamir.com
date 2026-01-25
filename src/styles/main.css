@@ -9,7 +9,7 @@
 @property --color-bg-rgb {
   syntax: "<number>#";
   inherits: true;
-  initial-value: 237, 231, 229;
+  initial-value: 232, 227, 225;
 }
 
 @property --color-text-rgb {
@@ -31,7 +31,7 @@
   --color-text-rgb: 59, 63, 69;
   --color-text: rgb(var(--color-text-rgb));
 
-  --color-bg-rgb: 237, 231, 229;
+  --color-bg-rgb: 232, 227, 225;
   --color-bg: rgb(var(--color-bg-rgb));
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
@@ -45,7 +45,7 @@
   --color-link: #7a8eff;
 
   --color-text-rgb: 224, 218, 207;
-  --color-bg-rgb: 47, 49, 56;
+  --color-bg-rgb: 34, 35, 39;
 }
 
 body {
