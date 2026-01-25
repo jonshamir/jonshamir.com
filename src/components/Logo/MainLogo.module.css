@@ -2,16 +2,13 @@
   position: relative;
   top: 0;
   left: 0;
-  transition:
-    transform var(--transition-defaults),
-    background-color var(--transition-defaults) !important;
+  transition: transform var(--transition-defaults);
   transform: translate(0, 0) scale(1);
   z-index: 100;
   opacity: 1;
   width: 1.6rem;
   padding: 0.2em;
   border-radius: var(--rounding-full) !important;
-  background-color: var(--color-bg);
 
   &::before {
     content: "";
@@ -20,7 +17,6 @@
     display: block;
     position: absolute;
     inset: 0;
-    background-color: var(--color-text);
     border-radius: var(--rounding-full);
     opacity: 0;
   }
@@ -40,7 +36,6 @@
 
   path {
     fill: var(--color-text);
-    transition: fill var(--transition-defaults);
     opacity: 1;
   }
 }

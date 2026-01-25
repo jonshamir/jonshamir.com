@@ -25,7 +25,6 @@
   }
 
   & path {
-    transition: fill var(--transition-defaults), stroke var(--transition-defaults);
     fill: var(--color-text);
   }
 
