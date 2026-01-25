@@ -5,6 +5,7 @@
 @import "satoshi.css";
 @import "supreme.css";
 @import "code.css";
+@import "easings.css";
 
 @property --color-bg-rgb {
   syntax: "<number>#";
@@ -19,7 +20,9 @@
 }
 
 :root {
-  --transition-defaults: 250ms ease-out;
+  --default-duration: 250ms;
+  --default-timing: ease-out;
+  --transition-defaults: var(--default-duration) var(--default-timing);
 
   --rounding-small: 0.4rem;
   --rounding-medium: 0.6rem;
@@ -36,9 +39,9 @@
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
-  transition:
-    --color-text-rgb var(--transition-defaults),
-    --color-bg-rgb var(--transition-defaults);
+  transition-property: --color-text-rgb, --color-bg-rgb;
+  transition-duration: var(--default-duration);
+  transition-timing-function: var(--default-timing-function);
 }
 
 :root.dark {
