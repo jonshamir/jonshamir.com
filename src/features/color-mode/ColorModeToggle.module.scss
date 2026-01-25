@@ -18,12 +18,10 @@
 
 .ColorModeToggle {
   color: var(--color-text);
-  transition: color var(--transition-defaults);
 }
 
 .RightSideBG {
   fill: var(--color-text);
-  transition: fill var(--duration) ease-out;
   transform-origin: center;
   transform: scale(1.1);
 }

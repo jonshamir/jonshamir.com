@@ -38,7 +38,6 @@ li {
 
 li::marker {
   color: rgba(var(--color-text-rgb), 0.5);
-  transition: color var(--transition-defaults);
 }
 
 h1,
@@ -99,9 +98,6 @@ a {
   text-decoration: underline;
   text-decoration-color: rgba(var(--color-text-rgb), 0.4);
   text-underline-offset: 0.1em;
-  transition:
-    color var(--transition-defaults),
-    text-decoration-color var(--transition-defaults);
 
   &:hover {
     text-decoration: underline;
@@ -148,10 +144,7 @@ select {
   border-radius: var(--rounding-small);
   vertical-align: middle;
   color: var(--color-text);
-  transition:
-    color var(--transition-defaults),
-    background-color var(--transition-defaults),
-    outline var(--transition-defaults);
+  transition: outline var(--transition-defaults);
   outline: 2px solid transparent;
 
   &:focus {

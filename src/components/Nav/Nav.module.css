@@ -27,7 +27,6 @@
   }
 
   .Wrapper {
-    transition: background-color var(--transition-defaults);
     background-color: var(--color-bg);
     border-radius: var(--rounding-full);
     padding: 0.2rem;
