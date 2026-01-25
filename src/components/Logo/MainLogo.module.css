@@ -8,35 +8,14 @@
   opacity: 1;
   width: 1.6rem;
   padding: 0.2em;
-  border-radius: var(--rounding-full) !important;
 
-  &::before {
-    content: "";
-    transition: opacity var(--transition-defaults);
-
-    display: block;
-    position: absolute;
-    inset: 0;
-    border-radius: var(--rounding-full);
-    opacity: 0;
-  }
-
-  &:hover::before {
-    opacity: 0.1;
-  }
-
-  &:active::before {
-    opacity: 0.05;
-  }
-
-  svg {
+  & svg {
     height: 80%;
     margin: auto;
   }
 
-  path {
+  & path {
     fill: var(--color-text);
-    opacity: 1;
   }
 }
 
