@@ -15,7 +15,7 @@
   }
 
   & path {
-    fill: var(--color-text);
+    fill: currentColor;
   }
 }
 

@@ -60,7 +60,7 @@ body {
 
 .themed-svg {
   * {
-    fill: var(--color-text);
+    fill: currentColor;
   }
 }
 
