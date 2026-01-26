@@ -20,15 +20,23 @@
   color: var(--color-text);
 }
 
+.ColorModeToggle circle {
+  stroke: var(--color-text);
+  transition: stroke calc(var(--duration) / 2) var(--default-timing);
+}
+
 .RightSideBG {
   fill: var(--color-text);
+  transition: fill calc(var(--duration) / 2) var(--default-timing);
+
   transform-origin: center;
   transform: scale(1.1);
 }
 
 .LeftSide,
 .RightSide {
-  fill: var(--color-bg);
+  fill: rgb(232, 227, 225);
+
   transform-origin: center;
   animation-fill-mode: forwards;
   animation-timing-function: ease-out;
@@ -46,11 +54,6 @@
 }
 
 .dark {
-  .LeftSide,
-  .RightSide {
-    fill: var(--color-text);
-  }
-
   .LeftSide {
     animation-name: rotateLeftDark;
   }
