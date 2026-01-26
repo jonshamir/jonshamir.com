@@ -5,9 +5,24 @@
 @import "satoshi.css";
 @import "supreme.css";
 @import "code.css";
+@import "easings.css";
+
+@property --color-bg-rgb {
+  syntax: "<number>#";
+  inherits: true;
+  initial-value: 232, 227, 225;
+}
+
+@property --color-text-rgb {
+  syntax: "<number>#";
+  inherits: true;
+  initial-value: 59, 63, 69;
+}
 
 :root {
-  --transition-defaults: 250ms ease-out;
+  --default-duration: 250ms;
+  --default-timing: ease-out;
+  --transition-defaults: var(--default-duration) var(--default-timing);
 
   --rounding-small: 0.4rem;
   --rounding-medium: 0.6rem;
@@ -16,32 +31,29 @@
   --color-accent: #536bf2;
   --color-link: #475ddc;
 
-  --color-text: #3b3f45;
   --color-text-rgb: 59, 63, 69;
+  --color-text: rgb(var(--color-text-rgb));
 
-  --color-bg: #e8e3e1;
-  --color-bg-rgb: 237, 231, 229;
+  --color-bg-rgb: 232, 227, 225;
+  --color-bg: rgb(var(--color-bg-rgb));
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
+
+  transition-property: --color-text-rgb, --color-bg-rgb;
+  transition-duration: var(--default-duration);
+  transition-timing-function: var(--default-timing-function);
 }
 
 :root.dark {
   --color-link: #7a8eff;
 
-  --color-text: #e0dacf;
   --color-text-rgb: 224, 218, 207;
-
-  --color-bg: #222327;
-  --color-bg-rgb: 47, 49, 56;
+  --color-bg-rgb: 34, 35, 39;
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-
-  transition:
-    color var(--transition-defaults),
-    background-color var(--transition-defaults);
 }
 
 * {
@@ -51,7 +63,7 @@ body {
 
 .themed-svg {
   * {
-    fill: var(--color-text);
+    fill: currentColor;
   }
 }
 
@@ -61,7 +73,6 @@ body {
     font-family: "Satoshi";
     font-weight: 800;
     font-size: 0.7em;
-    transition: color var(--transition-defaults);
     color: rgba(var(--color-text-rgb), 0.4);
   }
 
@@ -80,9 +91,7 @@ body {
 }
 
 .clickable {
-  transition:
-    background-color var(--transition-defaults),
-    color var(--transition-defaults);
+  transition: background-color var(--transition-defaults);
   background-color: rgba(var(--color-text-rgb), 0);
   border-radius: var(--rounding-medium);
 
@@ -102,9 +111,7 @@ body {
   line-height: 1.4em;
   cursor: help;
   color: rgba(var(--color-text-rgb));
-  transition:
-    color var(--transition-defaults),
-    background-color var(--transition-defaults);
+  transition: background-color var(--transition-defaults);
   position: relative;
   white-space: nowrap;
   display: inline-block;

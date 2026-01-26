@@ -25,16 +25,15 @@
   }
 
   & path {
-    transition: fill var(--transition-defaults), stroke var(--transition-defaults);
-    fill: var(--color-text);
+    fill: currentColor;
   }
 
   & svg[fill="none"] path {
     fill: none;
-    stroke: var(--color-text);
+    stroke: currentColor;
   }
 
   & svg[fill="none"] circle {
-    fill: var(--color-text);
+    fill: currentColor;
   }
 }
