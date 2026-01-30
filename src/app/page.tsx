@@ -17,8 +17,12 @@ export default function Page() {
         </span>
       </h2>
       <p className={styles.fadeIn}>
-        I work at the intersection of technology and design. I have experience
-        building products, data visualizations, and interactive 3D graphics.
+        I build interactive experiences - from immersive 3D websites and spatial
+        computing to thoughtful product interfaces.
+      </p>
+      <p className={styles.fadeIn}>
+        I partner with product teams and startups, taking ideas from early
+        prototypes to polished releases.
       </p>
       <p className={styles.fadeIn}>
         <a href="mailto:jon@studio-normal.com">Let&rsquo;s work together!</a>
