@@ -1,11 +1,11 @@
 import { FC } from "react";
 
-import BlueskyIcon from "./social-icons/bluesky.svg";
-import GithubIcon from "./social-icons/github.svg";
-import InstagramIcon from "./social-icons/instagram.svg";
-import LinkedInIcon from "./social-icons/linkedin.svg";
-import RssIcon from "./social-icons/rss.svg";
-import TwitterIcon from "./social-icons/twitterx.svg";
+import BlueskyIcon from "./icons/bluesky.svg";
+import GithubIcon from "./icons/github.svg";
+import InstagramIcon from "./icons/instagram.svg";
+import LinkedInIcon from "./icons/linkedin.svg";
+import RssIcon from "./icons/rss.svg";
+import TwitterIcon from "./icons/twitterx.svg";
 
 type SocialLink = {
   icon: FC;

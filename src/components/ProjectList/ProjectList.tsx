@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import projectData from "../../data/projects";
+import projectData from "./projects";
 
 export function ProjectList() {
   return (

@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import projectData from "../../data/projects";
+import projectData from "../../components/ProjectList/projects";
 
 export default function ProjectLayout({
   children

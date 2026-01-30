@@ -1,6 +1,6 @@
 import { createElement } from "react";
 
-import { SOCIAL_LINKS } from "../../data/social";
+import { SOCIAL_LINKS } from "./social";
 import styles from "./SocialLinks.module.css";
 
 export function SocialLinks() {
