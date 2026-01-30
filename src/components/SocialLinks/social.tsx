@@ -15,11 +15,6 @@ type SocialLink = {
 
 export const SOCIAL_LINKS: SocialLink[] = [
   {
-    icon: BlueskyIcon as FC,
-    href: "https://bsky.app/profile/jonshamir.com",
-    label: "Bluesky"
-  },
-  {
     icon: GithubIcon as FC,
     href: "https://github.com/jonshamir",
     label: "GitHub"
@@ -33,6 +28,11 @@ export const SOCIAL_LINKS: SocialLink[] = [
     icon: TwitterIcon as FC,
     href: "https://www.twitter.com/jonshamir/",
     label: "Twitter"
+  },
+  {
+    icon: BlueskyIcon as FC,
+    href: "https://bsky.app/profile/jonshamir.com",
+    label: "Bluesky"
   },
   {
     icon: LinkedInIcon as FC,
