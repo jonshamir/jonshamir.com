@@ -52,7 +52,9 @@
 }
 
 footer {
-  padding: 3rem 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 3rem 0rem;
   font-size: 0.9rem;
 }
 

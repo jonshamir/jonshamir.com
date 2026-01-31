@@ -13,27 +13,32 @@ export default function ProjectLayout({
   const path = usePathname();
   const slug = path.split("/").pop();
   const projectIndex = projectData.findIndex((p) => p.slug === slug);
-  if (projectIndex === -1) return;
 
-  const nextProject = projectData[(projectIndex + 1) % projectData.length];
+  const nextProject =
+    projectIndex !== -1
+      ? projectData[(projectIndex + 1) % projectData.length]
+      : null;
+
   return (
     <>
       {children}
 
-      <Link
-        href={`/projects/${nextProject.slug}`}
-        className="clickable"
-        style={{
-          marginTop: "2rem",
-          placeSelf: "flex-end",
-          padding: "0.5rem 1rem",
-          textDecoration: "none"
-        }}
-      >
-        {nextProject.name} <span className="arrow">→</span>
-        <br />
-        <span style={{ opacity: "0.7" }}>{nextProject.subtitle}</span>
-      </Link>
+      {nextProject && (
+        <Link
+          href={`/projects/${nextProject.slug}`}
+          className="clickable"
+          style={{
+            marginTop: "2rem",
+            placeSelf: "flex-end",
+            padding: "0.5rem 1rem",
+            textDecoration: "none"
+          }}
+        >
+          {nextProject.name} <span className="arrow">→</span>
+          <br />
+          <span style={{ opacity: "0.7" }}>{nextProject.subtitle}</span>
+        </Link>
+      )}
     </>
   );
 }

@@ -38,7 +38,7 @@ export default function Page() {
 
       <p></p>
 
-      <h3>Posts</h3>
+      <h3>Writing</h3>
       <PostList />
       <p />
       <h3>Projects</h3>
