@@ -1,4 +1,19 @@
-.intro {
+.hero {
+  grid-column-start: wide;
+  grid-column-end: narrow;
+  padding-left: 5rem;
+
+  h2 {
+    margin: 0.8rem 0;
+    font-weight: 500;
+  }
+
+  @media (max-width: 54rem) {
+    padding-left: 0;
+  }
+}
+
+.introHey {
   cursor: help;
   animation-delay: 0.2s !important;
 
