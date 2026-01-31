@@ -11,11 +11,13 @@ export default function Page() {
       <div className={styles.hero}>
         <InlineLogoPlaceholder />
 
-        <p className={`${styles.introHey} ${styles.fadeIn}`}>
-          Hey! I&rsquo;m{" "}
-          <span className={styles.name}>
-            <span className={styles.jon}> Jon</span>
-            <span className={styles.yonatan}> Yonatan</span>
+        <p className={styles.fadeIn}>
+          <span className={styles.introHey}>
+            Hey! I&rsquo;m
+            <span className={styles.name}>
+              <span className={styles.jon}> Jon</span>
+              <span className={styles.yonatan}> Yonatan</span>
+            </span>
           </span>
         </p>
         <h2 className={styles.fadeIn}>
