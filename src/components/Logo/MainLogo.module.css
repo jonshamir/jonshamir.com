@@ -2,7 +2,7 @@
   position: relative;
   top: 0;
   left: 0;
-  transition: transform var(--transition-defaults);
+  transition: transform 500ms var(--ease-out-expo);
   transform: translate(0, 0) scale(1);
   z-index: 100;
   opacity: 1;
