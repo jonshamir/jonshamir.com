@@ -26,6 +26,7 @@ export function ColorModeToggle() {
         if (e.key === "Enter") toggleColorMode();
       }}
       aria-label="Dark mode toggle"
+      style={{ padding: "0.3em" }} /* Make it square */
     >
       <svg
         className={styles.ColorModeToggle}
