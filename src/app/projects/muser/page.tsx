@@ -1,5 +1,6 @@
 "use client";
 
+import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
 
 export default function Page() {
@@ -8,14 +9,14 @@ export default function Page() {
       <h1>Muser</h1>
       <p className="description">Smart music visualizer</p>
       <p>
-        <a
+        <ButtonLink
           href="https://jonshamir.github.io/muser/"
           target="_blank"
-          className="button"
+          variant="opaque"
           rel="noreferrer"
         >
           Visit Project <span className="arrow">↗</span>
-        </a>
+        </ButtonLink>
       </p>
       <p>
         Muser is an experiment in using machine learning to enhance music

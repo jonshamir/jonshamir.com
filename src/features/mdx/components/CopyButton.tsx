@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Button } from "../../../components/Button";
 import { FeatherIcon } from "../../../components/FeatherIcon/FeatherIcon";
 
 interface CopyButtonProps {
@@ -27,7 +28,7 @@ export const CopyButton = ({ text }: CopyButtonProps) => {
   };
 
   return (
-    <button
+    <Button
       className="copy-button"
       disabled={isCopied}
       onClick={copy}
@@ -38,6 +39,6 @@ export const CopyButton = ({ text }: CopyButtonProps) => {
       ) : (
         <FeatherIcon iconName="copy" size={16} />
       )}
-    </button>
+    </Button>
   );
 };

@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import { ButtonLink } from "../../../components/Button";
+
 export default function Page() {
   return (
     <>
@@ -36,14 +38,14 @@ export default function Page() {
         more.
       </p>
       <p>
-        <a
+        <ButtonLink
           href="https://www.sightful.com/"
           target="_blank"
-          className="button"
+          variant="opaque"
           rel="noreferrer"
         >
           Visit the official Spacetop site <span className="arrow">↗</span>
-        </a>
+        </ButtonLink>
       </p>
 
       <h2>The Canvas</h2>

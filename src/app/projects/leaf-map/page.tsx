@@ -1,5 +1,6 @@
 "use client";
 
+import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
 
 export default function Page() {
@@ -8,14 +9,14 @@ export default function Page() {
       <h1>Leaf Map</h1>
       <p className="description">Interactive map of leaf shapes</p>
       <p>
-        <a
+        <ButtonLink
           href="https://jonshamir.github.io/leaf-map/"
           target="_blank"
-          className="button"
+          variant="opaque"
           rel="noreferrer"
         >
           Visit Project <span className="arrow">↗</span>
-        </a>
+        </ButtonLink>
       </p>
       <p>
         I&apos;ve always been fascinated by the shapes of plants. While studying
