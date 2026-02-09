@@ -7,7 +7,7 @@ import { KernelSize } from "postprocessing";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { MoonModel } from "./MoonModel";
 
-export default function Moon() {
+export default function MoonCanvas() {
   const postProcessing = true;
   return (
     <>

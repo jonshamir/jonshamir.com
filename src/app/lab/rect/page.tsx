@@ -4,7 +4,7 @@ import dynamic from "next/dynamic";
 
 import { LabMenu } from "../components/LabMenu/LabMenu";
 
-const Canvas = dynamic(() => import("./Canvas"), {
+const Canvas = dynamic(() => import("./RectCanvas"), {
   ssr: false
 });
 
