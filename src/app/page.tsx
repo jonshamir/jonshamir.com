@@ -24,13 +24,13 @@ export default function Page() {
           I build interactive experiences – from 3D websites and spatial
           computing to thoughtful product interfaces.
         </h2>
-        <p className={styles.fadeIn}>
+        {/*<p className={styles.fadeIn}>
           I partner with product teams and startups, taking ideas from early
           prototypes to polished releases.
-        </p>
-        {/* <p className={styles.fadeIn}>
+        </p>*/}
+        <p className={styles.fadeIn}>
           <a href="mailto:jon@studio-normal.com">Contact</a>
-        </p> */}
+        </p>
         <br />
       </div>
 
