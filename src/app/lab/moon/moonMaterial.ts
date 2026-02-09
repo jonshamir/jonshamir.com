@@ -1,5 +1,8 @@
 import { shaderMaterial } from "@react-three/drei";
 
+import { bumpMapping } from "../../../lib/shaders/bumpMapping.glsl";
+import { sphericalUV } from "../../../lib/shaders/sphericalUV.glsl";
+
 export const MoonMaterial = shaderMaterial(
   {
     albedoMap: null,
@@ -35,61 +38,13 @@ export const MoonMaterial = shaderMaterial(
 
     #define PI 3.141592653
 
-    // Receives pos in 3D cartesian coordinates (x, y, z)
-    // Returns UV coordinates corresponding to pos using spherical texture mapping
-    vec2 getSphericalUV(vec3 pos)
-    {
-        // 360 normalized to [-0.5,0.5]]
-        float theta = atan(pos.z,-pos.x) / (2.0 * PI); 
-        // 180 normalized to [0,1]
-        float phi = 1.0 - acos(pos.y / length(pos)) / PI; 
-
-        // Fix seam line
-        float theta_frac = fract(theta); // Remap [-0.5,0.5] > [0,1]
-        // uses a small bias to prefer the first 'UV set'
-        theta = fwidth(theta) < fwidth(theta_frac) - 0.001 ? theta : theta_frac;
-
-        return vec2(theta, phi);
-    }
-
-    // Converts tangent-space vector v to world-space, using the normal and tangent at a given point 
-    vec3 tangentToWorldSpace(vec3 v, vec3 normal, vec3 tangent)
-    {
-      vec3 binormal = cross(tangent, normal);
-      return v.x * tangent + v.z * normal + v.y * binormal;
-    }
-
-    // Returns the world-space bump-mapped normal for the given bumpMapData
-    vec3 getBumpMappedNormal(        
-      vec3 normal,      // Mesh surface normal at the point
-      vec3 tangent,     // Mesh surface tangent at the point
-      vec2 uv,          // UV coordinates of the point
-      float bumpScale   // Bump scaling factor
-    )
-    {
-      ivec2 size = textureSize(bumpMap, 0);
-      vec2 du = vec2(1.0 / float(size.x), 0.0);
-      vec2 dv = vec2(0.0, 1.0 / float(size.y));
-
-      // Sample the height map
-      float f = texture2D(bumpMap, uv).r;
-      float fdu = texture2D(bumpMap, uv + du).r;
-      float fdv = texture2D(bumpMap, uv + dv).r;
-
-      // Calculate partial derivatives
-      float ftu = bumpScale * (fdu - f) / du.x;
-      float ftv = bumpScale * (fdv - f) / dv.y;
-
-      // tangent-space normal
-      vec3 n = vec3(ftu, -ftv, 1.0); // Cross-product of tangents
-
-      return normalize(tangentToWorldSpace(n, normal, tangent));
-    }
+    ${sphericalUV}
+    ${bumpMapping}
 
     // Implementation taken from https://mimosa-pudica.net/improved-oren-nayar.html
     float improvedOrenNayar(vec3 v, vec3 l, vec3 n)
     {
-      float rho = 0.25;                
+      float rho = 0.25;
       float sigma = PI / 8.0;
       float sigmaSqared = sigma * sigma;
 
@@ -99,7 +54,7 @@ export const MoonMaterial = shaderMaterial(
       float LdotV = clamp(dot(l, v), 0.0, 1.0);
       float NdotL = clamp(dot(n, l), 0.0, 1.0);
       float NdotV = clamp(dot(n, v), 0.0, 1.0);
-      
+
       float s = LdotV - NdotL * NdotV;
       float t = 1.0;
       if (s > 0.0) t = max(NdotL, NdotV);

@@ -1,8 +1,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
-import { KernelSize } from "postprocessing";
+import { EffectComposer, Noise } from "@react-three/postprocessing";
 import { useState } from "react";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";

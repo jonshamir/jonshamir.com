@@ -6,5 +6,5 @@
  * import { getLeafVertices, saturate, range } from "./utils"
  */
 
+export * from "../../../../lib/math";
 export * from "./geometry";
-export * from "./math";

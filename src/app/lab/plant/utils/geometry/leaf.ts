@@ -5,7 +5,7 @@
 import { QuadraticBezierCurve3 } from "three";
 import { lerp } from "three/src/math/MathUtils.js";
 
-import { easeInExpo } from "../math";
+import { easeInExpo } from "../../../../../lib/math";
 import { getLayerVertices, SEGMENTS } from "./shared";
 import type { ColorTuple, PlantGeometryResult } from "./types";
 
