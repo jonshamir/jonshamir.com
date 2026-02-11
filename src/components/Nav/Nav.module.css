@@ -34,15 +34,6 @@
     flex-direction: row;
     align-items: center;
 
-    & a {
-      display: inline-block;
-      padding: 0.2em 0.6em;
-      vertical-align: middle;
-      text-decoration: none;
-      border-radius: 500px;
-      color: var(--color-text);
-    }
-
     .ActiveLink {
       opacity: 0.6;
 

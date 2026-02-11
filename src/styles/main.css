@@ -100,7 +100,8 @@ body {
     transition-duration: 100ms;
   }
 
-  &:active {
+  &:active,
+  &:hover:active {
     background-color: rgba(var(--color-text-rgb), 0.05);
   }
 }

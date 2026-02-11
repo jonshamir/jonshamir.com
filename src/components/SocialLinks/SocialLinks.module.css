@@ -6,17 +6,13 @@
   flex-wrap: wrap;
 
   & a {
-    padding: 0.2rem 0.5rem;
-    border-radius: var(--rounding-small);
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
-    text-decoration: none;
     opacity: 0.8;
 
     &:hover {
-      text-decoration: none;
       opacity: 1;
     }
   }

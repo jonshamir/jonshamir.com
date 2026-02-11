@@ -1,6 +1,7 @@
 import { clsx } from "clsx";
 import { useEffect, useState } from "react";
 
+import { Button } from "../../components/Button";
 import styles from "./ColorModeToggle.module.scss";
 import { useColorMode } from "./useColorMode";
 
@@ -14,8 +15,9 @@ export function ColorModeToggle() {
   }, []);
 
   return (
-    <button
-      className={clsx("clickable", styles.ColorModeToggleContainer, {
+    <Button
+      round
+      className={clsx(styles.ColorModeToggleContainer, {
         [styles.loaded]: isLoaded,
         [styles.dark]: colorMode === "dark"
       })}
@@ -24,6 +26,7 @@ export function ColorModeToggle() {
         if (e.key === "Enter") toggleColorMode();
       }}
       aria-label="Dark mode toggle"
+      style={{ padding: "0.3em" }} /* Make it square */
     >
       <svg
         className={styles.ColorModeToggle}
@@ -37,6 +40,6 @@ export function ColorModeToggle() {
 
         <circle cx="12" cy="12" r="8" strokeWidth="2" fill="none" />
       </svg>
-    </button>
+    </Button>
   );
 }
