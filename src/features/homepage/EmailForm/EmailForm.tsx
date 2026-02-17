@@ -33,8 +33,6 @@ export function EmailForm() {
 
   return (
     <div className={styles.EmailForm}>
-      <p>Mailing list</p>
-
       {(mutation.isIdle || mutation.isLoading) && (
         <form onSubmit={handleSubmit}>
           <input

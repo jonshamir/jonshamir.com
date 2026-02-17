@@ -1,6 +1,6 @@
 .button {
-  --padding-block: 0.25em;
-  --padding-inline: 0.6em;
+  --padding-block: 0.3em;
+  --padding-inline: 0.8em;
 
   padding-block: var(--padding-block);
   padding-inline: var(--padding-inline);

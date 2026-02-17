@@ -9,9 +9,9 @@ import styles from "./page.module.css";
 export default function Page() {
   return (
     <>
-      {/* <InlineLogoPlaceholder /> */}
-
       <div className={styles.hero}>
+        <InlineLogoPlaceholder />
+
         <p className={styles.fadeIn}>
           <span className={styles.introHey}>
             Hey! I&rsquo;m
@@ -46,6 +46,8 @@ export default function Page() {
       <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
       <p />
+      <p />
+      <h3 className={styles.sectionTitle}>Mailing list</h3>
       <EmailFormWrapper />
     </>
   );
