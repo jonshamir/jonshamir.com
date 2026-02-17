@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { createElement } from "react";
 
 import styles from "./ProjectList.module.css";
 import projectData from "./projects";
@@ -9,10 +10,7 @@ export function ProjectList() {
       {projectData.map((project) => (
         <li key={project.slug}>
           <Link href={`/projects/${project.slug}`} className="clickable">
-            <img
-              src={`/homepage/project-icons/${project.slug}.svg`}
-              alt={project.name}
-            />
+            {createElement(project.icon)}
             <span>
               <strong>{project.name}</strong>
               <br />
