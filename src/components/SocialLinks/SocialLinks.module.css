@@ -1,8 +1,7 @@
 .SocialLinks {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0.1rem;
-  max-width: 20rem;
   flex-wrap: wrap;
 
   & a {
@@ -10,11 +9,6 @@
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
-    opacity: 0.8;
-
-    &:hover {
-      opacity: 1;
-    }
   }
 
   & svg {

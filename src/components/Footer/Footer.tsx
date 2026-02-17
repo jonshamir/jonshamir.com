@@ -1,8 +1,11 @@
+import clsx from "clsx";
+
 import { SocialLinks } from "../SocialLinks/SocialLinks";
+import styles from "./Footer.module.css";
 
 export function Footer() {
   return (
-    <footer className="grid">
+    <footer className={clsx(styles.Footer, "grid")}>
       <div
         className="grid-wide"
         style={{
@@ -13,7 +16,7 @@ export function Footer() {
         }}
       >
         <p>Jon Shamir</p>
-        <SocialLinks />
+        <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
       </div>
     </footer>
   );

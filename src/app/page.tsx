@@ -3,6 +3,7 @@ import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder"
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
+import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
@@ -45,6 +46,10 @@ export default function Page() {
 
       <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
+      <p />
+      <p />
+      <h3 className={styles.sectionTitle}>Social</h3>
+      <SocialLinks />
       <p />
       <p />
       <h3 className={styles.sectionTitle}>Mailing list</h3>
