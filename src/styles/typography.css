@@ -188,6 +188,16 @@ figure {
   video {
     width: 100%;
     object-fit: cover;
+    border-radius: var(--rounding-small);
+  }
+}
+
+@media (max-width: 54rem) {
+  figure {
+    img,
+    video {
+      border-radius: 0;
+    }
   }
 }
 
