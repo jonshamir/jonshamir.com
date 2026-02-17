@@ -1,5 +1,6 @@
 "use client";
 
+import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
 
 export default function Page() {
@@ -8,14 +9,14 @@ export default function Page() {
       <h1>Muser</h1>
       <p className="description">Smart music visualizer</p>
       <p>
-        <a
+        <ButtonLink
           href="https://jonshamir.github.io/muser/"
           target="_blank"
-          className="button"
+          variant="opaque"
           rel="noreferrer"
         >
           Visit Project <span className="arrow">↗</span>
-        </a>
+        </ButtonLink>
       </p>
       <p>
         Muser is an experiment in using machine learning to enhance music
@@ -23,10 +24,10 @@ export default function Page() {
         history of music visualization. I researched, designed and built the
         project as part of my studies.
       </p>
-      <figure className="full-bleed">
+      <figure className="grid-wide">
         <video
           src="/projects/muser/demo.mp4"
-          style={{ maxHeight: "300px", height: "auto", maxWidth: "1000px" }}
+          style={{ maxHeight: "300px", height: "auto" }}
           playsInline
           autoPlay
           muted

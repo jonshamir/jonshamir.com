@@ -1,19 +1,21 @@
 "use client";
 
+import { ButtonLink } from "../../../components/Button";
+
 export default function Page() {
   return (
     <>
       <h1>Prepbook</h1>
       <p className="description">Clever recipe notebook</p>
       <p>
-        <a
+        <ButtonLink
           href="https://prepbook.app"
           target="_blank"
-          className="button"
+          variant="opaque"
           rel="noreferrer"
         >
           Visit Project <span className="arrow">↗</span>
-        </a>
+        </ButtonLink>
       </p>
       <p>
         I&apos;ve been using a notebook to jot down recipes for years. It&apos;s

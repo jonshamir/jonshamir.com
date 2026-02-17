@@ -10,7 +10,7 @@ export default function TilePrototype() {
   }, []);
 
   return (
-    <div className="TilePrototype full-bleed">
+    <div className="TilePrototype grid-full">
       <div id="controls">
         <input type="checkbox" name="show-drag" id="show-drag" checked />
         <label htmlFor="show-drag">Show drag overlay</label>

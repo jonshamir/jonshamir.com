@@ -1,4 +1,23 @@
-.intro {
+.hero {
+  grid-column-start: wide;
+  grid-column-end: narrow;
+  padding-left: 5rem;
+  position: relative;
+
+  h2 {
+    margin: 0.8rem 0;
+    font-weight: 400;
+    text-wrap: balance;
+    font-size: 2rem;
+    line-height: 1.4;
+  }
+
+  @media (max-width: 54rem) {
+    padding-left: 0;
+  }
+}
+
+.introHey {
   cursor: help;
   animation-delay: 0.2s !important;
 
@@ -8,9 +27,9 @@
 
   .jon,
   .yonatan {
-    transition:
-      transform var(--transition-defaults),
-      opacity var(--transition-defaults);
+    transition-property: transform, opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: var(--ease-out-expo);
     position: absolute;
     left: 0.3rem;
   }
@@ -49,5 +68,52 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+.sectionTitle {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  font-style: italic;
+  margin-bottom: 0.8rem;
+}
+
+.contactButton {
+  position: absolute;
+  right: -3rem;
+  bottom: 2.5rem;
+}
+
+@media (max-width: 54rem) {
+  .contactButton {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    margin-block: 1rem;
+  }
+}
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.columns > div {
+  flex: 1;
+}
+
+.smallColumn {
+  max-width: 10rem;
+}
+
+@media (max-width: 36rem) {
+  .columns {
+    flex-direction: column;
+  }
+
+  .smallColumn {
+    max-width: 100%;
   }
 }

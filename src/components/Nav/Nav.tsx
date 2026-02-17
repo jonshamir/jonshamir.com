@@ -6,12 +6,13 @@ import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
 import { ColorModeToggle } from "../../features/color-mode/ColorModeToggle";
+import { ButtonLink } from "../Button";
 import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
 
 const NAV_ITEMS = [
   { title: "Home", href: "/" },
-  { title: "Posts", href: "/writing" },
+  { title: "Writing", href: "/writing" },
   { title: "Lab", href: "/lab" }
 ];
 
@@ -39,15 +40,16 @@ export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
             <div className={styles.Wrapper}>
               {showNavItems &&
                 NAV_ITEMS.map((item) => (
-                  <Link
+                  <ButtonLink
                     href={item.href}
                     key={item.href}
-                    className={clsx("clickable", {
+                    className={clsx({
                       [styles.ActiveLink]: pathname === item.href
                     })}
+                    round
                   >
                     {item.title}
-                  </Link>
+                  </ButtonLink>
                 ))}
               <ColorModeToggle />
             </div>

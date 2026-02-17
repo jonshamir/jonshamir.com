@@ -7,12 +7,12 @@ import { KernelSize } from "postprocessing";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { MoonModel } from "./MoonModel";
 
-export default function Moon() {
+export default function MoonCanvas() {
   const postProcessing = true;
   return (
     <>
       <ThreeCanvas
-        className="full-bleed"
+        className="grid-full"
         camera={{ position: [0, 0, 200], zoom: 40 }}
         style={{ backgroundColor: "#101010", height: "40rem" }}
       >

@@ -5,9 +5,6 @@ pre[data-theme] {
   width: 100%;
   background-color: rgba(var(--color-text-rgb), 0.05);
   outline: 1px solid rgba(var(--color-text-rgb), 0.15);
-  transition:
-    background-color var(--transition-defaults),
-    outline var(--transition-defaults);
 }
 
 code[data-theme] {
@@ -27,17 +24,24 @@ code {
   padding: 0.1em 0.05em;
 }
 
+:not(pre) > code {
+  background: rgba(var(--color-text-rgb), 0.1);
+}
+
+code[data-theme*=" "] {
+  --shiki-light: var(--color-text) !important;
+  --shiki-dark: var(--color-text) !important;
+}
+
 code[data-theme*=" "],
 code[data-theme*=" "] span {
   color: var(--shiki-light);
-  transition: color var(--transition-defaults);
 }
 
 .dark {
   code[data-theme*=" "],
   code[data-theme*=" "] span {
     color: var(--shiki-dark);
-    transition: color var(--transition-defaults);
   }
 }
 
@@ -62,7 +66,9 @@ code[data-theme*=" "] span {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all var(--transition-defaults);
+  transition:
+    opacity var(--transition-defaults),
+    visibility var(--transition-defaults);
   opacity: 0;
   visibility: hidden;
 }

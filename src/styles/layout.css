@@ -1,34 +1,71 @@
-/* https://www.joshwcomeau.com/css/full-bleed/ */
-.wrapper {
+/* Full-Bleed Layout with Named Grid Lines */
+/* Based on Josh Comeau's technique + Ryan Mulligan's named lines */
+
+:root {
+  --grid-width-narrow: 36rem;
+  --grid-width-wide: 54rem;
+  --grid-gap: 1rem;
+}
+
+.grid {
   display: grid;
   grid-template-columns:
-    1fr
-    min(60ch, calc(100% - 3rem))
-    1fr;
-  grid-column-gap: 1.5rem;
-  padding-bottom: 4rem;
-  padding-top: 4rem;
+    [full-start] minmax(var(--grid-gap), 1fr)
+    [wide-start] minmax(
+      0,
+      calc((var(--grid-width-wide) - var(--grid-width-narrow)) / 2)
+    )
+    [narrow-start] min(
+      var(--grid-width-narrow),
+      calc(100% - 2 * var(--grid-gap))
+    )
+    [narrow-end] minmax(
+      0,
+      calc((var(--grid-width-wide) - var(--grid-width-narrow)) / 2)
+    )
+    [wide-end] minmax(var(--grid-gap), 1fr)
+    [full-end];
+  gap: 0 var(--grid-gap);
 }
 
-.wrapper > * {
-  grid-column: 2;
+.grid > * {
+  grid-column: narrow;
 }
 
-.full-bleed,
+.grid-narrow {
+  grid-column: narrow;
+}
+
+.grid-wide {
+  grid-column: wide;
+}
+
+.grid-full {
+  grid-column: full;
+}
+
 .cover {
-  width: 100%;
-  grid-column: 1 / 4;
-}
-
-.cover {
+  grid-column: full;
   height: 20rem;
   object-fit: cover;
   margin-bottom: 2rem;
 }
 
-footer {
-  width: 100%;
-  padding: 3rem;
-  opacity: 0.3;
-  font-size: 0.8rem;
+@media (max-width: 54rem) {
+  .grid {
+    gap: 0;
+    grid-template-columns:
+      [full-start] var(--grid-gap)
+      [wide-start narrow-start] minmax(0, 1fr)
+      [narrow-end wide-end] var(--grid-gap)
+      [full-end];
+  }
+
+  .grid-wide {
+    grid-column: full;
+  }
+}
+
+main.grid {
+  margin-top: 3rem;
 }

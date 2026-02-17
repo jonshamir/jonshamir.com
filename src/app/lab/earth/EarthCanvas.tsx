@@ -1,8 +1,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
-import { KernelSize } from "postprocessing";
+import { EffectComposer, Noise } from "@react-three/postprocessing";
 import { useState } from "react";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
@@ -31,14 +30,14 @@ function MeshSelect({
   );
 }
 
-export default function Earth() {
+export default function EarthCanvas() {
   const [baseMesh, setBaseMesh] = useState<BaseMesh>(BaseMesh.Icosahedron);
   const postProcessing = true;
   return (
     <>
       <MeshSelect value={baseMesh} onChange={setBaseMesh} />
       <ThreeCanvas
-        className="full-bleed"
+        className="grid-full"
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
         style={{ backgroundColor: "#101010" }}
       >
@@ -47,13 +46,6 @@ export default function Earth() {
         <EffectComposer>
           {postProcessing ? (
             <>
-              <Bloom
-                intensity={0.3}
-                luminanceThreshold={0.1}
-                kernelSize={KernelSize.LARGE}
-                radius={0.3}
-                levels={5}
-              />
               <Noise opacity={0.05} />
             </>
           ) : (

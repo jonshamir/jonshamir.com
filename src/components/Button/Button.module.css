@@ -1,0 +1,53 @@
+.button {
+  --padding-block: 0.3em;
+  --padding-inline: 0.5em;
+
+  padding-block: var(--padding-block);
+  padding-inline: var(--padding-inline);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.4em;
+  border-radius: var(--rounding-small);
+
+  &:focus {
+    outline: 2px solid transparent;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  &.round {
+    border-radius: 999px;
+    padding-inline: 0.8em;
+  }
+}
+
+.opaque {
+  background-color: rgba(var(--color-text-rgb), 0.1);
+
+  &:hover {
+    background-color: rgba(var(--color-text-rgb), 0.15) !important;
+    text-decoration: none;
+  }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 0.05) !important;
+  }
+}
+
+.primary {
+  color: var(--color-bg);
+  background-color: var(--color-text);
+
+  &:hover {
+    background-color: rgba(var(--color-text-rgb), 0.8) !important;
+  }
+
+  &:active {
+    background-color: rgba(var(--color-text-rgb), 0.7) !important;
+  }
+}

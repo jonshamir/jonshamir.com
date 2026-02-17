@@ -7,6 +7,7 @@ import type { Metadata } from "next";
 import { join } from "path";
 import { Suspense } from "react";
 
+import { Footer } from "../components/Footer/Footer";
 import { Nav } from "../components/Nav/Nav";
 import { AnalyticsProvider } from "../features/analytics/AnalyticsProvider";
 import PageViewTracker from "../features/analytics/PageViewTracker";
@@ -81,7 +82,8 @@ export default function RootLayout({
             <PageViewTracker />
           </Suspense>
           <Nav />
-          <article className="wrapper">{children}</article>
+          <main className="grid">{children}</main>
+          <Footer />
         </body>
       </AnalyticsProvider>
     </html>

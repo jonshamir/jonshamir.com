@@ -1,10 +1,11 @@
 import { FC } from "react";
 
-import BlueskyIcon from "./social-icons/bluesky.svg";
-import GithubIcon from "./social-icons/github.svg";
-import InstagramIcon from "./social-icons/instagram.svg";
-import LinkedInIcon from "./social-icons/linkedin.svg";
-import TwitterIcon from "./social-icons/twitterx.svg";
+import BlueskyIcon from "./icons/bluesky.svg";
+import GithubIcon from "./icons/github.svg";
+import InstagramIcon from "./icons/instagram.svg";
+import LinkedInIcon from "./icons/linkedin.svg";
+import RssIcon from "./icons/rss.svg";
+import TwitterIcon from "./icons/twitterx.svg";
 
 type SocialLink = {
   icon: FC;
@@ -13,11 +14,6 @@ type SocialLink = {
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
-  {
-    icon: BlueskyIcon as FC,
-    href: "https://bsky.app/profile/jonshamir.com",
-    label: "Bluesky"
-  },
   {
     icon: GithubIcon as FC,
     href: "https://github.com/jonshamir",
@@ -34,8 +30,18 @@ export const SOCIAL_LINKS: SocialLink[] = [
     label: "Twitter"
   },
   {
+    icon: BlueskyIcon as FC,
+    href: "https://bsky.app/profile/jonshamir.com",
+    label: "Bluesky"
+  },
+  {
     icon: LinkedInIcon as FC,
     href: "https://www.linkedin.com/in/jonshamir/",
     label: "LinkedIn"
+  },
+  {
+    icon: RssIcon as FC,
+    href: "/rss.xml",
+    label: "RSS"
   }
 ];

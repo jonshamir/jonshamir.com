@@ -1,15 +1,25 @@
-import Link from "next/link";
+import { createElement } from "react";
 
-import projectData from "../../data/projects";
+import { ButtonLink } from "../Button";
+import styles from "./ProjectList.module.css";
+import projectData from "./projects";
 
 export function ProjectList() {
   return (
-    <ul>
+    <ul className={styles.ProjectList}>
       {projectData.map((project) => (
         <li key={project.slug}>
-          <Link href={`projects/${project.slug}`}>
-            <strong>{project.name}</strong> - <span>{project.subtitle}</span>
-          </Link>
+          <ButtonLink
+            href={`/projects/${project.slug}`}
+            className={styles.projectLink}
+          >
+            {createElement(project.icon)}
+            <span>
+              <strong>{project.name}</strong>
+              <br />
+              <span>{project.subtitle}</span>
+            </span>
+          </ButtonLink>
         </li>
       ))}
     </ul>

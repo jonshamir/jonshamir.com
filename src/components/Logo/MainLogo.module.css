@@ -1,0 +1,35 @@
+.MainLogo {
+  position: relative;
+  top: 0;
+  left: 0;
+  transition: transform 500ms var(--ease-out-expo);
+  transform: translate(0, 0) scale(1);
+  z-index: 100;
+  opacity: 1;
+  width: 1.8rem;
+  padding: 0.4em;
+  background-color: var(--color-bg);
+  border-radius: var(--rounding-full);
+
+  & svg {
+    height: 80%;
+    margin: auto;
+  }
+
+  & path {
+    fill: currentColor;
+  }
+}
+
+.InlineLogoPlaceholder {
+  margin-top: 1rem;
+  /* margin-left: 0.5rem; */
+  /* margin-bottom: 0.5rem; */
+  display: inline-block;
+  width: 1.5rem;
+  height: 3rem;
+
+  @media screen and (max-width: 40rem) {
+    margin-top: 0;
+  }
+}

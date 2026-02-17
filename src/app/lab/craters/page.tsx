@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 
-const Canvas = dynamic(() => import("./Canvas"), {
+const Canvas = dynamic(() => import("./CratersCanvas"), {
   ssr: false
 });
 

@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import styles from "./MainLogo.module.scss";
+import styles from "./MainLogo.module.css";
 
 export function MainLogo({
   parentRef

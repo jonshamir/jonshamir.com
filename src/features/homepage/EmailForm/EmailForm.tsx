@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 
+import { Button } from "../../../components/Button";
 import styles from "./EmailForm.module.scss";
 
 interface FormData {
@@ -41,9 +42,14 @@ export function EmailForm() {
             placeholder="Enter your email"
             required={true}
           />
-          <button type="submit" disabled={mutation.isLoading}>
+          <Button
+            type="submit"
+            round
+            variant="primary"
+            disabled={mutation.isLoading}
+          >
             {mutation.isLoading ? "Joining..." : "Sign Up"}
-          </button>
+          </Button>
         </form>
       )}
       {mutation.isError && (

@@ -6,6 +6,7 @@ import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { useLinearColor } from "../../../lib/hooks/useLinearColor";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
@@ -178,63 +179,18 @@ export default function PlantCanvas() {
     groundMaterial.shadowColor = color;
   }, [groundShadowColor, groundMaterial]);
 
-  // Convert leaf colors from hex to Color objects
-  const leafBaseColorObj = useMemo(() => {
-    const color = new Color(leafBaseColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [leafBaseColor]);
+  const leafBaseColorObj = useLinearColor(leafBaseColor);
+  const leafShadowColorObj = useLinearColor(leafShadowColor);
+  const leafSubsurfaceColorObj = useLinearColor(leafSubsurfaceColor);
 
-  const leafShadowColorObj = useMemo(() => {
-    const color = new Color(leafShadowColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [leafShadowColor]);
+  const flowerBaseColorObj = useLinearColor(flowerBaseColor);
+  const flowerShadowColorObj = useLinearColor(flowerShadowColor);
+  const flowerSubsurfaceColorObj = useLinearColor(flowerSubsurfaceColor);
 
-  const leafSubsurfaceColorObj = useMemo(() => {
-    const color = new Color(leafSubsurfaceColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [leafSubsurfaceColor]);
+  const potBaseColorObj = useLinearColor(potBaseColor);
+  const potShadowColorObj = useLinearColor(potShadowColor);
 
-  // Convert flower colors from hex to Color objects
-  const flowerBaseColorObj = useMemo(() => {
-    const color = new Color(flowerBaseColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [flowerBaseColor]);
-
-  const flowerShadowColorObj = useMemo(() => {
-    const color = new Color(flowerShadowColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [flowerShadowColor]);
-
-  const flowerSubsurfaceColorObj = useMemo(() => {
-    const color = new Color(flowerSubsurfaceColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [flowerSubsurfaceColor]);
-
-  // Convert pot colors from hex to Color objects
-  const potBaseColorObj = useMemo(() => {
-    const color = new Color(potBaseColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [potBaseColor]);
-
-  const potShadowColorObj = useMemo(() => {
-    const color = new Color(potShadowColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [potShadowColor]);
-
-  // Convert shadow plane color from hex to Color object
-  const shadowPlaneColorObj = useMemo(() => {
-    const color = new Color(shadowPlaneColor);
-    color.convertLinearToSRGB();
-    return color;
-  }, [shadowPlaneColor]);
+  const shadowPlaneColorObj = useLinearColor(shadowPlaneColor);
 
   return (
     <>

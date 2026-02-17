@@ -1,21 +1,46 @@
 .SocialLinks {
   display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  padding-top: 1rem;
+  flex-direction: column;
+  gap: 0.1rem;
+  flex-wrap: wrap;
 
   & a {
-    padding: 0.5rem;
-    border-radius: var(--rounding-full);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   & svg {
-    width: 1.2rem;
-    height: 1.2rem;
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
   }
 
   & path {
-    transition: fill var(--transition-defaults);
-    fill: var(--color-text);
+    fill: currentColor;
+  }
+
+  & svg[fill="none"] path {
+    fill: none;
+    stroke: currentColor;
+  }
+
+  & svg[fill="none"] circle {
+    fill: currentColor;
+  }
+
+  & :global(.arrow) {
+    margin-left: auto;
+    display: inline-block;
+    opacity: 0;
+    transition: opacity var(--transition-defaults);
+    transition-duration: 100ms;
+  }
+
+  & a:hover {
+    & :global(.arrow) {
+      opacity: 0.5;
+    }
   }
 }
