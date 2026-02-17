@@ -54,11 +54,12 @@ export default function Page() {
       <p />
       <p />
 
-      <h3 className={styles.sectionTitle}>Writing</h3>
+      {/* <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
 
       <p />
-      <p />
+      <p /> */}
+
       <h3 className={styles.sectionTitle}>Mailing list</h3>
       <EmailFormWrapper />
     </>

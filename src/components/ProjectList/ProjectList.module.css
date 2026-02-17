@@ -3,9 +3,9 @@
   padding: 0;
   margin: 0;
 
-  li {
-    margin: 0;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
 
   .projectLink {
     width: 100%;
