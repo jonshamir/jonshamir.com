@@ -29,12 +29,12 @@
   background-color: rgba(var(--color-text-rgb), 0.1);
 
   &:hover {
-    background-color: rgba(var(--color-text-rgb), 0.15);
+    background-color: rgba(var(--color-text-rgb), 0.15) !important;
     text-decoration: none;
   }
 
   &:active {
-    background-color: rgba(var(--color-text-rgb), 0.05);
+    background-color: rgba(var(--color-text-rgb), 0.05) !important;
   }
 }
 
@@ -43,10 +43,10 @@
   background-color: var(--color-text);
 
   &:hover {
-    background-color: rgba(var(--color-text-rgb), 0.8);
+    background-color: rgba(var(--color-text-rgb), 0.8) !important;
   }
 
   &:active {
-    background-color: rgba(var(--color-text-rgb), 0.9);
+    background-color: rgba(var(--color-text-rgb), 0.7) !important;
   }
 }

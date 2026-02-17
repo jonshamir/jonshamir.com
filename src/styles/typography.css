@@ -156,26 +156,9 @@ select {
   }
 }
 
-button,
-.button {
+.button,
+button {
   cursor: pointer;
-  transition: background-color var(--transition-defaults);
-  text-decoration: none;
-  border-radius: 999px;
-  padding: 0.3em 0.8em;
-
-  &:hover {
-    text-decoration: none;
-  }
-
-  &.primary {
-    color: white;
-    background-color: var(--color-accent);
-
-    &:hover {
-      background-color: var(--color-link);
-    }
-  }
 }
 
 label {

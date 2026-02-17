@@ -31,15 +31,14 @@ export default function Page() {
           I partner with product teams and startups, taking ideas from early
           prototypes to polished releases.
         </p>*/}
-        <p className={styles.fadeIn}>
-          <ButtonLink
-            round
-            variant="primary"
-            href="mailto:jon@studio-normal.com"
-          >
-            Contact<span className="arrow">↗</span>
-          </ButtonLink>
-        </p>
+        <ButtonLink
+          round
+          variant="primary"
+          href="mailto:jon@studio-normal.com"
+          className={styles.contactButton}
+        >
+          Contact<span className="arrow">↗</span>
+        </ButtonLink>
         <br />
       </div>
 

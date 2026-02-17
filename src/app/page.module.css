@@ -2,6 +2,7 @@
   grid-column-start: wide;
   grid-column-end: narrow;
   padding-left: 5rem;
+  position: relative;
 
   h2 {
     margin: 0.8rem 0;
@@ -74,4 +75,10 @@
   font-weight: 500;
   font-size: 1rem;
   font-style: italic;
+}
+
+.contactButton {
+  position: absolute;
+  right: -4rem;
+  top: 3.5rem;
 }
