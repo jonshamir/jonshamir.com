@@ -29,4 +29,18 @@
   & svg[fill="none"] circle {
     fill: currentColor;
   }
+
+  & :global(.arrow) {
+    margin-left: auto;
+    display: inline-block;
+    opacity: 0;
+    transition: opacity var(--transition-defaults);
+    transition-duration: 100ms;
+  }
+
+  & a:hover {
+    & :global(.arrow) {
+      opacity: 0.5;
+    }
+  }
 }

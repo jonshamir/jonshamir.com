@@ -24,6 +24,7 @@ export function SocialLinks({
         >
           {createElement(link.icon)}
           {!iconsOnly && link.label}
+          {!iconsOnly && <span className="arrow">↗</span>}
         </ButtonLink>
       ))}
     </div>
