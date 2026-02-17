@@ -1,6 +1,6 @@
 .button {
   --padding-block: 0.3em;
-  --padding-inline: 0.8em;
+  --padding-inline: 0.5em;
 
   padding-block: var(--padding-block);
   padding-inline: var(--padding-inline);
@@ -22,6 +22,7 @@
 
   &.round {
     border-radius: 999px;
+    padding-inline: 0.8em;
   }
 }
 
