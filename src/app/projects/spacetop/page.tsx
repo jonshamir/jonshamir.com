@@ -21,9 +21,9 @@ export default function Page() {
         <Image
           src="/projects/spacetop/hero.png"
           alt="Illustration of Spacetop being used on an airplane"
-          style={{ maxHeight: "450px", height: "auto" }}
-          width={1000}
-          height={450}
+          style={{ maxHeight: "450px" }}
+          width={4096}
+          height={2304}
         />
         <figcaption>
           Spacetop is like a huge virtual screen that you can take anywhere
@@ -75,9 +75,10 @@ export default function Page() {
         <Image
           src="/projects/spacetop/nav.gif"
           alt="The canvas itself can be panned and zoomed by the user"
-          style={{ maxHeight: "500px", height: "auto" }}
-          width={1000}
-          height={500}
+          style={{ maxHeight: "500px" }}
+          width={1762}
+          height={848}
+          unoptimized
         />
       </figure>
 
@@ -92,9 +93,10 @@ export default function Page() {
         <Image
           src="/projects/spacetop/compass.gif"
           alt="The compass points the user to a window outside the field of view"
-          style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
-          width={1000}
-          height={450}
+          style={{ maxHeight: "450px", maxWidth: "1000px" }}
+          width={1560}
+          height={1122}
+          unoptimized
         />
         <figcaption>
           The compass points to a window outside the field of view
@@ -112,9 +114,10 @@ export default function Page() {
         <Image
           src="/projects/spacetop/bevel.gif"
           alt="A special shader that created a 3D illusion"
-          style={{ maxHeight: "450px", height: "auto", maxWidth: "1000px" }}
-          width={1000}
-          height={450}
+          style={{ maxHeight: "450px", maxWidth: "1000px" }}
+          width={1224}
+          height={782}
+          unoptimized
         />
       </figure>
       <p>
