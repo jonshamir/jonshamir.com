@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-import projectData from "./projects";
 import styles from "./ProjectList.module.css";
+import projectData from "./projects";
 
 export function ProjectList() {
   return (
@@ -13,9 +13,11 @@ export function ProjectList() {
               src={`/homepage/project-icons/${project.slug}.svg`}
               alt={project.name}
             />
-            <strong>{project.name}</strong>
-            <br />
-            <span>{project.subtitle}</span>
+            <span>
+              <strong>{project.name}</strong>
+              <br />
+              <span>{project.subtitle}</span>
+            </span>
           </Link>
         </li>
       ))}
