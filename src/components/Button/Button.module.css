@@ -6,7 +6,7 @@
   padding-inline: var(--padding-inline);
   cursor: pointer;
   text-decoration: none;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: flex-start;
   gap: 0.4em;
@@ -39,14 +39,14 @@
 }
 
 .primary {
-  color: white;
-  background-color: var(--color-accent);
+  color: var(--color-bg);
+  background-color: var(--color-text);
 
   &:hover {
-    background-color: var(--color-link);
+    background-color: rgba(var(--color-text-rgb), 0.8);
   }
 
   &:active {
-    background-color: var(--color-accent);
+    background-color: rgba(var(--color-text-rgb), 0.9);
   }
 }

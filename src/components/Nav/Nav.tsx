@@ -12,7 +12,7 @@ import styles from "./Nav.module.css";
 
 const NAV_ITEMS = [
   { title: "Home", href: "/" },
-  { title: "Posts", href: "/writing" },
+  { title: "Writing", href: "/writing" },
   { title: "Lab", href: "/lab" }
 ];
 

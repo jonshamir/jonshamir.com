@@ -25,9 +25,9 @@
 
   .jon,
   .yonatan {
-    transition:
-      transform var(--transition-defaults),
-      opacity var(--transition-defaults);
+    transition-property: transform, opacity;
+    transition-duration: 0.5s;
+    transition-timing-function: var(--ease-out-expo);
     position: absolute;
     left: 0.3rem;
   }
@@ -67,4 +67,11 @@
   to {
     opacity: 1;
   }
+}
+
+.sectionTitle {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 1rem;
+  font-style: italic;
 }

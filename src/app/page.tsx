@@ -1,3 +1,4 @@
+import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
@@ -8,9 +9,11 @@ import styles from "./page.module.css";
 export default function Page() {
   return (
     <>
-      <div className={styles.hero}>
-        <InlineLogoPlaceholder />
+      {/* <InlineLogoPlaceholder /> */}
 
+      <SelectedWork />
+
+      <div className={styles.hero}>
         <p className={styles.fadeIn}>
           <span className={styles.introHey}>
             Hey! I&rsquo;m
@@ -29,19 +32,23 @@ export default function Page() {
           prototypes to polished releases.
         </p>*/}
         <p className={styles.fadeIn}>
-          <a href="mailto:jon@studio-normal.com">Contact</a>
+          <ButtonLink
+            round
+            variant="primary"
+            href="mailto:jon@studio-normal.com"
+          >
+            Contact<span className="arrow">↗</span>
+          </ButtonLink>
         </p>
         <br />
       </div>
 
-      <SelectedWork />
-
       <p></p>
 
-      <h3>Writing</h3>
+      <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
       <p />
-      <h3>Projects</h3>
+      <h3 className={styles.sectionTitle}>Projects</h3>
       <ProjectList />
       <p />
       <EmailFormWrapper />
