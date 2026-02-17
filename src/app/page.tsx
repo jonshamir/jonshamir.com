@@ -38,18 +38,25 @@ export default function Page() {
       </div>
       <SelectedWork />
 
-      <p></p>
+      <p />
 
-      <h3 className={styles.sectionTitle}>Projects</h3>
-      <ProjectList />
+      <div className={styles.columns}>
+        <div>
+          <h3 className={styles.sectionTitle}>Projects</h3>
+          <ProjectList />
+        </div>
+        <div className={styles.smallColumn}>
+          <h3 className={styles.sectionTitle}>Social</h3>
+          <SocialLinks />
+        </div>
+      </div>
+
+      <p />
       <p />
 
       <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
-      <p />
-      <p />
-      <h3 className={styles.sectionTitle}>Social</h3>
-      <SocialLinks />
+
       <p />
       <p />
       <h3 className={styles.sectionTitle}>Mailing list</h3>

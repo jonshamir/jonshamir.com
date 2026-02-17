@@ -92,3 +92,27 @@
     margin-block: 1rem;
   }
 }
+
+.columns {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+
+.columns > div {
+  flex: 1;
+}
+
+.smallColumn {
+  max-width: 10rem;
+}
+
+@media (max-width: 36rem) {
+  .columns {
+    flex-direction: column;
+  }
+
+  .smallColumn {
+    max-width: 100%;
+  }
+}
