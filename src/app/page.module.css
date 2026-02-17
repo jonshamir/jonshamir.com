@@ -9,6 +9,7 @@
     font-weight: 400;
     text-wrap: balance;
     font-size: 2rem;
+    line-height: 1.4;
   }
 
   @media (max-width: 54rem) {
@@ -79,6 +80,15 @@
 
 .contactButton {
   position: absolute;
-  right: -4rem;
-  top: 3.5rem;
+  right: -3rem;
+  bottom: 2.5rem;
+}
+
+@media (max-width: 54rem) {
+  .contactButton {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    margin-block: 1rem;
+  }
 }

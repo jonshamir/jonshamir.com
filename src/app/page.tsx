@@ -11,8 +11,6 @@ export default function Page() {
     <>
       {/* <InlineLogoPlaceholder /> */}
 
-      <SelectedWork />
-
       <div className={styles.hero}>
         <p className={styles.fadeIn}>
           <span className={styles.introHey}>
@@ -27,10 +25,6 @@ export default function Page() {
           I build interactive experiences – from 3D websites and spatial
           computing to thoughtful product interfaces.
         </h2>
-        {/*<p className={styles.fadeIn}>
-          I partner with product teams and startups, taking ideas from early
-          prototypes to polished releases.
-        </p>*/}
         <ButtonLink
           round
           variant="primary"
@@ -41,14 +35,16 @@ export default function Page() {
         </ButtonLink>
         <br />
       </div>
+      <SelectedWork />
 
       <p></p>
 
-      <h3 className={styles.sectionTitle}>Writing</h3>
-      <PostList />
-      <p />
       <h3 className={styles.sectionTitle}>Projects</h3>
       <ProjectList />
+      <p />
+
+      <h3 className={styles.sectionTitle}>Writing</h3>
+      <PostList />
       <p />
       <EmailFormWrapper />
     </>

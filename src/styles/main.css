@@ -24,7 +24,7 @@
   --default-timing: ease-out;
   --transition-defaults: var(--default-duration) var(--default-timing);
 
-  --rounding-small: 0.4rem;
+  --rounding-small: 0.3rem;
   --rounding-medium: 0.6rem;
   --rounding-full: 999px;
 
