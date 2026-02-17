@@ -173,8 +173,9 @@ fieldset {
 
 /* Misc */
 .description {
-  margin-top: 0.3rem;
+  margin-top: 0rem;
   opacity: 0.7;
+  font-style: italic;
 }
 
 figure {
