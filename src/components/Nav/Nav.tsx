@@ -16,7 +16,7 @@ const NAV_ITEMS = [
   { title: "Lab", href: "/lab" }
 ];
 
-export function Nav({ showNavItems = true }: { showNavItems?: boolean }) {
+export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
