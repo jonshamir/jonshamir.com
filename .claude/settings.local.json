@@ -10,7 +10,9 @@
       "Bash(npx tsc:*)",
       "Bash(bun eslint:*)",
       "WebSearch",
-      "WebFetch(domain:github.com)"
+      "WebFetch(domain:github.com)",
+      "Bash(gh pr view:*)",
+      "Bash(gh pr diff:*)"
     ],
     "deny": []
   }
