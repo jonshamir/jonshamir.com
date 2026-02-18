@@ -1,8 +1,5 @@
 import { useEffect, useState } from "react";
 
-import faviconDark from "../../../public/favicon-dark.png";
-import faviconLight from "../../../public/favicon-light.png";
-
 type ColorMode = "dark" | "light";
 
 export function useColorMode() {
@@ -35,9 +32,9 @@ export function useColorMode() {
     ) as HTMLLinkElement;
     if (favicon === null) return;
     if (colorMode === "dark") {
-      favicon.href = faviconDark.src;
+      favicon.href = "/favicon-dark.png";
     } else {
-      favicon.href = faviconLight.src;
+      favicon.href = "/favicon-light.png";
     }
   }, [colorMode]);
 
