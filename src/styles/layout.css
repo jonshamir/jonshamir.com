@@ -28,7 +28,7 @@
   gap: 0 var(--grid-gap);
 }
 
-.grid > * {
+:where(.grid) > * {
   grid-column: narrow;
 }
 
