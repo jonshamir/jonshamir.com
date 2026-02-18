@@ -2,9 +2,9 @@
   grid-column: wide;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  /* gap: 1rem; */
   align-items: stretch;
-  margin: 1rem 0;
+  /* margin: 1rem 0; */
 }
 
 .wrapper.reverse {
@@ -19,10 +19,6 @@
   min-width: 0;
 }
 
-.code figure {
-  margin: 0;
-}
-
 .code > :global(.code-block-wrapper) {
   height: 100%;
 }
@@ -34,13 +30,12 @@
 
 .demo {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
 }
 
-.demo > :global(figure) {
-  width: 100%;
-  height: 100%;
+.demo > * {
+  flex: 1;
 }
 
 @media (max-width: 54rem) {
