@@ -28,6 +28,10 @@ I will be focusing on the CSS implementation of the effect. The logic itself in 
 
 The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override their values with dark colors under the `.dark` class selector:
 
+<CodeDemo demo={<ColorModeToggleDemo isAnimated={false}>
+  Click to toggle dark class:
+</ColorModeToggleDemo>}>
+
 ```css
 :root {
   --foreground-color: #111;
@@ -42,6 +46,8 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
   --background-color: #111;
 }
 ```
+
+</CodeDemo>
 
 We'll also add a simple button to switch the color mode - when a user clicks the button, we toggle the `dark` class on the root element using JavaScript:
 
@@ -58,10 +64,6 @@ function toggleDarkMode() {
   }
 }
 ```
-
-<ColorModeToggleDemo isAnimated={false}>
-  Click to toggle dark class:
-</ColorModeToggleDemo>
 
 With the magic of CSS variables, the browser automatically updates all elements that use the colors we defined! In this case, the text and background colors change, as well as the button itself.
 

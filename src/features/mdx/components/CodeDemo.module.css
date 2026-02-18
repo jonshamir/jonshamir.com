@@ -1,0 +1,55 @@
+.wrapper {
+  grid-column: wide;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: stretch;
+  margin: 1rem 0;
+}
+
+.wrapper.reverse {
+  direction: rtl;
+}
+
+.wrapper.reverse > * {
+  direction: ltr;
+}
+
+.code {
+  min-width: 0;
+}
+
+.code figure {
+  margin: 0;
+}
+
+.code > :global(.code-block-wrapper) {
+  height: 100%;
+}
+
+.code > :global(.code-block-wrapper) > pre {
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo > :global(figure) {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 54rem) {
+  .wrapper {
+    grid-column: narrow;
+    grid-template-columns: 1fr;
+  }
+
+  .wrapper.reverse {
+    direction: ltr;
+  }
+}

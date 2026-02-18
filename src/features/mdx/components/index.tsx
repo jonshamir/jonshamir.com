@@ -63,4 +63,5 @@ export function CustomPre(
   );
 }
 
+export { CodeDemo } from "./CodeDemo";
 export { TableOfContents };
