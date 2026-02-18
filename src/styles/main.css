@@ -90,7 +90,7 @@ body {
   transition: transform var(--transition-defaults);
 }
 
-.clickable {
+:where(.clickable) {
   transition: background-color var(--transition-defaults);
   background-color: rgba(var(--color-text-rgb), 0);
   border-radius: var(--rounding-medium);

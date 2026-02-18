@@ -134,8 +134,8 @@ input[type="datetime-local"],
 input[type="range"],
 input[type="file"],
 input[type="image"],
-button,
-.button,
+:where(button),
+:where(.button),
 textarea,
 select {
   background-color: rgba(var(--color-text-rgb), 0.1);
@@ -156,8 +156,8 @@ select {
   }
 }
 
-.button,
-button {
+:where(.button),
+:where(button) {
   cursor: pointer;
 }
 
