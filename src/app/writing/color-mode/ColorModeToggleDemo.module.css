@@ -7,7 +7,7 @@
 @property --foreground-color-prop {
   syntax: "<color>";
   inherits: true;
-  initial-value: rgb(221, 221, 221);
+  initial-value: rgb(239, 239, 239);
 }
 
 .ColorModeToggleDemo {
@@ -20,18 +20,18 @@
     --background-color-prop var(--transition-timing),
     --foreground-color-prop var(--transition-timing);
 
-  --foreground-color: rgb(221, 221, 221);
+  --foreground-color: rgb(239, 239, 239);
   --background-color: rgb(17, 17, 17);
 
-  --foreground-color-prop: rgb(221, 221, 221);
+  --foreground-color-prop: rgb(239, 239, 239);
   --background-color-prop: rgb(17, 17, 17);
 
   &.dark {
     --foreground-color: rgb(17, 17, 17);
-    --background-color: rgb(221, 221, 221);
+    --background-color: rgb(239, 239, 239);
 
     --foreground-color-prop: rgb(17, 17, 17);
-    --background-color-prop: rgb(221, 221, 221);
+    --background-color-prop: rgb(239, 239, 239);
   }
 }
 
