@@ -28,6 +28,10 @@ I will be focusing on the CSS implementation of the effect. The logic itself in 
 
 The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override their values with dark colors under the `.dark` class selector:
 
+<CodeDemo demo={<ColorModeToggleDemo isAnimated={false}>
+  Click to toggle dark class:
+</ColorModeToggleDemo>}>
+
 ```css
 :root {
   --foreground-color: #111;
@@ -42,6 +46,8 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
   --background-color: #111;
 }
 ```
+
+</CodeDemo>
 
 We'll also add a simple button to switch the color mode - when a user clicks the button, we toggle the `dark` class on the root element using JavaScript:
 
@@ -59,15 +65,15 @@ function toggleDarkMode() {
 }
 ```
 
-<ColorModeToggleDemo isAnimated={false}>
-  Click to toggle dark class:
-</ColorModeToggleDemo>
-
 With the magic of CSS variables, the browser automatically updates all elements that use the colors we defined! In this case, the text and background colors change, as well as the button itself.
 
 ## Animating the Transition
 
 To get a nice animation between the modes, we can declare a CSS `transition` for every property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-timing` variable:
+
+<CodeDemo demo={<ColorModeToggleDemo isAnimated={true}>
+  Click to toggle dark class:
+</ColorModeToggleDemo>}>
 
 ```css
 :root {
@@ -79,13 +85,11 @@ To get a nice animation between the modes, we can declare a CSS `transition` for
 }
 ```
 
-<ColorModeToggleDemo isAnimated={true}>
-  Click to toggle dark class:
-</ColorModeToggleDemo>
+</CodeDemo>
 
 We did it - The text and background colors cross-fade nicely!
 
-But alas - our button still flashes immediately to the new colors. This is because we added some nice hover & active effects on the button which accidentally override the `transition` we declared on our `:root`:
+But alas - our button still flashes immediately to the new colors. This is because we have some nice hover & active effects on the button which accidentally override the `transition` we declared on our `:root`:
 
 ```css
 button {
@@ -146,7 +150,11 @@ property --background-color {
 }
 ```
 
-We then define the colors as we did before, keeping backwards compatibility. Them we declare a transition on the custom properties themselves rather than on the specific properties:
+We then define the colors as we did before, keeping backwards compatibility. Them we declare a transition on the custom properties themselves rather than on the specific properties. Finally, the result is a smooth animation wherever the variable is used, without having to think twice when overriding `transition`:
+
+<CodeDemo demo={<ColorModeToggleDemo isAnimated useAtProp>
+  Click to toggle dark class:
+</ColorModeToggleDemo>}>
 
 ```css
 :root {
@@ -167,11 +175,7 @@ We then define the colors as we did before, keeping backwards compatibility. The
 }
 ```
 
-Finally, the result is a smooth animation wherever the variable is used, without having to think twice when overriding `transition`:
-
-<ColorModeToggleDemo isAnimated useAtProp>
-  Click to toggle dark class:
-</ColorModeToggleDemo>
+</CodeDemo>
 
 ## System preferences and switching behavior
 

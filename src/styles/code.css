@@ -4,7 +4,7 @@ pre[data-theme] {
   overflow-x: auto;
   width: 100%;
   background-color: rgba(var(--color-text-rgb), 0.05);
-  outline: 1px solid rgba(var(--color-text-rgb), 0.15);
+  border: 1px solid rgba(var(--color-text-rgb), 0.1);
 }
 
 code[data-theme] {

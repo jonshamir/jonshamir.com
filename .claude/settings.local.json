@@ -13,7 +13,8 @@
       "WebFetch(domain:github.com)",
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }
