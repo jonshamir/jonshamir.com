@@ -35,14 +35,7 @@ code[data-theme*=" "] {
 
 code[data-theme*=" "],
 code[data-theme*=" "] span {
-  color: var(--shiki-light);
-}
-
-.dark {
-  code[data-theme*=" "],
-  code[data-theme*=" "] span {
-    color: var(--shiki-dark);
-  }
+  color: color-mix(in oklab, var(--shiki-light), var(--shiki-dark) var(--shiki-mix));
 }
 
 /* Copy button styles */
@@ -96,11 +89,7 @@ code[data-theme*=" "] span {
 
 /* Style @property keyword with correct color (same as @media) */
 .at-rule {
-  color: #d73a49 !important; /* red/pink - same as @media in light mode */
-}
-
-.dark .at-rule {
-  color: #f97583 !important; /* red/pink - same as @media in dark mode */
+  color: color-mix(in oklab, #d73a49, #f97583 var(--shiki-mix)) !important;
 }
 
 /* Color preview swatches */

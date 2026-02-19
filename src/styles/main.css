@@ -19,8 +19,14 @@
   initial-value: 59, 63, 69;
 }
 
+@property --shiki-mix {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 0%;
+}
+
 :root {
-  --default-duration: 250ms;
+  --default-duration: 1250ms;
   --default-timing: ease-out;
   --transition-defaults: var(--default-duration) var(--default-timing);
 
@@ -39,7 +45,9 @@
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
-  transition-property: --color-text-rgb, --color-bg-rgb;
+  --shiki-mix: 0%;
+
+  transition-property: --color-text-rgb, --color-bg-rgb, --shiki-mix;
   transition-duration: var(--default-duration);
   transition-timing-function: var(--default-timing-function);
 }
@@ -49,6 +57,8 @@
 
   --color-text-rgb: 224, 218, 207;
   --color-bg-rgb: 34, 35, 37;
+
+  --shiki-mix: 100%;
 }
 
 body {
