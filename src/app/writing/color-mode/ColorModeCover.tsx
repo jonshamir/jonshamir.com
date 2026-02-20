@@ -19,7 +19,7 @@ export function ColorModeCover() {
 }
 
 function Moon({ amount }: { amount: number }) {
-  const fill = amount < 0.5 ? "#555" : "white";
+  const fill = amount < 0.5 ? "var(--moon-bg-color)" : "white";
   const translateX = amount < 0.5 ? "0.1px" : "-0.1px";
   return (
     <svg width="128" height="128" viewBox="0 0 24 24">

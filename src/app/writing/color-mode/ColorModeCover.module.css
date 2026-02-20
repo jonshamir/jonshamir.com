@@ -1,7 +1,9 @@
 .ColorModeCover {
-  padding: 1rem;
+  padding: 2rem 1rem;
 
-  background-color: #555;
+  --moon-bg-color: #353949;
+
+  background-color: var(--moon-bg-color);
 }
 
 .RightSide,
