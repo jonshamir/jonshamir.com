@@ -1,7 +1,24 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+
 import styles from "./TableOfContents.module.css";
+
+const SCROLL_DURATION = 300;
+
+function smoothScrollTo(top: number) {
+  const start = window.scrollY;
+  const delta = top - start;
+  const startTime = performance.now();
+
+  function step(now: number) {
+    const t = Math.min((now - startTime) / SCROLL_DURATION, 1);
+    const ease = t < 0.5 ? 2 * t * t : 1 - (-2 * t + 2) ** 2 / 2;
+    window.scrollTo(0, start + delta * ease);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
 
 interface TocItem {
   id: string;
@@ -83,9 +100,11 @@ export function TableOfContents() {
           className={`${styles.link} ${activeId === item.id ? styles.active : ""}`}
           onClick={(e) => {
             e.preventDefault();
-            document
-              .getElementById(item.id)
-              ?.scrollIntoView({ behavior: "smooth" });
+            const el = document.getElementById(item.id);
+            if (el) {
+              const top = el.getBoundingClientRect().top + window.scrollY - 80;
+              smoothScrollTo(top);
+            }
           }}
         >
           <span className={styles.label}>{item.text}</span>
