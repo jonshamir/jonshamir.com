@@ -1,0 +1,77 @@
+.toc {
+  position: fixed;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--color-secondary);
+  font-size: 0.8rem;
+  font-weight: 500;
+  line-height: 1;
+  transition: color var(--transition-defaults);
+}
+
+.link:hover {
+  color: rgba(var(--color-text-rgb), 0.8);
+  text-decoration: none;
+}
+
+.link.active {
+  color: var(--color-text);
+}
+
+.dot {
+  flex-shrink: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: currentColor;
+  transition:
+    background-color var(--transition-defaults),
+    transform var(--transition-defaults);
+}
+
+.label {
+  white-space: nowrap;
+}
+
+/* Hidden below 72rem */
+@media (max-width: 72rem) {
+  .toc {
+    display: none;
+  }
+}
+
+/* Compact mode: 72rem – 90rem (dots only, labels fade in on hover) */
+@media (min-width: 72rem) and (max-width: 90rem) {
+  .label {
+    opacity: 0;
+    transition: opacity 200ms var(--ease-out-cubic);
+  }
+
+  .toc:hover .label {
+    opacity: 1;
+    transition: opacity 200ms var(--ease-out-cubic) 50ms;
+  }
+}
+
+/* Full mode: > 90rem (labels always visible) */
+@media (min-width: 90rem) {
+  .label {
+    opacity: 1;
+  }
+}
