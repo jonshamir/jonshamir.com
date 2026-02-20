@@ -1,14 +1,7 @@
 .wrapper {
-  grid-column: wide;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  /* gap: 1rem; */
   align-items: stretch;
-  /* margin: 1rem 0; */
-}
-
-.wrapper.reverse > * {
-  direction: ltr;
 }
 
 .code {

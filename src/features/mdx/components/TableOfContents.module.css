@@ -75,3 +75,9 @@
     opacity: 1;
   }
 }
+
+/* Fade labels when wide/full grid items overlap the TOC */
+.toc[data-faded] .label {
+  opacity: 0 !important;
+  transition: opacity 200ms var(--ease-out-cubic);
+}
