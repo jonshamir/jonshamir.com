@@ -7,6 +7,10 @@ import WeatherIcons from "./weather.svg";
 export default function Page() {
   return (
     <>
+      <p>
+        <br />
+        <br />
+      </p>
       <Image
         src="/projects/widgets/icon.png"
         alt="Widgets Bar icon"
