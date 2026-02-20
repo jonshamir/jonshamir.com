@@ -1,7 +1,7 @@
 .ColorModeCover {
   padding: 2rem 1rem;
 
-  --moon-bg-color: #353949;
+  --moon-bg-color: #3a4055;
 
   background-color: var(--moon-bg-color);
 }
