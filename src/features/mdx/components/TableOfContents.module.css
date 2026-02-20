@@ -47,6 +47,7 @@
 
 .label {
   white-space: nowrap;
+  transition: opacity 200ms var(--ease-out-cubic);
 }
 
 /* Hidden below 72rem */
@@ -56,16 +57,10 @@
   }
 }
 
-/* Compact mode: 72rem – 90rem (dots only, labels fade in on hover) */
+/* Compact mode: 72rem – 90rem (dots only by default) */
 @media (min-width: 72rem) and (max-width: 90rem) {
   .label {
     opacity: 0;
-    transition: opacity 200ms var(--ease-out-cubic);
-  }
-
-  .toc:hover .label {
-    opacity: 1;
-    transition: opacity 200ms var(--ease-out-cubic) 50ms;
   }
 }
 
@@ -76,8 +71,13 @@
   }
 }
 
-/* Fade labels when wide/full grid items overlap the TOC */
+/* Faded: hide labels when wide/full grid items overlap */
 .toc[data-faded] .label {
-  opacity: 0 !important;
-  transition: opacity 200ms var(--ease-out-cubic);
+  opacity: 0;
+}
+
+/* Hover always wins (same specificity as faded, but later in cascade) */
+.toc:hover .label {
+  opacity: 1;
+  transition-delay: 50ms;
 }
