@@ -2,6 +2,7 @@ import type { MDXComponents } from "mdx/types";
 
 import {
   CodeDemo,
+  CustomH1,
   CustomLink,
   CustomPre,
   TableOfContents
@@ -10,6 +11,8 @@ import {
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
+    h1: CustomH1 as any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment
     a: CustomLink as any,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment

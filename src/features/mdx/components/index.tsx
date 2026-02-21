@@ -1,5 +1,6 @@
 import React from "react";
 
+import Backlink from "../../../components/Backlink/Backlink";
 import { CopyButton } from "./CopyButton";
 import { TableOfContents } from "./TableOfContents";
 
@@ -59,6 +60,17 @@ export function CustomPre(
     <div className="code-block-wrapper">
       <pre {...rest}>{children}</pre>
       {textToCopy && <CopyButton text={textToCopy} />}
+    </div>
+  );
+}
+
+export function CustomH1(
+  props: React.ComponentProps<"h1">
+): React.ReactElement {
+  return (
+    <div style={{ position: "relative" }}>
+      <Backlink />
+      <h1 {...props}>{props.children}</h1>
     </div>
   );
 }
