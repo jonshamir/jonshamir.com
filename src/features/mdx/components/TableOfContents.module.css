@@ -30,7 +30,7 @@
   transition: color var(--transition-defaults);
   pointer-events: auto;
   position: relative;
-  min-height: 1.5rem;
+  min-height: 1.6rem;
 }
 
 .link:hover {
@@ -59,9 +59,13 @@
   overflow: visible;
   text-align: right;
   position: absolute;
-  right: 2.5rem;
+  right: 2rem;
   pointer-events: none;
   transition: opacity 200ms var(--ease-out-cubic);
+  /* background-color: rgba(var(--color-bg-rgb), 0.8); */
+  padding: 0.3rem 0.6rem;
+  /* border-radius: var(--rounding-full); */
+  /* backdrop-filter: blur(8px); */
 }
 
 /* Hidden below 72rem */
