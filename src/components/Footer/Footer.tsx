@@ -1,11 +1,18 @@
-import { clsx } from "clsx";
+"use client";
 
+import { clsx } from "clsx";
+import { usePathname } from "next/navigation";
+
+import { SocialLinks } from "../SocialLinks/SocialLinks";
 import styles from "./Footer.module.css";
 
 export function Footer() {
+  const path = usePathname();
+  if (path === "/") return <footer className={clsx(styles.Footer, "grid")} />;
+
   return (
     <footer className={clsx(styles.Footer, "grid")}>
-      {/* <div
+      <div
         className="grid-wide"
         style={{
           display: "flex",
@@ -16,7 +23,7 @@ export function Footer() {
       >
         <p>Jon Shamir</p>
         <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
-      </div> */}
+      </div>
     </footer>
   );
 }
