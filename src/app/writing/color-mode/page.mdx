@@ -12,9 +12,10 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
-In this post I will explore how to implement a smooth transition between light and dark mode, and how modern CSS `@property` declarations can make this easy! You can see the effect by clicking the small icon in the top-right corner, or in this small demo sandbox:
+Transitioning a user inteface from dark to light mode can be pretty jarring - you can't prevent a user from accidentally being blinded in the middle of the night but you can give the eyes a bit of time to adjust by animating the transition. To me at least it feels more gentle.
+In this post I will explore how to implement such an animation with modern CSS `@property` declarations ! You can see the effect on my site by clicking the small icon in the top-right corner, or in this small demo sandbox:
 
-<ColorModeToggleDemo showToggle isAnimated>
+<ColorModeToggleDemo isAnimated useAtProp>
   Click the button to toggle modes:
 </ColorModeToggleDemo>
 
@@ -22,7 +23,7 @@ I will be focusing on the CSS implementation of the effect. The logic itself in 
 
 <TableOfContents />
 
-## Setup - Defining the Color Palette & Toggle
+## Setup - Defining the Color Palette
 
 The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override their values with dark colors under the `.dark` class selector:
 
@@ -47,7 +48,7 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 
 </CodeDemo>
 
-We'll also add a simple button to switch the color mode - when a user clicks the button, we toggle the `dark` class on the root element using JavaScript:
+As you can see, we also have a simple button to switch the color mode - when a user clicks the button, we toggle the `dark` class on the root element using JavaScript:
 
 ```js
 // This is called when the button is clicked
@@ -63,7 +64,7 @@ function toggleDarkMode() {
 }
 ```
 
-With the magic of CSS variables, the browser automatically updates all elements that use the colors we defined! In this case, the text and background colors change, as well as the button itself.
+With the magic of CSS variables, when that class changes, the browser immediately updates all elements that use the colors we defined - our basic dark mode feature is working!
 
 ## Animating the Transition
 
