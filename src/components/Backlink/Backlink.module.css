@@ -14,7 +14,7 @@
   text-decoration: none;
 }
 
-@media (max-width: 54rem) {
+@media (max-width: 72rem) {
   .link {
     display: none;
   }
