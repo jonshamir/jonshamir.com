@@ -1,0 +1,21 @@
+.link {
+  position: absolute;
+  right: calc(100% + 2rem);
+  top: 3.2rem;
+  padding-right: 0.5rem;
+  white-space: nowrap;
+  text-decoration: none;
+  opacity: 0.3;
+  transition: opacity 0.15s;
+}
+
+.link:hover {
+  opacity: 0.8;
+  text-decoration: none;
+}
+
+@media (max-width: 72rem) {
+  .link {
+    display: none;
+  }
+}

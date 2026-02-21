@@ -9,7 +9,7 @@ interface CodeDemoProps {
 
 export function CodeDemo({ demo, children }: CodeDemoProps) {
   return (
-    <div className={styles.wrapper}>
+    <div className={`grid-wide ${styles.wrapper}`}>
       <div className={styles.code}>{children}</div>
       <div className={styles.demo}>{demo}</div>
     </div>
