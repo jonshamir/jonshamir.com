@@ -184,6 +184,11 @@ Modern CSS allows us to query the users' preferred color scheme and use that to 
 
 Some apps allow to pick "System" color theme as an option - however, I believe in sensible defaults, rather than let the user pick the color theme each time, the site should always use the preferred scheme. If the user wants to switch the theme using the toggle on my site, without changing the OS settings, I feel we can assume it is temporary fix for a particularly light or dark environment.
 
+## Wrapping Up (Temp summary)
+
+The `@property` rule is one of those CSS features that feels like it should have always existed. Instead of chasing down every element that needs a color transition, you define the transition once at the variable level and everything just works. It's less code, fewer edge cases, and one less thing to remember when adding new components.
+This is just one example, but the implications go beyond dark mode — any time you're animating values stored in custom properties (gradients, spacing, angles), `@property` opens the door.
+
 ## Footnote: Naming - Theme, Scheme or Mode?
 
 First things first - how do I name this feature?
