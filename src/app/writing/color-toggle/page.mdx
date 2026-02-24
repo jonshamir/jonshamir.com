@@ -1,0 +1,91 @@
+export const metadata = {
+  date: "2025-12-16",
+  description: "Fancy animated toggle",
+  draft: true
+};
+
+# Animated Dark Mode Transition with Modern CSS
+
+## Creating the Fancy Toggle
+
+In general, the most commonly used icons to represent color modes are sun / moon or the half circle "contrast" thingy.
+
+There are multiple examples online of cool sun-to-moon animations:
+
+However, I wanted something a bit different:
+
+The nice thing is that it sort of behaves like a "classic" switch UI - with the white part moving from side to side while the icon itself stays the same shape.
+
+### The Setup
+
+The idea is to have 2 halves
+There is a hidden circle in the middle with scaleX(0), with each half being one color
+On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
+
+_Demo embed_ https://codepen.io/shamir/pen/YGbbNX
+
+I draw the icon using SVG, with a stroked `<circle>` creating the outline, and 3 copies of a semicircle drawn using `<path>`:
+
+```html
+<svg width="48" height="48" viewBox="0 0 24 24">
+  <circle
+    cx="12"
+    cy="12"
+    r="8"
+    stroke="currentColor"
+    strokeWidth="1.5"
+    fill="none"
+  />
+  <path className="RightSideBG" d="M 12 5 A 7 7 0 0 1 12 19" />
+  <path className="LeftSide" d="M 12 5 A 7 7 0 0 1 12 19" />
+  <path className="RightSide" d="M 12 5 A 7 7 0 0 1 12 19" />
+</svg>
+```
+
+CSS
+
+```css
+.RightSideBG {
+  fill: currentColor;
+  transform-origin: center;
+  transform: scale(1.1); /* to hide the seam */
+}
+
+.LeftSide,
+.RightSide {
+  fill: rgb(221, 221, 221);
+  transform-origin: center;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
+  animation-duration: var(--duration);
+}
+
+.LeftSide {
+  animation-name: rotateLeft;
+  animation-direction: normal;
+}
+
+.RightSide {
+  animation-name: rotateRight;
+  animation-direction: normal;
+}
+
+.dark {
+  .LeftSide {
+    animation-name: rotateLeftDark;
+  }
+
+  .RightSide {
+    animation-name: rotateRightDark;
+  }
+}
+```
+
+### Animating the toggle
+
+The animation is split into 4 parts:
+
+1. The initial state
+2. The first half of the animation
+3. The second half of the animation
+4. The final state
