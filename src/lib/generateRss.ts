@@ -4,6 +4,7 @@ import path from "path";
 export interface PostMetadata {
   date: string;
   description: string;
+  draft?: boolean;
 }
 
 export interface Post {
@@ -11,6 +12,7 @@ export interface Post {
   title: string;
   date: string;
   description: string;
+  draft?: boolean;
 }
 
 export function getAllPosts(): Post[] {
@@ -47,7 +49,8 @@ export function getAllPosts(): Post[] {
         );
         const metadata: PostMetadata = {
           date: new Date().toISOString().split("T")[0], // fallback to today
-          description: title // fallback to title
+          description: title, // fallback to title
+          draft: false
         };
 
         if (metadataMatch) {
@@ -68,13 +71,20 @@ export function getAllPosts(): Post[] {
           if (descMatch) {
             metadata.description = descMatch[1];
           }
+
+          // Extract draft
+          const draftMatch = metadataContent.match(/draft:\s*(true|false)/);
+          if (draftMatch) {
+            metadata.draft = draftMatch[1] === "true";
+          }
         }
 
         return {
           slug: dir.name,
           title,
           date: metadata.date,
-          description: metadata.description
+          description: metadata.description,
+          draft: metadata.draft
         } satisfies Post;
       } catch (error) {
         console.error(`Error reading ${dir.name}:`, error);
@@ -89,10 +99,12 @@ export function getAllPosts(): Post[] {
           description: dir.name
             .split("-")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(" ")
+            .join(" "),
+          draft: false
         } satisfies Post;
       }
     })
+    .filter((post) => !post.draft) // Filter out draft posts
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date, newest first
 
   return posts;

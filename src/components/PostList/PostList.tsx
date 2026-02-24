@@ -5,7 +5,7 @@ import path from "path";
 interface PostMetadata {
   date: string;
   description: string;
-  hidden?: boolean;
+  draft?: boolean;
 }
 
 interface Post {
@@ -13,7 +13,7 @@ interface Post {
   title: string;
   date: string;
   description: string;
-  hidden?: boolean;
+  draft?: boolean;
 }
 
 export function PostList() {
@@ -53,7 +53,7 @@ export function PostList() {
         const metadata: PostMetadata = {
           date: new Date().toISOString().split("T")[0], // fallback to today
           description: title, // fallback to title
-          hidden: false // default to visible
+          draft: false // default to not a draft
         };
 
         if (metadataMatch) {
@@ -75,10 +75,10 @@ export function PostList() {
             metadata.description = descMatch[1];
           }
 
-          // Extract hidden
-          const hiddenMatch = metadataContent.match(/hidden:\s*(true|false)/);
-          if (hiddenMatch) {
-            metadata.hidden = hiddenMatch[1] === "true";
+          // Extract draft
+          const draftMatch = metadataContent.match(/draft:\s*(true|false)/);
+          if (draftMatch) {
+            metadata.draft = draftMatch[1] === "true";
           }
         }
 
@@ -87,7 +87,7 @@ export function PostList() {
           title,
           date: metadata.date,
           description: metadata.description,
-          hidden: metadata.hidden
+          draft: metadata.draft
         } satisfies Post;
       } catch (error) {
         console.error(`Error reading ${dir.name}:`, error);
@@ -103,11 +103,11 @@ export function PostList() {
             .split("-")
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(" "),
-          hidden: false
+          draft: false
         } satisfies Post;
       }
     })
-    .filter((post) => !post.hidden) // Filter out hidden posts
+    .filter((post) => !post.draft) // Filter out draft posts
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date, newest first
 
   return (
