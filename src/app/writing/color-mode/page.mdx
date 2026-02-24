@@ -149,7 +149,7 @@ property --background-color {
 }
 ```
 
-We then define the colors as we did before, keeping backwards compatibility. Them we declare a transition on the custom properties themselves rather than on the specific properties. Finally, the result is a smooth animation wherever the variable is used, without having to think twice when overriding `transition`:
+We then define the colors as we did before, keeping backwards compatibility. Then we declare a transition on the custom properties themselves rather than on the specific properties. Finally, the result is a smooth animation wherever the variable is used, without having to think twice when overriding `transition`:
 
 <CodeDemo demo={<ColorModeToggleDemo isAnimated useAtProp>
   Click to toggle dark class:
@@ -180,13 +180,13 @@ This also works as a _progressive enhancement_ - older browsers will just see th
 
 ## System preferences and switching behavior
 
-Modern CSS allows us to query the users's preferred color scheme and use that to color our site.
+Modern CSS allows us to query the users' preferred color scheme and use that to color our site.
 
 Some apps allow to pick "System" color theme as an option - however, I believe in sensible defaults, rather than let the user pick the color theme each time, the site should always use the preferred scheme. If the user wants to switch the theme using the toggle on my site, without changing the OS settings, I feel we can assume it is temporary fix for a particularly light or dark environment.
 
 ## Creating the Fancy Toggle
 
-In general, the most commonly used icons to represent color modes are sum / moon or the half circle "contrast" thingy.
+In general, the most commonly used icons to represent color modes are sun / moon or the half circle "contrast" thingy.
 
 There are multiple examples online of cool sun-to-moon animations:
 
@@ -203,8 +203,6 @@ There is a hidden circle in the middle with scaleX(0), with each half being one 
 On animating, the hidden inner circle is animated to a scale of scaleX(1), then the two halves are flipped, then the scale is animated back to scaleX(0)
 
 _Demo embed_ https://codepen.io/shamir/pen/YGbbNX
-
-### The Setup
 
 I draw the icon using SVG, with a stroked `<circle>` creating the outline, and 3 copies of a semicircle drawn using `<path>`:
 
