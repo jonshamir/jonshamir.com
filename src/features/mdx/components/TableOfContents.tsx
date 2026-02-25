@@ -46,9 +46,6 @@ export function TableOfContents() {
 
     setTocItems(items);
     tocItemsRef.current = items;
-    if (items.length > 0) {
-      setActiveId(items[0].id);
-    }
   }, []);
 
   // Active section tracking via IntersectionObserver
@@ -56,17 +53,27 @@ export function TableOfContents() {
     if (tocItems.length === 0) return;
 
     const visibleIds = new Set<string>();
+    let h1Visible = false;
 
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const id = entry.target.id;
-          if (entry.isIntersecting) {
-            visibleIds.add(id);
+          if (entry.target.tagName === "H1") {
+            h1Visible = entry.isIntersecting;
           } else {
-            visibleIds.delete(id);
+            const id = entry.target.id;
+            if (entry.isIntersecting) {
+              visibleIds.add(id);
+            } else {
+              visibleIds.delete(id);
+            }
           }
         });
+
+        if (h1Visible) {
+          setActiveId("");
+          return;
+        }
 
         // Pick the first visible heading in document order
         const currentItems = tocItemsRef.current;
@@ -79,6 +86,9 @@ export function TableOfContents() {
       },
       { rootMargin: "-80px 0px -66% 0px" }
     );
+
+    const h1 = document.querySelector("h1");
+    if (h1) observer.observe(h1);
 
     const headings = document.querySelectorAll("h2");
     headings.forEach((heading) => {
