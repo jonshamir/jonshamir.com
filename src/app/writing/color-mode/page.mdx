@@ -116,7 +116,7 @@ button {
 }
 ```
 
-This will work, but it can quickly becomes cumbersome and easy to forget.
+This will work, but it quickly becomes cumbersome and easy to forget.
 If we want to use the colors on another property, like `border-color` - we have to add even more transition declaration - not exactly maintainable.
 Even worse, if we accidentally miss a single element it suddenly sticks out unnaturally when switching modes.
 
@@ -124,7 +124,7 @@ Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
 
 ## Using @property
 
-What if instead of transitioning each CSS property that uses a colors, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules:
+What if instead of transitioning each CSS property that uses a color, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules:
 
 > The `@property` CSS at-rule is part of the CSS Houdini set of APIs. It allows developers to explicitly define CSS custom properties, allowing for property type checking and constraining, setting default values, and defining whether a custom property can inherit values or not.
 
