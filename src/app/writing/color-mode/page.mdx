@@ -12,19 +12,19 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
-Switching between dark and light modes can be pretty jarring - especially if you accidentally blind yourself in the middle of the night. We can't prevent accidents like this, but we can give users' eyes a bit more time to adjust by animating the transition:
+Switching between dark and light modes can be pretty jarring - you can almost blind yourself accidentally in the middle of the night. While we can't prevent accidents, we can give users' eyes a bit more time to adjust by animating the transition:
 
 <ColorModeToggleDemo isAnimated useAtProp>
   Click the button to toggle modes:
 </ColorModeToggleDemo>
 
-In this post I will explore several ways to implement the effect with modern CSS. You can see the effect on my site by clicking the small icon in the top-right corner.
+In this post I will explore several ways to implement the effect with modern CSS. You can also see the effect on my site by clicking the small icon in the top-right corner.
 
-I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are also welcome to take a look at the source code of this site.
+I will be focusing on the CSS implementation of the effect. The logic I used for my React website is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are also welcome to take a look at the source code of this site.
 
 <TableOfContents />
 
-## Defining the Color Palette
+## Defining the color palette
 
 The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override their values with dark colors under the `.dark` class selector:
 
@@ -65,7 +65,7 @@ function toggleDarkMode() {
 
 </CodeDemo>
 
-## Animating the Transition
+## Animating the transition
 
 My first approach was to use CSS transitions to animate the switch. Transitions tell the browser to animate a property whenever its value changes. In our case, we can declare a `transition` for every property that uses the theme colors - `color` and `background-color`:
 
@@ -146,7 +146,7 @@ property --background-color {
 }
 ```
 
-If we then we declare a transition on the custom properties, the browser knows to interpolate their values as colors! We get a smooth animation wherever the colors are used, no boilerplate and without having to think twice when overriding `transition`:
+We can now declare a `transition` on our variables, and the browser will know to treat their values as colors. Whenever the variables change, we get a smooth color interpolation with minimal boilerplate and without having to think twice about overriding transitions:
 
 <CodeDemo demo={<ColorModeToggleDemo isAnimated useAtProp>
   Click to toggle dark class:
@@ -181,16 +181,16 @@ What's nice about this technique is that is it a _progressive enhancement_ - old
 On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the virtually all modern browsers support `@property` declarations (~94
 % of global users at the time of writing).
 
-## How about web transitions?
+## Using web transitions API
 
 animations and stuff will break.
 
-## Wrapping Up (TODO make summary)
+## Wrapping Up
 
 The `@property` rule is one of those CSS features that feels like it should have always existed. Instead of chasing down every element that needs a color transition, you define the transition once at the variable level and everything just works. It's less code, fewer edge cases, and one less thing to remember when adding new components.
 This is just one example, but the implications go beyond dark mode — any time you're animating values stored in custom properties (gradients, spacing, angles), `@property` opens the door.
 
-## Footnote: Naming - Theme, Scheme or Mode?
+## Footnote: Theme, Scheme or Mode?
 
 First things first - how do I name this feature?
 
