@@ -174,3 +174,8 @@ body {
   z-index: 1000;
   transform: translateY(-100%);
 }
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.4s;
+}

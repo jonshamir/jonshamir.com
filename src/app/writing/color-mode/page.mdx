@@ -181,9 +181,35 @@ What's nice about this technique is that is it a _progressive enhancement_ - old
 On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the virtually all modern browsers support `@property` declarations (~94
 % of global users at the time of writing).
 
-## Using the view transition API
+## Using the View Transition API
 
-animations and stuff will break.
+There's another approach to animating a color mode switch — instead of transitioning individual CSS properties, we can use the [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) to capture before/after snapshots of the page and crossfade between them.
+
+The idea is simple: call `document.startViewTransition()` with a callback that updates the DOM. The browser takes a screenshot of the current state, runs the callback, then smoothly crossfades from the old screenshot to the new state:
+
+<CodeDemo demo={<ColorModeToggleDemo useViewTransition>
+  Click to toggle with view transition:
+</ColorModeToggleDemo>}>
+
+```js
+function toggleDarkMode() {
+  // Fallback for unsupported browsers
+  if (!document.startViewTransition) {
+    root.classList.toggle("dark");
+    return;
+  }
+
+  document.startViewTransition(() => {
+    root.classList.toggle("dark");
+  });
+}
+```
+
+</CodeDemo>
+
+That's all there is to it — the browser handles the crossfade animation automatically. When using view transitions, the CSS transitions from the `@property` approach should be disabled — otherwise you'd get a double animation (the crossfade _and_ the color interpolation happening simultaneously).
+
+**Which approach should you use?** The `@property` technique is simpler, more widely supported (~94% of users), and gives you a true color interpolation. View transitions are more flexible — you can swap the default crossfade for clip-path reveals, directional wipes, or other effects — but have less browser support (Chrome/Edge 111+, Safari 18+, no Firefox yet, ~75% of users). For a great example of a circular clip-path reveal effect using view transitions, check out [Akash Hamirwasia's post](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/).
 
 ## Wrapping Up
 

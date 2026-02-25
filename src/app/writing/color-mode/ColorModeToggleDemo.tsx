@@ -1,6 +1,7 @@
 "use client";
 
 import { ReactNode, useState } from "react";
+import { flushSync } from "react-dom";
 
 import styles from "./ColorModeToggleDemo.module.css";
 
@@ -8,6 +9,7 @@ type ColorModeToggleDemoProps = {
   showToggle: boolean;
   isAnimated: boolean;
   useAtProp: boolean;
+  useViewTransition?: boolean;
   children: ReactNode;
   style?: React.CSSProperties;
 };
@@ -16,10 +18,22 @@ export function ColorModeToggleDemo({
   showToggle,
   isAnimated,
   useAtProp,
+  useViewTransition,
   children,
   style
 }: ColorModeToggleDemoProps) {
   const [isDark, setIsDark] = useState(false);
+
+  const toggle = () => {
+    if (useViewTransition && document.startViewTransition) {
+      document.startViewTransition(() => {
+        flushSync(() => setIsDark(!isDark));
+      });
+    } else {
+      setIsDark(!isDark);
+    }
+  };
+
   return (
     <figure>
       <div
@@ -29,17 +43,14 @@ export function ColorModeToggleDemo({
         {children}
         {!showToggle && (
           <button
-            onClick={() => setIsDark(!isDark)}
+            onClick={toggle}
             className={`${styles.InvertedButton} ${useAtProp ? styles.useAtProp : ""}`}
           >
             {isDark ? "Set Dark Mode" : "Set Light Mode"}
           </button>
         )}
         {showToggle && (
-          <button
-            onClick={() => setIsDark(!isDark)}
-            className={styles.AnimatedButton}
-          >
+          <button onClick={toggle} className={styles.AnimatedButton}>
             <svg
               className={styles.ColorModeToggle}
               width="48"
