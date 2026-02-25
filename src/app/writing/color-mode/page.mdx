@@ -12,24 +12,21 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
-Transitioning a user interface from dark to light mode can be pretty jarring - you can't prevent a user from accidentally being blinded in the middle of the night but you can give the eyes a bit of time to adjust by animating the transition. To me at least it feels more gentle.
-In this post I will explore how to implement such an animation with modern CSS `@property` declarations ! You can see the effect on my site by clicking the small icon in the top-right corner, or in this small demo sandbox:
+Switching between dark and light modes can be pretty jarring - especially if you accidentally blind yourself in the middle of the night. We can't prevent accidents like this, but we can give users' eyes a bit more time to adjust by animating the transition:
 
 <ColorModeToggleDemo isAnimated useAtProp>
   Click the button to toggle modes:
 </ColorModeToggleDemo>
 
+In this post I will explore several ways to implement the effect with modern CSS. You can see the effect on my site by clicking the small icon in the top-right corner.
+
 I will be focusing on the CSS implementation of the effect. The logic itself in React is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some extra help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are also welcome to take a look at the source code of this site.
 
 <TableOfContents />
 
-## Setup - Defining the Color Palette
+## Defining the Color Palette
 
 The basic idea is simple - we define a color palette using CSS variables (a.k.a. [custom properties](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_cascading_variables/Using_CSS_custom_properties)), then override their values with dark colors under the `.dark` class selector:
-
-<CodeDemo demo={<ColorModeToggleDemo isAnimated={false}>
-  Click to toggle dark class:
-</ColorModeToggleDemo>}>
 
 ```css
 :root {
@@ -46,12 +43,14 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 }
 ```
 
-</CodeDemo>
+We can add a button to switch the color mode by toggling the `dark` class on the container element. Whenever the class changes, the browser automatically updates all elements that use the colors we defined! Our basic dark mode feature is now working.
 
-As you can see, we also have a simple button to switch the color mode - when a user clicks the button, we toggle the `dark` class on the root element using JavaScript:
+<CodeDemo demo={<ColorModeToggleDemo isAnimated={false}>
+  Click to toggle dark class:
+</ColorModeToggleDemo>}>
 
 ```js
-// This is called when the button is clicked
+// Called when the button is clicked
 function toggleDarkMode() {
   const root = document.documentElement;
   const isDark = root.classList.contains("dark");
@@ -64,11 +63,11 @@ function toggleDarkMode() {
 }
 ```
 
-With the magic of CSS variables, when that class changes, the browser immediately updates all elements that use the colors we defined - our basic dark mode feature is working!
+</CodeDemo>
 
 ## Animating the Transition
 
-To get a nice animation between the modes, we can declare a CSS `transition` for every property that uses our colors - in this case, `color` and `background-color`. In order to keep the timing consistent, I like to define and reuse a `--transition-timing` variable:
+My first approach was to use CSS transitions to animate the switch. Transitions tell the browser to animate a property whenever its value changes. In our case, we can declare a `transition` for every property that uses the theme colors - `color` and `background-color`:
 
 <CodeDemo demo={<ColorModeToggleDemo isAnimated={true}>
   Click to toggle dark class:
@@ -76,11 +75,9 @@ To get a nice animation between the modes, we can declare a CSS `transition` for
 
 ```css
 :root {
-  --transition-timing: 400ms ease-out;
-
   transition:
-    background-color var(--transition-timing),
-    color var(--transition-timing);
+    background-color 400ms ease,
+    color 400ms ease;
 }
 ```
 
@@ -92,10 +89,10 @@ But alas - our button still flashes immediately to the new colors. This is becau
 
 ```css
 button {
-  /* This overrides transition of color & background-color :( */
+  /* This overrides the :root transition  :( */
   transition:
-    opacity 150ms ease-out,
-    transform 150ms ease-out;
+    opacity 150ms ease,
+    transform 150ms ease;
 }
 
 button:hover {
@@ -112,28 +109,28 @@ We can solve it naively by defining a `transition` of all the properties togethe
 ```css
 button {
   transition:
-    opacity 150ms ease-out,
-    transform 150ms ease-out,
-    background-color var(--transition-timing),
-    color var(--transition-timing);
+    opacity 150ms ease,
+    transform 150ms ease,
+    background-color 400ms ease,
+    color 400ms ease;
 }
 ```
 
-However, this quickly becomes cumbersome and easy to forget. If we miss a single element it suddenly sticks out unnaturally when switching modes.
-
-_Find the offending element_
+This will work, but it can quickly becomes cumbersome and easy to forget.
+If we want to use the colors on another property, like `border-color` - we have to add even more transition declaration - not exactly maintainable.
+Even worse, if we accidentally miss a single element it suddenly sticks out unnaturally when switching modes.
 
 Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
 
 ## Using @property
 
-What if instead of transitioning each CSS property that uses a colors, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules!
+What if instead of transitioning each CSS property that uses a colors, we could transition the _color variables themselves_? This is now possible thanks to `@property` rules:
 
 > The `@property` CSS at-rule is part of the CSS Houdini set of APIs. It allows developers to explicitly define CSS custom properties, allowing for property type checking and constraining, setting default values, and defining whether a custom property can inherit values or not.
 
 [@property on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property)
 
-Crucially for us, it allows us to _transition_ the css variables themselves! we define our colors inside `@property` blocks with `syntax: "<color>"`:
+In addition to our original variable definitions, we can tell the browser the _type_ of the variables by using `@property` blocks with `syntax: "<color>"`:
 
 ```css
 property --foreground-color {
@@ -149,7 +146,7 @@ property --background-color {
 }
 ```
 
-We then define the colors as we did before, keeping backwards compatibility. Then we declare a transition on the custom properties themselves rather than on the specific properties. Finally, the result is a smooth animation wherever the variable is used, without having to think twice when overriding `transition`:
+If we then we declare a transition on the custom properties, the browser knows to interpolate their values as colors! We get a smooth animation wherever the colors are used, no boilerplate and without having to think twice when overriding `transition`:
 
 <CodeDemo demo={<ColorModeToggleDemo isAnimated useAtProp>
   Click to toggle dark class:
@@ -163,9 +160,10 @@ We then define the colors as we did before, keeping backwards compatibility. The
   color: var(--foreground-color);
   background-color: var(--background-color);
 
+  /* This is the magic */
   transition:
-    --foreground-color var(--transition-timing),
-    --background-color var(--transition-timing);
+    --foreground-color 400ms ease,
+    --background-color 400ms ease;
 }
 
 :root.dark {
@@ -176,14 +174,14 @@ We then define the colors as we did before, keeping backwards compatibility. The
 
 </CodeDemo>
 
-## Browser support and backwards compatibility
-
-On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the virtually all modern browsers support `@property` declarations - ~94
-% of global users at the time of writing.
+## Browser support
 
 What's nice about this technique is that is it a _progressive enhancement_ - older browsers will just see the color change without the animation, ensuring the website remains accessible.
 
-## Why not use web transitions?
+On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the virtually all modern browsers support `@property` declarations (~94
+% of global users at the time of writing).
+
+## How about web transitions?
 
 animations and stuff will break.
 

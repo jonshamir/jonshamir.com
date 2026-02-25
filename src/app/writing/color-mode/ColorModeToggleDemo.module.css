@@ -12,7 +12,7 @@
 
 .ColorModeToggleDemo {
   --duration: 0s;
-  --transition-timing: var(--duration) ease-out;
+  --transition-timing: var(--duration) ease;
 
   transition:
     background-color var(--transition-timing),
@@ -71,8 +71,8 @@
     opacity: 0.5;
     transform: scale(1);
     transition:
-      opacity 150ms ease-out,
-      transform 150ms ease-out;
+      opacity 150ms ease,
+      transform 150ms ease;
   }
 
   .InvertedButton:hover {
@@ -104,7 +104,7 @@
   fill: rgb(221, 221, 221);
   transform-origin: center;
   animation-fill-mode: forwards;
-  animation-timing-function: ease-out;
+  animation-timing-function: ease;
   animation-duration: var(--duration);
 }
 
