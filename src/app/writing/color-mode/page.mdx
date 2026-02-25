@@ -222,6 +222,41 @@ I believe naming things is very important, especially in code. When writing this
 
 I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (ahem, UIKit). I'll focus on the 3 prevalent options:
 
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Definition</th>
+      <th>Scope</th>
+      <th>Rooted in</th>
+      <th>Used by</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Color Theme</strong></td>
+      <td>A recurring motif; a "package" of fonts, colors, shapes, etc.</td>
+      <td>Broad — colors are just <em>part</em> of a theme</td>
+      <td>Software/UI conventions</td>
+      <td>VS Code (<code>workbench.colorTheme</code>), Jetpack Compose (<code>isSystemInDarkTheme()</code>)</td>
+    </tr>
+    <tr>
+      <td><strong>Color Scheme</strong></td>
+      <td>An orderly combination of related colors; synonymous with "color palette"</td>
+      <td>Medium — a set of colors designed to work together</td>
+      <td>Design theory ("monochromatic scheme", "analogous scheme")</td>
+      <td>CSS (<code>prefers-color-scheme</code>), SwiftUI (<code>ColorScheme.light</code>)</td>
+    </tr>
+    <tr>
+      <td><strong>Color Mode</strong></td>
+      <td>A binary/categorical setting — less about aesthetics, more about state</td>
+      <td>Narrow — specifically light vs. dark</td>
+      <td>User interface state management</td>
+      <td>Android (<code>UiModeManager</code>), MUI (<code>palette.mode</code>), Chakra UI (<code>useColorMode()</code>)</td>
+    </tr>
+  </tbody>
+</table>
+
 ### Color Theme
 
 A theme can be defined as _A recurring idea; a motif_ - in the context of UI design, it is [usually](<https://en.wikipedia.org/wiki/Theme_(computing)>) refers to a "package" that contains fonts, colors, shapes and more.
