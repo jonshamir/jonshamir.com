@@ -1,6 +1,7 @@
 import fs from "fs";
 import Link from "next/link";
 import path from "path";
+import styles from "./PostList.module.css";
 
 interface PostMetadata {
   date: string;
@@ -111,12 +112,20 @@ export function PostList() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date, newest first
 
   return (
-    <ul>
-      {posts.map((post) => (
-        <li key={post.slug}>
-          <Link href={`/writing/${post.slug}`}>{post.title}</Link>
-        </li>
-      ))}
+    <ul className={styles.list}>
+      {posts.map((post) => {
+        const date = new Date(post.date);
+        const formattedDate = date.toLocaleDateString("en-US", {
+          month: "short",
+          year: "numeric"
+        });
+        return (
+          <li key={post.slug} className={styles.item}>
+            <span className={styles.date}>{formattedDate}</span>
+            <Link href={`/writing/${post.slug}`}>{post.title}</Link>
+          </li>
+        );
+      })}
     </ul>
   );
 }

@@ -33,6 +33,8 @@
     --foreground-color-prop: rgb(17, 17, 17);
     --background-color-prop: rgb(239, 239, 239);
   }
+
+  min-height: 200px;
 }
 
 .ColorModeToggleDemo {
@@ -181,4 +183,3 @@
     transform: rotateY(90deg);
   }
 }
-

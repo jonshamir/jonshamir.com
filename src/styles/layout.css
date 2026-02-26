@@ -5,9 +5,11 @@
   --grid-width-narrow: 36rem;
   --grid-width-wide: 54rem;
   --grid-gap: 1rem;
+  --nav-height: 3rem;
 }
 
 .grid {
+  padding-top: var(--nav-height);
   display: grid;
   grid-template-columns:
     [full-start] minmax(var(--grid-gap), 1fr)
@@ -42,6 +44,10 @@
 
 .grid-full {
   grid-column: full;
+}
+
+.cover-top {
+  margin-top: calc(-1 * var(--nav-height));
 }
 
 .cover {

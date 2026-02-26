@@ -1,5 +1,6 @@
 import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
+// import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
@@ -10,10 +11,6 @@ export default function Page() {
   return (
     <>
       <div className={styles.hero}>
-        <br />
-        <br />
-        <br />
-
         <InlineLogoPlaceholder />
 
         <p className={styles.fadeIn}>
@@ -54,14 +51,14 @@ export default function Page() {
         </div>
       </div>
 
-      <p />
+      {/* <p />
       <p />
 
-      {/* <h3 className={styles.sectionTitle}>Writing</h3>
-      <PostList />
+      <h3 className={styles.sectionTitle}>Writing</h3>
+      <PostList /> */}
 
       <p />
-      <p /> */}
+      <p />
 
       <h3 className={styles.sectionTitle}>Mailing list</h3>
       <EmailFormWrapper />

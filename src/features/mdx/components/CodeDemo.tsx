@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import styles from "./CodeDemo.module.css";
+import { SideBySide } from "./SideBySide";
 
 interface CodeDemoProps {
   demo: ReactNode;
@@ -9,9 +10,6 @@ interface CodeDemoProps {
 
 export function CodeDemo({ demo, children }: CodeDemoProps) {
   return (
-    <div className={`grid-wide ${styles.wrapper}`}>
-      <div className={styles.code}>{children}</div>
-      <div className={styles.demo}>{demo}</div>
-    </div>
+    <SideBySide left={children} right={demo} className={styles.codeDemo} />
   );
 }
