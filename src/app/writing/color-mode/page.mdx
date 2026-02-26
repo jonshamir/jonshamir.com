@@ -12,7 +12,7 @@ export const metadata = {
 
 # Animated Dark Mode Transition with Modern CSS
 
-Switching between dark and light modes can be pretty jarring - you can almost blind yourself accidentally in the middle of the night. While we can't prevent accidents, we can give users' eyes a bit more time to adjust by animating the transition:
+Switching between dark and light modes can be pretty jarring - a wrong click can nearly blind you in the middle of the night. While we can't prevent accidents, we can give users' eyes a bit more time to adjust by animating the transition:
 
 <ColorModeToggleDemo isAnimated useAtProp>
   Click the button to toggle modes:
@@ -20,7 +20,7 @@ Switching between dark and light modes can be pretty jarring - you can almost bl
 
 In this post I will explore several ways to implement the effect with modern CSS. You can also see the effect on my site by clicking the small icon in the top-right corner.
 
-I will be focusing on the CSS implementation of the effect. The logic I used for my React website is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/). You are also welcome to take a look at the source code of this site.
+I will be focusing on the CSS implementation of the effect. The logic I used for my this (React-based) website is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/).
 
 <TableOfContents />
 
@@ -234,25 +234,47 @@ I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mo
   </thead>
   <tbody>
     <tr>
-      <td><strong>Color Theme</strong></td>
+      <td>
+        <strong>Color Theme</strong>
+      </td>
       <td>A recurring motif; a "package" of fonts, colors, shapes, etc.</td>
-      <td>Broad — colors are just <em>part</em> of a theme</td>
+      <td>
+        Broad — colors are just <em>part</em> of a theme
+      </td>
       <td>Software/UI conventions</td>
-      <td>VS Code (<code>workbench.colorTheme</code>), Jetpack Compose (<code>isSystemInDarkTheme()</code>)</td>
+      <td>
+        VS Code (<code>workbench.colorTheme</code>), Jetpack Compose (
+        <code>isSystemInDarkTheme()</code>)
+      </td>
     </tr>
     <tr>
-      <td><strong>Color Scheme</strong></td>
-      <td>An orderly combination of related colors; synonymous with "color palette"</td>
+      <td>
+        <strong>Color Scheme</strong>
+      </td>
+      <td>
+        An orderly combination of related colors; synonymous with "color
+        palette"
+      </td>
       <td>Medium — a set of colors designed to work together</td>
       <td>Design theory ("monochromatic scheme", "analogous scheme")</td>
-      <td>CSS (<code>prefers-color-scheme</code>), SwiftUI (<code>ColorScheme.light</code>)</td>
+      <td>
+        CSS (<code>prefers-color-scheme</code>), SwiftUI (
+        <code>ColorScheme.light</code>)
+      </td>
     </tr>
     <tr>
-      <td><strong>Color Mode</strong></td>
-      <td>A binary/categorical setting — less about aesthetics, more about state</td>
+      <td>
+        <strong>Color Mode</strong>
+      </td>
+      <td>
+        A binary/categorical setting — less about aesthetics, more about state
+      </td>
       <td>Narrow — specifically light vs. dark</td>
       <td>User interface state management</td>
-      <td>Android (<code>UiModeManager</code>), MUI (<code>palette.mode</code>), Chakra UI (<code>useColorMode()</code>)</td>
+      <td>
+        Android (<code>UiModeManager</code>), MUI (<code>palette.mode</code>),
+        Chakra UI (<code>useColorMode()</code>)
+      </td>
     </tr>
   </tbody>
 </table>
