@@ -29,7 +29,7 @@ Switching between dark and light modes can be pretty jarring - a wrong click can
 
 In this post I will explore several ways to implement the effect with modern CSS. You can also see the effect on my site by clicking the small icon in the top-right corner.
 
-I will be focusing on the CSS implementation of the effect. The logic I used for my this (React-based) website is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/).
+I will be focusing on the CSS implementation of the effect. The logic I used for this (React-based) website is mostly based on Josh Comeau's [Quest for the Perfect Dark Mode](https://www.joshwcomeau.com/react/dark-mode/) with some help from [Matt Stobbs's post](https://www.mattstobbs.com/elderjs-dark-mode/).
 
 <TableOfContents />
 
@@ -94,7 +94,7 @@ My first approach was to use CSS transitions to animate the switch. Transitions 
 
 </CodeDemo>
 
-We did it - The text and background colors cross-fade nicely!
+We did it - the text and background colors cross-fade nicely!
 
 But alas - our button still flashes immediately to the new colors. This is because we have some nice hover & active effects on the button which accidentally override the `transition` we declared on our `:root`:
 
@@ -130,7 +130,7 @@ button {
 This will work, but it quickly becomes cumbersome and easy to forget.
 If we want to use the colors on another property, like `border-color` - we have to add even more transition declarations - not exactly maintainable.
 
-Even worse -if we accidentally miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
+Even worse - if we accidentally miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
 
 ## Using @property
 
@@ -224,4 +224,6 @@ However, because view transitions rely on static screenshots, they can cause vis
 
 The `@property` technique is [more widely supported](https://caniuse.com/?search=%40property) (~94% of users), and uses true color interpolation. View transitions are more flexible for creative effects, but have [slightly less browser support](https://caniuse.com/view-transitions) (~89% of users).
 
-Both techniques can be implemented as _progressive enhancement_ - older browsers will simply apply the color change without the animation, so dark mode stays fully functional. The choice comes down to the effect you're going for.
+Both techniques can be implemented as _progressive enhancement_ - older browsers will simply apply the color change without the animation, so dark mode stays fully functional.
+
+Overall, The choice comes down to the effect you're going for. Personally, I went with `@property` for this site and paired it with a little spherical animation on the toggle itself that wouldn't really work with view transitions.
