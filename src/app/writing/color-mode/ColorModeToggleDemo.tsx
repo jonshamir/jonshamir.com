@@ -85,7 +85,7 @@ export function ColorModeToggleDemo({
         {!showToggle && (
           <button
             ref={buttonRef}
-            onClick={toggle}
+            onClick={() => void toggle()}
             className={`${styles.InvertedButton} ${useAtProp ? styles.useAtProp : ""}`}
           >
             {isDark ? "Set Dark Mode" : "Set Light Mode"}
@@ -94,7 +94,7 @@ export function ColorModeToggleDemo({
         {showToggle && (
           <button
             ref={buttonRef}
-            onClick={toggle}
+            onClick={() => void toggle()}
             className={styles.AnimatedButton}
           >
             <svg
