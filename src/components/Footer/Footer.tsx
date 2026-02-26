@@ -18,10 +18,10 @@ export function Footer() {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "space-between"
+          justifyContent: "center",
+          opacity: 0.8
         }}
       >
-        <p>Jon Shamir</p>
         <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
       </div>
     </footer>
