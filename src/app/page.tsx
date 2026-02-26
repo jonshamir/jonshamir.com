@@ -11,10 +11,6 @@ export default function Page() {
   return (
     <>
       <div className={styles.hero}>
-        <br />
-        <br />
-        <br />
-
         <InlineLogoPlaceholder />
 
         <p className={styles.fadeIn}>

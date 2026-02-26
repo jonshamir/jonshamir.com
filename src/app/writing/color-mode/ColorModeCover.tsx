@@ -3,7 +3,7 @@ import styles from "./ColorModeCover.module.css";
 export function ColorModeCover() {
   const count = 7;
   return (
-    <div className={`grid-full ${styles.ColorModeCover}`}>
+    <div className={`grid-full cover-top ${styles.ColorModeCover}`}>
       <div className={styles.MoonContainer}>
         {Array.from({ length: count }).map((_, index) => (
           <Moon key={index} amount={(index + 1) / count} />
