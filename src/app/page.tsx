@@ -1,5 +1,6 @@
 import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
+import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
@@ -57,11 +58,11 @@ export default function Page() {
       <p />
       <p />
 
-      {/* <h3 className={styles.sectionTitle}>Writing</h3>
+      <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
 
       <p />
-      <p /> */}
+      <p />
 
       <h3 className={styles.sectionTitle}>Mailing list</h3>
       <EmailFormWrapper />
