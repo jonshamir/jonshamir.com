@@ -179,3 +179,9 @@ body {
 ::view-transition-new(root) {
   animation-duration: 0.4s;
 }
+
+.circular-reveal-active::view-transition-old(root),
+.circular-reveal-active::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}

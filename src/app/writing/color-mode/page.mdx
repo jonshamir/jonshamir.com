@@ -3,7 +3,7 @@ import { ColorModeToggleDemo } from "./ColorModeToggleDemo";
 import { ContrastPicker } from "./ContrastPicker";
 
 export const metadata = {
-  date: "2026-03-01",
+  date: "2026-02-26",
   description:
     "How I implemented an animated dark mode using CSS @property and a fancy toggle."
 };
@@ -212,7 +212,13 @@ function toggleDarkMode() {
 
 </CodeDemo>
 
-Arguably this is even simpler than using `@property` _and_ it opens up new creative possibilities, such as this [cool circular reveal effect](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/) by Akash Hamirwasia. However, because they rely on static screenshots, view transitions can cause visual artifacts, especially if you have any animated elements on the page.
+Arguably this is even simpler than using `@property` _and_ it opens up new creative possibilities. For example, [Akash Hamirwasia](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/) demonstrated a circular reveal effect where the new theme expands outward from the toggle button:
+
+<ColorModeToggleDemo useCircularReveal>
+  Click to toggle with circular reveal:
+</ColorModeToggleDemo>
+
+However, because view transitions rely on static screenshots, they can cause visual artifacts, especially if there are animated or prominent interactive elements on the page.
 
 ## Which approach should you use?
 
