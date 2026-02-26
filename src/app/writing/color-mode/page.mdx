@@ -184,18 +184,13 @@ We can now declare a `transition` on our variables, and the browser will know to
 
 </CodeDemo>
 
-## Browser support
-
 What's nice about this technique is that is it a _progressive enhancement_ - older browsers will just see the color change without the animation, ensuring the dark mode feature remains functional.
-
-On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the vast majority (~94
-% at the time of writing) of users' browsers support `@property` declarations.
 
 ## Using view transition API
 
-There's another approach to animating a color mode switch - instead of transitioning individual CSS properties, we can use the [View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) to capture before/after snapshots of the page and crossfade between them.
+Modern browsers offer another approach to do this - instead of transitioning individual CSS properties, we can use the [View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) to capture before/after snapshots of the page and crossfade between them.
 
-The idea is simple: call `document.startViewTransition()` with a callback that updates the DOM. The browser takes a screenshot of the current state, runs the callback, then smoothly crossfades from the old screenshot to the new state:
+The idea is simple: in our JavaScript, we can wrap the classList toggling with `document.startViewTransition()`. The browser will take a screenshot of the current state, run the callback, then smoothly crossfade from the old screenshot to the new state:
 
 <CodeDemo demo={<ColorModeToggleDemo useViewTransition>
   Click to toggle with view transition:
@@ -217,9 +212,11 @@ function toggleDarkMode() {
 
 </CodeDemo>
 
-That's all there is to it — the browser handles the crossfade animation automatically. When using view transitions, the CSS transitions from the `@property` approach should be disabled — otherwise you'd get a double animation (the crossfade _and_ the color interpolation happening simultaneously).
+Arguably this is even simpler than using `@property` and it opens up new creative possibilities, such as this [cool circular reveal effect](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/) by Akash Hamirwasia. However, because they rely on static screenshots, view transitions can cause visual artifacts, especially if you have any animated elements on the page.
 
 **Which approach should you use?** The `@property` technique is simpler, more widely supported (~94% of users), and gives you a true color interpolation. View transitions are more flexible — you can swap the default crossfade for clip-path reveals, directional wipes, or other effects — but have less browser support (Chrome/Edge 111+, Safari 18+, no Firefox yet, ~75% of users). For a great example of a circular clip-path reveal effect using view transitions, check out [Akash Hamirwasia's post](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/).
+
+On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the vast majority of browsers support `@property` declarations (~94% at the time of writing).
 
 ## Wrapping Up
 
