@@ -184,7 +184,7 @@ We can now declare a `transition` on our variables, and the browser will know to
 
 </CodeDemo>
 
-What's nice about this technique is that is it a _progressive enhancement_ - older browsers will just see the color change without the animation, ensuring the dark mode feature remains functional.
+The `@property` rule is one of those CSS features that feels like it should have always existed. Instead of chasing down every element that needs a color transition, you define the transition once at the variable level and everything just works. It's less code, fewer edge cases, and one less thing to remember when adding new components.
 
 ## Using view transition API
 
@@ -212,13 +212,10 @@ function toggleDarkMode() {
 
 </CodeDemo>
 
-Arguably this is even simpler than using `@property` and it opens up new creative possibilities, such as this [cool circular reveal effect](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/) by Akash Hamirwasia. However, because they rely on static screenshots, view transitions can cause visual artifacts, especially if you have any animated elements on the page.
+Arguably this is even simpler than using `@property` _and_ it opens up new creative possibilities, such as this [cool circular reveal effect](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/) by Akash Hamirwasia. However, because they rely on static screenshots, view transitions can cause visual artifacts, especially if you have any animated elements on the page.
 
-**Which approach should you use?** The `@property` technique is simpler, more widely supported (~94% of users), and gives you a true color interpolation. View transitions are more flexible — you can swap the default crossfade for clip-path reveals, directional wipes, or other effects — but have less browser support (Chrome/Edge 111+, Safari 18+, no Firefox yet, ~75% of users). For a great example of a circular clip-path reveal effect using view transitions, check out [Akash Hamirwasia's post](https://akashhamirwasia.com/blog/full-page-theme-toggle-animation-with-view-transitions-api/).
+## Which approach should you use?
 
-On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the vast majority of browsers support `@property` declarations (~94% at the time of writing).
+The `@property` technique is [more widely supported](https://caniuse.com/?search=%40property) (~94% of users), and uses true color interpolation. View transitions are more flexible for creative effects, but have [slightly less browser support](https://caniuse.com/view-transitions) (~89% of users).
 
-## Wrapping Up
-
-The `@property` rule is one of those CSS features that feels like it should have always existed. Instead of chasing down every element that needs a color transition, you define the transition once at the variable level and everything just works. It's less code, fewer edge cases, and one less thing to remember when adding new components.
-This is just one example, but the implications go beyond dark mode — any time you're animating values stored in custom properties (gradients, spacing, angles), `@property` opens the door.
+Both techniques can be implemented as _progressive enhancement_ - older browsers will simply apply the color change without the animation, so dark mode stays fully functional. The choice comes down to the effect you're going for.
