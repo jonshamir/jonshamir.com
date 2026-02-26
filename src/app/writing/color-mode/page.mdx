@@ -43,7 +43,7 @@ The basic idea is simple - we define a color palette using CSS variables (a.k.a.
 }
 ```
 
-We can add a button to switch the color mode by toggling the `dark` class on the container element. Whenever the class changes, the browser automatically updates all elements that use the colors we defined! Our basic dark mode feature is now working.
+We can add a button to switch the color mode by toggling the `dark` class on the container element. Whenever the class changes, the browser automatically updates all elements that use the colors we defined:
 
 <CodeDemo demo={<ColorModeToggleDemo isAnimated={false}>
   Click to toggle dark class:
@@ -64,6 +64,8 @@ function toggleDarkMode() {
 ```
 
 </CodeDemo>
+
+Our basic dark mode feature is now working.
 
 ## Animating the transition
 
@@ -117,10 +119,9 @@ button {
 ```
 
 This will work, but it quickly becomes cumbersome and easy to forget.
-If we want to use the colors on another property, like `border-color` - we have to add even more transition declaration - not exactly maintainable.
-Even worse, if we accidentally miss a single element it suddenly sticks out unnaturally when switching modes.
+If we want to use the colors on another property, like `border-color` - we have to add even more transition declarations - not exactly maintainable.
 
-Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
+Even worse -if we accidentally miss a single element it suddenly sticks out unnaturally when switching modes. Thankfully, there is a new CSS _at-rule_ that makes things much simpler.
 
 ## Using @property
 
@@ -146,7 +147,7 @@ property --background-color {
 }
 ```
 
-We can now declare a `transition` on our variables, and the browser will know to treat their values as colors. Whenever the variables change, we get a smooth color interpolation with minimal boilerplate and without having to think twice about overriding transitions:
+We can now declare a `transition` on our variables, and the browser will know to treat their values as colors. Whenever they change, we get a smooth color interpolation with minimal boilerplate and without having to think twice about overriding transitions.
 
 <CodeDemo demo={<ColorModeToggleDemo isAnimated useAtProp>
   Click to toggle dark class:
@@ -176,14 +177,14 @@ We can now declare a `transition` on our variables, and the browser will know to
 
 ## Browser support
 
-What's nice about this technique is that is it a _progressive enhancement_ - older browsers will just see the color change without the animation, ensuring the website remains accessible.
+What's nice about this technique is that is it a _progressive enhancement_ - older browsers will just see the color change without the animation, ensuring the dark mode feature remains functional.
 
-On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the virtually all modern browsers support `@property` declarations (~94
-% of global users at the time of writing).
+On [caniuse.com](https://caniuse.com/?search=%40property) you can see that the vast majority (~94
+% at the time of writing) of users' browsers support `@property` declarations.
 
-## Using the View Transition API
+## Using view transition API
 
-There's another approach to animating a color mode switch — instead of transitioning individual CSS properties, we can use the [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) to capture before/after snapshots of the page and crossfade between them.
+There's another approach to animating a color mode switch - instead of transitioning individual CSS properties, we can use the [View Transition API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transition_API) to capture before/after snapshots of the page and crossfade between them.
 
 The idea is simple: call `document.startViewTransition()` with a callback that updates the DOM. The browser takes a screenshot of the current state, runs the callback, then smoothly crossfades from the old screenshot to the new state:
 
@@ -215,113 +216,3 @@ That's all there is to it — the browser handles the crossfade animation automa
 
 The `@property` rule is one of those CSS features that feels like it should have always existed. Instead of chasing down every element that needs a color transition, you define the transition once at the variable level and everything just works. It's less code, fewer edge cases, and one less thing to remember when adding new components.
 This is just one example, but the implications go beyond dark mode — any time you're animating values stored in custom properties (gradients, spacing, angles), `@property` opens the door.
-
-## Footnote: Theme, Scheme or Mode?
-
-I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this and decide for myself what would be the best name for this feature!
-
-I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (ahem, UIKit). I'll focus on the 3 prevalent options:
-
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th>Definition</th>
-      <th>Scope</th>
-      <th>Rooted in</th>
-      <th>Used by</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
-        <strong>Color Theme</strong>
-      </td>
-      <td>A recurring motif; a "package" of fonts, colors, shapes, etc.</td>
-      <td>
-        Broad — colors are just <em>part</em> of a theme
-      </td>
-      <td>Software/UI conventions</td>
-      <td>
-        VS Code (<code>workbench.colorTheme</code>), Jetpack Compose (
-        <code>isSystemInDarkTheme()</code>)
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Color Scheme</strong>
-      </td>
-      <td>
-        An orderly combination of related colors; synonymous with "color
-        palette"
-      </td>
-      <td>Medium — a set of colors designed to work together</td>
-      <td>Design theory ("monochromatic scheme", "analogous scheme")</td>
-      <td>
-        CSS (<code>prefers-color-scheme</code>), SwiftUI (
-        <code>ColorScheme.light</code>)
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <strong>Color Mode</strong>
-      </td>
-      <td>
-        A binary/categorical setting — less about aesthetics, more about state
-      </td>
-      <td>Narrow — specifically light vs. dark</td>
-      <td>User interface state management</td>
-      <td>
-        Android (<code>UiModeManager</code>), MUI (<code>palette.mode</code>),
-        Chakra UI (<code>useColorMode()</code>)
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-### Color Theme
-
-A theme can be defined as _A recurring idea; a motif_ - in the context of UI design, it is [usually](<https://en.wikipedia.org/wiki/Theme_(computing)>) refers to a "package" that contains fonts, colors, shapes and more.
-I feel that colors are _part_ of a UI theme, so the term "Color Theme" doesn't feel right to me.
-
-VS Code:
-`"workbench.colorTheme": "Dark+ (default dark)"`
-
-Material UI (MUI)
-“palette mode” (light/dark) e.g. `theme.palette.mode='dark'`
-
-Jetpack Compose (Android)
-“light theme” / “dark theme” (Material 3 ColorScheme); use `isSystemInDarkTheme()` to pick light/dark
-
-### Color Scheme
-
-[Color Scheme](https://en.wikipedia.org/wiki/Color_scheme)
-
-A color scheme, from my understanding, is synonymous with a "color palette" - a set of colors designed to work well together. In this case, you could consider the light and dark colors to be a "scheme", or part of the overall "color scheme"
-Scheme - _An orderly combination of related parts._
-
-Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
-
-CSS uses `prefers-color-scheme: light | dark`
-
-iOS / SwiftUI:
-`ColorScheme.light`, `ColorScheme.dark`
-
-### Color Mode
-
-[Mode (User Interface)](<https://en.wikipedia.org/wiki/Mode_(user_interface)>)
-
-Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
-
-Android:
-Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
-
-Material UI (MUI):
-`palette.mode = 'light' | 'dark'`
-
-Chakra UI:
-`colorMode = 'light' | 'dark'` and `useColorMode()` hook.
-
-Tailwind CSS:
-Uses `dark:` prefix (no explicit variable).
-Config has `darkMode: 'media' | 'class'`.

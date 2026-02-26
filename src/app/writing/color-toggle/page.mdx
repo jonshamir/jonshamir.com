@@ -89,3 +89,113 @@ The animation is split into 4 parts:
 2. The first half of the animation
 3. The second half of the animation
 4. The final state
+
+## Footnote: Theme, Scheme or Mode?
+
+I believe naming things is very important, especially in code. When writing this post I decided to get to the bottom of this and decide for myself what would be the best name for this feature!
+
+I found 3 commonly used terms - **Color Theme**, **Color Scheme** and **Color Mode**, as well as some less common options such as _Brightness_ in Flutter or _UIUserInterfaceStyle_ (ahem, UIKit). I'll focus on the 3 prevalent options:
+
+<table>
+  <thead>
+    <tr>
+      <th></th>
+      <th>Definition</th>
+      <th>Scope</th>
+      <th>Rooted in</th>
+      <th>Used by</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <strong>Color Theme</strong>
+      </td>
+      <td>A recurring motif; a "package" of fonts, colors, shapes, etc.</td>
+      <td>
+        Broad — colors are just <em>part</em> of a theme
+      </td>
+      <td>Software/UI conventions</td>
+      <td>
+        VS Code (<code>workbench.colorTheme</code>), Jetpack Compose (
+        <code>isSystemInDarkTheme()</code>)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Color Scheme</strong>
+      </td>
+      <td>
+        An orderly combination of related colors; synonymous with "color
+        palette"
+      </td>
+      <td>Medium — a set of colors designed to work together</td>
+      <td>Design theory ("monochromatic scheme", "analogous scheme")</td>
+      <td>
+        CSS (<code>prefers-color-scheme</code>), SwiftUI (
+        <code>ColorScheme.light</code>)
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <strong>Color Mode</strong>
+      </td>
+      <td>
+        A binary/categorical setting — less about aesthetics, more about state
+      </td>
+      <td>Narrow — specifically light vs. dark</td>
+      <td>User interface state management</td>
+      <td>
+        Android (<code>UiModeManager</code>), MUI (<code>palette.mode</code>),
+        Chakra UI (<code>useColorMode()</code>)
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+### Color Theme
+
+A theme can be defined as _A recurring idea; a motif_ - in the context of UI design, it is [usually](<https://en.wikipedia.org/wiki/Theme_(computing)>) refers to a "package" that contains fonts, colors, shapes and more.
+I feel that colors are _part_ of a UI theme, so the term "Color Theme" doesn't feel right to me.
+
+VS Code:
+`"workbench.colorTheme": "Dark+ (default dark)"`
+
+Material UI (MUI)
+“palette mode” (light/dark) e.g. `theme.palette.mode='dark'`
+
+Jetpack Compose (Android)
+“light theme” / “dark theme” (Material 3 ColorScheme); use `isSystemInDarkTheme()` to pick light/dark
+
+### Color Scheme
+
+[Color Scheme](https://en.wikipedia.org/wiki/Color_scheme)
+
+A color scheme, from my understanding, is synonymous with a "color palette" - a set of colors designed to work well together. In this case, you could consider the light and dark colors to be a "scheme", or part of the overall "color scheme"
+Scheme - _An orderly combination of related parts._
+
+Rooted in design theory (“monochromatic scheme”, “analogous scheme”).
+
+CSS uses `prefers-color-scheme: light | dark`
+
+iOS / SwiftUI:
+`ColorScheme.light`, `ColorScheme.dark`
+
+### Color Mode
+
+[Mode (User Interface)](<https://en.wikipedia.org/wiki/Mode_(user_interface)>)
+
+Meaning: Almost always refers to a binary or categorical setting (e.g., “Light mode” vs “Dark mode”). Less about aesthetics, more about state or preference.
+
+Android:
+Uses `UiModeManager` (`MODE_NIGHT_YES`, `MODE_NIGHT_NO`) and XML attribute android:theme.
+
+Material UI (MUI):
+`palette.mode = 'light' | 'dark'`
+
+Chakra UI:
+`colorMode = 'light' | 'dark'` and `useColorMode()` hook.
+
+Tailwind CSS:
+Uses `dark:` prefix (no explicit variable).
+Config has `darkMode: 'media' | 'class'`.
