@@ -76,4 +76,5 @@ export function CustomH1(
 }
 
 export { CodeDemo } from "./CodeDemo";
+export { SideBySide } from "./SideBySide";
 export { TableOfContents };

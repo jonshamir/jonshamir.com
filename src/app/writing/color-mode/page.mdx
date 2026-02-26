@@ -14,9 +14,18 @@ export const metadata = {
 
 Switching between dark and light modes can be pretty jarring - a wrong click can nearly blind you in the middle of the night. While we can't prevent such accidents, we can give users' eyes a bit more time to adjust by animating the transition:
 
-<ColorModeToggleDemo isAnimated useAtProp>
-  Click the button to toggle modes:
-</ColorModeToggleDemo>
+<SideBySide
+  left={
+    <ColorModeToggleDemo isAnimated={false}>
+      Click to toggle immediately:
+    </ColorModeToggleDemo>
+  }
+  right={
+    <ColorModeToggleDemo isAnimated useAtProp>
+      Click to toggle with transition:
+    </ColorModeToggleDemo>
+  }
+/>
 
 In this post I will explore several ways to implement the effect with modern CSS. You can also see the effect on my site by clicking the small icon in the top-right corner.
 
