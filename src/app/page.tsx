@@ -42,7 +42,7 @@ export default function Page() {
 
       <div className={styles.columns}>
         <div>
-          <h3 className={styles.sectionTitle}>Projects</h3>
+          <h3 className={styles.sectionTitle}>Selected Projects</h3>
           <ProjectList />
         </div>
         <div className={styles.smallColumn}>
