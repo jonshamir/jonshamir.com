@@ -62,6 +62,10 @@
   animation: fadeIn 0.3s ease-in 0.35s forwards;
 }
 
+.fadeInDelay {
+  animation-delay: 0.5s;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;

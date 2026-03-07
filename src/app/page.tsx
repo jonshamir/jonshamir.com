@@ -1,6 +1,8 @@
+import { clsx } from "clsx";
+
 import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
-// import { PostList } from "../components/PostList/PostList";
+import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
@@ -30,19 +32,19 @@ export default function Page() {
           round
           variant="primary"
           href="mailto:jon@studio-normal.com"
-          className={styles.contactButton}
+          className={clsx(styles.contactButton, styles.fadeIn)}
         >
           Contact<span className="arrow">↗</span>
         </ButtonLink>
         <br />
       </div>
-      <SelectedWork />
+      <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} />
 
       <p />
 
       <div className={styles.columns}>
         <div>
-          <h3 className={styles.sectionTitle}>Projects</h3>
+          <h3 className={styles.sectionTitle}>Selected Projects</h3>
           <ProjectList />
         </div>
         <div className={styles.smallColumn}>
@@ -51,11 +53,11 @@ export default function Page() {
         </div>
       </div>
 
-      {/* <p />
+      <p />
       <p />
 
       <h3 className={styles.sectionTitle}>Writing</h3>
-      <PostList /> */}
+      <PostList />
 
       <p />
       <p />
