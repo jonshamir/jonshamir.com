@@ -3,7 +3,7 @@ import { ColorModeToggleDemo } from "./ColorModeToggleDemo";
 import { ContrastPicker } from "./ContrastPicker";
 
 export const metadata = {
-  date: "2026-02-26",
+  date: "2026-03-07",
   description:
     "How I implemented an animated dark mode using CSS @property and a fancy toggle."
 };
@@ -140,7 +140,7 @@ What if instead of transitioning each CSS property that uses a color, we could t
 
 [@property on MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@property)
 
-In addition to our original variable definitions, we can tell the browser the _type_ of the variables by using `@property` blocks with `syntax: "<color>"`. By typing the custom property as a colors, the browser can interpolate between values instead of swapping them instantly.
+In addition to our original variable definitions, we can tell the browser the _type_ of the variables by using `@property` blocks with `syntax: "<color>"`. By typing the custom property as a color, the browser can interpolate between values instead of swapping them instantly.
 
 ```css
 property --foreground-color {

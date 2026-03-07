@@ -18,8 +18,7 @@ export function Footer() {
           display: "flex",
           flexDirection: "row",
           alignItems: "center",
-          justifyContent: "center",
-          opacity: 0.8
+          justifyContent: "center"
         }}
       >
         <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
