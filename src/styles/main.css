@@ -10,7 +10,7 @@
 @property --color-bg-rgb {
   syntax: "<number>#";
   inherits: true;
-  initial-value: 245, 240, 238;
+  initial-value: 243, 240, 238;
 }
 
 @property --color-text-rgb {
@@ -40,7 +40,7 @@
   --color-text-rgb: 59, 63, 69;
   --color-text: rgb(var(--color-text-rgb));
 
-  --color-bg-rgb: 245, 240, 238;
+  --color-bg-rgb: 243, 240, 238;
   --color-bg: rgb(var(--color-bg-rgb));
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
