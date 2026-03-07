@@ -10,7 +10,7 @@
 @property --color-bg-rgb {
   syntax: "<number>#";
   inherits: true;
-  initial-value: 232, 227, 225;
+  initial-value: 242, 237, 235;
 }
 
 @property --color-text-rgb {
@@ -40,7 +40,7 @@
   --color-text-rgb: 59, 63, 69;
   --color-text: rgb(var(--color-text-rgb));
 
-  --color-bg-rgb: 232, 227, 225;
+  --color-bg-rgb: 242, 237, 235;
   --color-bg: rgb(var(--color-bg-rgb));
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
@@ -56,7 +56,7 @@
   --color-link: #7a8eff;
 
   --color-text-rgb: 224, 218, 207;
-  --color-bg-rgb: 34, 35, 37;
+  --color-bg-rgb: 32, 33, 35;
 
   --shiki-mix: 100%;
 }
