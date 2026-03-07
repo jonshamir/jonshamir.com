@@ -1,5 +1,6 @@
 "use client";
 
+import { clsx } from "clsx";
 import { useRef, useState } from "react";
 
 const videos = [
@@ -10,7 +11,7 @@ const videos = [
   "/homepage/muser.mp4"
 ];
 
-export function SelectedWork() {
+export function SelectedWork({ className }: { className?: string }) {
   const videoRefA = useRef<HTMLVideoElement>(null);
   const videoRefB = useRef<HTMLVideoElement>(null);
   const refs = [videoRefA, videoRefB];
@@ -35,7 +36,10 @@ export function SelectedWork() {
   };
 
   return (
-    <figure className="grid-wide" style={{ height: "500px" }}>
+    <figure
+      className={clsx("grid-wide", className)}
+      style={{ height: "500px" }}
+    >
       <div style={{ position: "relative", width: "100%", height: "100%" }}>
         {refs.map((ref, slot) => (
           <video

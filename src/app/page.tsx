@@ -1,3 +1,5 @@
+import { clsx } from "clsx";
+
 import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
@@ -30,13 +32,13 @@ export default function Page() {
           round
           variant="primary"
           href="mailto:jon@studio-normal.com"
-          className={styles.contactButton}
+          className={clsx(styles.contactButton, styles.fadeIn)}
         >
           Contact<span className="arrow">↗</span>
         </ButtonLink>
         <br />
       </div>
-      <SelectedWork />
+      <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} />
 
       <p />
 
