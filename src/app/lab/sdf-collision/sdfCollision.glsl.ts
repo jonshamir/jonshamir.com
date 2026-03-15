@@ -92,27 +92,13 @@ void main() {
 
     // Normal-based lighting
     vec2 n = calcNormal(p);
-    vec2 lightDir = normalize(vec2(0.4, 1.0));
-    float diffuse = dot(n, lightDir) * 0.35 + 0.65;
-
-    // Glow around shapes
-    float glow = exp(-abs(d) * 4.0) * 0.35;
 
     // Anti-aliased fill
     float pixelSize = uWorldScale / uResolution.y;
     float fill = 1.0 - smoothstep(-pixelSize * 1.5, pixelSize * 0.5, d);
 
-    // Mouse glow
-    float mouseDist = length(p - uMouse);
-    float mouseGlow = exp(-mouseDist * 2.0) * 0.06;
-
     vec3 bg = vec3(0.06);
-    vec3 glowCol = col * glow + vec3(0.5, 0.6, 0.9) * mouseGlow;
-    vec3 finalCol = mix(bg + glowCol, col * diffuse, fill);
-
-    // Subtle specular highlight
-    float spec = pow(max(dot(n, normalize(vec2(0.3, 1.0))), 0.0), 16.0) * fill * 0.3;
-    finalCol += spec;
+    vec3 finalCol = mix(bg, col, fill);
 
     gl_FragColor = vec4(finalCol, 1.0);
 }
