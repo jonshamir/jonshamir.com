@@ -75,7 +75,7 @@ float sceneSDFOnly(vec2 p) {
 }
 
 vec2 calcNormal(vec2 p) {
-    float eps = 0.005;
+    float eps = uWorldScale / uResolution.y;
     float d = sceneSDFOnly(p);
     return normalize(vec2(
         sceneSDFOnly(p + vec2(eps, 0.0)) - d,
@@ -93,9 +93,9 @@ void main() {
     // Normal-based lighting
     vec2 n = calcNormal(p);
 
-    // Anti-aliased fill
-    float pixelSize = uWorldScale / uResolution.y;
-    float fill = 1.0 - smoothstep(-pixelSize * 1.5, pixelSize * 0.5, d);
+    // Anti-aliased fill using screen-space derivatives
+    float fw = fwidth(d);
+    float fill = 1.0 - smoothstep(-fw * 0.5, fw * 0.5, d);
 
     vec3 bg = vec3(0.06);
     vec3 finalCol = mix(bg, col, fill);
