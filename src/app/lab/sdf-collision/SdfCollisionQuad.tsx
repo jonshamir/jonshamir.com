@@ -25,7 +25,6 @@ function createUniforms() {
     uShapeColors: {
       value: Array.from({ length: MAX_SHAPES }, () => new THREE.Vector3())
     },
-    uBgColor: { value: new THREE.Vector3(0.26, 0.26, 0.26) }
   };
 }
 
@@ -35,7 +34,7 @@ interface SdfCollisionQuadProps {
   blendFactor: number;
   restitution: number;
   shapeCount: number;
-  bgColor: string;
+
 }
 
 export function SdfCollisionQuad({
@@ -43,12 +42,10 @@ export function SdfCollisionQuad({
   mouseStrength,
   blendFactor,
   restitution,
-  shapeCount,
-  bgColor
+  shapeCount
 }: SdfCollisionQuadProps) {
   const shapesRef = useRef<Shape[]>(initShapes(shapeCount, WORLD_SCALE));
   const mouseRef = useRef({ x: 0, y: 0, down: false });
-  const tempColor = useRef(new THREE.Color());
   const uniformsRef = useRef(createUniforms());
   const { gl, size } = useThree();
 
@@ -109,8 +106,6 @@ export function SdfCollisionQuad({
     u.uResolution.value.set(size.width, size.height);
     u.uMouse.value.set(mouse.x, mouse.y);
     u.uBlendFactor.value = blendFactor;
-    const bg = tempColor.current.set(bgColor);
-    u.uBgColor.value.set(bg.r, bg.g, bg.b);
     u.uShapeCount.value = shapesRef.current.length;
 
     for (let i = 0; i < shapesRef.current.length; i++) {
@@ -128,6 +123,12 @@ export function SdfCollisionQuad({
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         uniforms={uniformsRef.current}
+        transparent={true}
+        blending={THREE.CustomBlending}
+        blendSrc={THREE.OneFactor}
+        blendDst={THREE.OneMinusSrcAlphaFactor}
+        blendSrcAlpha={THREE.OneFactor}
+        blendDstAlpha={THREE.OneMinusSrcAlphaFactor}
         depthTest={false}
         depthWrite={false}
       />

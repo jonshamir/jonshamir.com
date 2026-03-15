@@ -23,7 +23,7 @@ uniform int uShapeCount;
 uniform vec4 uShapePos[MAX_SHAPES];
 uniform vec4 uShapeParams[MAX_SHAPES];
 uniform vec3 uShapeColors[MAX_SHAPES];
-uniform vec3 uBgColor;
+
 
 // Linear sRGB <-> OKLab (Björn Ottosson)
 vec3 linearToOklab(vec3 c) {
@@ -135,9 +135,8 @@ void main() {
     float fw = fwidth(d);
     float fill = 1.0 - smoothstep(-fw * 0.5, fw * 0.5, d);
 
-    vec3 bg = uBgColor;
-    vec3 finalCol = linearToSrgb(mix(bg, col, fill));
+    vec3 finalCol = linearToSrgb(col);
 
-    gl_FragColor = vec4(finalCol, 1.0);
+    gl_FragColor = vec4(finalCol * fill, fill);
 }
 `;

@@ -11,20 +11,18 @@ export default function SdfCollisionCanvas() {
     blendFactor: { value: 0.1, min: 0, max: 2, step: 0.05, label: "Blend" },
     restitution: { value: 0.6, min: 0, max: 1, step: 0.05, label: "Bounce" },
     shapeCount: { value: 8, min: 1, max: 16, step: 1, label: "Shapes" },
-    bgColor: { value: "#353535", label: "Background" }
   });
 
   return (
     <>
       <LevaPanel />
-      <ThreeCanvas isFullscreen={true}>
+      <ThreeCanvas isFullscreen={true} gl={{ alpha: true }}>
         <SdfCollisionQuad
           gravity={controls.gravity}
           mouseStrength={controls.mouseStrength}
           blendFactor={controls.blendFactor}
           restitution={controls.restitution}
           shapeCount={controls.shapeCount}
-          bgColor={controls.bgColor}
         />
       </ThreeCanvas>
     </>
