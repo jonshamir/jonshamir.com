@@ -1,5 +1,6 @@
-import { Leva, useControls } from "leva";
+import { useControls } from "leva";
 
+import { LevaPanel } from "../../../components/LevaPanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { SdfCollisionQuad } from "./SdfCollisionQuad";
 
@@ -7,7 +8,7 @@ export default function SdfCollisionCanvas() {
   const controls = useControls({
     gravity: { value: 0, min: 0, max: 10, label: "Gravity" },
     mouseStrength: { value: 8, min: 0, max: 20, label: "Mouse Strength" },
-    blendFactor: { value: 0.15, min: 0, max: 2, step: 0.05, label: "Blend" },
+    blendFactor: { value: 0.1, min: 0, max: 2, step: 0.05, label: "Blend" },
     restitution: { value: 0.6, min: 0, max: 1, step: 0.05, label: "Bounce" },
     shapeCount: { value: 8, min: 1, max: 16, step: 1, label: "Shapes" },
     bgColor: { value: "#353535", label: "Background" }
@@ -15,7 +16,7 @@ export default function SdfCollisionCanvas() {
 
   return (
     <>
-      <Leva />
+      <LevaPanel />
       <ThreeCanvas isFullscreen={true}>
         <SdfCollisionQuad
           gravity={controls.gravity}
