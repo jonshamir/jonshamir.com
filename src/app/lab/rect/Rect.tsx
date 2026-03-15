@@ -46,6 +46,7 @@ export function Rect(props: RectProps) {
     <mesh {...rest}>
       <planeGeometry args={[size.x, size.y]} />
       <shaderMaterial
+        key={vertexShader + fragmentShader}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         depthTest={depthTest}

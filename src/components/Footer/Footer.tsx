@@ -8,7 +8,8 @@ import styles from "./Footer.module.css";
 
 export function Footer() {
   const path = usePathname();
-  if (path === "/") return <footer className={clsx(styles.Footer, "grid")} />;
+  if (path === "/" || path.startsWith("/lab"))
+    return <footer className={clsx(styles.Footer, "grid")} />;
 
   return (
     <footer className={clsx(styles.Footer, "grid")}>

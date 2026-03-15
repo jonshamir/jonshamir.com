@@ -22,6 +22,7 @@ function Quad(props: QuadProps) {
     <mesh {...rest}>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
+        key={circleVertexShader + circleFragmentShader}
         vertexShader={circleVertexShader}
         fragmentShader={circleFragmentShader}
         depthTest={depthTest}

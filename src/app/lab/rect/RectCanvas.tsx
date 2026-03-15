@@ -1,5 +1,7 @@
 import { OrbitControls } from "@react-three/drei";
-import { Leva, useControls } from "leva";
+import { useControls } from "leva";
+
+import { LevaPanel } from "../../../components/LevaPanel";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { BlurredRect } from "./BlurredRect";
@@ -46,7 +48,7 @@ export default function RectCanvas() {
 
   return (
     <>
-      <Leva />
+      <LevaPanel />
       <ThreeCanvas
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
         isFullscreen={true}

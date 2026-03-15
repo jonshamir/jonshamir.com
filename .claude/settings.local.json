@@ -14,7 +14,9 @@
       "Bash(gh pr view:*)",
       "Bash(gh pr diff:*)",
       "Bash(grep:*)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npx prettier:*)"
     ],
     "deny": []
   }
