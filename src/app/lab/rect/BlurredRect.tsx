@@ -68,6 +68,7 @@ export function BlurredRect(props: BlurredRectProps) {
     <mesh {...rest}>
       <planeGeometry ref={geometryRef} args={[size.x + blur, size.y + blur]} />
       <shaderMaterial
+        key={vertexShader + fragmentShader}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         depthTest={depthTest}

@@ -1,7 +1,9 @@
 "use client";
 
 import { OrbitControls, StatsGl } from "@react-three/drei";
-import { Leva, useControls } from "leva";
+import { useControls } from "leva";
+
+import { LevaPanel } from "../../../components/LevaPanel";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
@@ -194,7 +196,7 @@ export default function PlantCanvas() {
 
   return (
     <>
-      <Leva />
+      <LevaPanel />
       <ThreeCanvas
         camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
         isFullscreen={true}
