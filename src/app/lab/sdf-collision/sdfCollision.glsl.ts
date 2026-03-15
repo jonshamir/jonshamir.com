@@ -24,6 +24,39 @@ uniform vec4 uShapePos[MAX_SHAPES];
 uniform vec4 uShapeParams[MAX_SHAPES];
 uniform vec3 uShapeColors[MAX_SHAPES];
 
+// Linear sRGB <-> OKLab (Björn Ottosson)
+vec3 linearToOklab(vec3 c) {
+    float l = 0.4122214708 * c.r + 0.5363325363 * c.g + 0.0514459929 * c.b;
+    float m = 0.2119034982 * c.r + 0.6806995451 * c.g + 0.1073969566 * c.b;
+    float s = 0.0883024619 * c.r + 0.2220049168 * c.g + 0.6896926213 * c.b;
+    l = pow(l, 1.0 / 3.0); m = pow(m, 1.0 / 3.0); s = pow(s, 1.0 / 3.0);
+    return vec3(
+        0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+        1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s,
+        0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s
+    );
+}
+
+vec3 oklabToLinear(vec3 lab) {
+    float l = lab.x + 0.3963377774 * lab.y + 0.2158037573 * lab.z;
+    float m = lab.x - 0.1055613458 * lab.y - 0.0638541728 * lab.z;
+    float s = lab.x - 0.0894841775 * lab.y - 1.2914855480 * lab.z;
+    l = l * l * l; m = m * m * m; s = s * s * s;
+    return vec3(
+        4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+        -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+        -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s
+    );
+}
+
+vec3 srgbToLinear(vec3 c) {
+    return pow(c, vec3(2.2));
+}
+
+vec3 linearToSrgb(vec3 c) {
+    return pow(max(c, 0.0), vec3(1.0 / 2.2));
+}
+
 // SDF functions (Inigo Quilez)
 float sdCircle(vec2 p, float r) {
     return length(p) - r;
@@ -51,7 +84,7 @@ float evalShape(vec2 p, vec4 params) {
 
 float sceneSDF(vec2 p, out vec3 col) {
     float d = 1e10;
-    col = vec3(0.0);
+    vec3 labCol = vec3(0.0);
     float k = uBlendFactor;
 
     for (int i = 0; i < MAX_SHAPES; i++) {
@@ -59,13 +92,14 @@ float sceneSDF(vec2 p, out vec3 col) {
 
         vec2 shapeP = p - uShapePos[i].xy;
         float shapeDist = evalShape(shapeP, uShapeParams[i]);
-        vec3 shapeCol = uShapeColors[i];
+        vec3 shapeLab = linearToOklab(srgbToLinear(uShapeColors[i]));
 
-        // Smooth minimum with color interpolation
+        // Smooth minimum with color interpolation in OKLab
         float h = clamp(0.5 + 0.5 * (shapeDist - d) / k, 0.0, 1.0);
         d = mix(shapeDist, d, h) - k * h * (1.0 - h);
-        col = mix(shapeCol, col, h);
+        labCol = mix(shapeLab, labCol, h);
     }
+    col = linearToSrgb(oklabToLinear(labCol));
     return d;
 }
 
