@@ -5,23 +5,25 @@ import { SdfCollisionQuad } from "./SdfCollisionQuad";
 
 export default function SdfCollisionCanvas() {
   const controls = useControls({
-    gravity: { value: 4, min: 0, max: 10, label: "Gravity" },
+    gravity: { value: 0, min: 0, max: 10, label: "Gravity" },
     mouseStrength: { value: 8, min: 0, max: 20, label: "Mouse Strength" },
     blendFactor: { value: 0.2, min: 0, max: 2, step: 0.05, label: "Blend" },
     restitution: { value: 0.6, min: 0, max: 1, step: 0.05, label: "Bounce" },
-    shapeCount: { value: 8, min: 1, max: 16, step: 1, label: "Shapes" }
+    shapeCount: { value: 8, min: 1, max: 16, step: 1, label: "Shapes" },
+    bgColor: { value: "#353535", label: "Background" }
   });
 
   return (
     <>
       <Leva />
-      <ThreeCanvas isFullscreen={true} style={{ backgroundColor: "#0f0f0f" }}>
+      <ThreeCanvas isFullscreen={true}>
         <SdfCollisionQuad
           gravity={controls.gravity}
           mouseStrength={controls.mouseStrength}
           blendFactor={controls.blendFactor}
           restitution={controls.restitution}
           shapeCount={controls.shapeCount}
+          bgColor={controls.bgColor}
         />
       </ThreeCanvas>
     </>
