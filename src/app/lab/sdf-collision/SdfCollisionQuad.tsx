@@ -115,7 +115,7 @@ export function SdfCollisionQuad({
 
     for (let i = 0; i < shapesRef.current.length; i++) {
       const s = shapesRef.current[i];
-      u.uShapePos.value[i].set(s.x, s.y, s.vx, s.vy);
+      u.uShapePos.value[i].set(s.x, s.y, s.angle, 0);
       u.uShapeParams.value[i].set(s.type, s.radius, s.sizeY, s.cornerRadius);
       u.uShapeColors.value[i].set(s.color[0], s.color[1], s.color[2]);
     }

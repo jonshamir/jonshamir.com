@@ -91,7 +91,10 @@ float sceneSDF(vec2 p, out vec3 col) {
     for (int i = 0; i < MAX_SHAPES; i++) {
         if (i >= uShapeCount) break;
 
-        vec2 shapeP = p - uShapePos[i].xy;
+        float angle = uShapePos[i].z;
+        float ca = cos(-angle);
+        float sa = sin(-angle);
+        vec2 shapeP = mat2(ca, sa, -sa, ca) * (p - uShapePos[i].xy);
         float shapeDist = evalShape(shapeP, uShapeParams[i]);
         vec3 shapeLab = linearToOklab(srgbToLinear(uShapeColors[i]));
 
