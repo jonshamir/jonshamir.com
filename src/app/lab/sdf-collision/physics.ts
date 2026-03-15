@@ -34,7 +34,7 @@ const COLORS: [number, number, number][] = [
   [0.83, 0.33, 0.61] // pink
 ];
 
-const CURSOR_RADIUS = 0.4;
+const CURSOR_RADIUS = 0.2;
 const CURSOR_BOUNCE = 1.2;
 const WALL_FRICTION = 0.3;
 const SHAPE_FRICTION = 0.4;

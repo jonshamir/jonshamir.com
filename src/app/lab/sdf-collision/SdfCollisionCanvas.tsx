@@ -24,7 +24,7 @@ export default function SdfCollisionCanvas() {
   return (
     <>
       <LevaPanel />
-      <ThreeCanvas isFullscreen={true} gl={{ alpha: true }}>
+      <ThreeCanvas isFullscreen={true} grabCursor={false} gl={{ alpha: true }}>
         <SdfCollisionQuad
           gravity={controls.gravity}
           blendFactor={controls.blendFactor}
