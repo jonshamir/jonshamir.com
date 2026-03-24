@@ -4,6 +4,8 @@
   margin-top: 2rem;
   opacity: 0;
   animation: fadeIn 0.3s ease-in 0.35s forwards;
+  min-height: 2.2em;
+  width: 15em;
 }
 
 .contactButtonWrapper a:hover,
