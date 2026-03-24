@@ -51,23 +51,42 @@ export function SdfCollisionQuad({
   useWindowEvents = false,
   gravityCenter = [0.5, 0.5]
 }: SdfCollisionQuadProps) {
-  const shapesRef = useRef<Shape[]>(initShapes(shapeCount, WORLD_SCALE));
+  const { gl, size } = useThree();
+
+  // Convert 0–1 gravity center to world coordinates
+  const halfH = WORLD_SCALE * 0.5;
+  const aspect = size.width / size.height || 1;
+  const halfW = halfH * aspect;
+  const gcx = (gravityCenter[0] - 0.5) * 2 * halfW;
+  const gcy = -(gravityCenter[1] - 0.5) * 2 * halfH;
+
+  // Dampened size scaling: shapes grow slightly on wider screens
+  const sizeMultiplier = Math.max(1, Math.pow(size.width / 1440, 1.5));
+
+  const shapesRef = useRef<Shape[]>(
+    initShapes(shapeCount, WORLD_SCALE, gcx, gcy, sizeMultiplier)
+  );
   const oklabCacheRef = useRef(new Map<Shape, [number, number, number]>());
   const mouseRef = useRef({ x: 0, y: 0, down: false });
   const prevMouseRef = useRef({ x: 0, y: 0, time: 0 });
   const uniformsRef = useRef(createUniforms());
-  const { gl, size } = useThree();
 
   // Re-init shapes when count changes
   useEffect(() => {
     const current = shapesRef.current;
     if (shapeCount > current.length) {
-      const extra = initShapes(shapeCount - current.length, WORLD_SCALE);
+      const extra = initShapes(
+        shapeCount - current.length,
+        WORLD_SCALE,
+        gcx,
+        gcy,
+        sizeMultiplier
+      );
       shapesRef.current = [...current, ...extra];
     } else if (shapeCount < current.length) {
       shapesRef.current = current.slice(0, shapeCount);
     }
-  }, [shapeCount]);
+  }, [shapeCount, gcx, gcy]);
 
   // Mouse tracking
   useEffect(() => {

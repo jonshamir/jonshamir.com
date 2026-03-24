@@ -16,7 +16,7 @@
 @property --color-text-rgb {
   syntax: "<number>#";
   inherits: true;
-  initial-value: 59, 63, 69;
+  initial-value: 49, 53, 59;
 }
 
 @property --shiki-mix {
@@ -37,7 +37,7 @@
   --color-accent: #536bf2;
   --color-link: #475ddc;
 
-  --color-text-rgb: 59, 63, 69;
+  --color-text-rgb: 49, 53, 59;
   --color-text: rgb(var(--color-text-rgb));
 
   --color-bg-rgb: 243, 240, 238;
