@@ -1,14 +1,26 @@
-.contactButton {
+.contactButtonWrapper {
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
   margin-top: 1rem;
   opacity: 0;
   animation: fadeIn 0.3s ease-in 0.35s forwards;
 }
 
+.hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.contactButtonText {
+  position: relative;
+  z-index: 1;
+}
+
 @media (max-width: 54rem) {
-  .contactButton {
-    position: relative;
-    right: 0;
-    bottom: 0;
+  .contactButtonWrapper {
     margin-block: 1rem;
   }
 }
