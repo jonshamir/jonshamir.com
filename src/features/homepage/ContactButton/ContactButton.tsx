@@ -1,6 +1,6 @@
 "use client";
 
-import { ButtonLink } from "../../../components/Button";
+import { Button, ButtonLink } from "../../../components/Button";
 import styles from "./ContactButton.module.css";
 
 export function ContactButton() {
@@ -23,14 +23,16 @@ export function ContactButton() {
           </filter>
         </defs>
       </svg>
-      <ButtonLink
+      <Button
         round
         variant="primary"
-        href="mailto:jon@studio-normal.com"
         className={styles.copyAddressButton}
+        onClick={() => {
+          void navigator.clipboard.writeText("jon@studio-normal.com");
+        }}
       >
         <span className={styles.contactButtonText}>Copy address</span>
-      </ButtonLink>
+      </Button>
       <ButtonLink
         round
         variant="primary"
