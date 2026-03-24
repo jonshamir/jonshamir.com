@@ -9,7 +9,7 @@
 .contactButtonWrapper a:hover,
 .contactButtonWrapper button:hover {
   background-color: var(--color-text) !important;
-  text-decoration: underline;
+  /* text-decoration: underline; */
 }
 
 .hidden {
@@ -17,11 +17,6 @@
   width: 0;
   height: 0;
   overflow: hidden;
-}
-
-.contactButtonText {
-  position: relative;
-  z-index: 1;
 }
 
 .contactButtonWrapper:hover {

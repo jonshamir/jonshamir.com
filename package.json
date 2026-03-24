@@ -25,6 +25,7 @@
     "feather-icons": "^4.29.2",
     "interactjs": "^1.10.27",
     "leva": "0.9.33",
+    "motion": "^12.38.0",
     "next": "^15.3.5",
     "posthog-js": "^1.257.0",
     "react": "19.1.0",
