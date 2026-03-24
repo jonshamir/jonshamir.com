@@ -97,3 +97,8 @@
     opacity: 1;
   }
 }
+
+.copyAddressButton:hover .copyAddressText,
+.emailMeButton:hover .contactButtonText {
+  text-decoration: underline;
+}
