@@ -35,7 +35,7 @@ export function ContactButton() {
           <span className={styles.contactText}>
             Contact <span className="arrow">↗</span>
           </span>
-          <span className={styles.copyAddressText}>Copy address</span>
+          <span className={styles.copyAddressText}>hi@jonshamir.com</span>
         </span>
       </Button>
       <ButtonLink
@@ -44,7 +44,7 @@ export function ContactButton() {
         href="mailto:jon@studio-normal.com"
         className={styles.emailMeButton}
       >
-        <span className={styles.contactButtonText}>Email Me</span>
+        <span className={styles.contactButtonText}>Copy</span>
       </ButtonLink>
     </div>
   );
