@@ -20,6 +20,7 @@ export function HeroBackground() {
         shapeCount={12}
         centerGravity={true}
         noiseAmount={0.05}
+        useWindowEvents={true}
       />
     </ThreeCanvas>
   );

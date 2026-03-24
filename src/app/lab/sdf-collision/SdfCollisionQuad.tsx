@@ -36,6 +36,7 @@ interface SdfCollisionQuadProps {
   shapeCount: number;
   centerGravity: boolean;
   noiseAmount: number;
+  useWindowEvents?: boolean;
 }
 
 export function SdfCollisionQuad({
@@ -45,7 +46,8 @@ export function SdfCollisionQuad({
   damping,
   shapeCount,
   centerGravity,
-  noiseAmount
+  noiseAmount,
+  useWindowEvents = false
 }: SdfCollisionQuadProps) {
   const shapesRef = useRef<Shape[]>(initShapes(shapeCount, WORLD_SCALE));
   const oklabCacheRef = useRef(new Map<Shape, [number, number, number]>());
@@ -68,11 +70,20 @@ export function SdfCollisionQuad({
   // Mouse tracking
   useEffect(() => {
     const canvas = gl.domElement;
+    const target: EventTarget = useWindowEvents ? window : canvas;
     const onMove = (e: PointerEvent) => {
       const aspect = size.width / size.height;
-      mouseRef.current.x =
-        (e.clientX / size.width - 0.5) * aspect * WORLD_SCALE;
-      mouseRef.current.y = -(e.clientY / size.height - 0.5) * WORLD_SCALE;
+      if (useWindowEvents) {
+        const rect = canvas.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        mouseRef.current.x = (nx - 0.5) * aspect * WORLD_SCALE;
+        mouseRef.current.y = -(ny - 0.5) * WORLD_SCALE;
+      } else {
+        mouseRef.current.x =
+          (e.clientX / size.width - 0.5) * aspect * WORLD_SCALE;
+        mouseRef.current.y = -(e.clientY / size.height - 0.5) * WORLD_SCALE;
+      }
     };
     const onDown = () => {
       mouseRef.current.down = true;
@@ -81,15 +92,15 @@ export function SdfCollisionQuad({
       mouseRef.current.down = false;
     };
 
-    canvas.addEventListener("pointermove", onMove);
-    canvas.addEventListener("pointerdown", onDown);
-    canvas.addEventListener("pointerup", onUp);
+    target.addEventListener("pointermove", onMove as EventListener);
+    target.addEventListener("pointerdown", onDown);
+    target.addEventListener("pointerup", onUp);
     return () => {
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerdown", onDown);
-      canvas.removeEventListener("pointerup", onUp);
+      target.removeEventListener("pointermove", onMove as EventListener);
+      target.removeEventListener("pointerdown", onDown);
+      target.removeEventListener("pointerup", onUp);
     };
-  }, [gl, size]);
+  }, [gl, size, useWindowEvents]);
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05);
