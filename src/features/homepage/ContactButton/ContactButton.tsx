@@ -16,7 +16,7 @@ export function ContactButton() {
             <feColorMatrix
               in="blur"
               mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -6"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 28 -6"
               result="meta"
             />
             <feBlend in="SourceGraphic" in2="meta" />
@@ -27,19 +27,17 @@ export function ContactButton() {
         round
         variant="primary"
         href="mailto:jon@studio-normal.com"
-        className={styles.contactButton}
+        className={styles.copyAddressButton}
       >
-        <span className={styles.contactButtonText}>Copy Address</span>
+        <span className={styles.contactButtonText}>Copy address</span>
       </ButtonLink>
       <ButtonLink
         round
         variant="primary"
         href="mailto:jon@studio-normal.com"
-        className={styles.contactButton}
+        className={styles.emailMeButton}
       >
-        <span className={styles.contactButtonText}>
-          Email Me<span className="arrow">↗</span>
-        </span>
+        <span className={styles.contactButtonText}>Email Me</span>
       </ButtonLink>
     </div>
   );

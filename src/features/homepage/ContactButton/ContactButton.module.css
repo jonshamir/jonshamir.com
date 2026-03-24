@@ -1,10 +1,13 @@
 .contactButtonWrapper {
   position: relative;
-  display: flex;
   gap: 0.5rem;
   margin-top: 1rem;
   opacity: 0;
   animation: fadeIn 0.3s ease-in 0.35s forwards;
+}
+
+.contactButtonWrapper a:hover {
+  background-color: var(--color-text) !important;
 }
 
 .hidden {
@@ -16,6 +19,27 @@
 
 .contactButtonText {
   position: relative;
+  z-index: 1;
+}
+
+.contactButtonWrapper:hover {
+  .emailMeButton {
+    transform: translateX(130%);
+  }
+}
+
+.emailMeButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.copyAddressButton {
+  position: absolute;
+  top: 0;
+  left: 0;
   z-index: 1;
 }
 
