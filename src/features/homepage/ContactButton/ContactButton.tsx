@@ -59,7 +59,8 @@ export function ContactButton() {
         className={styles.copyAddressButton}
         href="mailto:hi@jonshamir.com"
         onClick={(e: React.MouseEvent) => {
-          if (!isOpen) {
+          const canHover = window.matchMedia("(hover: hover)").matches;
+          if (!isOpen && !canHover) {
             e.preventDefault();
             setIsOpen(true);
           }

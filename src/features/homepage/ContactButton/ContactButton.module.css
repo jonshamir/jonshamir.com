@@ -12,6 +12,10 @@
 .contactButtonWrapper button:hover {
   background-color: var(--color-text) !important;
 }
+.contactButtonWrapper button:active,
+.contactButtonWrapper button:focus {
+  outline: none !important;
+}
 
 .hidden {
   position: absolute;
