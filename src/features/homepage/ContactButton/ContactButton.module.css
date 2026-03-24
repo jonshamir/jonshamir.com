@@ -6,6 +6,7 @@
   animation: fadeIn 0.3s ease-in 0.35s forwards;
   min-height: 2.2em;
   width: 15em;
+  /* background-color: red; */
 }
 
 .contactButtonWrapper a:hover,
@@ -21,18 +22,11 @@
   overflow: hidden;
 }
 
-.contactButtonWrapper:hover {
-  .emailMeButton {
-    transform: translateX(255%);
-  }
-}
-
 .emailMeButton {
   position: absolute;
   top: 0;
   left: 0;
   z-index: 0;
-  transition: transform 0.5s var(--ease-out-expo);
 }
 
 .copyAddressButton {
