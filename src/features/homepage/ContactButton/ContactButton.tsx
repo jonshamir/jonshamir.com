@@ -44,13 +44,11 @@ export function ContactButton() {
           </filter>
         </defs>
       </svg>
-      <Button
+      <ButtonLink
         round
         variant="primary"
         className={styles.copyAddressButton}
-        onClick={() => {
-          void navigator.clipboard.writeText("jon@studio-normal.com");
-        }}
+        href="mailto:hi@jonshamir.com"
       >
         <span className={styles.textContainer}>
           <span className={styles.contactText}>
@@ -58,19 +56,25 @@ export function ContactButton() {
           </span>
           <span className={styles.copyAddressText}>hi@jonshamir.com</span>
         </span>
-      </Button>
+      </ButtonLink>
       <motion.div
         className={styles.emailMeButton}
-        animate={{ x: isHovered ? "255%" : "0%" }}
+        animate={{ x: isHovered ? "9.8em" : "0%" }}
         transition={{
           duration: prefersReducedMotion ? 0 : 0.5,
           ease: EASE_OUT_EXPO
         }}
         onAnimationComplete={forceFilterRepaint}
       >
-        <ButtonLink round variant="primary" href="mailto:jon@studio-normal.com">
+        <Button
+          round
+          variant="primary"
+          onClick={() => {
+            void navigator.clipboard.writeText("hi@jonshamir.com");
+          }}
+        >
           <span className={styles.contactButtonText}>Copy</span>
-        </ButtonLink>
+        </Button>
       </motion.div>
     </div>
   );

@@ -6,13 +6,11 @@
   animation: fadeIn 0.3s ease-in 0.35s forwards;
   min-height: 2.2em;
   width: 15em;
-  /* background-color: red; */
 }
 
 .contactButtonWrapper a:hover,
 .contactButtonWrapper button:hover {
   background-color: var(--color-text) !important;
-  /* text-decoration: underline; */
 }
 
 .hidden {
