@@ -8,12 +8,14 @@ import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
+import { HeroBackground } from "../features/homepage/HeroBackground";
 import styles from "./page.module.css";
 
 export default function Page() {
   return (
     <>
       <div className={styles.hero}>
+        <HeroBackground />
         <InlineLogoPlaceholder />
 
         <p className={styles.fadeIn}>
