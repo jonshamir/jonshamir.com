@@ -1,12 +1,12 @@
 import { clsx } from "clsx";
 
-import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
+import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import { HeroBackground } from "../features/homepage/HeroBackground";
 import styles from "./page.module.css";
@@ -31,14 +31,7 @@ export default function Page() {
           <h2>
             <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
           </h2>
-          <ButtonLink
-            round
-            variant="primary"
-            href="mailto:jon@studio-normal.com"
-            className={clsx(styles.contactButton, styles.fadeIn)}
-          >
-            Contact<span className="arrow">↗</span>
-          </ButtonLink>
+          <ContactButton />
           <br />
         </div>
       </div>

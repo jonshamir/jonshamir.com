@@ -1,0 +1,23 @@
+.contactButton {
+  margin-top: 1rem;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in 0.35s forwards;
+}
+
+@media (max-width: 54rem) {
+  .contactButton {
+    position: relative;
+    right: 0;
+    bottom: 0;
+    margin-block: 1rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

@@ -99,22 +99,6 @@
   margin-bottom: 0.8rem;
 }
 
-.contactButton {
-  /* position: absolute; */
-  /* right: -3rem; */
-  /* bottom: 2.5rem; */
-  margin-top: 1rem;
-}
-
-@media (max-width: 54rem) {
-  .contactButton {
-    position: relative;
-    right: 0;
-    bottom: 0;
-    margin-block: 1rem;
-  }
-}
-
 .columns {
   display: flex;
   flex-direction: row;
