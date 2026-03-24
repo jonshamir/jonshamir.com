@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "motion/react";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button, ButtonLink } from "../../../components/Button";
 import styles from "./ContactButton.module.css";
@@ -10,22 +10,31 @@ const EASE_OUT_EXPO: [number, number, number, number] = [0.19, 1, 0.22, 1];
 
 export function ContactButton() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // Force Safari to recalculate the SVG filter after animation ends
-  const forceFilterRepaint = useCallback(() => {
-    const el = wrapperRef.current;
-    if (!el) return;
-    el.style.filter = "none";
-    void el.offsetHeight;
-    el.style.filter = "url(#meta)";
-  }, []);
+  const isExpanded = isHovered || isOpen;
+
+  // Close on outside tap
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleClick = (e: MouseEvent) => {
+      if (
+        wrapperRef.current &&
+        !wrapperRef.current.contains(e.target as Node)
+      ) {
+        setIsOpen(false);
+      }
+    };
+    document.addEventListener("click", handleClick);
+    return () => document.removeEventListener("click", handleClick);
+  }, [isOpen]);
 
   return (
     <div
       ref={wrapperRef}
-      className={styles.contactButtonWrapper}
+      className={`${styles.contactButtonWrapper}${isOpen ? ` ${styles.expanded}` : ""}`}
       style={{ filter: "url(#meta)" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -49,6 +58,12 @@ export function ContactButton() {
         variant="primary"
         className={styles.copyAddressButton}
         href="mailto:hi@jonshamir.com"
+        onClick={(e: React.MouseEvent) => {
+          if (!isOpen) {
+            e.preventDefault();
+            setIsOpen(true);
+          }
+        }}
       >
         <span className={styles.textContainer}>
           <span className={styles.contactText}>
@@ -59,12 +74,11 @@ export function ContactButton() {
       </ButtonLink>
       <motion.div
         className={styles.emailMeButton}
-        animate={{ x: isHovered ? "9.8em" : "0%" }}
+        animate={{ x: isExpanded ? "9.8em" : "0%" }}
         transition={{
           duration: prefersReducedMotion ? 0 : 0.5,
           ease: EASE_OUT_EXPO
         }}
-        onAnimationComplete={forceFilterRepaint}
       >
         <Button
           round

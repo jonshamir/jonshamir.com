@@ -53,19 +53,22 @@
   top: 0;
   left: 0;
   white-space: nowrap;
-  transform: translateY(-100%);
+  transform: translateY(100%);
   transition: transform 0.3s var(--ease-out-expo);
 }
 
-.contactButtonWrapper:hover .textContainer {
+.contactButtonWrapper:hover .textContainer,
+.contactButtonWrapper.expanded .textContainer {
   padding-right: 3.5em;
 }
 
-.contactButtonWrapper:hover .contactText {
-  transform: translateY(100%);
+.contactButtonWrapper:hover .contactText,
+.contactButtonWrapper.expanded .contactText {
+  transform: translateY(-100%);
 }
 
-.contactButtonWrapper:hover .copyAddressText {
+.contactButtonWrapper:hover .copyAddressText,
+.contactButtonWrapper.expanded .copyAddressText {
   transform: translateY(0);
 }
 
