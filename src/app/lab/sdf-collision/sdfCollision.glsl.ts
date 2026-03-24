@@ -25,6 +25,13 @@ uniform int uShapeCount;
 uniform vec4 uShapePos[MAX_SHAPES];
 uniform vec4 uShapeParams[MAX_SHAPES];
 uniform vec3 uShapeColors[MAX_SHAPES]; // pre-converted to OKLab on CPU
+uniform float uNoiseAmount;
+
+vec2 hash22(vec2 p) {
+    vec3 a = fract(p.xyx * vec3(443.897, 441.423, 437.195));
+    a += dot(a, a.yzx + 19.19);
+    return fract((a.xx + a.yz) * a.zy) - 0.5;
+}
 
 vec3 oklabToLinear(vec3 lab) {
     float l = lab.x + 0.3963377774 * lab.y + 0.2158037573 * lab.z;
@@ -96,14 +103,20 @@ void main() {
     float aspect = uResolution.x / uResolution.y;
     vec2 p = (vUv - 0.5) * vec2(aspect, 1.0) * uWorldScale;
 
+    // Clean distance for sharp antialiased outline
     vec3 col;
     float d = sceneSDF(p, col);
+
+    // Noisy color: re-sample at offset position
+    vec2 noise = hash22(vUv * uResolution);
+    vec3 noisyCol;
+    sceneSDF(p + noise * uNoiseAmount, noisyCol);
 
     // Anti-aliased fill using screen-space derivatives
     float fw = fwidth(d);
     float fill = 1.0 - smoothstep(-fw * 0.5, fw * 0.5, d);
 
-    vec3 finalCol = linearToSrgb(col);
+    vec3 finalCol = linearToSrgb(noisyCol);
 
     gl_FragColor = vec4(finalCol * fill, fill);
 }
