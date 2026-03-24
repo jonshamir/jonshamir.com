@@ -25,8 +25,8 @@ export default function Page() {
           </span>
         </p>
         <h2 className={styles.fadeIn}>
-          I build interactive experiences – from 3D websites and spatial
-          computing to thoughtful product interfaces.
+          I build interactive experiences – from 3D web and spatial apps to
+          thoughtful product interfaces.
         </h2>
         <ButtonLink
           round
