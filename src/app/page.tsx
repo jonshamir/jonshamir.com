@@ -14,31 +14,33 @@ import styles from "./page.module.css";
 export default function Page() {
   return (
     <>
-      <div className={styles.hero}>
+      <div className={styles.heroSection}>
         <HeroBackground />
-        <InlineLogoPlaceholder />
+        <div className={styles.hero}>
+          <InlineLogoPlaceholder />
 
-        <p className={styles.fadeIn}>
-          <span className={styles.introHey}>
-            Hey! I&rsquo;m
-            <span className={styles.name}>
-              <span className={styles.jon}> Jon</span>
-              <span className={styles.yonatan}> Yonatan</span>
+          <p className={styles.fadeIn}>
+            <span className={styles.introHey}>
+              Hey! I&rsquo;m
+              <span className={styles.name}>
+                <span className={styles.jon}> Jon</span>
+                <span className={styles.yonatan}> Yonatan</span>
+              </span>
             </span>
-          </span>
-        </p>
-        <h2>
-          <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
-        </h2>
-        <ButtonLink
-          round
-          variant="primary"
-          href="mailto:jon@studio-normal.com"
-          className={clsx(styles.contactButton, styles.fadeIn)}
-        >
-          Contact<span className="arrow">↗</span>
-        </ButtonLink>
-        <br />
+          </p>
+          <h2>
+            <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
+          </h2>
+          <ButtonLink
+            round
+            variant="primary"
+            href="mailto:jon@studio-normal.com"
+            className={clsx(styles.contactButton, styles.fadeIn)}
+          >
+            Contact<span className="arrow">↗</span>
+          </ButtonLink>
+          <br />
+        </div>
       </div>
       {/* <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} /> */}
 
