@@ -3,12 +3,13 @@
   grid-column-end: narrow;
   padding-left: 5rem;
   position: relative;
+  height: 100dvh;
 
   h2 {
     margin: 0.8rem 0;
     font-weight: 400;
     text-wrap: balance;
-    font-size: 2rem;
+    font-size: 2.8rem;
     line-height: 1.4;
   }
 

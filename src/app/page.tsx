@@ -38,7 +38,7 @@ export default function Page() {
         </ButtonLink>
         <br />
       </div>
-      <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} />
+      {/* <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} /> */}
 
       <p />
 
