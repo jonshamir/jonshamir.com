@@ -19,7 +19,7 @@ export default function Page() {
         <div className={styles.hero}>
           <InlineLogoPlaceholder />
 
-          <p className={styles.fadeIn}>
+          <p className={clsx(styles.fadeIn, styles.introHeyWrapper)}>
             <span className={styles.introHey}>
               Hey! I&rsquo;m
               <span className={styles.name}>

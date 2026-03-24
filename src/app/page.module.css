@@ -25,6 +25,10 @@
   }
 }
 
+.introHeyWrapper {
+  overflow: hidden;
+}
+
 .introHey {
   cursor: help;
   animation-delay: 0.2s !important;
@@ -49,13 +53,13 @@
 
   .yonatan {
     opacity: 0;
-    transform: rotateX(90deg) translateY(100%);
+    transform: translateY(100%);
   }
 
   &:hover {
     .jon {
       opacity: 0;
-      transform: rotateX(90deg) translateY(-100%);
+      transform: translateY(-100%);
     }
 
     .yonatan {
