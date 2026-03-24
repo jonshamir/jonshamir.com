@@ -18,7 +18,8 @@ export default function SdfCollisionCanvas() {
       step: 1,
       label: "Shapes"
     },
-    centerGravity: { value: true, label: "Center Gravity" }
+    centerGravity: { value: true, label: "Center Gravity" },
+    noiseAmount: { value: 0.05, min: 0, max: 0.3, step: 0.005, label: "Noise" }
   });
 
   return (
@@ -32,6 +33,7 @@ export default function SdfCollisionCanvas() {
           damping={controls.damping}
           shapeCount={controls.shapeCount}
           centerGravity={controls.centerGravity}
+          noiseAmount={controls.noiseAmount}
         />
       </ThreeCanvas>
     </>

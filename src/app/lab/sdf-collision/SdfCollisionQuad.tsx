@@ -13,6 +13,7 @@ function createUniforms() {
     uResolution: { value: new THREE.Vector2(1, 1) },
     uMouse: { value: new THREE.Vector2(0, 0) },
     uBlendFactor: { value: 0.5 },
+    uNoiseAmount: { value: 0.05 },
     uWorldScale: { value: WORLD_SCALE },
     uShapeCount: { value: 0 },
     uShapePos: {
@@ -34,6 +35,7 @@ interface SdfCollisionQuadProps {
   damping: number;
   shapeCount: number;
   centerGravity: boolean;
+  noiseAmount: number;
 }
 
 export function SdfCollisionQuad({
@@ -42,7 +44,8 @@ export function SdfCollisionQuad({
   restitution,
   damping,
   shapeCount,
-  centerGravity
+  centerGravity,
+  noiseAmount
 }: SdfCollisionQuadProps) {
   const shapesRef = useRef<Shape[]>(initShapes(shapeCount, WORLD_SCALE));
   const oklabCacheRef = useRef(new Map<Shape, [number, number, number]>());
@@ -126,6 +129,7 @@ export function SdfCollisionQuad({
     u.uResolution.value.set(size.width, size.height);
     u.uMouse.value.set(mouse.x, mouse.y);
     u.uBlendFactor.value = blendFactor;
+    u.uNoiseAmount.value = noiseAmount;
     u.uShapeCount.value = shapes.length;
 
     for (let i = 0; i < shapes.length; i++) {
