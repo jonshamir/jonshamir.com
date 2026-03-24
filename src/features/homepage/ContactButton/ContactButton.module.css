@@ -28,14 +28,14 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 0;
+  z-index: 1;
 }
 
 .copyAddressButton {
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 1;
+  z-index: 0;
 }
 
 .textContainer {
@@ -99,7 +99,7 @@
   }
 }
 
-.copyAddressButton:hover .copyAddressText,
-.emailMeButton:hover .contactButtonText {
+.emailMeButton:hover .copyAddressText,
+.copyAddressButton:hover .contactButtonText {
   text-decoration: underline;
 }

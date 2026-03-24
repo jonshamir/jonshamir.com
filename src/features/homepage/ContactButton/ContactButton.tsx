@@ -56,7 +56,7 @@ export function ContactButton() {
       <ButtonLink
         round
         variant="primary"
-        className={styles.copyAddressButton}
+        className={styles.emailMeButton}
         href="mailto:hi@jonshamir.com"
         onClick={(e: React.MouseEvent) => {
           const canHover = window.matchMedia("(hover: hover)").matches;
@@ -74,7 +74,7 @@ export function ContactButton() {
         </span>
       </ButtonLink>
       <motion.div
-        className={styles.emailMeButton}
+        className={styles.copyAddressButton}
         animate={{ x: isExpanded ? "9.8em" : "0%" }}
         transition={{
           duration: prefersReducedMotion ? 0 : 0.5,
