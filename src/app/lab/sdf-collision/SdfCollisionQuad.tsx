@@ -86,7 +86,7 @@ export function SdfCollisionQuad({
     } else if (shapeCount < current.length) {
       shapesRef.current = current.slice(0, shapeCount);
     }
-  }, [shapeCount, gcx, gcy]);
+  }, [shapeCount, gcx, gcy, sizeMultiplier]);
 
   // Mouse tracking
   useEffect(() => {
