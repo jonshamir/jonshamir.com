@@ -31,11 +31,12 @@ export function ContactButton() {
           void navigator.clipboard.writeText("jon@studio-normal.com");
         }}
       >
-        <span className={styles.contactText}>
-          Contact <span className="arrow">↗</span>
+        <span className={styles.textContainer}>
+          <span className={styles.contactText}>
+            Contact <span className="arrow">↗</span>
+          </span>
+          <span className={styles.copyAddressText}>Copy address</span>
         </span>
-
-        <span className={styles.copyAddressText}>Copy address</span>
       </Button>
       <ButtonLink
         round

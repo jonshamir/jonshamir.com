@@ -40,6 +40,49 @@
   z-index: 1;
 }
 
+.textContainer {
+  position: relative;
+  display: inline-grid;
+  overflow: hidden;
+  white-space: nowrap;
+  max-width: 5.5em;
+  transition: max-width 200ms var(--ease-out-expo);
+}
+
+.textContainer > * {
+  grid-area: 1 / 1;
+}
+
+.contactText {
+  display: inline-block;
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.copyAddressText {
+  transform: translateY(-100%);
+  transition: transform 200ms var(--ease-out-expo);
+}
+
+.contactButtonWrapper:hover .textContainer {
+  max-width: 8em;
+}
+
+.contactButtonWrapper:hover .contactText {
+  transform: translateY(100%);
+}
+
+.contactButtonWrapper:hover .copyAddressText {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contactText,
+  .copyAddressText,
+  .textContainer {
+    transition: none;
+  }
+}
+
 @media (max-width: 54rem) {
   .contactButtonWrapper {
     margin-block: 1rem;
