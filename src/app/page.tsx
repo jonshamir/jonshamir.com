@@ -6,6 +6,7 @@ import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
+import { StaggeredText } from "../components/StaggeredText/StaggeredText";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
@@ -24,9 +25,8 @@ export default function Page() {
             </span>
           </span>
         </p>
-        <h2 className={styles.fadeIn}>
-          I build interactive experiences – from 3D web and spatial apps to
-          thoughtful product interfaces.
+        <h2>
+          <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
         </h2>
         <ButtonLink
           round

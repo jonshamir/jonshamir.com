@@ -1,0 +1,18 @@
+.wordWrapper {
+  display: inline-block;
+  overflow: hidden;
+  margin-right: 0.2em;
+  margin-bottom: -0.4em;
+}
+
+.word {
+  display: inline-block;
+  transform: translateY(100%);
+  animation: slideUp 0.5s var(--ease-out-expo) forwards;
+}
+
+@keyframes slideUp {
+  to {
+    transform: translateY(0);
+  }
+}
