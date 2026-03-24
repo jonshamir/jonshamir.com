@@ -37,6 +37,7 @@ interface SdfCollisionQuadProps {
   centerGravity: boolean;
   noiseAmount: number;
   useWindowEvents?: boolean;
+  gravityCenter?: [number, number];
 }
 
 export function SdfCollisionQuad({
@@ -47,7 +48,8 @@ export function SdfCollisionQuad({
   shapeCount,
   centerGravity,
   noiseAmount,
-  useWindowEvents = false
+  useWindowEvents = false,
+  gravityCenter = [0.5, 0.5]
 }: SdfCollisionQuadProps) {
   const shapesRef = useRef<Shape[]>(initShapes(shapeCount, WORLD_SCALE));
   const oklabCacheRef = useRef(new Map<Shape, [number, number, number]>());
@@ -128,7 +130,9 @@ export function SdfCollisionQuad({
       worldScale: WORLD_SCALE,
       mouseDown: mouse.down,
       aspect: size.width / size.height,
-      centerGravity
+      centerGravity,
+      gravityCenterX: gravityCenter[0],
+      gravityCenterY: gravityCenter[1]
     };
 
     stepPhysics(shapesRef.current, dt, mouse.x, mouse.y, opts);

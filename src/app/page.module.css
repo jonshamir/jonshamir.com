@@ -1,6 +1,5 @@
 .hero {
-  grid-column-start: wide;
-  grid-column-end: narrow;
+  grid-column: wide / narrow;
   padding-left: 5rem;
   position: relative;
   height: 100dvh;

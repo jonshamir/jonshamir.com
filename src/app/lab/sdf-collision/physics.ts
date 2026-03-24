@@ -147,6 +147,8 @@ export interface PhysicsOptions {
   mouseDown: boolean;
   aspect: number;
   centerGravity: boolean;
+  gravityCenterX: number;
+  gravityCenterY: number;
 }
 
 // Pre-allocated arrays to avoid per-frame GC pressure
@@ -328,10 +330,17 @@ export function stepPhysics(
     damping,
     worldScale,
     aspect,
-    centerGravity
+    centerGravity,
+    gravityCenterX,
+    gravityCenterY
   } = opts;
   const subDt = dt / SUBSTEPS;
   const n = shapes.length;
+  const halfH = worldScale * 0.5;
+  const halfW = halfH * aspect;
+  // Convert 0–1 gravity center to world coordinates
+  const gcx = (gravityCenterX - 0.5) * 2 * halfW;
+  const gcy = -(gravityCenterY - 0.5) * 2 * halfH;
 
   for (let step = 0; step < SUBSTEPS; step++) {
     // Cursor collision
@@ -346,10 +355,12 @@ export function stepPhysics(
       const s = shapes[i];
       s.vy -= gravity * subDt;
       if (centerGravity) {
-        const dist = Math.sqrt(s.x * s.x + s.y * s.y);
+        const dx = s.x - gcx;
+        const dy = s.y - gcy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist > 0.01) {
-          s.vx -= (s.x / dist) * centerStrength * subDt;
-          s.vy -= (s.y / dist) * centerStrength * subDt;
+          s.vx -= (dx / dist) * centerStrength * subDt;
+          s.vy -= (dy / dist) * centerStrength * subDt;
         }
       }
       s.vx *= dampFactor;
@@ -361,8 +372,6 @@ export function stepPhysics(
     }
 
     // Wall collision
-    const halfH = worldScale * 0.5;
-    const halfW = halfH * aspect;
     for (let i = 0; i < n; i++) {
       applyWallConstraints(shapes[i], halfW, halfH, restitution);
     }
