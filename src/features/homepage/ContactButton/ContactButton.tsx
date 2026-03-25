@@ -41,7 +41,7 @@ export function ContactButton() {
       <svg xmlns="http://www.w3.org/2000/svg" className={styles.hidden}>
         <defs>
           <filter id="meta">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"
