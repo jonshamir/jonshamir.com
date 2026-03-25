@@ -1,9 +1,11 @@
 "use client";
 
-import { useEffect, type RefObject } from "react";
+import { type RefObject, useEffect } from "react";
 
-const FRICTION = 0.95;
+const FRICTION = 0.93;
 const MIN_VELOCITY = 0.5;
+const BOUNCE_RESISTANCE = 0.2; // how much overscroll is allowed (lower = stiffer)
+const BOUNCE_BACK_SPEED = 0.1; // spring-back factor per frame
 
 export function useDragScroll(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
@@ -17,26 +19,75 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
     let prevTime = 0;
     let velocity = 0;
     let animationId = 0;
+    let overscroll = 0; // positive = overscrolled past start, negative = past end
 
-    const stopMomentum = () => {
+    const maxScroll = () => el.scrollWidth - el.clientWidth;
+
+    const setOverscroll = (value: number) => {
+      overscroll = value;
+      el.style.transform = overscroll ? `translateX(${overscroll}px)` : "";
+    };
+
+    const atStart = () => el.scrollLeft <= 0;
+    const atEnd = () => el.scrollLeft >= maxScroll();
+
+    const stopAnimation = () => {
       if (animationId) {
         cancelAnimationFrame(animationId);
         animationId = 0;
       }
     };
 
+    const springBack = () => {
+      const tick = () => {
+        overscroll *= 1 - BOUNCE_BACK_SPEED;
+        if (Math.abs(overscroll) < 0.5) {
+          setOverscroll(0);
+          return;
+        }
+        setOverscroll(overscroll);
+        animationId = requestAnimationFrame(tick);
+      };
+      animationId = requestAnimationFrame(tick);
+    };
+
     const startMomentum = () => {
       const tick = () => {
         velocity *= FRICTION;
+
+        if (overscroll !== 0) {
+          // Already in overscroll — spring back
+          velocity = 0;
+          springBack();
+          return;
+        }
+
         if (Math.abs(velocity) < MIN_VELOCITY) return;
+
+        const prevScrollLeft = el.scrollLeft;
         el.scrollLeft -= velocity;
+
+        // Check if we hit a boundary
+        const hitStart = velocity > 0 && atStart() && prevScrollLeft === 0;
+        const hitEnd =
+          velocity < 0 && atEnd() && el.scrollLeft === prevScrollLeft;
+
+        if (hitStart || hitEnd) {
+          // Convert remaining velocity into overscroll
+          setOverscroll(velocity * BOUNCE_RESISTANCE * 5);
+          velocity = 0;
+          springBack();
+          return;
+        }
+
         animationId = requestAnimationFrame(tick);
       };
       animationId = requestAnimationFrame(tick);
     };
 
     const onMouseDown = (e: MouseEvent) => {
-      stopMomentum();
+      stopAnimation();
+      if (overscroll !== 0) setOverscroll(0);
       isDown = true;
       startX = e.pageX - el.offsetLeft;
       scrollLeft = el.scrollLeft;
@@ -52,12 +103,24 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
       e.preventDefault();
       const x = e.pageX - el.offsetLeft;
       const walk = x - startX;
-      el.scrollLeft = scrollLeft - walk;
+      const targetScroll = scrollLeft - walk;
+
+      // Rubber-band at boundaries during drag
+      if (targetScroll < 0) {
+        el.scrollLeft = 0;
+        setOverscroll(-targetScroll * BOUNCE_RESISTANCE);
+      } else if (targetScroll > maxScroll()) {
+        el.scrollLeft = maxScroll();
+        setOverscroll(-(targetScroll - maxScroll()) * BOUNCE_RESISTANCE);
+      } else {
+        if (overscroll !== 0) setOverscroll(0);
+        el.scrollLeft = targetScroll;
+      }
 
       const now = performance.now();
       const dt = now - prevTime;
       if (dt > 0) {
-        velocity = (e.pageX - prevX) / dt * 16; // normalize to ~per-frame
+        velocity = ((e.pageX - prevX) / dt) * 16;
         prevX = e.pageX;
         prevTime = now;
       }
@@ -68,7 +131,12 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
       isDown = false;
       el.style.cursor = "";
       el.style.userSelect = "";
-      if (Math.abs(velocity) > MIN_VELOCITY) startMomentum();
+
+      if (overscroll !== 0) {
+        springBack();
+      } else if (Math.abs(velocity) > MIN_VELOCITY) {
+        startMomentum();
+      }
     };
 
     el.addEventListener("mousedown", onMouseDown);
@@ -77,7 +145,8 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
     el.addEventListener("mouseleave", onMouseUp);
 
     return () => {
-      stopMomentum();
+      stopAnimation();
+      setOverscroll(0);
       el.removeEventListener("mousedown", onMouseDown);
       el.removeEventListener("mousemove", onMouseMove);
       el.removeEventListener("mouseup", onMouseUp);

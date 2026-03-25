@@ -1,5 +1,6 @@
 .container {
   grid-column: full;
+  z-index: 1;
 }
 
 .scroller {
