@@ -22,6 +22,7 @@ export function HeroBackground() {
         noiseAmount={0.05}
         useWindowEvents={true}
         gravityCenter={[0.66, 0.5]}
+        brightness={1}
       />
     </ThreeCanvas>
   );

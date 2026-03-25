@@ -26,6 +26,7 @@ uniform vec4 uShapePos[MAX_SHAPES];
 uniform vec4 uShapeParams[MAX_SHAPES];
 uniform vec3 uShapeColors[MAX_SHAPES]; // pre-converted to OKLab on CPU
 uniform float uNoiseAmount;
+uniform float uBrightness;
 
 vec2 hash22(vec2 p) {
     vec3 a = fract(p.xyx * vec3(443.897, 441.423, 437.195));
@@ -94,6 +95,7 @@ float sceneSDF(vec2 p, out vec3 col) {
         d = min(shapeDist, d) - k * 0.5 * (1.0 + h - sqrt(1.0 - h * (h - 2.0)));
         labCol = mix(shapeLab, labCol, blend);
     }
+    labCol.x *= uBrightness;
     col = oklabToLinear(labCol);
 
     return d ;

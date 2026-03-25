@@ -24,7 +24,8 @@ function createUniforms() {
     },
     uShapeColors: {
       value: Array.from({ length: MAX_SHAPES }, () => new THREE.Vector3())
-    }
+    },
+    uBrightness: { value: 1.0 }
   };
 }
 
@@ -38,6 +39,7 @@ interface SdfCollisionQuadProps {
   noiseAmount: number;
   useWindowEvents?: boolean;
   gravityCenter?: [number, number];
+  brightness?: number;
 }
 
 export function SdfCollisionQuad({
@@ -49,7 +51,8 @@ export function SdfCollisionQuad({
   centerGravity,
   noiseAmount,
   useWindowEvents = false,
-  gravityCenter = [0.5, 0.5]
+  gravityCenter = [0.5, 0.5],
+  brightness = 1.0
 }: SdfCollisionQuadProps) {
   const { gl, size } = useThree();
 
@@ -164,6 +167,7 @@ export function SdfCollisionQuad({
     u.uMouse.value.set(mouse.x, mouse.y);
     u.uBlendFactor.value = blendFactor;
     u.uNoiseAmount.value = noiseAmount;
+    u.uBrightness.value = brightness;
     u.uShapeCount.value = shapes.length;
 
     for (let i = 0; i < shapes.length; i++) {
