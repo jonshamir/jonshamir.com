@@ -6,6 +6,7 @@ import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
+import { SideScroller } from "../components/SideScroller/SideScroller";
 import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import { HeroBackground } from "../features/homepage/HeroBackground";
@@ -36,6 +37,25 @@ export default function Page() {
         </div>
       </div>
       {/* <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} /> */}
+
+      <SideScroller>
+        {Array.from({ length: 5 }, (_, i) => (
+          <div
+            key={i}
+            style={{
+              width: "20rem",
+              background: "var(--color-accent)",
+              padding: "2rem",
+              minHeight: "300px",
+              display: "grid",
+              placeItems: "center",
+              borderRadius: "var(--rounding-medium)"
+            }}
+          >
+            <h2>Slide {i + 1}</h2>
+          </div>
+        ))}
+      </SideScroller>
 
       <p />
 
