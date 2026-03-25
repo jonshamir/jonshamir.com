@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 
 import { Button, ButtonLink } from "../../../components/Button";
 import styles from "./ContactButton.module.css";
@@ -11,7 +11,6 @@ const EASE_OUT_EXPO: [number, number, number, number] = [0.19, 1, 0.22, 1];
 export function ContactButton() {
   const [isHovered, setIsHovered] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
   const wrapperRef = useRef<HTMLDivElement>(null);
 
   const isExpanded = isHovered || isOpen;
@@ -77,7 +76,7 @@ export function ContactButton() {
         className={styles.copyAddressButton}
         animate={{ x: isExpanded ? "9.8em" : "0%" }}
         transition={{
-          duration: prefersReducedMotion ? 0 : 0.5,
+          duration: 0.5,
           ease: EASE_OUT_EXPO
         }}
       >
