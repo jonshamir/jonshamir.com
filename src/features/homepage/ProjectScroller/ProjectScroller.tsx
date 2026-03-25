@@ -47,12 +47,13 @@ function ProjectItem({
   dark?: boolean;
 }) {
   return (
-    <div className={styles.item}>
-      <div className={clsx(styles.itemContent, dark && styles.darkContent)}>
+    <div className={clsx(styles.item, dark && styles.dark)}>
+      <div className={clsx(styles.itemContent)}>
         <h2>{title}</h2>
         <p>{description}</p>
         <span className="arrow">→</span>
       </div>
+      <div className={styles.itemOverlay} />
       <img src={image} alt={title} className={styles.itemMedia} />
     </div>
   );
