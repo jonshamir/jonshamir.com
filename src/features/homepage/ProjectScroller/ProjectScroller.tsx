@@ -12,6 +12,7 @@ export function ProjectScroller() {
         <div className={styles.itemContent}>
           <h2>Spacetop</h2>
           <p>Augmented reality laptop OS</p>
+          <span className="arrow">→</span>
         </div>
         <img
           src="/projects/spacetop/hero.png"
@@ -23,6 +24,7 @@ export function ProjectScroller() {
         <div className={styles.itemContent}>
           <h2>Muser</h2>
           <p>Smart music visualizer</p>
+          <span className="arrow">→</span>
         </div>
         <img
           src="/projects/muser/hero.png"
@@ -34,6 +36,7 @@ export function ProjectScroller() {
         <div className={clsx(styles.itemContent, styles.darkContent)}>
           <h2>Widgets Bar</h2>
           <p>Customizable widgets bar</p>
+          <span className="arrow">→</span>
         </div>
         <img
           src="/projects/widgets/screenshot.png"
@@ -45,6 +48,7 @@ export function ProjectScroller() {
         <div className={clsx(styles.itemContent, styles.darkContent)}>
           <h2>Leaf Map</h2>
           <p>Interactive botanical visualization</p>
+          <span className="arrow">→</span>
         </div>
         <img
           src="/projects/leaf-map/hero.png"

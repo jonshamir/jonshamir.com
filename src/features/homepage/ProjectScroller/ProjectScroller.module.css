@@ -36,6 +36,13 @@
   color: black;
 }
 
+.itemContent :global(.arrow) {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1rem;
+  font-weight: 600;
+}
+
 .item:hover {
   .itemMedia {
     opacity: 0.9;
