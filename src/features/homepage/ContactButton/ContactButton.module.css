@@ -38,27 +38,58 @@
   z-index: 0;
 }
 
-.textContainer {
+/* Shared vertical slide pattern */
+.slideContainer {
   position: relative;
   display: inline-block;
   overflow: hidden;
+}
+
+.slideTop {
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.slideBottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(100%);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.slid .slideTop {
+  transform: translateY(-100%);
+}
+
+.slid .slideBottom {
+  transform: translateY(0);
+}
+
+/* Text container specifics */
+.textContainer {
   white-space: nowrap;
   padding-right: 0;
   transition: padding-right 0.3s var(--ease-out-expo);
 }
 
-.contactText {
-  display: inline-block;
-  transition: transform 0.3s var(--ease-out-expo);
+.copyAddressText {
+  white-space: nowrap;
 }
 
-.copyAddressText {
-  position: absolute;
-  top: 0;
-  left: 0;
-  white-space: nowrap;
-  transform: translateY(100%);
-  transition: transform 0.3s var(--ease-out-expo);
+/* Icon container specifics */
+.iconContainer {
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+  margin-right: 0.2em;
+}
+
+.iconContainer svg {
+  display: block;
+  height: 1em;
+  width: 1em;
 }
 
 .contactButtonWrapper:hover .textContainer,
@@ -66,19 +97,19 @@
   padding-right: 3.5em;
 }
 
-.contactButtonWrapper:hover .contactText,
-.contactButtonWrapper.expanded .contactText {
+.contactButtonWrapper:hover .textContainer .slideTop,
+.contactButtonWrapper.expanded .textContainer .slideTop {
   transform: translateY(-100%);
 }
 
-.contactButtonWrapper:hover .copyAddressText,
-.contactButtonWrapper.expanded .copyAddressText {
+.contactButtonWrapper:hover .textContainer .slideBottom,
+.contactButtonWrapper.expanded .textContainer .slideBottom {
   transform: translateY(0);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .contactText,
-  .copyAddressText,
+  .slideTop,
+  .slideBottom,
   .textContainer {
     transition: none;
   }
@@ -99,7 +130,7 @@
   }
 }
 
-.emailMeButton:hover .copyAddressText,
+.emailMeButton:hover .slideBottom,
 .copyAddressButton:hover .contactButtonText {
   text-decoration: underline;
 }
