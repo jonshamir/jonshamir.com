@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, Children, type ReactNode } from "react";
+import { Children, type ReactNode, useRef } from "react";
+
 import { useDragScroll } from "../../hooks/useDragScroll";
 import styles from "./SideScroller.module.css";
 

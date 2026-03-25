@@ -11,6 +11,7 @@
   scrollbar-width: none;
   cursor: grab;
   gap: 1rem;
+  padding-inline: 2rem;
 }
 
 .scroller::-webkit-scrollbar {

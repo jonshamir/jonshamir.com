@@ -43,10 +43,10 @@ export default function Page() {
           <div
             key={i}
             style={{
-              width: "20rem",
+              width: "30rem",
               background: "var(--color-accent)",
               padding: "2rem",
-              minHeight: "300px",
+              minHeight: "400px",
               display: "grid",
               placeItems: "center",
               borderRadius: "var(--rounding-medium)"
