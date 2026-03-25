@@ -4,6 +4,7 @@
   height: 100svh;
   display: grid;
   grid-template-columns: subgrid;
+  margin-bottom: calc(-1 * var(--nav-height));
 }
 
 .hero {
