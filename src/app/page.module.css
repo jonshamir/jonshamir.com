@@ -36,6 +36,7 @@
 .introHey {
   cursor: help;
   animation-delay: 0.2s !important;
+  font-weight: 500;
 
   .name {
     position: relative;
