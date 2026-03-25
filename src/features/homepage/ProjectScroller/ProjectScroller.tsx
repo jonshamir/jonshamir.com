@@ -5,57 +5,65 @@ import clsx from "clsx";
 import { SideScroller } from "../../../components/SideScroller/SideScroller";
 import styles from "./ProjectScroller.module.css";
 
+const projects = [
+  {
+    title: "Spacetop",
+    description: "Augmented reality laptop OS",
+    image: "/projects/spacetop/hero.png"
+  },
+  {
+    title: "Simply Piano XR",
+    description: "Piano learning app for Android XR",
+    image: "/projects/simply/cover.jpg"
+  },
+  {
+    title: "Muser",
+    description: "Smart music visualizer",
+    image: "/projects/muser/hero.png"
+  },
+  {
+    title: "Widgets Bar",
+    description: "Customizable widgets bar",
+    image: "/projects/widgets/screenshot.png",
+    dark: true
+  },
+  {
+    title: "Leaf Map",
+    description: "Interactive botanical visualization",
+    image: "/projects/leaf-map/hero.png",
+    dark: true
+  }
+];
+
+function ProjectItem({
+  title,
+  description,
+  image,
+  dark
+}: {
+  title: string;
+  description: string;
+  image: string;
+  dark?: boolean;
+}) {
+  return (
+    <div className={styles.item}>
+      <div className={clsx(styles.itemContent, dark && styles.darkContent)}>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        <span className="arrow">→</span>
+      </div>
+      <img src={image} alt={title} className={styles.itemMedia} />
+    </div>
+  );
+}
+
 export function ProjectScroller() {
   return (
     <SideScroller>
-      <div className={styles.item}>
-        <div className={styles.itemContent}>
-          <h2>Spacetop</h2>
-          <p>Augmented reality laptop OS</p>
-          <span className="arrow">→</span>
-        </div>
-        <img
-          src="/projects/spacetop/hero.png"
-          alt="Spacetop"
-          className={styles.itemMedia}
-        />
-      </div>
-      <div className={styles.item}>
-        <div className={styles.itemContent}>
-          <h2>Muser</h2>
-          <p>Smart music visualizer</p>
-          <span className="arrow">→</span>
-        </div>
-        <img
-          src="/projects/muser/hero.png"
-          alt="Muser"
-          className={styles.itemMedia}
-        />
-      </div>
-      <div className={styles.item}>
-        <div className={clsx(styles.itemContent, styles.darkContent)}>
-          <h2>Widgets Bar</h2>
-          <p>Customizable widgets bar</p>
-          <span className="arrow">→</span>
-        </div>
-        <img
-          src="/projects/widgets/screenshot.png"
-          alt="Widgets Bar"
-          className={styles.itemMedia}
-        />
-      </div>
-      <div className={styles.item}>
-        <div className={clsx(styles.itemContent, styles.darkContent)}>
-          <h2>Leaf Map</h2>
-          <p>Interactive botanical visualization</p>
-          <span className="arrow">→</span>
-        </div>
-        <img
-          src="/projects/leaf-map/hero.png"
-          alt="Leaf Map"
-          className={styles.itemMedia}
-        />
-      </div>
+      {projects.map((project) => (
+        <ProjectItem key={project.title} {...project} />
+      ))}
     </SideScroller>
   );
 }

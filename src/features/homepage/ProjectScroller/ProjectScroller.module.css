@@ -1,7 +1,7 @@
 .item {
   width: 30rem;
   background: rgba(var(--color-text-rgb), 0.1);
-  min-height: 400px;
+  height: 400px;
   display: grid;
   place-items: center;
   border-radius: var(--rounding-medium);
@@ -49,5 +49,11 @@
   }
   .itemContent {
     transform: translateY(0);
+  }
+}
+
+@media (max-width: 40rem) {
+  .item {
+    width: 16rem;
   }
 }
