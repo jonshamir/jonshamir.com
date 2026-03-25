@@ -117,7 +117,7 @@ export function ContactButton() {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 height="20px"
-                viewBox="0 -960 960 960"
+                viewBox="0 -900 860 860"
                 width="20px"
                 fill="currentColor"
                 className={styles.slideBottom}
