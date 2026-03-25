@@ -7,16 +7,16 @@ export function ProjectScroller() {
   return (
     <SideScroller>
       <div className={styles.item}>
-        <img src="/projects/spacetop/hero.png" alt="Project 1" />
+        <img src="/projects/spacetop/hero.png" alt="Spacetop" />
       </div>
       <div className={styles.item}>
-        <h2>Slide 2</h2>
+        <img src="/projects/muser/hero.png" alt="Muser" />
       </div>
       <div className={styles.item}>
-        <h2>Slide 3</h2>
+        <img src="/projects/widgets/screenshot.png" alt="Widgets Bar" />
       </div>
       <div className={styles.item}>
-        <h2>Slide 4</h2>
+        <img src="/projects/leaf-map/hero.png" alt="Leaf Map" />
       </div>
     </SideScroller>
   );
