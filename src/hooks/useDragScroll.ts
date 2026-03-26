@@ -85,10 +85,14 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
       animationId = requestAnimationFrame(tick);
     };
 
+    let hasDragged = false;
+    const DRAG_THRESHOLD = 5;
+
     const onMouseDown = (e: MouseEvent) => {
       stopAnimation();
       if (overscroll !== 0) setOverscroll(0);
       isDown = true;
+      hasDragged = false;
       startX = e.pageX - el.offsetLeft;
       scrollLeft = el.scrollLeft;
       prevX = e.pageX;
@@ -103,6 +107,10 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
       e.preventDefault();
       const x = e.pageX - el.offsetLeft;
       const walk = x - startX;
+
+      if (!hasDragged && Math.abs(walk) > DRAG_THRESHOLD) {
+        hasDragged = true;
+      }
       const targetScroll = scrollLeft - walk;
 
       // Rubber-band at boundaries during drag
@@ -139,10 +147,24 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
       }
     };
 
+    const onClick = (e: MouseEvent) => {
+      if (hasDragged) {
+        e.preventDefault();
+        e.stopPropagation();
+        hasDragged = false;
+      }
+    };
+
+    const onDragStart = (e: DragEvent) => {
+      e.preventDefault();
+    };
+
     el.addEventListener("mousedown", onMouseDown);
     el.addEventListener("mousemove", onMouseMove);
     el.addEventListener("mouseup", onMouseUp);
     el.addEventListener("mouseleave", onMouseUp);
+    el.addEventListener("click", onClick, true);
+    el.addEventListener("dragstart", onDragStart);
 
     return () => {
       stopAnimation();
@@ -151,6 +173,8 @@ export function useDragScroll(ref: RefObject<HTMLElement | null>) {
       el.removeEventListener("mousemove", onMouseMove);
       el.removeEventListener("mouseup", onMouseUp);
       el.removeEventListener("mouseleave", onMouseUp);
+      el.removeEventListener("click", onClick, true);
+      el.removeEventListener("dragstart", onDragStart);
     };
   }, [ref]);
 }
