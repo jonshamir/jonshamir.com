@@ -64,7 +64,7 @@ export function SdfCollisionQuad({
   const gcy = -(gravityCenter[1] - 0.5) * 2 * halfH;
 
   // Dampened size scaling: shapes grow slightly on wider screens
-  const sizeMultiplier = Math.max(1, Math.pow(size.width / 1440, 1.5));
+  const sizeMultiplier = Math.max(1, Math.pow(size.width / 1440, 1)) * 1.2;
 
   const shapesRef = useRef<Shape[]>(
     initShapes(shapeCount, WORLD_SCALE, gcx, gcy, sizeMultiplier)
