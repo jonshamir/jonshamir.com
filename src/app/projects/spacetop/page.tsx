@@ -31,12 +31,13 @@ export default function Page() {
       </figure>
 
       <p>
-        Translating the traditional desktop user interface to a 3D environment
-        provided many challenges, both in design and implementation. My work
-        involved prototyping novel spatial interactions, defining and developing
-        frameworks to manage UI in 3D space, creating special shader effects and
-        more.
+        Spacetop&apos;s innovative approach to spatial computing resonated far
+        beyond the XR community, earning <i>Best of Show at CES 2024</i> and{" "}
+        <i>AWE 2023</i>, <i>TIME Best Invention of 2023</i>, and recognition
+        from <i>Fast Company</i> as one of the{" "}
+        <i>Top 10 Most Innovative CE Companies of 2024</i>.
       </p>
+
       <p>
         <ButtonLink
           href="https://www.sightful.com/"
@@ -46,6 +47,16 @@ export default function Page() {
         >
           Visit the official Spacetop site <span className="arrow">↗</span>
         </ButtonLink>
+      </p>
+
+      <h2>From desktop to Spacetop</h2>
+
+      <p>
+        Translating the traditional desktop user interface to a 3D environment
+        provided many challenges, both in design and implementation. My work
+        involved prototyping novel spatial interactions, defining and developing
+        frameworks to manage UI in 3D space, creating special shader effects and
+        more.
       </p>
 
       <h2>The Canvas</h2>
