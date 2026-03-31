@@ -60,12 +60,12 @@ export default function Page() {
         more.
       </p>
 
-      <figure className="grid-full">
+      {/* <figure className="grid-full">
         <TilePrototype />
         <figcaption>
           Interactive prototype: drag and resize tiles with snapping
         </figcaption>
-      </figure>
+      </figure> */}
 
       <h2>The Canvas</h2>
       <p>
