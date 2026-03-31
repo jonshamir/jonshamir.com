@@ -15,11 +15,17 @@ import {
 } from "./utils";
 const { abs } = Math;
 
-export function initTiles(containerEl) {
-  const RESIZE_SNAP_EVERYTHING = false;
-  const RESIZE_SNAP_EXISTING_SIZES = true;
-  const SNAP_THRESHOLD = 25;
-  const PAD = 15; // Tile outside padding for snapping
+/**
+ * @typedef {{ showDragOverlay?: boolean, dragOverlayIsTile?: boolean, resizeSnapAll?: boolean, resizeSnapExisting?: boolean, snapThreshold?: number, tileToTileSnapping?: number }} TileConfig
+ */
+
+export function initTiles(containerEl, /** @type {TileConfig} */ config = {}) {
+  const RESIZE_SNAP_EVERYTHING = config.resizeSnapAll ?? false;
+  const RESIZE_SNAP_EXISTING_SIZES = config.resizeSnapExisting ?? true;
+  const SNAP_THRESHOLD = config.snapThreshold ?? 25;
+  const PAD = config.tileToTileSnapping ?? 15;
+  const SHOW_DRAG_OVERLAY = config.showDragOverlay ?? true;
+  const DRAG_OVERLAY_IS_TILE = config.dragOverlayIsTile ?? false;
 
   const CENTER_SNAP_MIN_SIZE = SNAP_THRESHOLD * 10;
   const MIN_TILE_SIZE = 60;
@@ -313,12 +319,17 @@ export function initTiles(containerEl) {
     tiles[id].copy(finalRect);
   }
 
+  if (DRAG_OVERLAY_IS_TILE) {
+    containerEl.classList.add("show-drag-tile");
+  }
+
   function initDragRect(event) {
-    //Show free-moving drag indicator rect
     let { id } = event.target.dataset;
     dragRect.copy(tiles[id]);
     updateTile(dragRect, dragRectEl);
-    dragRectEl.style.display = "block";
+    if (SHOW_DRAG_OVERLAY) {
+      dragRectEl.style.display = "block";
+    }
     event.target.classList.add("currently-dragging");
   }
 
@@ -365,6 +376,8 @@ export function initTiles(containerEl) {
 
   return () => {
     interactable.unset();
+    tileContainer.querySelectorAll(".tile").forEach((el) => el.remove());
+    containerEl.classList.remove("show-drag-tile");
   };
 
   function updateTile(tile, el) {

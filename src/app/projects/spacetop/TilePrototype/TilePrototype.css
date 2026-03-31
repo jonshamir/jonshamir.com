@@ -25,7 +25,7 @@
   }
 
   .tile .tile-content,
-  .show-drag-tile .drag-tile .tile-content {
+  &.show-drag-tile .drag-tile .tile-content {
     flex: 1;
     background-color: rgba(255, 255, 255, 0.8);
     border-radius: 10px;
@@ -51,7 +51,7 @@
   }
 
   .drag-tile .tile-content,
-  .show-drag-tile .currently-dragging .tile-content {
+  &.show-drag-tile .currently-dragging .tile-content {
     border-radius: 10px;
     box-sizing: border-box;
     border: 2px dashed rgba(255, 255, 255, 0.6);
