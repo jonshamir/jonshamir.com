@@ -1,51 +1,57 @@
 import "./TilePrototype.css";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
-import { initTiles } from "./interactions";
+interface TilePrototypeProps {
+  showDragOverlay?: boolean;
+  dragOverlayIsTile?: boolean;
+  resizeSnapAll?: boolean;
+  resizeSnapExisting?: boolean;
+  snapThreshold?: number;
+  tileToTileSnapping?: number;
+}
 
-export default function TilePrototype() {
+export default function TilePrototype({
+  showDragOverlay = true,
+  dragOverlayIsTile = true,
+  resizeSnapAll = false,
+  resizeSnapExisting = false,
+  snapThreshold = 25,
+  tileToTileSnapping = 15
+}: TilePrototypeProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
-    initTiles();
-  }, []);
+    if (!containerRef.current) return;
+    let cleanup: (() => void) | undefined;
+    const el = containerRef.current;
+    const config = {
+      showDragOverlay,
+      dragOverlayIsTile,
+      resizeSnapAll,
+      resizeSnapExisting,
+      snapThreshold,
+      tileToTileSnapping
+    };
+    void import("./interactions").then(({ initTiles }) => {
+      if (el.isConnected) {
+        cleanup = initTiles(el, config);
+      }
+    });
+    return () => cleanup?.();
+  }, [
+    showDragOverlay,
+    dragOverlayIsTile,
+    resizeSnapAll,
+    resizeSnapExisting,
+    snapThreshold,
+    tileToTileSnapping
+  ]);
 
   return (
-    <div className="TilePrototype grid-full">
-      <div id="controls">
-        <input type="checkbox" name="show-drag" id="show-drag" checked />
-        <label htmlFor="show-drag">Show drag overlay</label>
-        <br />
-        <input type="checkbox" name="show-drag-tile" id="show-drag-tile" />
-        <label htmlFor="show-drag-tile">Drag overlay is tile</label>
-        <br />
-        <input
-          type="checkbox"
-          name="resize-snap-all"
-          id="resize-snap-all"
-          checked
-        />
-        <label htmlFor="resize-snap-all">Resize snap to all tiles</label>
-        <br />
-        <input
-          type="checkbox"
-          name="resize-snap-existing"
-          id="resize-snap-existing"
-        />
-        <label htmlFor="resize-snap-existing">
-          Resize match existing sizes
-        </label>
-        <br />
-        <input type="checkbox" name="show-gutters" id="show-gutters" />
-        <label htmlFor="show-gutters">Show gutter margins</label>
-        <br />
-        <input type="number" name="snap-inside" id="snap-inside" value="25" />
-        <label htmlFor="snap-inside">Snapping Threshold</label>
-        <br />
-        <input type="number" name="snap-outside" id="snap-outside" value="15" />
-        <label htmlFor="snap-outside">Tile-to-tile Snapping</label>
-      </div>
-      <div id="tile-container">
-        <div id="drag-tile">
+    <div className="TilePrototype" ref={containerRef}>
+      <div className="tile-container">
+        <div className="drag-tile">
           <div className="tile-content"></div>
         </div>
       </div>

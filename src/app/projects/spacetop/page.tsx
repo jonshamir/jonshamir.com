@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { ButtonLink } from "../../../components/Button";
+import TilePrototype from "./TilePrototype/TilePrototype";
 
 export default function Page() {
   return (
@@ -58,6 +59,13 @@ export default function Page() {
         frameworks to manage UI in 3D space, creating special shader effects and
         more.
       </p>
+
+      <figure className="grid-full">
+        <TilePrototype />
+        <figcaption>
+          Interactive prototype: drag and resize tiles with snapping
+        </figcaption>
+      </figure>
 
       <h2>The Canvas</h2>
       <p>
