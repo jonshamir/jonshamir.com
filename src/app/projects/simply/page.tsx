@@ -17,11 +17,11 @@ export default function Page() {
 
       <figure className="grid-wide">
         <Image
-          src="/projects/simply/hero.png"
+          src="/projects/simply/hero.jpg"
           alt="Illustration of Simply Piano XR"
           style={{ maxHeight: "450px" }}
-          width={4096}
-          height={2304}
+          width={6000}
+          height={3293}
         />
         <figcaption>
           Simply Piano lets you see virtual indications on top of the real piano

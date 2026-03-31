@@ -11,7 +11,7 @@ const projects = [
     slug: "spacetop",
     title: "Spacetop",
     description: "Augmented reality laptop OS",
-    image: "/projects/spacetop/hero.png"
+    image: "/projects/spacetop/hero.jpg"
   },
   {
     slug: "simply",
@@ -72,7 +72,12 @@ function ProjectItem({
         <span className="arrow">→</span>
       </div>
       <div className={styles.itemOverlay} />
-      <img src={image} alt={title} className={styles.itemMedia} draggable={false} />
+      <img
+        src={image}
+        alt={title}
+        className={styles.itemMedia}
+        draggable={false}
+      />
     </Link>
   );
 }

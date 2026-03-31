@@ -3,7 +3,6 @@
 import Image from "next/image";
 
 import { ButtonLink } from "../../../components/Button";
-import TilePrototype from "./TilePrototype/TilePrototype";
 
 export default function Page() {
   return (
@@ -20,7 +19,7 @@ export default function Page() {
 
       <figure className="grid-wide">
         <Image
-          src="/projects/spacetop/hero.png"
+          src="/projects/spacetop/hero.jpg"
           alt="Illustration of Spacetop being used on an airplane"
           style={{ maxHeight: "450px" }}
           width={4096}
