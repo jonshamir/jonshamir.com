@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import iconImg from "./icon.png";
+import screenshotImg from "./screenshot.png";
 import WeatherIcons from "./weather.svg";
 
 export default function Page() {
@@ -11,12 +13,7 @@ export default function Page() {
         <br />
         <br />
       </p>
-      <Image
-        src="/projects/widgets/icon.png"
-        alt="Widgets Bar icon"
-        width={100}
-        height={100}
-      />
+      <Image src={iconImg} alt="Widgets Bar icon" />
       <h1>Widgets Bar</h1>
       <p className="description">Extension toolbar for Apple Safari</p>
 
@@ -29,11 +26,9 @@ export default function Page() {
       </p>
       <figure className="grid-wide">
         <Image
-          src="/projects/widgets/screenshot.png"
+          src={screenshotImg}
           alt="Screenshot of Widgets Bar"
           style={{ height: "auto" }}
-          width={1000}
-          height={600}
         />
         <figcaption>
           Screenshot of Widgets Bar running on Apple Safari 8

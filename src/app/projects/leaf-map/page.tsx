@@ -2,6 +2,8 @@
 
 import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
+import featuresImg from "./features.png";
+import heroImg from "./hero.png";
 
 export default function Page() {
   return (
@@ -28,7 +30,7 @@ export default function Page() {
 
       <figure className="grid-wide">
         <img
-          src="/projects/leaf-map/hero.png"
+          src={heroImg.src}
           alt="Leaves sorted by shape"
           style={{ maxHeight: "300px", height: "auto" }}
         />
@@ -49,7 +51,7 @@ export default function Page() {
         .
       </p>
       <figure>
-        <img src="/projects/leaf-map/features.png" alt="Leaf features" />
+        <img src={featuresImg.src} alt="Leaf features" />
       </figure>
       <p>
         Finally the leaves are displayed on an interactive canvas I created

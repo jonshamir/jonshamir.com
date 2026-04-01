@@ -4,6 +4,8 @@ import Image from "next/image";
 
 import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
+import heroImg from "./hero.jpg";
+import notesImg from "./notes.png";
 
 export default function Page() {
   return (
@@ -20,11 +22,9 @@ export default function Page() {
 
       <figure className="grid-wide">
         <Image
-          src="/projects/simply/hero.jpg"
+          src={heroImg}
           alt="Illustration of Simply Piano XR"
           style={{ maxHeight: "450px" }}
-          width={6000}
-          height={3293}
         />
         <figcaption>
           Simply Piano lets you see virtual indications on top of the real piano
@@ -52,17 +52,12 @@ export default function Page() {
       </p>
       <h2>Note Rendering</h2>
       <p>
-        I partnered with Simply to bring the popular piano learning app to
-        Android XR. The project included both design and implementation on the
-        newly released
+        In order to render musical notation that is crisp and clear from any
+        andgle and distamce, I used signed distance fields that appear sharp and
+        atialiased at any distance
       </p>
       <figure>
-        <Image
-          src="/projects/simply/notes.png"
-          alt="Note rendering"
-          width={6000}
-          height={3293}
-        />
+        <Image src={notesImg} alt="Note rendering" />
         <figcaption>
           Musical notation is rendered using SDFs for optimal readability in XR
         </figcaption>
@@ -73,6 +68,7 @@ export default function Page() {
         responsive and spatially grounded — not floating in an uncanny void —
         required close attention to placement, scale, and interaction feedback.
       </p>
+      <p>We took advantage of the spatial format to add spatial UI effects.</p>
     </>
   );
 }

@@ -1,8 +1,15 @@
 "use client";
 
 import clsx from "clsx";
+import type { StaticImageData } from "next/image";
 import Link from "next/link";
 
+import leafMapHero from "../../../app/projects/leaf-map/hero.png";
+import muserHero from "../../../app/projects/muser/hero.png";
+import prepbookHero from "../../../app/projects/prepbook/hero.jpg";
+import simplyCover from "../../../app/projects/simply/cover.jpg";
+import spacetopHero from "../../../app/projects/spacetop/hero.jpg";
+import widgetsScreenshot from "../../../app/projects/widgets/screenshot.png";
 import { SideScroller } from "../../../components/SideScroller/SideScroller";
 import styles from "./ProjectScroller.module.css";
 
@@ -11,38 +18,38 @@ const projects = [
     slug: "spacetop",
     title: "Spacetop",
     description: "Augmented reality laptop OS",
-    image: "/projects/spacetop/hero.jpg"
+    image: spacetopHero
   },
   {
     slug: "simply",
     title: "Simply Piano XR",
     description: "Piano learning app for Android XR",
-    image: "/projects/simply/cover.jpg"
+    image: simplyCover
   },
   {
     slug: "prepbook",
     title: "Prepbook",
     description: "Modern recipe manager",
-    image: "/projects/prepbook/hero.jpg"
+    image: prepbookHero
   },
   {
     slug: "muser",
     title: "Muser",
     description: "Smart music visualizer",
-    image: "/projects/muser/hero.png"
+    image: muserHero
   },
   {
     slug: "widgets",
     title: "Widgets Bar",
     description: "Customizable widgets bar",
-    image: "/projects/widgets/screenshot.png",
+    image: widgetsScreenshot,
     dark: true
   },
   {
     slug: "leaf-map",
     title: "Leaf Map",
     description: "Interactive botanical visualization",
-    image: "/projects/leaf-map/hero.png",
+    image: leafMapHero,
     dark: true
   }
 ];
@@ -57,7 +64,7 @@ function ProjectItem({
   slug: string;
   title: string;
   description: string;
-  image: string;
+  image: StaticImageData;
   dark?: boolean;
 }) {
   return (
@@ -73,7 +80,7 @@ function ProjectItem({
       </div>
       <div className={styles.itemOverlay} />
       <img
-        src={image}
+        src={image.src}
         alt={title}
         className={styles.itemMedia}
         draggable={false}

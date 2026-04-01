@@ -38,7 +38,7 @@ export default function Page() {
       </div>
       {/* <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} /> */}
 
-      <ProjectScroller />
+      {/* <ProjectScroller /> */}
 
       <p />
 

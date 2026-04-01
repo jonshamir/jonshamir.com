@@ -18,6 +18,10 @@ const nextConfig = {
       test: /\.svg$/,
       use: ["@svgr/webpack"]
     });
+    config.module.rules.push({
+      test: /\.(mp4|mov|webm)$/,
+      type: "asset/resource"
+    });
     return config;
   }
 };
