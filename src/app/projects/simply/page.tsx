@@ -50,6 +50,7 @@ export default function Page() {
           Simply Piano XR <span className="arrow">↗</span>
         </ButtonLink>
       </p>
+      <h2>Note Rendering</h2>
       <p>
         I partnered with Simply to bring the popular piano learning app to
         Android XR. The project included both design and implementation on the
@@ -67,9 +68,10 @@ export default function Page() {
         </figcaption>
       </figure>
       <p>
-        I partnered with Simply to bring the popular piano learning app to
-        Android XR. The project included both design and implementation on the
-        newly released
+        Virtual Keyboard For moments away from a real piano, the app includes a
+        fully interactive virtual keyboard. Building a keyboard that feels
+        responsive and spatially grounded — not floating in an uncanny void —
+        required close attention to placement, scale, and interaction feedback.
       </p>
     </>
   );
