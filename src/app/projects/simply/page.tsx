@@ -3,6 +3,7 @@
 import Image from "next/image";
 
 import { ButtonLink } from "../../../components/Button";
+import { Outlink } from "../../../components/Outlink";
 
 export default function Page() {
   return (
@@ -12,7 +13,9 @@ export default function Page() {
       <p>
         I partnered with Simply to bring the popular piano learning app to
         Android XR. The project included both design and implementation on the
-        newly released Android XR operating system from Google.
+        newly released{" "}
+        <Outlink href="https://www.android.com/xr/">Android XR</Outlink>{" "}
+        operating system from Google.
       </p>
 
       <figure className="grid-wide">
@@ -28,6 +31,14 @@ export default function Page() {
         </figcaption>
       </figure>
 
+      <p>
+        I partnered with Simply to bring the popular piano learning app to
+        Android XR. The project included both design and implementation on the
+        newly released{" "}
+        <Outlink href="https://www.android.com/xr/">Android XR</Outlink>{" "}
+        operating system from Google.
+      </p>
+
       <p>Learn more about the project here:</p>
       <p>
         <ButtonLink
@@ -38,6 +49,27 @@ export default function Page() {
         >
           Simply Piano XR <span className="arrow">↗</span>
         </ButtonLink>
+      </p>
+      <p>
+        I partnered with Simply to bring the popular piano learning app to
+        Android XR. The project included both design and implementation on the
+        newly released
+      </p>
+      <figure>
+        <Image
+          src="/projects/simply/notes.png"
+          alt="Note rendering"
+          width={6000}
+          height={3293}
+        />
+        <figcaption>
+          Musical notation is rendered using SDFs for optimal readability in XR
+        </figcaption>
+      </figure>
+      <p>
+        I partnered with Simply to bring the popular piano learning app to
+        Android XR. The project included both design and implementation on the
+        newly released
       </p>
     </>
   );
