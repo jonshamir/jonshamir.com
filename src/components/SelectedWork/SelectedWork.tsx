@@ -57,6 +57,7 @@ export function SelectedWork({ className }: { className?: string }) {
               left: 0,
               width: "100%",
               height: "100%",
+              borderRadius: "0",
               zIndex: slot === activeSlot ? 1 : 0,
               visibility: slot === activeSlot ? "visible" : "hidden"
             }}
