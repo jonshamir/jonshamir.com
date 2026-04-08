@@ -34,10 +34,10 @@ export default function Page() {
       </figure>
 
       <p>
-        Spacetop&apos;s innovative approach to spatial computing resonated far
-        beyond the XR community, earning <i>Best of Show at CES 2024</i> and{" "}
-        <i>AWE 2023</i>, <i>TIME Best Invention of 2023</i>, and recognition
-        from <i>Fast Company</i> as one of the{" "}
+        Spacetop&apos;s unique approach to spatial computing resonated beyond
+        just the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
+        <i>TIME Best Invention of 2023</i>, and recognition from{" "}
+        <i>Fast Company</i> as one of the{" "}
         <i>Top 10 Most Innovative CE Companies of 2024</i>.
       </p>
 
