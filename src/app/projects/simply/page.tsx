@@ -53,7 +53,7 @@ export default function Page() {
       <h2>Note Rendering</h2>
       <p>
         In order to render musical notation that is crisp and clear from any
-        andgle and distamce, I used signed distance fields that appear sharp and
+        angle and distance, I used signed distance fields that appear sharp and
         atialiased at any distance
       </p>
       <figure>
@@ -71,8 +71,8 @@ export default function Page() {
       <p>
         Virtual Keyboard For moments away from a real piano, the app includes a
         fully interactive virtual keyboard. Building a keyboard that feels
-        responsive and spatially grounded — not floating in an uncanny void —
-        required close attention to placement, scale, and interaction feedback.
+        responsive and spatially grounded required close attention to placement,
+        scale, and interaction feedback.
       </p>
       <p>We took advantage of the spatial format to add spatial UI effects.</p>
     </>

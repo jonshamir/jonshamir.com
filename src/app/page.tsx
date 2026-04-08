@@ -16,7 +16,7 @@ export default function Page() {
   return (
     <>
       <div className={styles.heroSection}>
-        <HeroBackground />
+        {/* <HeroBackground /> */}
         <div className={styles.hero}>
           <InlineLogoPlaceholder />
 
@@ -36,7 +36,7 @@ export default function Page() {
           <br />
         </div>
       </div>
-      {/* <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} /> */}
+      <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} />
 
       {/* <ProjectScroller /> */}
 
