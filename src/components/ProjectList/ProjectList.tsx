@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { createElement } from "react";
 
-import { ButtonLink } from "../Button";
 import styles from "./ProjectList.module.css";
 import projectData from "./projects";
 
@@ -9,7 +9,7 @@ export function ProjectList() {
     <ul className={styles.ProjectList}>
       {projectData.map((project) => (
         <li key={project.slug}>
-          <ButtonLink
+          <Link
             href={`/projects/${project.slug}`}
             className={styles.projectLink}
           >
@@ -19,7 +19,7 @@ export function ProjectList() {
               <br />
               <span>{project.subtitle}</span>
             </span>
-          </ButtonLink>
+          </Link>
         </li>
       ))}
     </ul>

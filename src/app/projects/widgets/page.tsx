@@ -21,7 +21,7 @@ export default function Page() {
         Widgets Bar was a browser extension for{" "}
         <a href="https://www.apple.com/safari/">Apple Safari</a>. It provided a
         toolbar with small informative widgets to the top of the browser window.
-        At it&apos;s peak, Widgets Bar was intalled by thousand of users and
+        At it&apos;s peak, Widgets Bar was installed by thousand of users and
         featured by apple in the official <em>Safari Extension Gallery</em>.
       </p>
       <figure className="grid-wide">

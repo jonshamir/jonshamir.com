@@ -5,16 +5,29 @@
 
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 1rem;
 
   .projectLink {
     width: 100%;
     align-items: flex-start;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    gap: 0.4rem;
 
     & svg {
       width: 30px;
       height: 30px;
       flex-shrink: 0;
+    }
+
+    strong {
+      text-decoration: underline;
+      text-decoration-color: rgba(var(--color-text-rgb), 0.4);
+    }
+
+    &:hover strong {
+      text-decoration: underline;
     }
   }
 }
