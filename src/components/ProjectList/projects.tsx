@@ -2,6 +2,7 @@ import { FC } from "react";
 
 import LeafMapIcon from "./icons/leaf-map.svg";
 import MuserIcon from "./icons/muser.svg";
+import SimplyIcon from "./icons/simply.svg";
 import SpacetopIcon from "./icons/spacetop.svg";
 import WidgetsIcon from "./icons/widgets.svg";
 
@@ -20,6 +21,13 @@ const projects: ProjectItem[] = [
     name: "Spacetop",
     subtitle: "Augmented reality laptop OS",
     icon: SpacetopIcon as FC,
+    year: 2025
+  },
+  {
+    slug: "simply",
+    name: "Simply Piano XR",
+    subtitle: "Spatial piano learning app",
+    icon: SimplyIcon as FC,
     year: 2025
   },
   {

@@ -11,7 +11,7 @@ export default function Page() {
   return (
     <>
       <h1>Simply Piano XR</h1>
-      <p className="description">Piano learning app for Android XR</p>
+      <p className="description">Spatial piano learning app for Android XR</p>
       <p>
         I partnered with Simply to bring the popular piano learning app to
         Android XR. The project included both design and implementation on the
@@ -62,7 +62,8 @@ export default function Page() {
           alt="Note rendering"
           style={{
             filter: "invert(var(--dark-mode))"
-        }}/>
+          }}
+        />
         <figcaption>
           Musical notation is rendered using SDFs for optimal readability in XR
         </figcaption>
