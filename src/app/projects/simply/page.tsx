@@ -57,7 +57,12 @@ export default function Page() {
         atialiased at any distance
       </p>
       <figure>
-        <Image src={notesImg} alt="Note rendering" />
+        <Image
+          src={notesImg}
+          alt="Note rendering"
+          style={{
+            filter: "invert(var(--dark-mode))"
+        }}/>
         <figcaption>
           Musical notation is rendered using SDFs for optimal readability in XR
         </figcaption>

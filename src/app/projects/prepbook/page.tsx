@@ -1,6 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import { ButtonLink } from "../../../components/Button";
+import scalerImg from "./scaler.png";
 
 export default function Page() {
   return (
@@ -25,6 +28,10 @@ export default function Page() {
         Prepbook is a simple recipe notebook that allows me to keep track of my
         recipes and find them when I need them.
       </p>
+      <figure>
+        <Image src={scalerImg} alt="Recipe Scaler" />
+        <figcaption>The Ingredient-based Recipe Scaler</figcaption>
+      </figure>
     </>
   );
 }

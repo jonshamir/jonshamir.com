@@ -19,6 +19,12 @@
   initial-value: 49, 53, 59;
 }
 
+@property --dark-mode {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
+}
+
 @property --shiki-mix {
   syntax: "<percentage>";
   inherits: true;
@@ -45,9 +51,10 @@
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
+  --dark-mode: 0;
   --shiki-mix: 0%;
 
-  transition-property: --color-text-rgb, --color-bg-rgb, --shiki-mix;
+  transition-property: --color-text-rgb, --color-bg-rgb, --shiki-mix, --dark-mode;
   transition-duration: var(--default-duration);
   transition-timing-function: var(--default-timing-function);
 }
@@ -58,6 +65,7 @@
   --color-text-rgb: 224, 218, 207;
   --color-bg-rgb: 32, 33, 35;
 
+  --dark-mode: 1;
   --shiki-mix: 100%;
 }
 
