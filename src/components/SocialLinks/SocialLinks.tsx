@@ -1,6 +1,6 @@
+import Link from "next/link";
 import { createElement } from "react";
 
-import { ButtonLink } from "../Button";
 import { SOCIAL_LINKS } from "./social";
 import styles from "./SocialLinks.module.css";
 
@@ -14,7 +14,7 @@ export function SocialLinks({
   return (
     <div className={styles.SocialLinks} style={style}>
       {SOCIAL_LINKS.map((link) => (
-        <ButtonLink
+        <Link
           key={link.label}
           href={link.href}
           target="_blank"
@@ -25,7 +25,7 @@ export function SocialLinks({
           {createElement(link.icon)}
           {!iconsOnly && link.label}
           {!iconsOnly && <span className="arrow">↗</span>}
-        </ButtonLink>
+        </Link>
       ))}
     </div>
   );

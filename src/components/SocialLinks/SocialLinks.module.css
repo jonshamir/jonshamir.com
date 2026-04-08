@@ -1,7 +1,6 @@
 .SocialLinks {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
   flex-wrap: wrap;
 
   & a {
@@ -9,6 +8,8 @@
     flex-direction: row;
     align-items: center;
     gap: 0.5rem;
+    text-decoration: none;
+    padding: 0.5rem 0;
   }
 
   & svg {
@@ -31,7 +32,7 @@
   }
 
   & :global(.arrow) {
-    margin-left: auto;
+    /* margin-left: auto; */
     display: inline-block;
     opacity: 0;
     transition: opacity var(--transition-defaults);
