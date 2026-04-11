@@ -13,7 +13,11 @@ export default function Page() {
         <br />
         <br />
       </p>
-      <Image src={iconImg} alt="Widgets Bar icon" />
+      <Image
+        src={iconImg}
+        alt="Widgets Bar icon"
+        style={{ width: "100px", height: "auto" }}
+      />
       <h1>Widgets Bar</h1>
       <p className="description">Extension toolbar for Apple Safari</p>
 
