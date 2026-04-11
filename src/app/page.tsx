@@ -8,8 +8,6 @@ import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
 import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
-import { HeroBackground } from "../features/homepage/HeroBackground";
-import { ProjectScroller } from "../features/homepage/ProjectScroller/ProjectScroller";
 import styles from "./page.module.css";
 
 export default function Page() {

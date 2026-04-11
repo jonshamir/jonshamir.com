@@ -2,11 +2,10 @@
 
 import { OrbitControls, StatsGl } from "@react-three/drei";
 import { useControls } from "leva";
-
-import { LevaPanel } from "../../../components/LevaPanel";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
+import { LevaPanel } from "../../../components/LevaPanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { useLinearColor } from "../../../lib/hooks/useLinearColor";
 import { FlowerStem } from "./FlowerStem";

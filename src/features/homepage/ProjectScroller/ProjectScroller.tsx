@@ -1,6 +1,6 @@
 "use client";
 
-import clsx from "clsx";
+import { clsx } from "clsx";
 import type { StaticImageData } from "next/image";
 import Link from "next/link";
 

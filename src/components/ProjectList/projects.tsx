@@ -2,7 +2,6 @@ import { FC } from "react";
 
 import LeafMapIcon from "./icons/leaf-map.svg";
 import MuserIcon from "./icons/muser.svg";
-import SimplyIcon from "./icons/simply.svg";
 import SpacetopIcon from "./icons/spacetop.svg";
 import WidgetsIcon from "./icons/widgets.svg";
 
