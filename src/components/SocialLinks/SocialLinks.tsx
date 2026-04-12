@@ -19,7 +19,6 @@ export function SocialLinks({
           href={link.href}
           target="_blank"
           rel="noreferrer"
-          round={iconsOnly}
           style={iconsOnly ? { padding: "0.5em" } : {}} /* Make it square */
         >
           {createElement(link.icon)}
