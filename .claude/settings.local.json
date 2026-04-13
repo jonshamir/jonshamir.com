@@ -16,7 +16,13 @@
       "Bash(grep:*)",
       "Bash(ls:*)",
       "WebFetch(domain:raw.githubusercontent.com)",
-      "Bash(npx prettier:*)"
+      "Bash(npx prettier:*)",
+      "WebFetch(domain:www.embla-carousel.com)",
+      "WebFetch(domain:css-tricks.com)",
+      "WebFetch(domain:codepen.io)",
+      "WebFetch(domain:www.framer.com)",
+      "WebFetch(domain:motion.dev)",
+      "WebFetch(domain:www.dhiwise.com)"
     ],
     "deny": []
   }

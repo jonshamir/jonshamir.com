@@ -2,7 +2,6 @@ import { OrbitControls } from "@react-three/drei";
 import { useControls } from "leva";
 
 import { LevaPanel } from "../../../components/LevaPanel";
-
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { BlurredRect } from "./BlurredRect";
 import { Rect } from "./Rect";

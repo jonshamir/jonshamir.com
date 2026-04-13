@@ -1,8 +1,8 @@
 "use client";
 
 import { Leva } from "leva";
-import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 function LevaPanelInner() {
   const searchParams = useSearchParams();

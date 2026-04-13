@@ -15,15 +15,19 @@ import {
 } from "./utils";
 const { abs } = Math;
 
-export function initTiles() {
-  if (window.DID_INIT_TILES) return;
-  window.DID_INIT_TILES = true;
-  window.RESIZE_SNAP_EVERYTHING = false;
-  window.RESIZE_SNAP_EXISTING_SIZES = true;
-  window.SNAP_THRESHOLD = 25;
-  window.PAD = 15; // Tile outside padding for snapping
+/**
+ * @typedef {{ showDragOverlay?: boolean, dragOverlayIsTile?: boolean, resizeSnapAll?: boolean, resizeSnapExisting?: boolean, snapThreshold?: number, tileToTileSnapping?: number }} TileConfig
+ */
 
-  const CENTER_SNAP_MIN_SIZE = window.SNAP_THRESHOLD * 10;
+export function initTiles(containerEl, /** @type {TileConfig} */ config = {}) {
+  const RESIZE_SNAP_EVERYTHING = config.resizeSnapAll ?? false;
+  const RESIZE_SNAP_EXISTING_SIZES = config.resizeSnapExisting ?? true;
+  const SNAP_THRESHOLD = config.snapThreshold ?? 25;
+  const PAD = config.tileToTileSnapping ?? 15;
+  const SHOW_DRAG_OVERLAY = config.showDragOverlay ?? true;
+  const DRAG_OVERLAY_IS_TILE = config.dragOverlayIsTile ?? false;
+
+  const CENTER_SNAP_MIN_SIZE = SNAP_THRESHOLD * 10;
   const MIN_TILE_SIZE = 60;
 
   const tiles = [0, 1, 2, 3].map((i) => {
@@ -40,8 +44,8 @@ export function initTiles() {
 
   let dragRect = new Rect();
 
-  const tileContainer = document.getElementById("tile-container");
-  const dragRectEl = document.getElementById("drag-tile");
+  const tileContainer = containerEl.querySelector(".tile-container");
+  const dragRectEl = containerEl.querySelector(".drag-tile");
 
   tiles.forEach((tileData) => {
     const { id, x, y, w, h } = tileData;
@@ -78,7 +82,7 @@ export function initTiles() {
 
     for (const t of tiles) {
       if (!collidedTiles.includes(t)) {
-        if (!currRect.isColliding(t, window.PAD)) continue; // No collision
+        if (!currRect.isColliding(t, PAD)) continue; // No collision
 
         didCollide = true;
         collisionTile = t;
@@ -139,20 +143,20 @@ export function initTiles() {
       const topDist = abs(dragRect.t - collidedRect.t);
       const bottomDist = abs(dragRect.b - collidedRect.b);
       const centerDist = abs(dragRect.cY - collidedRect.cY);
-      if (topDist < window.SNAP_THRESHOLD) currRect.t = collidedRect.t;
-      else if (bottomDist < window.SNAP_THRESHOLD) currRect.b = collidedRect.b;
+      if (topDist < SNAP_THRESHOLD) currRect.t = collidedRect.t;
+      else if (bottomDist < SNAP_THRESHOLD) currRect.b = collidedRect.b;
       // Center snapping
-      else if (cYinside && centerDist < window.SNAP_THRESHOLD)
+      else if (cYinside && centerDist < SNAP_THRESHOLD)
         currRect.cY = collidedRect.cY;
     }
     if (snapOrientation === VERTICAL) {
       const leftDist = abs(dragRect.l - collidedRect.l);
       const rightDist = abs(dragRect.r - collidedRect.r);
       const centerDist = abs(dragRect.cX - collidedRect.cX);
-      if (leftDist < window.SNAP_THRESHOLD) currRect.l = collidedRect.l;
-      else if (rightDist < window.SNAP_THRESHOLD) currRect.r = collidedRect.r;
+      if (leftDist < SNAP_THRESHOLD) currRect.l = collidedRect.l;
+      else if (rightDist < SNAP_THRESHOLD) currRect.r = collidedRect.r;
       // Center snapping
-      else if (cXinside && centerDist < window.SNAP_THRESHOLD)
+      else if (cXinside && centerDist < SNAP_THRESHOLD)
         currRect.cX = collidedRect.cX;
     }
 
@@ -186,7 +190,7 @@ export function initTiles() {
 
     // Resize snapping
     let snappingCandidates = [];
-    if (window.RESIZE_SNAP_EVERYTHING) snappingCandidates = tiles;
+    if (RESIZE_SNAP_EVERYTHING) snappingCandidates = tiles;
     else if (tiles[id].docked) snappingCandidates.push(tiles[id].docked);
 
     snappingCandidates.forEach((t) => {
@@ -198,18 +202,16 @@ export function initTiles() {
           const dragRectSize =
             orientation === HORIZONTAL ? dragRect.w : dragRect.h;
 
-          if (
-            abs(dragRect.getEdge(dir) - t.getEdge(dir)) < window.SNAP_THRESHOLD
-          )
+          if (abs(dragRect.getEdge(dir) - t.getEdge(dir)) < SNAP_THRESHOLD)
             finalRect.resizeEdge(dir, t.getEdge(dir));
           else if (
             otherTileSize > CENTER_SNAP_MIN_SIZE &&
-            abs(dragRect.getEdge(dir) - centerPoint) < window.SNAP_THRESHOLD / 2
+            abs(dragRect.getEdge(dir) - centerPoint) < SNAP_THRESHOLD / 2
           )
             finalRect.resizeEdge(dir, centerPoint);
           else if (
-            window.RESIZE_SNAP_EXISTING_SIZES &&
-            abs(dragRectSize - otherTileSize) < window.SNAP_THRESHOLD
+            RESIZE_SNAP_EXISTING_SIZES &&
+            abs(dragRectSize - otherTileSize) < SNAP_THRESHOLD
           ) {
             let newEdge = finalRect.getEdge(oppositeDir(dir));
             newEdge += dirSign(dir) * otherTileSize;
@@ -317,12 +319,17 @@ export function initTiles() {
     tiles[id].copy(finalRect);
   }
 
+  if (DRAG_OVERLAY_IS_TILE) {
+    containerEl.classList.add("show-drag-tile");
+  }
+
   function initDragRect(event) {
-    //Show free-moving drag indicator rect
     let { id } = event.target.dataset;
     dragRect.copy(tiles[id]);
     updateTile(dragRect, dragRectEl);
-    dragRectEl.style.display = "block";
+    if (SHOW_DRAG_OVERLAY) {
+      dragRectEl.style.display = "block";
+    }
     event.target.classList.add("currently-dragging");
   }
 
@@ -331,7 +338,7 @@ export function initTiles() {
     event.target.classList.remove("currently-dragging");
   }
 
-  interact(".tile")
+  const interactable = interact(".tile", { context: containerEl })
     .draggable({
       // inertia: true,
       listeners: {
@@ -366,6 +373,12 @@ export function initTiles() {
         })
       ]
     });
+
+  return () => {
+    interactable.unset();
+    tileContainer.querySelectorAll(".tile").forEach((el) => el.remove());
+    containerEl.classList.remove("show-drag-tile");
+  };
 
   function updateTile(tile, el) {
     const { x, y, w, h } = tile;

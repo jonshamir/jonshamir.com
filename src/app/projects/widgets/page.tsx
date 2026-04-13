@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 
+import iconImg from "./icon.png";
+import screenshotImg from "./screenshot.png";
 import WeatherIcons from "./weather.svg";
 
 export default function Page() {
@@ -12,10 +14,9 @@ export default function Page() {
         <br />
       </p>
       <Image
-        src="/projects/widgets/icon.png"
+        src={iconImg}
         alt="Widgets Bar icon"
-        width={100}
-        height={100}
+        style={{ width: "100px", height: "auto" }}
       />
       <h1>Widgets Bar</h1>
       <p className="description">Extension toolbar for Apple Safari</p>
@@ -24,16 +25,14 @@ export default function Page() {
         Widgets Bar was a browser extension for{" "}
         <a href="https://www.apple.com/safari/">Apple Safari</a>. It provided a
         toolbar with small informative widgets to the top of the browser window.
-        At it&apos;s peak, Widgets Bar was intalled by thousand of users and
+        At it&apos;s peak, Widgets Bar was installed by thousand of users and
         featured by apple in the official <em>Safari Extension Gallery</em>.
       </p>
       <figure className="grid-wide">
         <Image
-          src="/projects/widgets/screenshot.png"
+          src={screenshotImg}
           alt="Screenshot of Widgets Bar"
           style={{ height: "auto" }}
-          width={1000}
-          height={600}
         />
         <figcaption>
           Screenshot of Widgets Bar running on Apple Safari 8

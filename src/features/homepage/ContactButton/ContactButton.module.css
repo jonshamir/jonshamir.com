@@ -1,0 +1,136 @@
+.contactButtonWrapper {
+  position: relative;
+  gap: 0.5rem;
+  margin-top: 2rem;
+  opacity: 0;
+  animation: fadeIn 0.3s ease-in 0.35s forwards;
+  min-height: 2.2em;
+  width: 15em;
+}
+
+.contactButtonWrapper a:hover,
+.contactButtonWrapper button:hover {
+  background-color: var(--color-text) !important;
+}
+.contactButtonWrapper button:active,
+.contactButtonWrapper button:focus {
+  outline: none !important;
+}
+
+.hidden {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+}
+
+.emailMeButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.copyAddressButton {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* Shared vertical slide pattern */
+.slideContainer {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+.slideTop {
+  display: inline-block;
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.slideBottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(100%);
+  transition: transform 0.3s var(--ease-out-expo);
+}
+
+.slid .slideTop {
+  transform: translateY(-100%);
+}
+
+.slid .slideBottom {
+  transform: translateY(0);
+}
+
+/* Text container specifics */
+.textContainer {
+  white-space: nowrap;
+  padding-right: 0;
+  transition: padding-right 0.3s var(--ease-out-expo);
+}
+
+.copyAddressText {
+  white-space: nowrap;
+}
+
+/* Icon container specifics */
+.iconContainer {
+  height: 1em;
+  width: 1em;
+  vertical-align: middle;
+  margin-bottom: 0.1em;
+  margin-right: 0.2em;
+}
+
+.iconContainer svg {
+  display: block;
+  height: 1em;
+  width: 1em;
+}
+
+.contactButtonWrapper:hover .textContainer,
+.contactButtonWrapper.expanded .textContainer {
+  padding-right: 3.5em;
+}
+
+.contactButtonWrapper:hover .textContainer .slideTop,
+.contactButtonWrapper.expanded .textContainer .slideTop {
+  transform: translateY(-100%);
+}
+
+.contactButtonWrapper:hover .textContainer .slideBottom,
+.contactButtonWrapper.expanded .textContainer .slideBottom {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slideTop,
+  .slideBottom,
+  .textContainer {
+    transition: none;
+  }
+}
+
+@media (max-width: 54rem) {
+  .contactButtonWrapper {
+    margin-block: 1.5rem;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.emailMeButton:hover .slideBottom,
+.copyAddressButton:hover .contactButtonText {
+  text-decoration: underline;
+}

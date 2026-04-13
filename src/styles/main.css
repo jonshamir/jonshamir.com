@@ -16,7 +16,13 @@
 @property --color-text-rgb {
   syntax: "<number>#";
   inherits: true;
-  initial-value: 59, 63, 69;
+  initial-value: 49, 53, 59;
+}
+
+@property --dark-mode {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 0;
 }
 
 @property --shiki-mix {
@@ -37,7 +43,7 @@
   --color-accent: #536bf2;
   --color-link: #475ddc;
 
-  --color-text-rgb: 59, 63, 69;
+  --color-text-rgb: 49, 53, 59;
   --color-text: rgb(var(--color-text-rgb));
 
   --color-bg-rgb: 243, 240, 238;
@@ -45,9 +51,10 @@
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
+  --dark-mode: 0;
   --shiki-mix: 0%;
 
-  transition-property: --color-text-rgb, --color-bg-rgb, --shiki-mix;
+  transition-property: --color-text-rgb, --color-bg-rgb, --shiki-mix, --dark-mode;
   transition-duration: var(--default-duration);
   transition-timing-function: var(--default-timing-function);
 }
@@ -58,6 +65,7 @@
   --color-text-rgb: 224, 218, 207;
   --color-bg-rgb: 32, 33, 35;
 
+  --dark-mode: 1;
   --shiki-mix: 100%;
 }
 

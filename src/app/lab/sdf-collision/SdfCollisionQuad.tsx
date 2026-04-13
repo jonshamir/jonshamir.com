@@ -24,7 +24,8 @@ function createUniforms() {
     },
     uShapeColors: {
       value: Array.from({ length: MAX_SHAPES }, () => new THREE.Vector3())
-    }
+    },
+    uBrightness: { value: 1.0 }
   };
 }
 
@@ -36,6 +37,9 @@ interface SdfCollisionQuadProps {
   shapeCount: number;
   centerGravity: boolean;
   noiseAmount: number;
+  useWindowEvents?: boolean;
+  gravityCenter?: [number, number];
+  brightness?: number;
 }
 
 export function SdfCollisionQuad({
@@ -45,34 +49,65 @@ export function SdfCollisionQuad({
   damping,
   shapeCount,
   centerGravity,
-  noiseAmount
+  noiseAmount,
+  useWindowEvents = false,
+  gravityCenter = [0.5, 0.5],
+  brightness = 1.0
 }: SdfCollisionQuadProps) {
-  const shapesRef = useRef<Shape[]>(initShapes(shapeCount, WORLD_SCALE));
+  const { gl, size } = useThree();
+
+  // Convert 0–1 gravity center to world coordinates
+  const halfH = WORLD_SCALE * 0.5;
+  const aspect = size.width / size.height || 1;
+  const halfW = halfH * aspect;
+  const gcx = (gravityCenter[0] - 0.5) * 2 * halfW;
+  const gcy = -(gravityCenter[1] - 0.5) * 2 * halfH;
+
+  // Dampened size scaling: shapes grow slightly on wider screens
+  const sizeMultiplier = Math.max(1, Math.pow(size.width / 1440, 1)) * 1.2;
+
+  const shapesRef = useRef<Shape[]>(
+    initShapes(shapeCount, WORLD_SCALE, gcx, gcy, sizeMultiplier)
+  );
   const oklabCacheRef = useRef(new Map<Shape, [number, number, number]>());
   const mouseRef = useRef({ x: 0, y: 0, down: false });
   const prevMouseRef = useRef({ x: 0, y: 0, time: 0 });
   const uniformsRef = useRef(createUniforms());
-  const { gl, size } = useThree();
 
   // Re-init shapes when count changes
   useEffect(() => {
     const current = shapesRef.current;
     if (shapeCount > current.length) {
-      const extra = initShapes(shapeCount - current.length, WORLD_SCALE);
+      const extra = initShapes(
+        shapeCount - current.length,
+        WORLD_SCALE,
+        gcx,
+        gcy,
+        sizeMultiplier
+      );
       shapesRef.current = [...current, ...extra];
     } else if (shapeCount < current.length) {
       shapesRef.current = current.slice(0, shapeCount);
     }
-  }, [shapeCount]);
+  }, [shapeCount, gcx, gcy, sizeMultiplier]);
 
   // Mouse tracking
   useEffect(() => {
     const canvas = gl.domElement;
+    const target: EventTarget = useWindowEvents ? window : canvas;
     const onMove = (e: PointerEvent) => {
       const aspect = size.width / size.height;
-      mouseRef.current.x =
-        (e.clientX / size.width - 0.5) * aspect * WORLD_SCALE;
-      mouseRef.current.y = -(e.clientY / size.height - 0.5) * WORLD_SCALE;
+      if (useWindowEvents) {
+        const rect = canvas.getBoundingClientRect();
+        const nx = (e.clientX - rect.left) / rect.width;
+        const ny = (e.clientY - rect.top) / rect.height;
+        mouseRef.current.x = (nx - 0.5) * aspect * WORLD_SCALE;
+        mouseRef.current.y = -(ny - 0.5) * WORLD_SCALE;
+      } else {
+        mouseRef.current.x =
+          (e.clientX / size.width - 0.5) * aspect * WORLD_SCALE;
+        mouseRef.current.y = -(e.clientY / size.height - 0.5) * WORLD_SCALE;
+      }
     };
     const onDown = () => {
       mouseRef.current.down = true;
@@ -81,15 +116,15 @@ export function SdfCollisionQuad({
       mouseRef.current.down = false;
     };
 
-    canvas.addEventListener("pointermove", onMove);
-    canvas.addEventListener("pointerdown", onDown);
-    canvas.addEventListener("pointerup", onUp);
+    target.addEventListener("pointermove", onMove as EventListener);
+    target.addEventListener("pointerdown", onDown);
+    target.addEventListener("pointerup", onUp);
     return () => {
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerdown", onDown);
-      canvas.removeEventListener("pointerup", onUp);
+      target.removeEventListener("pointermove", onMove as EventListener);
+      target.removeEventListener("pointerdown", onDown);
+      target.removeEventListener("pointerup", onUp);
     };
-  }, [gl, size]);
+  }, [gl, size, useWindowEvents]);
 
   useFrame((state, delta) => {
     const dt = Math.min(delta, 0.05);
@@ -117,7 +152,9 @@ export function SdfCollisionQuad({
       worldScale: WORLD_SCALE,
       mouseDown: mouse.down,
       aspect: size.width / size.height,
-      centerGravity
+      centerGravity,
+      gravityCenterX: gravityCenter[0],
+      gravityCenterY: gravityCenter[1]
     };
 
     stepPhysics(shapesRef.current, dt, mouse.x, mouse.y, opts);
@@ -130,6 +167,7 @@ export function SdfCollisionQuad({
     u.uMouse.value.set(mouse.x, mouse.y);
     u.uBlendFactor.value = blendFactor;
     u.uNoiseAmount.value = noiseAmount;
+    u.uBrightness.value = brightness;
     u.uShapeCount.value = shapes.length;
 
     for (let i = 0; i < shapes.length; i++) {

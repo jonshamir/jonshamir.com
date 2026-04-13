@@ -101,22 +101,27 @@ function directionalRadius(
   return s.type === ShapeType.RoundedBox ? t + s.cornerRadius : t;
 }
 
-export function initShapes(count: number, worldScale: number): Shape[] {
+export function initShapes(
+  count: number,
+  worldScale: number,
+  centerX = 0,
+  centerY = 0,
+  sizeMultiplier = 1
+): Shape[] {
   const shapes: Shape[] = [];
-  const halfW = worldScale * 0.4;
-  const halfH = worldScale * 0.4;
+  const spawnRadius = worldScale * 0.15;
 
   for (let i = 0; i < count; i++) {
     const type = [ShapeType.Circle, ShapeType.Circle, ShapeType.RoundedBox][
       Math.floor(Math.random() * 3)
     ];
-    const baseSize = 0.25 + Math.random() * 0.45;
+    const baseSize = (0.25 + Math.random() * 0.45) * sizeMultiplier;
 
     const mass = baseSize * baseSize * Math.PI;
     const shape: Shape = {
       type,
-      x: (Math.random() - 0.5) * halfW * 2,
-      y: (Math.random() - 0.5) * halfH * 2,
+      x: centerX + (Math.random() - 0.5) * spawnRadius,
+      y: centerY + (Math.random() - 0.5) * spawnRadius,
       vx: 0,
       vy: 0,
       angle: 0,
@@ -147,6 +152,8 @@ export interface PhysicsOptions {
   mouseDown: boolean;
   aspect: number;
   centerGravity: boolean;
+  gravityCenterX: number;
+  gravityCenterY: number;
 }
 
 // Pre-allocated arrays to avoid per-frame GC pressure
@@ -328,10 +335,17 @@ export function stepPhysics(
     damping,
     worldScale,
     aspect,
-    centerGravity
+    centerGravity,
+    gravityCenterX,
+    gravityCenterY
   } = opts;
   const subDt = dt / SUBSTEPS;
   const n = shapes.length;
+  const halfH = worldScale * 0.5;
+  const halfW = halfH * aspect;
+  // Convert 0–1 gravity center to world coordinates
+  const gcx = (gravityCenterX - 0.5) * 2 * halfW;
+  const gcy = -(gravityCenterY - 0.5) * 2 * halfH;
 
   for (let step = 0; step < SUBSTEPS; step++) {
     // Cursor collision
@@ -346,10 +360,12 @@ export function stepPhysics(
       const s = shapes[i];
       s.vy -= gravity * subDt;
       if (centerGravity) {
-        const dist = Math.sqrt(s.x * s.x + s.y * s.y);
+        const dx = s.x - gcx;
+        const dy = s.y - gcy;
+        const dist = Math.sqrt(dx * dx + dy * dy);
         if (dist > 0.01) {
-          s.vx -= (s.x / dist) * centerStrength * subDt;
-          s.vy -= (s.y / dist) * centerStrength * subDt;
+          s.vx -= (dx / dist) * centerStrength * subDt;
+          s.vy -= (dy / dist) * centerStrength * subDt;
         }
       }
       s.vx *= dampFactor;
@@ -361,8 +377,6 @@ export function stepPhysics(
     }
 
     // Wall collision
-    const halfH = worldScale * 0.5;
-    const halfW = halfH * aspect;
     for (let i = 0; i < n; i++) {
       applyWallConstraints(shapes[i], halfW, halfH, restitution);
     }

@@ -2,6 +2,8 @@
 
 import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
+import demoVideo from "./demo.mp4";
+import kandinskyImg from "./kandinsky.jpg";
 
 export default function Page() {
   return (
@@ -26,7 +28,7 @@ export default function Page() {
       </p>
       <figure className="grid-wide">
         <video
-          src="/projects/muser/demo.mp4"
+          src={demoVideo}
           style={{ maxHeight: "300px", height: "auto" }}
           playsInline
           autoPlay
@@ -56,7 +58,7 @@ export default function Page() {
       <p>For more information visit the project website</p>
       <figure>
         <img
-          src="/projects/muser/kandinsky.jpg"
+          src={kandinskyImg.src}
           alt="Circles in a Circle by Wassily Kandinsky, 1923"
         />
         <figcaption>Circles in a Circle by Wassily Kandinsky, 1923</figcaption>

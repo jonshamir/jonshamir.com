@@ -1,6 +1,7 @@
 import fs from "fs";
 import Link from "next/link";
 import path from "path";
+
 import styles from "./PostList.module.css";
 
 interface PostMetadata {

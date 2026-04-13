@@ -4,6 +4,7 @@ import { useState } from "react";
 
 import { Button } from "../../../components/Button";
 import { FeatherIcon } from "../../../components/FeatherIcon/FeatherIcon";
+import { copyToClipboard } from "../../../utils/copyToClipboard";
 
 interface CopyButtonProps {
   text: string;
@@ -14,17 +15,11 @@ export const CopyButton = ({ text }: CopyButtonProps) => {
   const [showCheckmark, setShowCheckmark] = useState(false);
 
   const copy = () => {
-    navigator.clipboard
-      .writeText(text)
-      .then(() => {
-        setIsCopied(true);
-        setShowCheckmark(true);
-        setTimeout(() => setIsCopied(false), 3000);
-        setTimeout(() => setShowCheckmark(false), 3500);
-      })
-      .catch((err) => {
-        console.error("Failed to copy text: ", err);
-      });
+    copyToClipboard(text);
+    setIsCopied(true);
+    setShowCheckmark(true);
+    setTimeout(() => setIsCopied(false), 3000);
+    setTimeout(() => setShowCheckmark(false), 3500);
   };
 
   return (

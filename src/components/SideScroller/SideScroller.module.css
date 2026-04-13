@@ -1,0 +1,24 @@
+.container {
+  grid-column: full;
+  z-index: 1;
+}
+
+.scroller {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  cursor: grab;
+  gap: 1rem;
+  padding-inline: 4rem;
+}
+
+.scroller::-webkit-scrollbar {
+  display: none;
+}
+
+.item {
+  flex: 0 0 auto;
+}

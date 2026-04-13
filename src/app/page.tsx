@@ -1,44 +1,42 @@
 import { clsx } from "clsx";
 
-import { ButtonLink } from "../components/Button";
 import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
+import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
 export default function Page() {
   return (
     <>
-      <div className={styles.hero}>
-        <InlineLogoPlaceholder />
+      <div className={styles.heroSection}>
+        {/* <HeroBackground /> */}
+        <div className={styles.hero}>
+          <InlineLogoPlaceholder />
 
-        <p className={styles.fadeIn}>
-          <span className={styles.introHey}>
-            Hey! I&rsquo;m
-            <span className={styles.name}>
-              <span className={styles.jon}> Jon</span>
-              <span className={styles.yonatan}> Yonatan</span>
+          <p className={clsx(styles.fadeIn, styles.introHeyWrapper)}>
+            <span className={styles.introHey}>
+              Hey! I&rsquo;m
+              <span className={styles.name}>
+                <span className={styles.jon}> Jon</span>
+                <span className={styles.yonatan}> Yonatan</span>
+              </span>
             </span>
-          </span>
-        </p>
-        <h2>
-          <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
-        </h2>
-        <ButtonLink
-          round
-          variant="primary"
-          href="mailto:jon@studio-normal.com"
-          className={clsx(styles.contactButton, styles.fadeIn)}
-        >
-          Contact<span className="arrow">↗</span>
-        </ButtonLink>
-        <br />
+          </p>
+          <h2>
+            <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
+          </h2>
+          <ContactButton />
+          <br />
+        </div>
       </div>
       <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} />
+
+      {/* <ProjectScroller /> */}
 
       <p />
 

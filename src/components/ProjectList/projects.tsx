@@ -22,6 +22,13 @@ const projects: ProjectItem[] = [
     icon: SpacetopIcon as FC,
     year: 2025
   },
+  // {
+  //   slug: "simply",
+  //   name: "Simply Piano XR",
+  //   subtitle: "Spatial piano learning app",
+  //   icon: SimplyIcon as FC,
+  //   year: 2025
+  // },
   {
     slug: "muser",
     name: "Muser",

@@ -1,9 +1,12 @@
 "use client";
 
+import heroImg from "./hero.png";
+import specimenImg from "./specimen.jpg";
+
 export default function Page() {
   return (
     <>
-      <img src="/projects/herb-tree/hero.png" alt="" className="cover" />
+      <img src={heroImg.src} alt="" className="cover" />
       <h1>Herbarium</h1>
       <p className="description">Interactive botanic visualization</p>
       <p>
@@ -16,10 +19,7 @@ export default function Page() {
         incorporated into the project.
       </p>
       <figure>
-        <img
-          src="/projects/herb-tree/specimen.jpg"
-          alt="Photographing a Specimen"
-        />
+        <img src={specimenImg.src} alt="Photographing a Specimen" />
         <figcaption>Photographing a specimen for the project.</figcaption>
       </figure>
     </>

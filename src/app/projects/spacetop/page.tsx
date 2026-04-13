@@ -3,6 +3,11 @@
 import Image from "next/image";
 
 import { ButtonLink } from "../../../components/Button";
+import bevelImg from "./bevel.gif";
+import compassImg from "./compass.gif";
+import cursorMoveImg from "./cursor-move.gif";
+import heroImg from "./hero.jpg";
+import navImg from "./nav.gif";
 
 export default function Page() {
   return (
@@ -19,11 +24,9 @@ export default function Page() {
 
       <figure className="grid-wide">
         <Image
-          src="/projects/spacetop/hero.png"
+          src={heroImg}
           alt="Illustration of Spacetop being used on an airplane"
           style={{ maxHeight: "450px" }}
-          width={4096}
-          height={2304}
         />
         <figcaption>
           Spacetop is like a huge virtual screen that you can take anywhere
@@ -31,12 +34,13 @@ export default function Page() {
       </figure>
 
       <p>
-        Translating the traditional desktop user interface to a 3D environment
-        provided many challenges, both in design and implementation. My work
-        involved prototyping novel spatial interactions, defining and developing
-        frameworks to manage UI in 3D space, creating special shader effects and
-        more.
+        Spacetop&apos;s unique approach to spatial computing resonated beyond
+        just the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
+        <i>TIME Best Invention of 2023</i>, and recognition from{" "}
+        <i>Fast Company</i> as one of the{" "}
+        <i>Top 10 Most Innovative CE Companies of 2024</i>.
       </p>
+
       <p>
         <ButtonLink
           href="https://www.sightful.com/"
@@ -48,10 +52,27 @@ export default function Page() {
         </ButtonLink>
       </p>
 
+      <h2>From desktop to Spacetop</h2>
+
+      <p>
+        Translating the traditional desktop user interface to a 3D environment
+        provided many challenges, both in design and implementation. My work
+        involved prototyping novel spatial interactions, defining and developing
+        frameworks to manage UI in 3D space, creating special shader effects and
+        more.
+      </p>
+
+      {/* <figure className="grid-full">
+        <TilePrototype />
+        <figcaption>
+          Interactive prototype: drag and resize tiles with snapping
+        </figcaption>
+      </figure> */}
+
       <h2>The Canvas</h2>
       <p>
         <img
-          src="/projects/spacetop/cursor-move.gif"
+          src={cursorMoveImg.src}
           alt="The cursor moving around on the canvas"
           style={{
             maxHeight: "200px",
@@ -73,12 +94,9 @@ export default function Page() {
       </p>
       <figure className="grid-wide">
         <Image
-          src="/projects/spacetop/nav.gif"
+          src={navImg}
           alt="The canvas itself can be panned and zoomed by the user"
           style={{ maxHeight: "500px" }}
-          width={1762}
-          height={848}
-          unoptimized
         />
       </figure>
 
@@ -91,12 +109,9 @@ export default function Page() {
       </p>
       <figure>
         <Image
-          src="/projects/spacetop/compass.gif"
+          src={compassImg}
           alt="The compass points the user to a window outside the field of view"
           style={{ maxHeight: "450px", maxWidth: "1000px" }}
-          width={1560}
-          height={1122}
-          unoptimized
         />
         <figcaption>
           The compass points to a window outside the field of view
@@ -112,12 +127,9 @@ export default function Page() {
       </p>
       <figure>
         <Image
-          src="/projects/spacetop/bevel.gif"
+          src={bevelImg}
           alt="A special shader that created a 3D illusion"
           style={{ maxHeight: "450px", maxWidth: "1000px" }}
-          width={1224}
-          height={782}
-          unoptimized
         />
       </figure>
       <p>

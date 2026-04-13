@@ -1,25 +1,46 @@
-.hero {
-  grid-column-start: wide;
-  grid-column-end: narrow;
-  padding-left: 5rem;
+.heroSection {
+  grid-column: full;
   position: relative;
+  /* height: 70svh; */
+  display: grid;
+  grid-template-columns: subgrid;
+  /* margin-bottom: calc(-2 * var(--nav-height)); */
+}
+
+.hero {
+  grid-column: narrow / narrow;
+  position: relative;
+  z-index: 1;
+  margin-inline-start: -2em;
+
+  /* padding-left: 5rem; */
 
   h2 {
-    margin: 0.8rem 0;
+    margin-top: 0;
     font-weight: 400;
     text-wrap: balance;
-    font-size: 2rem;
+    font-size: 2.2rem;
     line-height: 1.4;
   }
 
   @media (max-width: 54rem) {
-    padding-left: 0;
+    /* padding-left: 5vw; */
+    margin-inline-start: 0;
+
+    h2 {
+      font-size: 2rem;
+    }
   }
+}
+
+.introHeyWrapper {
+  overflow: hidden;
 }
 
 .introHey {
   cursor: help;
   animation-delay: 0.2s !important;
+  font-weight: 500;
 
   .name {
     position: relative;
@@ -27,7 +48,7 @@
 
   .jon,
   .yonatan {
-    transition-property: transform, opacity;
+    transition-property: transform;
     transition-duration: 0.5s;
     transition-timing-function: var(--ease-out-expo);
     position: absolute;
@@ -35,23 +56,19 @@
   }
 
   .jon {
-    opacity: 1;
     transform: rotateX(0);
   }
 
   .yonatan {
-    opacity: 0;
-    transform: rotateX(90deg) translateY(100%);
+    transform: translateY(100%);
   }
 
   &:hover {
     .jon {
-      opacity: 0;
-      transform: rotateX(90deg) translateY(-100%);
+      transform: translateY(-100%);
     }
 
     .yonatan {
-      opacity: 1;
       transform: rotateX(0);
     }
   }
@@ -81,21 +98,6 @@
   font-size: 1rem;
   font-style: italic;
   margin-bottom: 0.8rem;
-}
-
-.contactButton {
-  position: absolute;
-  right: -3rem;
-  bottom: 2.5rem;
-}
-
-@media (max-width: 54rem) {
-  .contactButton {
-    position: relative;
-    right: 0;
-    bottom: 0;
-    margin-block: 1rem;
-  }
 }
 
 .columns {
