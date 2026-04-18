@@ -73,6 +73,7 @@ export function SdfCollisionQuad({
   const mouseRef = useRef({ x: 0, y: 0, down: false });
   const prevMouseRef = useRef({ x: 0, y: 0, time: 0 });
   const uniformsRef = useRef(createUniforms());
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
 
   // Re-init shapes when count changes
   useEffect(() => {
@@ -159,8 +160,10 @@ export function SdfCollisionQuad({
 
     stepPhysics(shapesRef.current, dt, mouse.x, mouse.y, opts);
 
-    // Upload uniforms
-    const u = uniformsRef.current;
+    // Write to the live material: R3F 9 doesn't propagate scalar uniform
+    // mutations through the `uniforms` prop (array-element mutations do work).
+    const u = (materialRef.current?.uniforms ??
+      uniformsRef.current) as typeof uniformsRef.current;
     const shapes = shapesRef.current;
     u.uTime.value = state.clock.elapsedTime;
     u.uResolution.value.set(size.width, size.height);
@@ -187,6 +190,7 @@ export function SdfCollisionQuad({
     <mesh>
       <planeGeometry args={[2, 2]} />
       <shaderMaterial
+        ref={materialRef}
         key={vertexShader + fragmentShader}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}

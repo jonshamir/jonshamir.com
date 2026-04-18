@@ -3,6 +3,7 @@ import { ReactThreeFiber } from "@react-three/fiber";
 import * as THREE from "three";
 
 import { bumpMapping } from "../../../lib/shaders/bumpMapping.glsl";
+import { linearToSRGB } from "../../../lib/shaders/colorSpace.glsl";
 import { blinnPhong } from "../../../lib/shaders/lighting.glsl";
 import { sphericalUV } from "../../../lib/shaders/sphericalUV.glsl";
 
@@ -55,6 +56,7 @@ export const ProjectionMappingMaterial = shaderMaterial(
     ${sphericalUV}
     ${blinnPhong}
     ${bumpMapping}
+    ${linearToSRGB}
 
     void main() {
         vec2 uv = getSphericalUV(vVertex);

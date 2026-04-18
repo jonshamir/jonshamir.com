@@ -1,6 +1,7 @@
 import { shaderMaterial } from "@react-three/drei";
 
 import { bumpMapping } from "../../../lib/shaders/bumpMapping.glsl";
+import { linearToSRGB } from "../../../lib/shaders/colorSpace.glsl";
 import { sphericalUV } from "../../../lib/shaders/sphericalUV.glsl";
 
 export const MoonMaterial = shaderMaterial(
@@ -40,6 +41,7 @@ export const MoonMaterial = shaderMaterial(
 
     ${sphericalUV}
     ${bumpMapping}
+    ${linearToSRGB}
 
     // Implementation taken from https://mimosa-pudica.net/improved-oren-nayar.html
     float improvedOrenNayar(vec3 v, vec3 l, vec3 n)

@@ -92,5 +92,5 @@ module.exports = {
       }
     ]
   },
-  ignorePatterns: ["**/*.js", "**/*.md", "**/*.mdx"]
+  ignorePatterns: ["**/*.js", "**/*.md", "**/*.mdx", "next-env.d.ts"]
 };

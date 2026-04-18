@@ -3,6 +3,7 @@ import * as THREE from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
 
 import { bumpMapping } from "../../../lib/shaders/bumpMapping.glsl";
+import { linearToSRGB } from "../../../lib/shaders/colorSpace.glsl";
 import { blinnPhong } from "../../../lib/shaders/lighting.glsl";
 import { sphericalUV } from "../../../lib/shaders/sphericalUV.glsl";
 
@@ -40,6 +41,7 @@ const fragmentShader = /* glsl */ ` // Fragment shader
     ${sphericalUV}
     ${blinnPhong}
     ${bumpMapping}
+    ${linearToSRGB}
 
     void main() {
         vec2 uv = getSphericalUV(vVertex);
