@@ -3,6 +3,8 @@
 import { clsx } from "clsx";
 import { useRef, useState } from "react";
 
+import styles from "./SelectedWork.module.css";
+
 const videos = [
   "/homepage/herbs.mp4",
   "/homepage/scopus.mp4",
@@ -51,13 +53,8 @@ export function SelectedWork({ className }: { className?: string }) {
             muted
             playsInline
             onEnded={slot === activeSlot ? handleVideoEnd : undefined}
+            className={styles.video}
             style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              width: "100%",
-              height: "100%",
-              borderRadius: "var(--rounding-medium)",
               zIndex: slot === activeSlot ? 1 : 0,
               visibility: slot === activeSlot ? "visible" : "hidden"
             }}
