@@ -22,7 +22,11 @@
       "WebFetch(domain:codepen.io)",
       "WebFetch(domain:www.framer.com)",
       "WebFetch(domain:motion.dev)",
-      "WebFetch(domain:www.dhiwise.com)"
+      "WebFetch(domain:www.dhiwise.com)",
+      "WebFetch(domain:www.shadertoy.com)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(bunx prettier *)"
     ],
     "deny": []
   }
