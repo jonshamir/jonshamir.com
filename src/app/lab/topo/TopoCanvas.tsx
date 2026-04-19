@@ -11,7 +11,8 @@ import styles from "./TopoCanvas.module.css";
 import {
   createTopoUniforms,
   syncLevaToUniforms,
-  TOPO_DEFAULTS
+  TOPO_DEFAULTS,
+  type TopoControls
 } from "./uniforms";
 
 type View = "3d" | "2d";
@@ -158,7 +159,7 @@ export default function TopoCanvas() {
   });
 
   useEffect(() => {
-    syncLevaToUniforms(controls, uniforms);
+    syncLevaToUniforms(controls as TopoControls, uniforms);
   }, [controls, uniforms]);
 
   return (
@@ -174,10 +175,9 @@ export default function TopoCanvas() {
         </button>
         <ThreeCanvas
           className="grid-full"
-          style={{ backgroundColor: "#f5f5f5", height: "40rem" }}
+          style={{ height: "40rem" }}
           camera={{ position: [1.2, 1.2, 1.2], fov: 35 }}
         >
-          <color attach="background" args={["#f5f5f5"]} />
           {view === "3d" && <TerrainMesh uniforms={uniforms} />}
           {view === "2d" && <HeightmapQuad uniforms={uniforms} />}
         </ThreeCanvas>
