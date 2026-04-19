@@ -1,5 +1,7 @@
 import { OrthographicCamera } from "@react-three/drei";
-import { extend } from "@react-three/fiber";
+import { extend, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
+import * as THREE from "three";
 
 import { HeightmapMaterial } from "./heightmapMaterial";
 import type { TopoUniforms } from "./uniforms";
@@ -11,6 +13,17 @@ type Props = {
 };
 
 export function HeightmapQuad({ uniforms }: Props) {
+  const materialRef = useRef<THREE.ShaderMaterial>(null);
+
+  useFrame(() => {
+    const m = materialRef.current;
+    if (!m) return;
+    m.uniforms.uBaseAmplitude.value = uniforms.uBaseAmplitude.value;
+    m.uniforms.uBaseFrequency.value = uniforms.uBaseFrequency.value;
+    m.uniforms.uBaseOctaves.value = uniforms.uBaseOctaves.value;
+    m.uniforms.uDisplacementScale.value = uniforms.uDisplacementScale.value;
+  });
+
   return (
     <>
       <OrthographicCamera
@@ -25,12 +38,7 @@ export function HeightmapQuad({ uniforms }: Props) {
       <mesh>
         <planeGeometry args={[2, 2]} />
         {/* @ts-expect-error — custom shaderMaterial extended at runtime */}
-        <heightmapMaterial
-          uBaseAmplitude={uniforms.uBaseAmplitude.value}
-          uBaseFrequency={uniforms.uBaseFrequency.value}
-          uBaseOctaves={uniforms.uBaseOctaves.value}
-          uDisplacementScale={uniforms.uDisplacementScale.value}
-        />
+        <heightmapMaterial ref={materialRef} />
       </mesh>
     </>
   );
