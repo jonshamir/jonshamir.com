@@ -1,4 +1,4 @@
-import { OrbitControls } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
 import { extend, useFrame } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import * as THREE from "three";
@@ -24,6 +24,7 @@ export function TerrainMesh({ uniforms }: Props) {
 
   return (
     <>
+      <PerspectiveCamera makeDefault position={[1.2, 1.2, 1.2]} fov={35} />
       <OrbitControls enablePan={false} enableZoom={true} />
       <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]}>
         {/* @ts-expect-error — custom shaderMaterial extended at runtime */}
