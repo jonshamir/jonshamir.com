@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { HeightmapQuad } from "./HeightmapQuad";
 import { TerrainMesh } from "./TerrainMesh";
 import styles from "./TopoCanvas.module.css";
 import { createTopoUniforms } from "./uniforms";
@@ -29,7 +30,7 @@ export default function TopoCanvas() {
       >
         <color attach="background" args={["#f5f5f5"]} />
         {view === "3d" && <TerrainMesh uniforms={uniforms} />}
-        {/* 2D view added in Task 4 */}
+        {view === "2d" && <HeightmapQuad uniforms={uniforms} />}
       </ThreeCanvas>
     </div>
   );
