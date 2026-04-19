@@ -1,14 +1,17 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { TerrainMesh } from "./TerrainMesh";
 import styles from "./TopoCanvas.module.css";
+import { createTopoUniforms } from "./uniforms";
 
 type View = "3d" | "2d";
 
 export default function TopoCanvas() {
   const [view, setView] = useState<View>("3d");
+  const uniforms = useMemo(() => createTopoUniforms(), []);
 
   return (
     <div className={styles.wrapper}>
@@ -25,7 +28,8 @@ export default function TopoCanvas() {
         camera={{ position: [1.2, 1.2, 1.2], fov: 35 }}
       >
         <color attach="background" args={["#f5f5f5"]} />
-        {/* TerrainMesh / HeightmapQuad go here in later tasks */}
+        {view === "3d" && <TerrainMesh uniforms={uniforms} />}
+        {/* 2D view added in Task 4 */}
       </ThreeCanvas>
     </div>
   );
