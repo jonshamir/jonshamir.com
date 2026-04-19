@@ -4,7 +4,7 @@ import { useMemo, useRef } from "react";
 import * as THREE from "three";
 
 import { TerrainMaterial } from "./terrainMaterial";
-import type { TopoUniforms } from "./uniforms";
+import { forwardToMaterial, type TopoUniforms } from "./uniforms";
 
 extend({ TerrainMaterial });
 
@@ -19,10 +19,7 @@ export function TerrainMesh({ uniforms }: Props) {
   useFrame(() => {
     const m = materialRef.current;
     if (!m) return;
-    m.uniforms.uBaseAmplitude.value = uniforms.uBaseAmplitude.value;
-    m.uniforms.uBaseFrequency.value = uniforms.uBaseFrequency.value;
-    m.uniforms.uBaseOctaves.value = uniforms.uBaseOctaves.value;
-    m.uniforms.uDisplacementScale.value = uniforms.uDisplacementScale.value;
+    forwardToMaterial(uniforms, m.uniforms);
   });
 
   return (

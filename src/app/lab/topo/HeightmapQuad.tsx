@@ -4,7 +4,7 @@ import { useRef } from "react";
 import * as THREE from "three";
 
 import { HeightmapMaterial } from "./heightmapMaterial";
-import type { TopoUniforms } from "./uniforms";
+import { forwardToMaterial, type TopoUniforms } from "./uniforms";
 
 extend({ HeightmapMaterial });
 
@@ -18,10 +18,7 @@ export function HeightmapQuad({ uniforms }: Props) {
   useFrame(() => {
     const m = materialRef.current;
     if (!m) return;
-    m.uniforms.uBaseAmplitude.value = uniforms.uBaseAmplitude.value;
-    m.uniforms.uBaseFrequency.value = uniforms.uBaseFrequency.value;
-    m.uniforms.uBaseOctaves.value = uniforms.uBaseOctaves.value;
-    m.uniforms.uDisplacementScale.value = uniforms.uDisplacementScale.value;
+    forwardToMaterial(uniforms, m.uniforms);
   });
 
   return (
