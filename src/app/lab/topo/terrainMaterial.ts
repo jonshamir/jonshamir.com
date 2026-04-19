@@ -34,14 +34,22 @@ export const TerrainMaterial = shaderMaterial(
     ${erosionShaderChunk}
 
     void main() {
-      vec3 ht = erodedTerrain(uv);
-      float h = ht.x;
+      // Finite-difference the height rather than using the filter's analytical
+      // gradient. The gradient output is inconsistent with the height field
+      // because the masking/fade logic propagates derivatives naively — the
+      // Shadertoy works around this the same way (sampling neighbor heights).
+      float eps = 1.0 / 256.0;
+      float h  = erodedTerrain(uv).x;
+      float hx = erodedTerrain(uv + vec2(eps, 0.0)).x;
+      float hy = erodedTerrain(uv + vec2(0.0, eps)).x;
+
       vec3 displaced = position + vec3(0.0, 0.0, h * uDisplacementScale);
 
       // Plane is 2x2 in XY, uv in [0,1], so d(position.xy)/d(uv) = (2, 2).
-      // Height world-derivative = (duv-derivative / 2) * uDisplacementScale.
+      float dhdu = (hx - h) / eps;
+      float dhdv = (hy - h) / eps;
       float s = uDisplacementScale * 0.5;
-      vec3 n = normalize(vec3(-ht.y * s, -ht.z * s, 1.0));
+      vec3 n = normalize(vec3(-dhdu * s, -dhdv * s, 1.0));
 
       vNormalW = normalize(mat3(modelMatrix) * n);
       vHeight = h;
