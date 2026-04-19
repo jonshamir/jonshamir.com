@@ -27,6 +27,7 @@ const initialUniforms = {
 export const TerrainMaterial = shaderMaterial(
   initialUniforms,
   /* glsl */ `
+    uniform float uDisplacementScale;
     varying vec3 vNormalW;
     varying float vHeight;
 
