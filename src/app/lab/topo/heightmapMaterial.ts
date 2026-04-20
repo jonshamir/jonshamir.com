@@ -48,7 +48,9 @@ export const HeightmapMaterial = shaderMaterial(
       float scaled = h * uLineCount;
       float f = fract(scaled);
       float dist = min(f, 1.0 - f);
-      float fw = max(fwidth(scaled), 1e-5);
+      // True gradient magnitude (L2) rather than fwidth's L1 approximation,
+      // so line thickness is uniform regardless of contour angle.
+      float fw = max(length(vec2(dFdx(scaled), dFdy(scaled))), 1e-5);
 
       // Minor line: ~1px thick.
       float minor = 1.0 - smoothstep(fw * 0.5, fw * 1.5, dist);
