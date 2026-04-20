@@ -141,14 +141,6 @@ export const TOPO_SCHEMA = {
     max: 1,
     step: 0.01
   },
-  displacementScale: {
-    folder: "rendering",
-    label: "Displacement",
-    value: 1.0,
-    min: 0,
-    max: 3,
-    step: 0.05
-  },
   lineCount: {
     folder: "contours",
     label: "Line count",

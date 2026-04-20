@@ -12,7 +12,6 @@ export const TerrainMaterial = shaderMaterial(
     uBgColor: [1, 1, 1] as [number, number, number]
   },
   /* glsl */ `
-    uniform float uDisplacementScale;
     varying float vHeight;
     varying vec2 vUv;
 
@@ -22,7 +21,7 @@ export const TerrainMaterial = shaderMaterial(
       // Normals are computed per-fragment from the baked heightmap, so the
       // vertex stage only needs the height for displacement and for vHeight.
       float h = erodedTerrain(uv).x;
-      vec3 displaced = position + vec3(0.0, 0.0, h * uDisplacementScale);
+      vec3 displaced = position + vec3(0.0, 0.0, h);
       vHeight = h;
       vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
@@ -32,7 +31,6 @@ export const TerrainMaterial = shaderMaterial(
     // modelMatrix is auto-provided in the vertex stage but not the fragment
     // stage; declaring it here lets three.js bind the same per-draw value.
     uniform mat4 modelMatrix;
-    uniform float uDisplacementScale;
     varying float vHeight;
     varying vec2 vUv;
 
@@ -65,8 +63,7 @@ export const TerrainMaterial = shaderMaterial(
       float dhdu = (hR - hL) / (2.0 * e.x);
       float dhdv = (hU - hD) / (2.0 * e.y);
       // Plane is 2 units wide per 1 UV in each axis.
-      float ns = uDisplacementScale * 0.5;
-      vec3 nLocal = normalize(vec3(-dhdu * ns, -dhdv * ns, 1.0));
+      vec3 nLocal = normalize(vec3(-dhdu * 0.5, -dhdv * 0.5, 1.0));
       vec3 nW = normalize(mat3(modelMatrix) * nLocal);
 
       vec3 lightDir = normalize(vec3(0.4, 0.6, 0.7));

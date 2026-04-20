@@ -92,7 +92,7 @@ export function defineShaderControls<S extends ShaderControlSchema>(schema: S) {
       ReturnType<typeof folder> | Omit<ShaderControlSpec, "folder">
     > = { ...root };
     for (const [name, fields] of Object.entries(byFolder)) {
-      out[name] = folder(fields);
+      out[name] = folder(fields, { collapsed: true });
     }
     return out;
   }
