@@ -4,12 +4,12 @@ import type * as THREE from "three";
 import { erosionShaderChunk } from "./erosionShader";
 import { TOPO_INITIAL_UNIFORMS } from "./uniforms";
 
-// Bake pass: evaluates the (expensive) erosion filter once and writes
-// height into the red channel of an offscreen render target. Only declares
-// the uniforms the erosion shader actually reads, so the dirty check in
-// HeightmapQuad doesn't trigger a re-bake on contour-only slider changes.
+// Bake pass: evaluates the (expensive) erosion filter four times per texel
+// at a 2x2 sub-texel pattern and packs the results into RGBA, giving the
+// contour pass a free 2x2 supersample on each texture fetch.
 export const HeightmapMaterial = shaderMaterial(
   {
+    uTexelSize: [1 / 1024, 1 / 1024] as [number, number],
     uBaseAmplitude: TOPO_INITIAL_UNIFORMS.uBaseAmplitude,
     uBaseFrequency: TOPO_INITIAL_UNIFORMS.uBaseFrequency,
     uBaseOctaves: TOPO_INITIAL_UNIFORMS.uBaseOctaves,
@@ -40,9 +40,20 @@ export const HeightmapMaterial = shaderMaterial(
 
     ${erosionShaderChunk}
 
+    uniform vec2 uTexelSize;
+
     void main() {
-      float h = erodedTerrain(vUv).x;
-      gl_FragColor = vec4(h, 0.0, 0.0, 1.0);
+      // Pack four sub-texel height samples into RGBA. This is 2x2
+      // supersampling for free on the read side: one texture fetch gives
+      // the contour pass four spatially-offset height values, smoothing out
+      // the stair-steps produced by bilinear interpolation of a single
+      // sample per texel.
+      vec2 t = uTexelSize * 0.25;
+      float h00 = erodedTerrain(vUv + vec2(-t.x, -t.y)).x;
+      float h10 = erodedTerrain(vUv + vec2( t.x, -t.y)).x;
+      float h01 = erodedTerrain(vUv + vec2(-t.x,  t.y)).x;
+      float h11 = erodedTerrain(vUv + vec2( t.x,  t.y)).x;
+      gl_FragColor = vec4(h00, h10, h01, h11);
     }
   `
 );
@@ -73,8 +84,13 @@ export const ContourMaterial = shaderMaterial(
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
 
+    // One fetch reads four sub-texel height samples packed into RGBA by the
+    // bake pass. Averaging them is equivalent to reading a 2x2-supersampled
+    // height field, which softens the stair-steps that bilinear filtering
+    // alone leaves behind.
     float sampleHeight(vec2 uv) {
-      return texture2D(uHeightMap, uv).r;
+      vec4 s = texture2D(uHeightMap, uv);
+      return (s.r + s.g + s.b + s.a) * 0.25;
     }
 
     void main() {

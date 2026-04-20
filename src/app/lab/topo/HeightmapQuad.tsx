@@ -35,23 +35,21 @@ export function HeightmapQuad({ uniforms }: Props) {
   const renderTarget = useMemo(() => {
     const pixelW = Math.min(Math.round(size.width * dpr), MAX_BAKE_SIZE);
     const pixelH = Math.min(Math.round(size.height * dpr), MAX_BAKE_SIZE);
-    const rt = new THREE.WebGLRenderTarget(
-      Math.max(1, pixelW),
-      Math.max(1, pixelH),
-      {
-        minFilter: THREE.LinearFilter,
-        magFilter: THREE.LinearFilter,
-        wrapS: THREE.ClampToEdgeWrapping,
-        wrapT: THREE.ClampToEdgeWrapping,
-        depthBuffer: false,
-        stencilBuffer: false,
-        // Half-float is critical here: 8-bit would only give ~256 height
-        // levels, which quantizes contour positions into visible bands at
-        // high line counts. HalfFloat is widely supported in WebGL2.
-        type: THREE.HalfFloatType,
-        format: THREE.RGBAFormat
-      }
-    );
+    const rt = new THREE.WebGLRenderTarget(Math.max(1, pixelW), Math.max(1, pixelH), {
+      minFilter: THREE.LinearFilter,
+      magFilter: THREE.LinearFilter,
+      wrapS: THREE.ClampToEdgeWrapping,
+      wrapT: THREE.ClampToEdgeWrapping,
+      depthBuffer: false,
+      stencilBuffer: false,
+      // Full float32 storage is needed because the contour pass computes
+      // fract(h * uLineCount): at uLineCount~80, half-float's 10-bit
+      // mantissa on h gives only ~12 distinct scaled values per band,
+      // which appears as visible stair-steps on line edges. float32
+      // removes that quantization entirely.
+      type: THREE.FloatType,
+      format: THREE.RGBAFormat
+    });
     return rt;
   }, [size.width, size.height, dpr]);
 
@@ -72,10 +70,17 @@ export function HeightmapQuad({ uniforms }: Props) {
   const lastValues = useRef<number[]>([]);
   const needsBake = useRef(true);
 
-  // Force a re-bake when the render target is (re)created.
+  // Force a re-bake when the render target is (re)created and push the
+  // new texel size into the bake shader (used for its 2x2 sub-texel pattern).
   useEffect(() => {
     needsBake.current = true;
-  }, [renderTarget]);
+    const u = bake.material.uniforms as Record<string, THREE.IUniform<unknown>>;
+    const texel = u.uTexelSize?.value as [number, number] | undefined;
+    if (texel) {
+      texel[0] = 1 / renderTarget.width;
+      texel[1] = 1 / renderTarget.height;
+    }
+  }, [renderTarget, bake]);
 
   useFrame(() => {
     // Push the shared uniforms into both materials.
@@ -83,13 +88,14 @@ export function HeightmapQuad({ uniforms }: Props) {
     const contour = contourRef.current;
     if (contour) forwardToMaterial(uniforms, contour.uniforms);
 
-    // Compare bake-relevant uniforms against last snapshot.
-    const bakeUniforms = bake.material.uniforms as Record<
-      string,
-      THREE.IUniform<number>
-    >;
+    // Compare bake-relevant uniforms against last snapshot. The array-
+    // valued uTexelSize uniform is mutated in place on resize, so its
+    // reference stays stable across frames — it participates in the check
+    // only by identity, which is correct (dirty is forced separately from
+    // the resize effect).
+    const bakeUniforms = bake.material.uniforms as Record<string, THREE.IUniform<unknown>>;
     const keys = Object.keys(bakeUniforms);
-    const current = keys.map((k) => bakeUniforms[k].value);
+    const current = keys.map((k) => bakeUniforms[k].value as number);
     const prev = lastValues.current;
     if (prev.length !== current.length) {
       needsBake.current = true;
