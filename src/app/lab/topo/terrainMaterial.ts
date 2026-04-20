@@ -71,11 +71,12 @@ export const TerrainMaterial = shaderMaterial(
 
       vec3 lightDir = normalize(vec3(0.4, 0.6, 0.7));
       float lambert = clamp(dot(nW, lightDir), 0.0, 1.0);
-      float ambient = 0.25;
-      // Albedo follows the CSS background color, with a small height-based
-      // lift toward the line (text) color so peaks read against the page.
+      float ambient = 0.55;
+      // Albedo is the CSS background color with a symmetric height lift:
+      // low areas darker, high areas lighter. Works in both light and dark
+      // modes since the offset is applied directly to luminance.
       float heightTint = clamp(vHeight * 1.5 + 0.2, 0.0, 1.0);
-      vec3 base = mix(uBgColor * 0.85, mix(uBgColor, uLineColor, 0.15), heightTint);
+      vec3 base = clamp(uBgColor + (heightTint - 0.5) * 0.5, 0.0, 1.0);
       vec3 shaded = base * (ambient + (1.0 - ambient) * lambert);
 
       // Contour overlay (mirrors ContourMaterial's math, sampling the same

@@ -19,7 +19,7 @@ import {
 type View = "3d" | "2d";
 
 export default function TopoCanvas() {
-  const [view, setView] = useState<View>("2d");
+  const [view, setView] = useState<View>("3d");
   const uniforms = useMemo(() => createTopoUniforms(), []);
 
   const levaSchema = useMemo(() => buildLevaSchema(), []);
