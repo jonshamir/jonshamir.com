@@ -14,6 +14,7 @@ import {
   TOPO_DEFAULTS,
   type TopoControls
 } from "./uniforms";
+import clsx from "clsx";
 
 type View = "3d" | "2d";
 
@@ -165,7 +166,7 @@ export default function TopoCanvas() {
   return (
     <>
       <LevaPanel />
-      <div className={styles.wrapper}>
+      <div className={clsx(styles.wrapper, "grid-full")}>
         <button
           className={styles.toggle}
           onClick={() => setView((v) => (v === "3d" ? "2d" : "3d"))}
