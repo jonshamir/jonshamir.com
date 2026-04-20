@@ -7,13 +7,6 @@
   top: 12px;
   right: 12px;
   z-index: 10;
-  padding: 6px 12px;
-  font-family: inherit;
-  font-size: 0.85rem;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  cursor: pointer;
 }
 
 .toggle:hover {

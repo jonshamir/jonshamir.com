@@ -15,16 +15,15 @@ export function useLinearColor(hex: string): Color {
 export function useLinearColors<K extends string>(
   hexes: Record<K, string>
 ): Record<K, Color> {
-  const keys = Object.keys(hexes) as K[];
-  const values = keys.map((k) => hexes[k]).join("|");
+  const key = JSON.stringify(hexes);
   return useMemo(() => {
     const out = {} as Record<K, Color>;
-    for (const k of keys) {
+    for (const k of Object.keys(hexes) as K[]) {
       const color = new Color(hexes[k]);
       color.convertLinearToSRGB();
       out[k] = color;
     }
     return out;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [values]);
+  }, [key]);
 }

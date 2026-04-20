@@ -22,7 +22,8 @@ export default function TopoCanvas() {
   const [view, setView] = useState<View>("3d");
   const uniforms = useMemo(() => createTopoUniforms(), []);
 
-  const controls = useControls(buildLevaSchema());
+  const levaSchema = useMemo(() => buildLevaSchema(), []);
+  const controls = useControls(levaSchema);
 
   useEffect(() => {
     syncLevaToUniforms(controls as unknown as TopoControls, uniforms);
@@ -39,11 +40,7 @@ export default function TopoCanvas() {
         >
           View: {view.toUpperCase()}
         </button>
-        <ThreeCanvas
-          className="grid-full"
-          style={{ height: "40rem" }}
-          camera={{ position: [1.2, 1.2, 1.2], fov: 35 }}
-        >
+        <ThreeCanvas className="grid-full" style={{ height: "40rem" }}>
           {view === "3d" && <TerrainMesh uniforms={uniforms} />}
           {view === "2d" && <HeightmapQuad uniforms={uniforms} />}
         </ThreeCanvas>
