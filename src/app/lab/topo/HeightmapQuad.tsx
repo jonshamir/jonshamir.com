@@ -35,21 +35,25 @@ export function HeightmapQuad({ uniforms }: Props) {
   const renderTarget = useMemo(() => {
     const pixelW = Math.min(Math.round(size.width * dpr), MAX_BAKE_SIZE);
     const pixelH = Math.min(Math.round(size.height * dpr), MAX_BAKE_SIZE);
-    const rt = new THREE.WebGLRenderTarget(Math.max(1, pixelW), Math.max(1, pixelH), {
-      minFilter: THREE.LinearFilter,
-      magFilter: THREE.LinearFilter,
-      wrapS: THREE.ClampToEdgeWrapping,
-      wrapT: THREE.ClampToEdgeWrapping,
-      depthBuffer: false,
-      stencilBuffer: false,
-      // Full float32 storage is needed because the contour pass computes
-      // fract(h * uLineCount): at uLineCount~80, half-float's 10-bit
-      // mantissa on h gives only ~12 distinct scaled values per band,
-      // which appears as visible stair-steps on line edges. float32
-      // removes that quantization entirely.
-      type: THREE.FloatType,
-      format: THREE.RGBAFormat
-    });
+    const rt = new THREE.WebGLRenderTarget(
+      Math.max(1, pixelW),
+      Math.max(1, pixelH),
+      {
+        minFilter: THREE.LinearFilter,
+        magFilter: THREE.LinearFilter,
+        wrapS: THREE.ClampToEdgeWrapping,
+        wrapT: THREE.ClampToEdgeWrapping,
+        depthBuffer: false,
+        stencilBuffer: false,
+        // Full float32 storage is needed because the contour pass computes
+        // fract(h * uLineCount): at uLineCount~80, half-float's 10-bit
+        // mantissa on h gives only ~12 distinct scaled values per band,
+        // which appears as visible stair-steps on line edges. float32
+        // removes that quantization entirely.
+        type: THREE.FloatType,
+        format: THREE.RGBAFormat
+      }
+    );
     return rt;
   }, [size.width, size.height, dpr]);
 
@@ -76,7 +80,10 @@ export function HeightmapQuad({ uniforms }: Props) {
   // one-shot read on class change catches the mid-transition value.
   const lineColor = useMemo<[number, number, number]>(() => [0, 0, 0], []);
   const rootStyle = useMemo(
-    () => (typeof window === "undefined" ? null : getComputedStyle(document.documentElement)),
+    () =>
+      typeof window === "undefined"
+        ? null
+        : getComputedStyle(document.documentElement),
     []
   );
 
@@ -111,8 +118,9 @@ export function HeightmapQuad({ uniforms }: Props) {
           }
         }
       }
-      (contour.uniforms.uLineColor as THREE.IUniform<[number, number, number]>)
-        .value = lineColor;
+      (
+        contour.uniforms.uLineColor as THREE.IUniform<[number, number, number]>
+      ).value = lineColor;
     }
 
     // Compare bake-relevant uniforms against last snapshot. The array-
@@ -120,7 +128,10 @@ export function HeightmapQuad({ uniforms }: Props) {
     // reference stays stable across frames — it participates in the check
     // only by identity, which is correct (dirty is forced separately from
     // the resize effect).
-    const bakeUniforms = bake.material.uniforms as Record<string, THREE.IUniform<unknown>>;
+    const bakeUniforms = bake.material.uniforms as Record<
+      string,
+      THREE.IUniform<unknown>
+    >;
     const keys = Object.keys(bakeUniforms);
     const current = keys.map((k) => bakeUniforms[k].value as number);
     const prev = lastValues.current;
