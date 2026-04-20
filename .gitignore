@@ -34,3 +34,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# superpowers plans/specs (local only)
+/docs/superpowers/
