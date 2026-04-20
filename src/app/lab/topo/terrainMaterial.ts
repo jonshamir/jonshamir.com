@@ -8,7 +8,8 @@ export const TerrainMaterial = shaderMaterial(
   {
     ...TOPO_INITIAL_UNIFORMS,
     uHeightMap: null as unknown as THREE.Texture,
-    uLineColor: [0, 0, 0] as [number, number, number]
+    uLineColor: [0, 0, 0] as [number, number, number],
+    uBgColor: [1, 1, 1] as [number, number, number]
   },
   /* glsl */ `
     uniform float uDisplacementScale;
@@ -42,6 +43,7 @@ export const TerrainMaterial = shaderMaterial(
     uniform float uContourSmoothing;
     uniform float uContourOffset;
     uniform vec3 uLineColor;
+    uniform vec3 uBgColor;
 
     // Same 2x2-packed supersample trick as the 2D contour pass — averaging
     // the four channels gives a smoother height for the contour math.
@@ -70,7 +72,10 @@ export const TerrainMaterial = shaderMaterial(
       vec3 lightDir = normalize(vec3(0.4, 0.6, 0.7));
       float lambert = clamp(dot(nW, lightDir), 0.0, 1.0);
       float ambient = 0.25;
-      vec3 base = mix(vec3(0.72, 0.72, 0.72), vec3(0.98, 0.98, 0.98), clamp(vHeight * 1.5 + 0.2, 0.0, 1.0));
+      // Albedo follows the CSS background color, with a small height-based
+      // lift toward the line (text) color so peaks read against the page.
+      float heightTint = clamp(vHeight * 1.5 + 0.2, 0.0, 1.0);
+      vec3 base = mix(uBgColor * 0.85, mix(uBgColor, uLineColor, 0.15), heightTint);
       vec3 shaded = base * (ambient + (1.0 - ambient) * lambert);
 
       // Contour overlay (mirrors ContourMaterial's math, sampling the same

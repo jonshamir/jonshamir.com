@@ -7,6 +7,28 @@ import { forwardToMaterial, type TopoUniforms } from "./uniforms";
 
 const MAX_BAKE_SIZE = 2048;
 
+// Parse a CSS custom property like "49, 53, 59" into a normalized RGB tuple,
+// writing into `out` (allocation-free — cheap to call every frame). Leaves
+// `out` untouched if the property is empty or malformed.
+export function readCssRgb(
+  style: CSSStyleDeclaration,
+  name: string,
+  out: [number, number, number]
+): void {
+  const raw = style.getPropertyValue(name);
+  if (!raw) return;
+  let i = 0;
+  let start = 0;
+  for (let j = 0; j <= raw.length && i < 3; j++) {
+    if (j === raw.length || raw.charCodeAt(j) === 44 /* , */) {
+      const v = Number(raw.slice(start, j));
+      if (Number.isNaN(v)) return;
+      out[i++] = v / 255;
+      start = j + 1;
+    }
+  }
+}
+
 // Renders the heightmap to an offscreen float32 RT once per uniform change
 // and returns the resulting texture. Shared between the 2D contour view and
 // the 3D terrain view so both read the same cached heightmap.

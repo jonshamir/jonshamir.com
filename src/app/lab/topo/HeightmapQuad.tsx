@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 import { ContourMaterial, HeightmapMaterial } from "./heightmapMaterial";
 import { forwardToMaterial, type TopoUniforms } from "./uniforms";
-import { useBakedHeightmap } from "./useBakedHeightmap";
+import { readCssRgb, useBakedHeightmap } from "./useBakedHeightmap";
 
 extend({ HeightmapMaterial, ContourMaterial });
 
@@ -35,19 +35,7 @@ export function HeightmapQuad({ uniforms }: Props) {
     const contour = contourRef.current;
     if (!contour) return;
     forwardToMaterial(uniforms, contour.uniforms);
-    if (rootStyle) {
-      const raw = rootStyle.getPropertyValue("--color-text-rgb");
-      if (raw) {
-        let i = 0;
-        let start = 0;
-        for (let j = 0; j <= raw.length && i < 3; j++) {
-          if (j === raw.length || raw.charCodeAt(j) === 44 /* , */) {
-            lineColor[i++] = Number(raw.slice(start, j)) / 255;
-            start = j + 1;
-          }
-        }
-      }
-    }
+    if (rootStyle) readCssRgb(rootStyle, "--color-text-rgb", lineColor);
     (
       contour.uniforms.uLineColor as THREE.IUniform<[number, number, number]>
     ).value = lineColor;

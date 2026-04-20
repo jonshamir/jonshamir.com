@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 import { TerrainMaterial } from "./terrainMaterial";
 import { forwardToMaterial, type TopoUniforms } from "./uniforms";
-import { useBakedHeightmap } from "./useBakedHeightmap";
+import { readCssRgb, useBakedHeightmap } from "./useBakedHeightmap";
 
 extend({ TerrainMaterial });
 
@@ -20,6 +20,7 @@ export function TerrainMesh({ uniforms }: Props) {
   const heightMap = useBakedHeightmap(uniforms);
 
   const lineColor = useMemo<[number, number, number]>(() => [0, 0, 0], []);
+  const bgColor = useMemo<[number, number, number]>(() => [1, 1, 1], []);
   const rootStyle = useMemo(
     () =>
       typeof window === "undefined"
@@ -33,20 +34,13 @@ export function TerrainMesh({ uniforms }: Props) {
     if (!m) return;
     forwardToMaterial(uniforms, m.uniforms);
     if (rootStyle) {
-      const raw = rootStyle.getPropertyValue("--color-text-rgb");
-      if (raw) {
-        let i = 0;
-        let start = 0;
-        for (let j = 0; j <= raw.length && i < 3; j++) {
-          if (j === raw.length || raw.charCodeAt(j) === 44 /* , */) {
-            lineColor[i++] = Number(raw.slice(start, j)) / 255;
-            start = j + 1;
-          }
-        }
-      }
+      readCssRgb(rootStyle, "--color-text-rgb", lineColor);
+      readCssRgb(rootStyle, "--color-bg-rgb", bgColor);
     }
     (m.uniforms.uLineColor as THREE.IUniform<[number, number, number]>).value =
       lineColor;
+    (m.uniforms.uBgColor as THREE.IUniform<[number, number, number]>).value =
+      bgColor;
     (m.uniforms.uHeightMap as THREE.IUniform<THREE.Texture>).value = heightMap;
   });
 
