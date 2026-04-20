@@ -27,7 +27,9 @@
       "Bash(git add *)",
       "Bash(git commit *)",
       "Bash(bunx prettier *)",
-      "Bash(gh pr *)"
+      "Bash(gh pr *)",
+      "Bash(bunx tsc *)",
+      "Bash(bunx next *)"
     ],
     "deny": []
   }
