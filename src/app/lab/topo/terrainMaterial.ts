@@ -1,0 +1,51 @@
+import { shaderMaterial } from "@react-three/drei";
+
+import { erosionShaderChunk } from "./erosionShader";
+import { TOPO_INITIAL_UNIFORMS } from "./uniforms";
+
+export const TerrainMaterial = shaderMaterial(
+  { ...TOPO_INITIAL_UNIFORMS },
+  /* glsl */ `
+    uniform float uDisplacementScale;
+    varying vec3 vNormalW;
+    varying float vHeight;
+
+    ${erosionShaderChunk}
+
+    void main() {
+      // Finite-difference the height rather than using the filter's analytical
+      // gradient. The gradient output is inconsistent with the height field
+      // because the masking/fade logic propagates derivatives naively — the
+      // Shadertoy works around this the same way (sampling neighbor heights).
+      float eps = 1.0 / 256.0;
+      float h  = erodedTerrain(uv).x;
+      float hx = erodedTerrain(uv + vec2(eps, 0.0)).x;
+      float hy = erodedTerrain(uv + vec2(0.0, eps)).x;
+
+      vec3 displaced = position + vec3(0.0, 0.0, h * uDisplacementScale);
+
+      // Plane is 2x2 in XY, uv in [0,1], so d(position.xy)/d(uv) = (2, 2).
+      float dhdu = (hx - h) / eps;
+      float dhdv = (hy - h) / eps;
+      float s = uDisplacementScale * 0.5;
+      vec3 n = normalize(vec3(-dhdu * s, -dhdv * s, 1.0));
+
+      vNormalW = normalize(mat3(modelMatrix) * n);
+      vHeight = h;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
+    }
+  `,
+  /* glsl */ `
+    varying vec3 vNormalW;
+    varying float vHeight;
+
+    void main() {
+      vec3 lightDir = normalize(vec3(0.4, 0.6, 0.7));
+      float lambert = clamp(dot(normalize(vNormalW), lightDir), 0.0, 1.0);
+      float ambient = 0.25;
+      vec3 base = mix(vec3(0.72, 0.72, 0.72), vec3(0.98, 0.98, 0.98), clamp(vHeight * 1.5 + 0.2, 0.0, 1.0));
+      vec3 color = base * (ambient + (1.0 - ambient) * lambert);
+      gl_FragColor = vec4(color, 1.0);
+    }
+  `
+);

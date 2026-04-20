@@ -7,7 +7,7 @@ import { Color, PCFSoftShadowMap } from "three";
 
 import { LevaPanel } from "../../../components/LevaPanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
-import { useLinearColor } from "../../../lib/hooks/useLinearColor";
+import { useLinearColors } from "../../../lib/hooks/useLinearColor";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
@@ -180,18 +180,17 @@ export default function PlantCanvas() {
     groundMaterial.shadowColor = color;
   }, [groundShadowColor, groundMaterial]);
 
-  const leafBaseColorObj = useLinearColor(leafBaseColor);
-  const leafShadowColorObj = useLinearColor(leafShadowColor);
-  const leafSubsurfaceColorObj = useLinearColor(leafSubsurfaceColor);
-
-  const flowerBaseColorObj = useLinearColor(flowerBaseColor);
-  const flowerShadowColorObj = useLinearColor(flowerShadowColor);
-  const flowerSubsurfaceColorObj = useLinearColor(flowerSubsurfaceColor);
-
-  const potBaseColorObj = useLinearColor(potBaseColor);
-  const potShadowColorObj = useLinearColor(potShadowColor);
-
-  const shadowPlaneColorObj = useLinearColor(shadowPlaneColor);
+  const colors = useLinearColors({
+    leafBase: leafBaseColor,
+    leafShadow: leafShadowColor,
+    leafSubsurface: leafSubsurfaceColor,
+    flowerBase: flowerBaseColor,
+    flowerShadow: flowerShadowColor,
+    flowerSubsurface: flowerSubsurfaceColor,
+    potBase: potBaseColor,
+    potShadow: potShadowColor,
+    shadowPlane: shadowPlaneColor
+  });
 
   return (
     <>
@@ -219,8 +218,8 @@ export default function PlantCanvas() {
         <ambientLight intensity={0.4} />
         <Pot
           position={[0, -0.8, 0]}
-          baseColor={potBaseColorObj}
-          shadowColor={potShadowColorObj}
+          baseColor={colors.potBase}
+          shadowColor={colors.potShadow}
           height={potHeight}
           bottomRadius={potBottomRadius}
           topRadius={potTopRadius}
@@ -231,16 +230,16 @@ export default function PlantCanvas() {
         <Plant
           age={currAge}
           position={[0, -1, 0]}
-          baseColor={leafBaseColorObj}
-          shadowColor={leafShadowColorObj}
-          subsurfaceColor={leafSubsurfaceColorObj}
+          baseColor={colors.leafBase}
+          shadowColor={colors.leafShadow}
+          subsurfaceColor={colors.leafSubsurface}
         />
         <FlowerStem
           growingStage={1}
           position={[0, -1, 0]}
-          baseColor={leafBaseColorObj}
-          shadowColor={leafShadowColorObj}
-          subsurfaceColor={leafSubsurfaceColorObj}
+          baseColor={colors.leafBase}
+          shadowColor={colors.leafShadow}
+          subsurfaceColor={colors.leafSubsurface}
           renderFlower={(tipPosition, flowerScale, curve) => (
             <group>
               <PhyllotaxisSpawner
@@ -250,9 +249,9 @@ export default function PlantCanvas() {
                 basePitch={fBasePitch}
                 layerHeight={-fLayerHeight}
                 curve={curve}
-                baseColor={flowerBaseColorObj}
-                shadowColor={flowerShadowColorObj}
-                subsurfaceColor={flowerSubsurfaceColorObj}
+                baseColor={colors.flowerBase}
+                shadowColor={colors.flowerShadow}
+                subsurfaceColor={colors.flowerSubsurface}
                 renderElement={(spawnProps) => (
                   <SimpleFlower
                     key={spawnProps.index}
@@ -281,7 +280,7 @@ export default function PlantCanvas() {
             receiveShadow
           >
             <planeGeometry args={[10, 10]} />
-            <shadowMaterial color={shadowPlaneColorObj} opacity={0.3} />
+            <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
           </mesh>
         )}
       </ThreeCanvas>
