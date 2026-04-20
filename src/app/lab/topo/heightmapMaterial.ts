@@ -133,7 +133,20 @@ export const ContourMaterial = shaderMaterial(
       float majorMask = step(abs(mod(nearestInt + 0.5, every) - 0.5), 0.5);
       float major = (1.0 - smoothstep(fw * 1.5, fw * 3.0, dist)) * majorMask;
 
-      float alpha = max(minor * uMinorStrength, major);
+      // Mesh-edge border, same visual thickness/AA profile as a major line:
+      // full opacity for the innermost 1.5 screen pixels, smoothstep falloff
+      // out to 3 pixels.
+      vec2 fuv = fwidth(vUv);
+      float edgePx = min(
+        min(vUv.x / fuv.x, (1.0 - vUv.x) / fuv.x),
+        min(vUv.y / fuv.y, (1.0 - vUv.y) / fuv.y)
+      );
+      // Major line is symmetric around its center (full core ~3 pixels).
+      // The border only sees the inward half, so it needs double the core
+      // range to match visually.
+      float border = 1.0 - smoothstep(3.0, 4.5, edgePx);
+
+      float alpha = max(max(minor * uMinorStrength, major), border);
 
       gl_FragColor = vec4(uLineColor, alpha);
     }

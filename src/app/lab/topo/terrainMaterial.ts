@@ -105,7 +105,15 @@ export const TerrainMaterial = shaderMaterial(
       float majorMask = step(abs(mod(nearestInt + 0.5, every) - 0.5), 0.5);
       float major = (1.0 - smoothstep(fw * 1.5, fw * 3.0, dist)) * majorMask;
 
-      float contourAlpha = max(minor * uMinorStrength, major);
+      // Mesh-edge border, same visual thickness/AA as a major contour.
+      vec2 fuv = fwidth(vUv);
+      float edgePx = min(
+        min(vUv.x / fuv.x, (1.0 - vUv.x) / fuv.x),
+        min(vUv.y / fuv.y, (1.0 - vUv.y) / fuv.y)
+      );
+      float border = 1.0 - smoothstep(3.0, 4.5, edgePx);
+
+      float contourAlpha = max(max(minor * uMinorStrength, major), border);
 
       vec3 color = mix(shaded, uLineColor, contourAlpha);
       gl_FragColor = vec4(color, 1.0);
