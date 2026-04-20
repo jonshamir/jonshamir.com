@@ -3,6 +3,7 @@
 import LabItem from "./components/LabItem/LabItem";
 
 const EXPERIMENTS = [
+  { title: "Topo", slug: "topo" },
   { title: "SDF Collision", slug: "sdf-collision" },
   { title: "Rect", slug: "rect" },
   { title: "Earth", slug: "earth" },
