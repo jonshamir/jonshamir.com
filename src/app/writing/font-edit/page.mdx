@@ -1,0 +1,27 @@
+import Image from "next/image";
+import dexelImg from "./dexel.jpg";
+import buttonsImg from "./buttons.png";
+
+export const metadata = {
+  date: "2026-04-19",
+  description: "Editing fonts with LLMs"
+};
+
+# Editing a variable font using Claude Code
+
+I wanted to use iA writer (which is based off of IBM plex) for the Prepbook, the recipe app I’m working on. It has that analog "typewriter" feel you get from monospace but it's much more readable and compact.
+
+< show comparison of iA Writer Mono and iA Writer Quattro >
+https://github.com/iaolo/iA-Fonts
+https://ia.net/topics/a-typographic-christmas
+
+However, for my specific use case of displaying recipe ingredients, the wide punctuation characters and narrow fraction glyphs hurt readability.
+
+< Show ingredient list before and after alterations >
+
+Luckily, iA Writer is Open source and its license permits alterations. Unfortunately, the source was nowhere to be found on github!
+
+A couple of years ago I would probably give up at this point, but now we have AI code assistants! I wondered if I could edit the compiled variable fonts without breaking anything.
+
+Claude code helped me create a font-alteration pipeline with the changes I wanted. In order to be able to tweak and iterate I asked it to create a configurable project instead of altering the files “directly” you can take a look at the repo here if interested:
+https://github.com/jonshamir/prepbook-quattro
