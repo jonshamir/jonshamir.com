@@ -1,12 +1,8 @@
-.wrapper {
-  position: relative;
-}
-
 .toggle {
-  position: absolute;
+  position: fixed;
   top: 12px;
   left: 12px;
-  z-index: 10;
+  z-index: 20;
 }
 
 .toggle:hover {

@@ -1,6 +1,5 @@
 "use client";
 
-import { clsx } from "clsx";
 import { useControls } from "leva";
 import { useEffect, useMemo, useState } from "react";
 
@@ -32,19 +31,17 @@ export default function TopoCanvas() {
   return (
     <>
       <LevaPanel />
-      <div className={clsx(styles.wrapper, "grid-full")}>
-        <button
-          className={styles.toggle}
-          onClick={() => setView((v) => (v === "3d" ? "2d" : "3d"))}
-          type="button"
-        >
-          View: {view.toUpperCase()}
-        </button>
-        <ThreeCanvas className="grid-full" style={{ height: "40rem" }}>
-          {view === "3d" && <TerrainMesh uniforms={uniforms} />}
-          {view === "2d" && <HeightmapQuad uniforms={uniforms} />}
-        </ThreeCanvas>
-      </div>
+      <button
+        className={styles.toggle}
+        onClick={() => setView((v) => (v === "3d" ? "2d" : "3d"))}
+        type="button"
+      >
+        View: {view.toUpperCase()}
+      </button>
+      <ThreeCanvas isFullscreen={true}>
+        {view === "3d" && <TerrainMesh uniforms={uniforms} />}
+        {view === "2d" && <HeightmapQuad uniforms={uniforms} />}
+      </ThreeCanvas>
     </>
   );
 }
