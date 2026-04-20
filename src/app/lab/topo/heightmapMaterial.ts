@@ -67,7 +67,8 @@ export const ContourMaterial = shaderMaterial(
     uMajorEvery: TOPO_INITIAL_UNIFORMS.uMajorEvery,
     uMinorStrength: TOPO_INITIAL_UNIFORMS.uMinorStrength,
     uContourSmoothing: TOPO_INITIAL_UNIFORMS.uContourSmoothing,
-    uContourOffset: TOPO_INITIAL_UNIFORMS.uContourOffset
+    uContourOffset: TOPO_INITIAL_UNIFORMS.uContourOffset,
+    uLineColor: [0, 0, 0] as [number, number, number]
   },
   /* glsl */ `
     varying vec2 vUv;
@@ -85,6 +86,7 @@ export const ContourMaterial = shaderMaterial(
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
     uniform float uContourOffset;
+    uniform vec3 uLineColor;
 
     // One fetch reads four sub-texel height samples packed into RGBA by the
     // bake pass. Averaging them is equivalent to reading a 2x2-supersampled
@@ -133,9 +135,7 @@ export const ContourMaterial = shaderMaterial(
 
       float alpha = max(minor * uMinorStrength, major);
 
-      vec3 bg = vec3(0.96, 0.94, 0.88);
-      vec3 lineColor = vec3(0.2, 0.25, 0.3);
-      gl_FragColor = vec4(mix(bg, lineColor, alpha), 1.0);
+      gl_FragColor = vec4(uLineColor, alpha);
     }
   `
 );

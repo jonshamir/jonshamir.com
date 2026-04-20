@@ -70,6 +70,16 @@ export function HeightmapQuad({ uniforms }: Props) {
   const lastValues = useRef<number[]>([]);
   const needsBake = useRef(true);
 
+  // Line color follows --color-text-rgb on <html>. We re-read every frame
+  // (via a live CSSStyleDeclaration) so the shader transitions smoothly
+  // together with the rest of the page when the theme class toggles — a
+  // one-shot read on class change catches the mid-transition value.
+  const lineColor = useMemo<[number, number, number]>(() => [0, 0, 0], []);
+  const rootStyle = useMemo(
+    () => (typeof window === "undefined" ? null : getComputedStyle(document.documentElement)),
+    []
+  );
+
   // Force a re-bake when the render target is (re)created and push the
   // new texel size into the bake shader (used for its 2x2 sub-texel pattern).
   useEffect(() => {
@@ -86,7 +96,24 @@ export function HeightmapQuad({ uniforms }: Props) {
     // Push the shared uniforms into both materials.
     forwardToMaterial(uniforms, bake.material.uniforms);
     const contour = contourRef.current;
-    if (contour) forwardToMaterial(uniforms, contour.uniforms);
+    if (contour) {
+      forwardToMaterial(uniforms, contour.uniforms);
+      if (rootStyle) {
+        const raw = rootStyle.getPropertyValue("--color-text-rgb");
+        if (raw) {
+          let i = 0;
+          let start = 0;
+          for (let j = 0; j <= raw.length && i < 3; j++) {
+            if (j === raw.length || raw.charCodeAt(j) === 44 /* , */) {
+              lineColor[i++] = Number(raw.slice(start, j)) / 255;
+              start = j + 1;
+            }
+          }
+        }
+      }
+      (contour.uniforms.uLineColor as THREE.IUniform<[number, number, number]>)
+        .value = lineColor;
+    }
 
     // Compare bake-relevant uniforms against last snapshot. The array-
     // valued uTexelSize uniform is mutated in place on resize, so its
@@ -145,7 +172,7 @@ export function HeightmapQuad({ uniforms }: Props) {
       <mesh>
         <planeGeometry args={[2, 2]} />
         {/* @ts-expect-error — custom shaderMaterial extended at runtime */}
-        <contourMaterial ref={contourRef} />
+        <contourMaterial ref={contourRef} transparent />
       </mesh>
     </>
   );
