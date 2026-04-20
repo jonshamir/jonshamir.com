@@ -18,11 +18,31 @@ export const HeightmapMaterial = shaderMaterial(
     uniform float uLineCount;
     uniform float uMajorEvery;
     uniform float uMinorStrength;
+    uniform float uContourSmoothing;
 
     ${erosionShaderChunk}
 
+    float sampleHeight(vec2 uv) {
+      return erodedTerrain(uv).x;
+    }
+
     void main() {
-      float h = erodedTerrain(vUv).x;
+      float h = sampleHeight(vUv);
+      if (uContourSmoothing > 0.0) {
+        // Slider is 0..1; cap actual UV offset at ~0.004 to stay below the
+        // heightmap's high-frequency detail and avoid aliasing artifacts.
+        float o = uContourSmoothing * 0.004;
+        float s =
+          sampleHeight(vUv + vec2( o, 0.0)) +
+          sampleHeight(vUv + vec2(-o, 0.0)) +
+          sampleHeight(vUv + vec2(0.0,  o)) +
+          sampleHeight(vUv + vec2(0.0, -o)) +
+          sampleHeight(vUv + vec2( o,  o)) +
+          sampleHeight(vUv + vec2(-o,  o)) +
+          sampleHeight(vUv + vec2( o, -o)) +
+          sampleHeight(vUv + vec2(-o, -o));
+        h = (h + s) / 9.0;
+      }
 
       // Distance to nearest contour in "line index" units (0 at line, 0.5 between lines).
       float scaled = h * uLineCount;

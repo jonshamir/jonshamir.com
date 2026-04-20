@@ -104,7 +104,7 @@ export const TOPO_SCHEMA = {
   ridgeRounding: {
     folder: "shape",
     label: "Ridge rounding",
-    value: 0.1,
+    value: 0.8,
     min: 0,
     max: 1,
     step: 0.01
@@ -112,7 +112,7 @@ export const TOPO_SCHEMA = {
   creaseRounding: {
     folder: "shape",
     label: "Crease rounding",
-    value: 0.0,
+    value: 0.8,
     min: 0,
     max: 1,
     step: 0.01
@@ -152,7 +152,7 @@ export const TOPO_SCHEMA = {
   lineCount: {
     folder: "contours",
     label: "Line count",
-    value: 20,
+    value: 80,
     min: 1,
     max: 100,
     step: 1
@@ -169,6 +169,14 @@ export const TOPO_SCHEMA = {
     folder: "contours",
     label: "Minor strength",
     value: 0.5,
+    min: 0,
+    max: 1,
+    step: 0.01
+  },
+  contourSmoothing: {
+    folder: "contours",
+    label: "Smoothing",
+    value: 1.0,
     min: 0,
     max: 1,
     step: 0.01
