@@ -1,5 +1,5 @@
 import { OrthographicCamera } from "@react-three/drei";
-import { extend, useFrame } from "@react-three/fiber";
+import { extend, useFrame, useThree } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 
@@ -14,6 +14,7 @@ type Props = {
 
 export function HeightmapQuad({ uniforms }: Props) {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
+  const size = useThree((s) => s.size);
 
   useFrame(() => {
     const m = materialRef.current;
@@ -21,14 +22,19 @@ export function HeightmapQuad({ uniforms }: Props) {
     forwardToMaterial(uniforms, m.uniforms);
   });
 
+  const aspect = size.width / size.height;
+  const [left, right, top, bottom] =
+    aspect >= 1 ? [-1, 1, 1 / aspect, -1 / aspect] : [-aspect, aspect, 1, -1];
+
   return (
     <>
       <OrthographicCamera
         makeDefault
-        left={-1}
-        right={1}
-        top={1}
-        bottom={-1}
+        manual
+        left={left}
+        right={right}
+        top={top}
+        bottom={bottom}
         near={-1}
         far={1}
       />
