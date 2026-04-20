@@ -180,6 +180,38 @@ export const TOPO_SCHEMA = {
     min: 0,
     max: 1,
     step: 0.01
+  },
+  aoRadius: {
+    folder: "ao",
+    label: "Radius",
+    value: 0.03,
+    min: 0.002,
+    max: 0.1,
+    step: 0.001
+  },
+  aoStrength: {
+    folder: "ao",
+    label: "Strength",
+    value: 2.0,
+    min: 0,
+    max: 3,
+    step: 0.01
+  },
+  aoBias: {
+    folder: "ao",
+    label: "Bias",
+    value: 0.005,
+    min: 0,
+    max: 0.05,
+    step: 0.001
+  },
+  aoInfluence: {
+    folder: "ao",
+    label: "Influence",
+    value: 1.0,
+    min: 0,
+    max: 1,
+    step: 0.01
   }
 } as const;
 

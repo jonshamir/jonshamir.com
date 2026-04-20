@@ -8,6 +8,7 @@ export const TerrainMaterial = shaderMaterial(
   {
     ...TOPO_INITIAL_UNIFORMS,
     uHeightMap: null as unknown as THREE.Texture,
+    uAoMap: null as unknown as THREE.Texture,
     uLineColor: [0, 0, 0] as [number, number, number],
     uBgColor: [1, 1, 1] as [number, number, number]
   },
@@ -35,6 +36,8 @@ export const TerrainMaterial = shaderMaterial(
     varying vec2 vUv;
 
     uniform sampler2D uHeightMap;
+    uniform sampler2D uAoMap;
+    uniform float uAoInfluence;
     uniform float uLineCount;
     uniform float uMajorEvery;
     uniform float uMinorStrength;
@@ -74,7 +77,10 @@ export const TerrainMaterial = shaderMaterial(
       // modes since the offset is applied directly to luminance.
       float heightTint = clamp(vHeight * 1.5 + 0.2, 0.0, 1.0);
       vec3 base = clamp(uBgColor + (heightTint - 0.5) * 0.5, 0.0, 1.0);
-      vec3 shaded = base * (ambient + (1.0 - ambient) * lambert);
+      // AO baked from the heightmap: only the ambient term is occluded,
+      // direct light is unaffected (matches how real sky/bounced light works).
+      float ao = mix(1.0, texture2D(uAoMap, vUv).r, uAoInfluence);
+      vec3 shaded = base * (ambient * ao + (1.0 - ambient) * lambert);
 
       // Contour overlay (mirrors ContourMaterial's math, sampling the same
       // baked heightmap texture so 2D and 3D views stay in sync).

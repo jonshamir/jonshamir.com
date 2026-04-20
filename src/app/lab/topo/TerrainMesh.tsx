@@ -5,6 +5,7 @@ import * as THREE from "three";
 
 import { TerrainMaterial } from "./terrainMaterial";
 import { forwardToMaterial, type TopoUniforms } from "./uniforms";
+import { useBakedAo } from "./useBakedAo";
 import { readCssRgb, useBakedHeightmap } from "./useBakedHeightmap";
 
 extend({ TerrainMaterial });
@@ -18,6 +19,7 @@ export function TerrainMesh({ uniforms }: Props) {
   const materialRef = useRef<THREE.ShaderMaterial>(null);
 
   const heightMap = useBakedHeightmap(uniforms);
+  const aoMap = useBakedAo(uniforms, heightMap);
 
   const lineColor = useMemo<[number, number, number]>(() => [0, 0, 0], []);
   const bgColor = useMemo<[number, number, number]>(() => [1, 1, 1], []);
@@ -42,6 +44,7 @@ export function TerrainMesh({ uniforms }: Props) {
     (m.uniforms.uBgColor as THREE.IUniform<[number, number, number]>).value =
       bgColor;
     (m.uniforms.uHeightMap as THREE.IUniform<THREE.Texture>).value = heightMap;
+    (m.uniforms.uAoMap as THREE.IUniform<THREE.Texture>).value = aoMap;
   });
 
   return (
