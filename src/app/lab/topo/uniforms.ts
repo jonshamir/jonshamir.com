@@ -181,6 +181,14 @@ export const TOPO_SCHEMA = {
     max: 1,
     step: 0.01
   },
+  contourOpacity: {
+    folder: "contours",
+    label: "Opacity",
+    value: 0.6,
+    min: 0,
+    max: 1,
+    step: 0.01
+  },
   aoRadius: {
     folder: "ao",
     label: "Radius",

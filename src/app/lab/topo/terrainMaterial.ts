@@ -43,6 +43,7 @@ export const TerrainMaterial = shaderMaterial(
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
     uniform float uContourOffset;
+    uniform float uContourOpacity;
     uniform vec3 uLineColor;
     uniform vec3 uBgColor;
 
@@ -119,7 +120,8 @@ export const TerrainMaterial = shaderMaterial(
       );
       float border = 1.0 - smoothstep(3.0, 4.5, edgePx);
 
-      float contourAlpha = max(max(minor * uMinorStrength, major), border);
+      float contourAlpha =
+        max(max(minor * uMinorStrength, major), border) * uContourOpacity;
 
       vec3 color = mix(shaded, uLineColor, contourAlpha);
       gl_FragColor = vec4(color, 1.0);

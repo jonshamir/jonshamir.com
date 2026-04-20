@@ -68,6 +68,7 @@ export const ContourMaterial = shaderMaterial(
     uMinorStrength: TOPO_INITIAL_UNIFORMS.uMinorStrength,
     uContourSmoothing: TOPO_INITIAL_UNIFORMS.uContourSmoothing,
     uContourOffset: TOPO_INITIAL_UNIFORMS.uContourOffset,
+    uContourOpacity: TOPO_INITIAL_UNIFORMS.uContourOpacity,
     uLineColor: [0, 0, 0] as [number, number, number]
   },
   /* glsl */ `
@@ -86,6 +87,7 @@ export const ContourMaterial = shaderMaterial(
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
     uniform float uContourOffset;
+    uniform float uContourOpacity;
     uniform vec3 uLineColor;
 
     // One fetch reads four sub-texel height samples packed into RGBA by the
@@ -146,7 +148,8 @@ export const ContourMaterial = shaderMaterial(
       // range to match visually.
       float border = 1.0 - smoothstep(3.0, 4.5, edgePx);
 
-      float alpha = max(max(minor * uMinorStrength, major), border);
+      float alpha =
+        max(max(minor * uMinorStrength, major), border) * uContourOpacity;
 
       gl_FragColor = vec4(uLineColor, alpha);
     }
