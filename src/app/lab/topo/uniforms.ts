@@ -180,6 +180,14 @@ export const TOPO_SCHEMA = {
     min: 0,
     max: 1,
     step: 0.01
+  },
+  contourOffset: {
+    folder: "contours",
+    label: "Offset",
+    value: 0.0,
+    min: 0,
+    max: 1,
+    step: 0.01
   }
 } as const;
 

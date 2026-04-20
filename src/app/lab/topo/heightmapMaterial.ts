@@ -66,7 +66,8 @@ export const ContourMaterial = shaderMaterial(
     uLineCount: TOPO_INITIAL_UNIFORMS.uLineCount,
     uMajorEvery: TOPO_INITIAL_UNIFORMS.uMajorEvery,
     uMinorStrength: TOPO_INITIAL_UNIFORMS.uMinorStrength,
-    uContourSmoothing: TOPO_INITIAL_UNIFORMS.uContourSmoothing
+    uContourSmoothing: TOPO_INITIAL_UNIFORMS.uContourSmoothing,
+    uContourOffset: TOPO_INITIAL_UNIFORMS.uContourOffset
   },
   /* glsl */ `
     varying vec2 vUv;
@@ -83,6 +84,7 @@ export const ContourMaterial = shaderMaterial(
     uniform float uMajorEvery;
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
+    uniform float uContourOffset;
 
     // One fetch reads four sub-texel height samples packed into RGBA by the
     // bake pass. Averaging them is equivalent to reading a 2x2-supersampled
@@ -112,7 +114,8 @@ export const ContourMaterial = shaderMaterial(
       }
 
       // Distance to nearest contour in "line index" units (0 at line, 0.5 between lines).
-      float scaled = h * uLineCount;
+      // uContourOffset shifts the whole line grid by a fractional band width.
+      float scaled = h * uLineCount - uContourOffset;
       float f = fract(scaled);
       float dist = min(f, 1.0 - f);
       // True gradient magnitude (L2) rather than fwidth's L1 approximation,
