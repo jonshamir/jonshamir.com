@@ -12,38 +12,26 @@ export const TerrainMaterial = shaderMaterial(
   },
   /* glsl */ `
     uniform float uDisplacementScale;
-    varying vec3 vNormalW;
     varying float vHeight;
     varying vec2 vUv;
 
     ${erosionShaderChunk}
 
     void main() {
-      // Finite-difference the height rather than using the filter's analytical
-      // gradient. The gradient output is inconsistent with the height field
-      // because the masking/fade logic propagates derivatives naively — the
-      // Shadertoy works around this the same way (sampling neighbor heights).
-      float eps = 1.0 / 256.0;
-      float h  = erodedTerrain(uv).x;
-      float hx = erodedTerrain(uv + vec2(eps, 0.0)).x;
-      float hy = erodedTerrain(uv + vec2(0.0, eps)).x;
-
+      // Normals are computed per-fragment from the baked heightmap, so the
+      // vertex stage only needs the height for displacement and for vHeight.
+      float h = erodedTerrain(uv).x;
       vec3 displaced = position + vec3(0.0, 0.0, h * uDisplacementScale);
-
-      // Plane is 2x2 in XY, uv in [0,1], so d(position.xy)/d(uv) = (2, 2).
-      float dhdu = (hx - h) / eps;
-      float dhdv = (hy - h) / eps;
-      float s = uDisplacementScale * 0.5;
-      vec3 n = normalize(vec3(-dhdu * s, -dhdv * s, 1.0));
-
-      vNormalW = normalize(mat3(modelMatrix) * n);
       vHeight = h;
       vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
     }
   `,
   /* glsl */ `
-    varying vec3 vNormalW;
+    // modelMatrix is auto-provided in the vertex stage but not the fragment
+    // stage; declaring it here lets three.js bind the same per-draw value.
+    uniform mat4 modelMatrix;
+    uniform float uDisplacementScale;
     varying float vHeight;
     varying vec2 vUv;
 
@@ -63,9 +51,24 @@ export const TerrainMaterial = shaderMaterial(
     }
 
     void main() {
-      // Base shaded terrain.
+      // Per-fragment normal from the baked heightmap. The UV offset scales
+      // with the on-screen pixel footprint via fwidth(vUv), so shading
+      // sharpens when zoomed in and smooths out when zoomed out instead of
+      // aliasing or blurring at a fixed rate.
+      vec2 e = fwidth(vUv);
+      float hL = sampleHeight(vUv - vec2(e.x, 0.0));
+      float hR = sampleHeight(vUv + vec2(e.x, 0.0));
+      float hD = sampleHeight(vUv - vec2(0.0, e.y));
+      float hU = sampleHeight(vUv + vec2(0.0, e.y));
+      float dhdu = (hR - hL) / (2.0 * e.x);
+      float dhdv = (hU - hD) / (2.0 * e.y);
+      // Plane is 2 units wide per 1 UV in each axis.
+      float ns = uDisplacementScale * 0.5;
+      vec3 nLocal = normalize(vec3(-dhdu * ns, -dhdv * ns, 1.0));
+      vec3 nW = normalize(mat3(modelMatrix) * nLocal);
+
       vec3 lightDir = normalize(vec3(0.4, 0.6, 0.7));
-      float lambert = clamp(dot(normalize(vNormalW), lightDir), 0.0, 1.0);
+      float lambert = clamp(dot(nW, lightDir), 0.0, 1.0);
       float ambient = 0.25;
       vec3 base = mix(vec3(0.72, 0.72, 0.72), vec3(0.98, 0.98, 0.98), clamp(vHeight * 1.5 + 0.2, 0.0, 1.0));
       vec3 shaded = base * (ambient + (1.0 - ambient) * lambert);
