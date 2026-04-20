@@ -15,12 +15,29 @@ export const HeightmapMaterial = shaderMaterial(
   /* glsl */ `
     varying vec2 vUv;
 
+    uniform float uLineCount;
+    uniform float uMajorEvery;
+    uniform float uMinorStrength;
+
     ${erosionShaderChunk}
 
     void main() {
       float h = erodedTerrain(vUv).x;
-      float g = clamp(h, 0.0, 1.0);
-      gl_FragColor = vec4(vec3(g), 1.0);
+
+      float scaled = h * uLineCount;
+      float dist = abs(fract(scaled) - 0.5);
+      float width = fwidth(scaled);
+      float line = smoothstep(width, 0.0, dist - 0.5 + width);
+
+      float majorScaled = scaled / max(uMajorEvery, 1.0);
+      float majorDist = abs(fract(majorScaled) - 0.5);
+      float majorWidth = fwidth(majorScaled);
+      float major = smoothstep(majorWidth, 0.0, majorDist - 0.5 + majorWidth);
+
+      vec3 bg = vec3(0.96, 0.94, 0.88);
+      vec3 lineColor = vec3(0.2, 0.25, 0.3);
+      vec3 col = mix(bg, lineColor, max(line * uMinorStrength, major));
+      gl_FragColor = vec4(col, 1.0);
     }
   `
 );

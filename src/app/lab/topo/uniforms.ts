@@ -148,6 +148,30 @@ export const TOPO_SCHEMA = {
     min: 0,
     max: 3,
     step: 0.05
+  },
+  lineCount: {
+    folder: "contours",
+    label: "Line count",
+    value: 20,
+    min: 1,
+    max: 100,
+    step: 1
+  },
+  majorEvery: {
+    folder: "contours",
+    label: "Major every",
+    value: 5,
+    min: 1,
+    max: 20,
+    step: 1
+  },
+  minorStrength: {
+    folder: "contours",
+    label: "Minor strength",
+    value: 0.5,
+    min: 0,
+    max: 1,
+    step: 0.01
   }
 } as const;
 
