@@ -50,11 +50,7 @@ export function TerrainMesh({ uniforms }: Props) {
   return (
     <>
       <PerspectiveCamera makeDefault position={[2.8, 2.8, 2.8]} fov={35} />
-      <OrbitControls
-        enablePan={true}
-        enableZoom={true}
-        target={[0, 0.3, 0]}
-      />
+      <OrbitControls enablePan={true} enableZoom={true} target={[0, 0.3, 0]} />
       <mesh geometry={geometry} rotation={[-Math.PI / 2, 0, 0]}>
         {/* @ts-expect-error — custom shaderMaterial extended at runtime */}
         <terrainMaterial ref={materialRef} />
