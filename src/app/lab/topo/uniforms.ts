@@ -1,14 +1,8 @@
-import { folder } from "leva";
-import * as THREE from "three";
-
-type ParamSpec = {
-  folder: string;
-  label: string;
-  value: number;
-  min: number;
-  max: number;
-  step: number;
-};
+import {
+  type ControlUniforms,
+  type ControlValues,
+  defineShaderControls
+} from "../../../lib/shaderControls";
 
 export const TOPO_SCHEMA = {
   baseAmplitude: {
@@ -155,70 +149,16 @@ export const TOPO_SCHEMA = {
     max: 3,
     step: 0.05
   }
-} as const satisfies Record<string, ParamSpec>;
+} as const;
 
-export type TopoControls = { [K in keyof typeof TOPO_SCHEMA]: number };
+const topo = defineShaderControls(TOPO_SCHEMA);
 
-type UniformName<K extends string> = `u${Capitalize<K>}`;
-export type TopoUniforms = {
-  [K in keyof typeof TOPO_SCHEMA as UniformName<
-    K & string
-  >]: THREE.IUniform<number>;
-};
+export type TopoControls = ControlValues<typeof TOPO_SCHEMA>;
+export type TopoUniforms = ControlUniforms<typeof TOPO_SCHEMA>;
 
-const CONTROL_KEYS = Object.keys(TOPO_SCHEMA) as (keyof TopoControls)[];
-const toUniformName = <K extends string>(k: K) =>
-  `u${k[0].toUpperCase()}${k.slice(1)}` as UniformName<K>;
-
-export const TOPO_DEFAULTS = Object.fromEntries(
-  CONTROL_KEYS.map((k) => [k, TOPO_SCHEMA[k].value])
-) as TopoControls;
-
-export const TOPO_INITIAL_UNIFORMS = Object.fromEntries(
-  CONTROL_KEYS.map((k) => [toUniformName(k), TOPO_SCHEMA[k].value])
-) as { [K in keyof typeof TOPO_SCHEMA as UniformName<K & string>]: number };
-
-export function createTopoUniforms(): TopoUniforms {
-  return Object.fromEntries(
-    CONTROL_KEYS.map((k) => [toUniformName(k), { value: TOPO_SCHEMA[k].value }])
-  ) as TopoUniforms;
-}
-
-export function syncLevaToUniforms(
-  values: TopoControls,
-  uniforms: TopoUniforms
-) {
-  for (const k of CONTROL_KEYS) {
-    uniforms[toUniformName(k)].value = values[k];
-  }
-}
-
-// Each shaderMaterial instance has its own uniform objects. Every frame we
-// copy from the shared topo uniforms into the material's own uniforms map.
-export function forwardToMaterial(
-  uniforms: TopoUniforms,
-  materialUniforms: { [key: string]: THREE.IUniform }
-) {
-  for (const k of CONTROL_KEYS) {
-    const name = toUniformName(k);
-    const mu = materialUniforms[name];
-    if (mu) mu.value = uniforms[name].value;
-  }
-}
-
-// Build the leva useControls schema, grouped by folder.
-export function buildLevaSchema(): Record<string, ReturnType<typeof folder>> {
-  const byFolder: Record<
-    string,
-    Record<string, Omit<ParamSpec, "folder">>
-  > = {};
-  for (const k of CONTROL_KEYS) {
-    const { folder: f, ...rest } = TOPO_SCHEMA[k];
-    (byFolder[f] ??= {})[k] = rest;
-  }
-  const out: Record<string, ReturnType<typeof folder>> = {};
-  for (const [name, fields] of Object.entries(byFolder)) {
-    out[name] = folder(fields);
-  }
-  return out;
-}
+export const TOPO_DEFAULTS = topo.defaults;
+export const TOPO_INITIAL_UNIFORMS = topo.initialUniforms;
+export const createTopoUniforms = topo.createUniforms;
+export const syncLevaToUniforms = topo.sync;
+export const forwardToMaterial = topo.forwardToMaterial;
+export const buildLevaSchema = topo.buildLevaSchema;
