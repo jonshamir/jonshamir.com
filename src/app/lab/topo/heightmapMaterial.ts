@@ -1,10 +1,33 @@
 import { shaderMaterial } from "@react-three/drei";
+import type * as THREE from "three";
 
 import { erosionShaderChunk } from "./erosionShader";
 import { TOPO_INITIAL_UNIFORMS } from "./uniforms";
 
+// Bake pass: evaluates the (expensive) erosion filter once and writes
+// height into the red channel of an offscreen render target. Only declares
+// the uniforms the erosion shader actually reads, so the dirty check in
+// HeightmapQuad doesn't trigger a re-bake on contour-only slider changes.
 export const HeightmapMaterial = shaderMaterial(
-  { ...TOPO_INITIAL_UNIFORMS },
+  {
+    uBaseAmplitude: TOPO_INITIAL_UNIFORMS.uBaseAmplitude,
+    uBaseFrequency: TOPO_INITIAL_UNIFORMS.uBaseFrequency,
+    uBaseOctaves: TOPO_INITIAL_UNIFORMS.uBaseOctaves,
+    uBaseLacunarity: TOPO_INITIAL_UNIFORMS.uBaseLacunarity,
+    uBaseGain: TOPO_INITIAL_UNIFORMS.uBaseGain,
+    uErosionScale: TOPO_INITIAL_UNIFORMS.uErosionScale,
+    uErosionStrength: TOPO_INITIAL_UNIFORMS.uErosionStrength,
+    uErosionGullyWeight: TOPO_INITIAL_UNIFORMS.uErosionGullyWeight,
+    uErosionDetail: TOPO_INITIAL_UNIFORMS.uErosionDetail,
+    uErosionOctaves: TOPO_INITIAL_UNIFORMS.uErosionOctaves,
+    uErosionLacunarity: TOPO_INITIAL_UNIFORMS.uErosionLacunarity,
+    uErosionGain: TOPO_INITIAL_UNIFORMS.uErosionGain,
+    uRidgeRounding: TOPO_INITIAL_UNIFORMS.uRidgeRounding,
+    uCreaseRounding: TOPO_INITIAL_UNIFORMS.uCreaseRounding,
+    uErosionCellScale: TOPO_INITIAL_UNIFORMS.uErosionCellScale,
+    uErosionNormalization: TOPO_INITIAL_UNIFORMS.uErosionNormalization,
+    uHeightOffset: TOPO_INITIAL_UNIFORMS.uHeightOffset
+  },
   /* glsl */ `
     varying vec2 vUv;
     void main() {
@@ -15,15 +38,43 @@ export const HeightmapMaterial = shaderMaterial(
   /* glsl */ `
     varying vec2 vUv;
 
+    ${erosionShaderChunk}
+
+    void main() {
+      float h = erodedTerrain(vUv).x;
+      gl_FragColor = vec4(h, 0.0, 0.0, 1.0);
+    }
+  `
+);
+
+// Display pass: reads the baked heightmap texture and draws contour lines.
+// Cheap enough to run every frame.
+export const ContourMaterial = shaderMaterial(
+  {
+    uHeightMap: null as unknown as THREE.Texture,
+    uLineCount: TOPO_INITIAL_UNIFORMS.uLineCount,
+    uMajorEvery: TOPO_INITIAL_UNIFORMS.uMajorEvery,
+    uMinorStrength: TOPO_INITIAL_UNIFORMS.uMinorStrength,
+    uContourSmoothing: TOPO_INITIAL_UNIFORMS.uContourSmoothing
+  },
+  /* glsl */ `
+    varying vec2 vUv;
+    void main() {
+      vUv = uv;
+      gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    }
+  `,
+  /* glsl */ `
+    varying vec2 vUv;
+
+    uniform sampler2D uHeightMap;
     uniform float uLineCount;
     uniform float uMajorEvery;
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
 
-    ${erosionShaderChunk}
-
     float sampleHeight(vec2 uv) {
-      return erodedTerrain(uv).x;
+      return texture2D(uHeightMap, uv).r;
     }
 
     void main() {
