@@ -24,20 +24,26 @@ export const HeightmapMaterial = shaderMaterial(
     void main() {
       float h = erodedTerrain(vUv).x;
 
+      // Distance to nearest contour in "line index" units (0 at line, 0.5 between lines).
       float scaled = h * uLineCount;
-      float dist = abs(fract(scaled) - 0.5);
-      float width = fwidth(scaled);
-      float line = smoothstep(width, 0.0, dist - 0.5 + width);
+      float f = fract(scaled);
+      float dist = min(f, 1.0 - f);
+      float fw = max(fwidth(scaled), 1e-5);
 
-      float majorScaled = scaled / max(uMajorEvery, 1.0);
-      float majorDist = abs(fract(majorScaled) - 0.5);
-      float majorWidth = fwidth(majorScaled);
-      float major = smoothstep(majorWidth, 0.0, majorDist - 0.5 + majorWidth);
+      // Minor line: ~1px thick.
+      float minor = 1.0 - smoothstep(fw * 0.5, fw * 1.5, dist);
+
+      // Major line: same grid, but thicker and only on every Nth step.
+      float nearestInt = floor(scaled + 0.5);
+      float every = max(uMajorEvery, 1.0);
+      float majorMask = step(abs(mod(nearestInt + 0.5, every) - 0.5), 0.5);
+      float major = (1.0 - smoothstep(fw * 1.5, fw * 3.0, dist)) * majorMask;
+
+      float alpha = max(minor * uMinorStrength, major);
 
       vec3 bg = vec3(0.96, 0.94, 0.88);
       vec3 lineColor = vec3(0.2, 0.25, 0.3);
-      vec3 col = mix(bg, lineColor, max(line * uMinorStrength, major));
-      gl_FragColor = vec4(col, 1.0);
+      gl_FragColor = vec4(mix(bg, lineColor, alpha), 1.0);
     }
   `
 );
