@@ -5,6 +5,7 @@ import { mdxConfig } from "./src/features/mdx/config.mjs";
 const nextConfig = {
   basePath: "",
   output: "export",
+  trailingSlash: true,
   pageExtensions: ["js", "jsx", "md", "mdx", "ts", "tsx"],
   images: {
     unoptimized: true
