@@ -1,27 +1,46 @@
 import Image from "next/image";
-import dexelImg from "./dexel.jpg";
-import buttonsImg from "./buttons.png";
+import fontsVarImg from "./font-var.png";
+import fontsImg from "./fonts.gif";
 
 export const metadata = {
-  date: "2026-04-19",
-  description: "Editing fonts with LLMs"
+  date: "2026-04-21",
+  description: "Editing fonts with the help of an LLM"
 };
 
-# Editing a variable font using Claude Code
+# Modifying a variable font with no source files
 
-I wanted to use iA writer (which is based off of IBM plex) for the Prepbook, the recipe app I’m working on. It has that analog "typewriter" feel you get from monospace but it's much more readable and compact.
+For [Prepbook](https://prepbook.app/) (the recipe app I'm working on) I wanted to use the font <i>iA Writer Quattro</i>. It has that analog "typewriter" feel you get from monospace fonts, but much more readable and compact because it has 4 character widths ("quattro") rather than one ("mono"). You can read more about in [this post](https://ia.net/topics/a-typographic-christmas).
 
-< show comparison of iA Writer Mono and iA Writer Quattro >
-https://github.com/iaolo/iA-Fonts
-https://ia.net/topics/a-typographic-christmas
+However, for the use case of displaying recipes, the wide punctuation characters and narrow fraction glyphs hurt readability.
 
-However, for my specific use case of displaying recipe ingredients, the wide punctuation characters and narrow fraction glyphs hurt readability.
+<figure>
+  <Image
+    src={fontsImg}
+    alt="Painting by Walter Dexel showing a figure with an X-shaped button on their shirt"
+    style={{ width: "100%", height: "auto", maxWidth: "500px" }}
+  />
+</figure>
 
-< Show ingredient list before and after alterations >
+The iA fonts are open source with a license that permits modifications, but the source files were never published - so I wondered if I could edit the compiled variable fonts without breaking anything.
 
-Luckily, iA Writer is Open source and its license permits alterations. Unfortunately, the source was nowhere to be found on github!
+With the help of Claude Code I built a pipeline that tweaks the font:
 
-A couple of years ago I would probably give up at this point, but now we have AI code assistants! I wondered if I could edit the compiled variable fonts without breaking anything.
+- Tightening sidebearings on punctuation
 
-Claude code helped me create a font-alteration pipeline with the changes I wanted. In order to be able to tweak and iterate I asked it to create a configurable project instead of altering the files “directly” you can take a look at the repo here if interested:
-https://github.com/jonshamir/prepbook-quattro
+- Tweaking specific glyph shapes
+
+- Completely rebuilding the fraction glyphs
+
+- Adjusting the base font weight slightly
+
+To my surprise, it went smoothly and the font retained its variable axis! I made it configurable so I can keep iterating without rewriting the pipeline.
+Repo is available here if anyone's interested: [prepbook-quattro](https://github.com/jonshamir/prepbook-quattro)
+
+<figure>
+  <Image
+    src={fontsVarImg}
+    alt="Adjusted fraction glyphs at variable weights"
+    style={{ width: "100%", height: "auto" }}
+  />
+  <figcaption>Adjusted vulgar fraction glyphs at different weights</figcaption>
+</figure>
