@@ -8,7 +8,7 @@ export const TOPO_SCHEMA = {
   baseAmplitude: {
     folder: "base",
     label: "Amplitude",
-    value: 0.125,
+    value: 0.38,
     min: 0,
     max: 0.5,
     step: 0.005
@@ -16,7 +16,7 @@ export const TOPO_SCHEMA = {
   baseFrequency: {
     folder: "base",
     label: "Frequency",
-    value: 3.0,
+    value: 1.5,
     min: 0.1,
     max: 20,
     step: 0.1
@@ -104,7 +104,7 @@ export const TOPO_SCHEMA = {
   ridgeRounding: {
     folder: "shape",
     label: "Ridge rounding",
-    value: 0.8,
+    value: 0.21,
     min: 0,
     max: 1,
     step: 0.01
@@ -112,7 +112,7 @@ export const TOPO_SCHEMA = {
   creaseRounding: {
     folder: "shape",
     label: "Crease rounding",
-    value: 0.8,
+    value: 0.37,
     min: 0,
     max: 1,
     step: 0.01
@@ -120,7 +120,7 @@ export const TOPO_SCHEMA = {
   erosionCellScale: {
     folder: "shape",
     label: "Cell scale",
-    value: 0.7,
+    value: 0.45,
     min: 0.3,
     max: 1.5,
     step: 0.01
@@ -128,7 +128,7 @@ export const TOPO_SCHEMA = {
   erosionNormalization: {
     folder: "shape",
     label: "Normalization",
-    value: 0.5,
+    value: 0.35,
     min: 0,
     max: 1,
     step: 0.01
@@ -140,14 +140,6 @@ export const TOPO_SCHEMA = {
     min: -1,
     max: 1,
     step: 0.01
-  },
-  displacementScale: {
-    folder: "rendering",
-    label: "Displacement",
-    value: 1.0,
-    min: 0,
-    max: 3,
-    step: 0.05
   },
   lineCount: {
     folder: "contours",
@@ -185,6 +177,46 @@ export const TOPO_SCHEMA = {
     folder: "contours",
     label: "Offset",
     value: 0.0,
+    min: 0,
+    max: 1,
+    step: 0.01
+  },
+  contourOpacity: {
+    folder: "contours",
+    label: "Opacity",
+    value: 0.6,
+    min: 0,
+    max: 1,
+    step: 0.01
+  },
+  aoRadius: {
+    folder: "ao",
+    label: "Radius",
+    value: 0.03,
+    min: 0.002,
+    max: 0.1,
+    step: 0.001
+  },
+  aoStrength: {
+    folder: "ao",
+    label: "Strength",
+    value: 2.0,
+    min: 0,
+    max: 3,
+    step: 0.01
+  },
+  aoBias: {
+    folder: "ao",
+    label: "Bias",
+    value: 0.005,
+    min: 0,
+    max: 0.05,
+    step: 0.001
+  },
+  aoInfluence: {
+    folder: "ao",
+    label: "Influence",
+    value: 1.0,
     min: 0,
     max: 1,
     step: 0.01

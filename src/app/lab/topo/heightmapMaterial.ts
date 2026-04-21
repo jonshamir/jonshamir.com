@@ -68,6 +68,7 @@ export const ContourMaterial = shaderMaterial(
     uMinorStrength: TOPO_INITIAL_UNIFORMS.uMinorStrength,
     uContourSmoothing: TOPO_INITIAL_UNIFORMS.uContourSmoothing,
     uContourOffset: TOPO_INITIAL_UNIFORMS.uContourOffset,
+    uContourOpacity: TOPO_INITIAL_UNIFORMS.uContourOpacity,
     uLineColor: [0, 0, 0] as [number, number, number]
   },
   /* glsl */ `
@@ -86,6 +87,7 @@ export const ContourMaterial = shaderMaterial(
     uniform float uMinorStrength;
     uniform float uContourSmoothing;
     uniform float uContourOffset;
+    uniform float uContourOpacity;
     uniform vec3 uLineColor;
 
     // One fetch reads four sub-texel height samples packed into RGBA by the
@@ -133,7 +135,21 @@ export const ContourMaterial = shaderMaterial(
       float majorMask = step(abs(mod(nearestInt + 0.5, every) - 0.5), 0.5);
       float major = (1.0 - smoothstep(fw * 1.5, fw * 3.0, dist)) * majorMask;
 
-      float alpha = max(minor * uMinorStrength, major);
+      // Mesh-edge border, same visual thickness/AA profile as a major line:
+      // full opacity for the innermost 1.5 screen pixels, smoothstep falloff
+      // out to 3 pixels.
+      vec2 fuv = fwidth(vUv);
+      float edgePx = min(
+        min(vUv.x / fuv.x, (1.0 - vUv.x) / fuv.x),
+        min(vUv.y / fuv.y, (1.0 - vUv.y) / fuv.y)
+      );
+      // Major line is symmetric around its center (full core ~3 pixels).
+      // The border only sees the inward half, so it needs double the core
+      // range to match visually.
+      float border = 1.0 - smoothstep(3.0, 4.5, edgePx);
+
+      float alpha =
+        max(max(minor * uMinorStrength, major), border) * uContourOpacity;
 
       gl_FragColor = vec4(uLineColor, alpha);
     }

@@ -1,50 +1,129 @@
 import { shaderMaterial } from "@react-three/drei";
+import type * as THREE from "three";
 
 import { erosionShaderChunk } from "./erosionShader";
 import { TOPO_INITIAL_UNIFORMS } from "./uniforms";
 
 export const TerrainMaterial = shaderMaterial(
-  { ...TOPO_INITIAL_UNIFORMS },
+  {
+    ...TOPO_INITIAL_UNIFORMS,
+    uHeightMap: null as unknown as THREE.Texture,
+    uAoMap: null as unknown as THREE.Texture,
+    uLineColor: [0, 0, 0] as [number, number, number],
+    uBgColor: [1, 1, 1] as [number, number, number]
+  },
   /* glsl */ `
-    uniform float uDisplacementScale;
-    varying vec3 vNormalW;
     varying float vHeight;
+    varying vec2 vUv;
 
     ${erosionShaderChunk}
 
     void main() {
-      // Finite-difference the height rather than using the filter's analytical
-      // gradient. The gradient output is inconsistent with the height field
-      // because the masking/fade logic propagates derivatives naively — the
-      // Shadertoy works around this the same way (sampling neighbor heights).
-      float eps = 1.0 / 256.0;
-      float h  = erodedTerrain(uv).x;
-      float hx = erodedTerrain(uv + vec2(eps, 0.0)).x;
-      float hy = erodedTerrain(uv + vec2(0.0, eps)).x;
-
-      vec3 displaced = position + vec3(0.0, 0.0, h * uDisplacementScale);
-
-      // Plane is 2x2 in XY, uv in [0,1], so d(position.xy)/d(uv) = (2, 2).
-      float dhdu = (hx - h) / eps;
-      float dhdv = (hy - h) / eps;
-      float s = uDisplacementScale * 0.5;
-      vec3 n = normalize(vec3(-dhdu * s, -dhdv * s, 1.0));
-
-      vNormalW = normalize(mat3(modelMatrix) * n);
+      // Normals are computed per-fragment from the baked heightmap, so the
+      // vertex stage only needs the height for displacement and for vHeight.
+      float h = erodedTerrain(uv).x;
+      vec3 displaced = position + vec3(0.0, 0.0, h);
       vHeight = h;
+      vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(displaced, 1.0);
     }
   `,
   /* glsl */ `
-    varying vec3 vNormalW;
+    // modelMatrix is auto-provided in the vertex stage but not the fragment
+    // stage; declaring it here lets three.js bind the same per-draw value.
+    uniform mat4 modelMatrix;
     varying float vHeight;
+    varying vec2 vUv;
+
+    uniform sampler2D uHeightMap;
+    uniform sampler2D uAoMap;
+    uniform float uAoInfluence;
+    uniform float uLineCount;
+    uniform float uMajorEvery;
+    uniform float uMinorStrength;
+    uniform float uContourSmoothing;
+    uniform float uContourOffset;
+    uniform float uContourOpacity;
+    uniform vec3 uLineColor;
+    uniform vec3 uBgColor;
+
+    // Same 2x2-packed supersample trick as the 2D contour pass — averaging
+    // the four channels gives a smoother height for the contour math.
+    float sampleHeight(vec2 uv) {
+      vec4 s = texture2D(uHeightMap, uv);
+      return (s.r + s.g + s.b + s.a) * 0.25;
+    }
 
     void main() {
+      // Per-fragment normal from the baked heightmap. The UV offset scales
+      // with the on-screen pixel footprint via fwidth(vUv), so shading
+      // sharpens when zoomed in and smooths out when zoomed out instead of
+      // aliasing or blurring at a fixed rate.
+      vec2 e = fwidth(vUv);
+      float hL = sampleHeight(vUv - vec2(e.x, 0.0));
+      float hR = sampleHeight(vUv + vec2(e.x, 0.0));
+      float hD = sampleHeight(vUv - vec2(0.0, e.y));
+      float hU = sampleHeight(vUv + vec2(0.0, e.y));
+      float dhdu = (hR - hL) / (2.0 * e.x);
+      float dhdv = (hU - hD) / (2.0 * e.y);
+      // Plane is 2 units wide per 1 UV in each axis.
+      vec3 nLocal = normalize(vec3(-dhdu * 0.5, -dhdv * 0.5, 1.0));
+      vec3 nW = normalize(mat3(modelMatrix) * nLocal);
+
       vec3 lightDir = normalize(vec3(0.4, 0.6, 0.7));
-      float lambert = clamp(dot(normalize(vNormalW), lightDir), 0.0, 1.0);
-      float ambient = 0.25;
-      vec3 base = mix(vec3(0.72, 0.72, 0.72), vec3(0.98, 0.98, 0.98), clamp(vHeight * 1.5 + 0.2, 0.0, 1.0));
-      vec3 color = base * (ambient + (1.0 - ambient) * lambert);
+      float lambert = clamp(dot(nW, lightDir), 0.0, 1.0);
+      float ambient = 0.55;
+      // Albedo is the CSS background color with a symmetric height lift:
+      // low areas darker, high areas lighter. Works in both light and dark
+      // modes since the offset is applied directly to luminance.
+      float heightTint = clamp(vHeight * 1.5 + 0.2, 0.0, 1.0);
+      vec3 base = clamp(uBgColor + (heightTint - 0.5) * 0.5, 0.0, 1.0);
+      // AO baked from the heightmap: only the ambient term is occluded,
+      // direct light is unaffected (matches how real sky/bounced light works).
+      float ao = mix(1.0, texture2D(uAoMap, vUv).r, uAoInfluence);
+      vec3 shaded = base * (ambient * ao + (1.0 - ambient) * lambert);
+
+      // Contour overlay (mirrors ContourMaterial's math, sampling the same
+      // baked heightmap texture so 2D and 3D views stay in sync).
+      float h = sampleHeight(vUv);
+      if (uContourSmoothing > 0.0) {
+        float o = uContourSmoothing * 0.004;
+        float ss =
+          sampleHeight(vUv + vec2( o, 0.0)) +
+          sampleHeight(vUv + vec2(-o, 0.0)) +
+          sampleHeight(vUv + vec2(0.0,  o)) +
+          sampleHeight(vUv + vec2(0.0, -o)) +
+          sampleHeight(vUv + vec2( o,  o)) +
+          sampleHeight(vUv + vec2(-o,  o)) +
+          sampleHeight(vUv + vec2( o, -o)) +
+          sampleHeight(vUv + vec2(-o, -o));
+        h = (h + ss) / 9.0;
+      }
+
+      float scaled = h * uLineCount - uContourOffset;
+      float f = fract(scaled);
+      float dist = min(f, 1.0 - f);
+      float fw = max(length(vec2(dFdx(scaled), dFdy(scaled))), 1e-5);
+
+      float minor = 1.0 - smoothstep(fw * 0.5, fw * 1.5, dist);
+
+      float nearestInt = floor(scaled + 0.5);
+      float every = max(uMajorEvery, 1.0);
+      float majorMask = step(abs(mod(nearestInt + 0.5, every) - 0.5), 0.5);
+      float major = (1.0 - smoothstep(fw * 1.5, fw * 3.0, dist)) * majorMask;
+
+      // Mesh-edge border, same visual thickness/AA as a major contour.
+      vec2 fuv = fwidth(vUv);
+      float edgePx = min(
+        min(vUv.x / fuv.x, (1.0 - vUv.x) / fuv.x),
+        min(vUv.y / fuv.y, (1.0 - vUv.y) / fuv.y)
+      );
+      float border = 1.0 - smoothstep(3.0, 4.5, edgePx);
+
+      float contourAlpha =
+        max(max(minor * uMinorStrength, major), border) * uContourOpacity;
+
+      vec3 color = mix(shaded, uLineColor, contourAlpha);
       gl_FragColor = vec4(color, 1.0);
     }
   `
