@@ -1,0 +1,46 @@
+import Image from "next/image";
+import fontsVarImg from "./font-var.png";
+import fontsImg from "./fonts.gif";
+
+export const metadata = {
+  date: "2026-04-21",
+  description: "Editing fonts with the help of an LLM"
+};
+
+# Modifying a variable font with no source files
+
+For [Prepbook](https://prepbook.app/) (the recipe app I'm working on) I wanted to use the font <i>iA Writer Quattro</i>. It has that analog "typewriter" feel you get from monospace fonts, but much more readable and compact because it has 4 character widths ("quattro") rather than one ("mono"). You can read more about in [this post](https://ia.net/topics/a-typographic-christmas).
+
+However, for the use case of displaying recipes, the wide punctuation characters and narrow fraction glyphs hurt readability.
+
+<figure>
+  <Image
+    src={fontsImg}
+    alt="Painting by Walter Dexel showing a figure with an X-shaped button on their shirt"
+    style={{ width: "100%", height: "auto", maxWidth: "500px" }}
+  />
+</figure>
+
+The iA fonts are open source with a license that permits modifications, but the source files were never published - so I wondered if I could edit the compiled variable fonts without breaking anything.
+
+With the help of Claude Code I built a pipeline that tweaks the font:
+
+- Tightening sidebearings on punctuation
+
+- Tweaking specific glyph shapes
+
+- Completely rebuilding the fraction glyphs
+
+- Adjusting the base font weight slightly
+
+To my surprise, it went smoothly and the font retained its variable axis! I made it configurable so I can keep iterating without rewriting the pipeline.
+Repo is available here if anyone's interested: [prepbook-quattro](https://github.com/jonshamir/prepbook-quattro)
+
+<figure>
+  <Image
+    src={fontsVarImg}
+    alt="Adjusted fraction glyphs at variable weights"
+    style={{ width: "100%", height: "auto" }}
+  />
+  <figcaption>Adjusted vulgar fraction glyphs at different weights</figcaption>
+</figure>
