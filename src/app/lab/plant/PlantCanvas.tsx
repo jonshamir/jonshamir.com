@@ -1,11 +1,11 @@
 "use client";
 
 import { OrbitControls, StatsGl } from "@react-three/drei";
-import { useControls } from "leva";
+import { useControls } from "../../../lib/tweakpane";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
-import { LevaPanel } from "../../../components/LevaPanel";
+import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { useLinearColors } from "../../../lib/hooks/useLinearColor";
 import { FlowerStem } from "./FlowerStem";
@@ -194,7 +194,7 @@ export default function PlantCanvas() {
 
   return (
     <>
-      <LevaPanel />
+      <TweakpanePanel />
       <ThreeCanvas
         camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
         isFullscreen={true}
