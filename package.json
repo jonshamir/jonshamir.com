@@ -18,6 +18,7 @@
     "@react-three/fiber": "^9.6.0",
     "@react-three/postprocessing": "^3.0.4",
     "@svgr/webpack": "^8.1.0",
+    "@tweakpane/core": "^2.0.5",
     "@types/d3": "^7.4.3",
     "@types/mdx": "^2.0.13",
     "clsx": "^2.1.1",
