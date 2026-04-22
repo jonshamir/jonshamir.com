@@ -1,6 +1,6 @@
-import { useControls } from "leva";
+import { useControls } from "../../../lib/tweakpane";
 
-import { LevaPanel } from "../../../components/LevaPanel";
+import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { MAX_SHAPES } from "./constants";
 import { SdfCollisionQuad } from "./SdfCollisionQuad";
@@ -24,7 +24,7 @@ export default function SdfCollisionCanvas() {
 
   return (
     <>
-      <LevaPanel />
+      <TweakpanePanel />
       <ThreeCanvas isFullscreen={true} grabCursor={false} gl={{ alpha: true }}>
         <SdfCollisionQuad
           gravity={controls.gravity}
