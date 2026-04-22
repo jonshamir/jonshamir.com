@@ -6,7 +6,7 @@
   z-index: 1000;
 
   button {
-    border-radius: 0;
+    border-radius: var(--bs-br);
     &:focus {
       outline-width: 0;
     }

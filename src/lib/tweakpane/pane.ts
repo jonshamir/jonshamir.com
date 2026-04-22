@@ -12,7 +12,7 @@ export function getPane(): Pane {
     throw new Error("getPane() called on the server");
   }
   if (!paneInstance) {
-    paneInstance = new Pane();
+    paneInstance = new Pane({ title: "Parameters" });
     // Detach from <body> so the panel host can adopt the element.
     const el = paneInstance.element;
     if (el.parentElement) {

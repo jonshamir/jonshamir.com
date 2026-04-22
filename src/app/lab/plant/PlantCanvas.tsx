@@ -1,6 +1,6 @@
 "use client";
 
-import { OrbitControls, StatsGl } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
@@ -228,7 +228,7 @@ export default function PlantCanvas() {
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
-        <StatsGl className="stats-gl" />
+        {/* <StatsGl className="stats-gl" /> */}
         <OrbitControls />
         <directionalLight
           position={lightPosition}

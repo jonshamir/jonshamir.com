@@ -54,7 +54,8 @@
   --dark-mode: 0;
   --shiki-mix: 0%;
 
-  transition-property: --color-text-rgb, --color-bg-rgb, --shiki-mix, --dark-mode;
+  transition-property:
+    --color-text-rgb, --color-bg-rgb, --shiki-mix, --dark-mode;
   transition-duration: var(--default-duration);
   transition-timing-function: var(--default-timing-function);
 }
@@ -178,7 +179,7 @@ body {
 .stats-gl {
   position: absolute;
   top: 100vh;
-  right: 0;
+  left: 0;
   z-index: 1000;
   transform: translateY(-100%);
 }
