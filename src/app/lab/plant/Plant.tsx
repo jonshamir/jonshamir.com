@@ -1,4 +1,4 @@
-import { useControls } from "leva";
+import { useControls } from "../../../lib/tweakpane";
 import { Color, Euler } from "three";
 
 import { CustomLeaf } from "./CustomLeaf";
