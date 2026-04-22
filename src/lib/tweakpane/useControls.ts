@@ -1,8 +1,8 @@
 // src/lib/tweakpane/useControls.ts
+import type { FolderApi } from "@tweakpane/core";
 import { useEffect, useState } from "react";
-import type { BindingApi, FolderApi } from "@tweakpane/core";
 
-import { isFolder, type FolderNode } from "./folder";
+import { type FolderNode, isFolder } from "./folder";
 import { getPane } from "./pane";
 import type { Field, Schema } from "./types";
 
@@ -37,14 +37,20 @@ export function useControls(
       : (pane as unknown as FolderApi);
 
     const disposers: Array<() => void> = [];
-    bindSchema(root, schema, store, () => {
-      setValues({ ...store });
-    }, disposers);
+    bindSchema(
+      root,
+      schema,
+      store,
+      () => {
+        setValues({ ...store });
+      },
+      disposers
+    );
 
     return () => {
       for (const d of disposers) d();
       if (folderName && root !== (pane as unknown as FolderApi)) {
-        (root as FolderApi).dispose();
+        root.dispose();
       }
     };
     // Hook is called with stable schemas (usually inline literals that are
@@ -61,7 +67,7 @@ function collectDefaults(schema: Schema, out: Values = {}): Values {
     if (isFolder(node)) {
       collectDefaults(node.schema, out);
     } else {
-      out[key] = (node as Field).value;
+      out[key] = node.value;
     }
   }
   return out;
@@ -84,7 +90,7 @@ function bindSchema(
       bindSchema(sub, f.schema, store, onChange, disposers);
       disposers.push(() => sub.dispose());
     } else {
-      addBinding(parent, key, node as Field, store, onChange, disposers);
+      addBinding(parent, key, node, store, onChange, disposers);
     }
   }
 }
@@ -101,7 +107,7 @@ function addBinding(
   if (field.label !== undefined) opts.label = field.label;
 
   if (typeof field.value === "number") {
-    const f = field as Extract<Field, { value: number }>;
+    const f = field;
     if (f.min !== undefined) opts.min = f.min;
     if (f.max !== undefined) opts.max = f.max;
     if (f.step !== undefined) opts.step = f.step;
@@ -113,13 +119,13 @@ function addBinding(
     "x" in field.value &&
     "y" in field.value
   ) {
-    const f = field as Extract<Field, { value: { x: number; y: number } }>;
+    const f = field;
     if (f.x) opts.x = f.x;
     if (f.y) opts.y = f.y;
   }
 
   store[key] = field.value;
-  const binding = parent.addBinding(store, key, opts) as BindingApi;
+  const binding = parent.addBinding(store, key, opts);
   binding.on("change", onChange);
   disposers.push(() => binding.dispose());
 }

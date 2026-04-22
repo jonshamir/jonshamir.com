@@ -1,5 +1,6 @@
-import { folder } from "./tweakpane";
 import type * as THREE from "three";
+
+import { folder } from "./tweakpane";
 
 // Spec for a single numeric shader control. `folder` is optional — when
 // omitted, the control is emitted at the root of the tweakpane panel.

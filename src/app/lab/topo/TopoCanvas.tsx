@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo } from "react";
 
-import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useControls } from "../../../lib/tweakpane";
 import { TerrainMesh } from "./TerrainMesh";
 import {
