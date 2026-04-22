@@ -1,8 +1,9 @@
-import { folder } from "leva";
 import type * as THREE from "three";
 
+import { folder } from "./tweakpane";
+
 // Spec for a single numeric shader control. `folder` is optional — when
-// omitted, the control is emitted at the root of the leva panel.
+// omitted, the control is emitted at the root of the tweakpane panel.
 export type ShaderControlSpec = {
   folder?: string;
   label?: string;
@@ -31,7 +32,7 @@ export type InitialUniformValues<S extends ShaderControlSchema> = {
 const toUniformName = <K extends string>(k: K) =>
   `u${k[0].toUpperCase()}${k.slice(1)}` as UniformName<K>;
 
-// Derives defaults, typed uniforms, a leva useControls schema, and sync helpers
+// Derives defaults, typed uniforms, a tweakpane useControls schema, and sync helpers
 // from a single source of truth. See src/app/lab/topo/uniforms.ts for usage.
 export function defineShaderControls<S extends ShaderControlSchema>(schema: S) {
   const keys = Object.keys(schema) as (keyof S & string)[];
@@ -71,9 +72,9 @@ export function defineShaderControls<S extends ShaderControlSchema>(schema: S) {
     }
   }
 
-  // Build the leva useControls input. Controls with a `folder` field are
+  // Build the tweakpane useControls input. Controls with a `folder` field are
   // grouped; the rest go at the root.
-  function buildLevaSchema(): Record<
+  function buildControlsSchema(): Record<
     string,
     ReturnType<typeof folder> | Omit<ShaderControlSpec, "folder">
   > {
@@ -103,6 +104,6 @@ export function defineShaderControls<S extends ShaderControlSchema>(schema: S) {
     createUniforms,
     sync,
     forwardToMaterial,
-    buildLevaSchema
+    buildControlsSchema
   };
 }

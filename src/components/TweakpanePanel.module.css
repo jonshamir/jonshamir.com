@@ -1,0 +1,25 @@
+.host {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 280px;
+  z-index: 1000;
+
+  button {
+    border-radius: 0;
+
+    &:focus {
+      outline-width: 0;
+    }
+  }
+
+  button:global(.tp-rotv_b) {
+    border-radius: var(--bs-br);
+  }
+
+  input {
+    background-color: var(--in-bg);
+    border-radius: var(--bld-br);
+    color: var(--in-fg);
+  }
+}

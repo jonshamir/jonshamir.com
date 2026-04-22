@@ -1,12 +1,11 @@
-import { useControls } from "leva";
-
-import { LevaPanel } from "../../../components/LevaPanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { TweakpanePanel } from "../../../components/TweakpanePanel";
+import { useControls } from "../../../lib/tweakpane";
 import { MAX_SHAPES } from "./constants";
 import { SdfCollisionQuad } from "./SdfCollisionQuad";
 
 export default function SdfCollisionCanvas() {
-  const controls = useControls({
+  const raw = useControls({
     gravity: { value: 0, min: 0, max: 10, label: "Gravity" },
     blendFactor: { value: 0.12, min: 0, max: 2, step: 0.05, label: "Blend" },
     restitution: { value: 0.6, min: 0, max: 1, step: 0.05, label: "Bounce" },
@@ -21,10 +20,19 @@ export default function SdfCollisionCanvas() {
     centerGravity: { value: true, label: "Center Gravity" },
     noiseAmount: { value: 0.05, min: 0, max: 0.3, step: 0.005, label: "Noise" }
   });
+  const controls = raw as {
+    gravity: number;
+    blendFactor: number;
+    restitution: number;
+    damping: number;
+    shapeCount: number;
+    centerGravity: boolean;
+    noiseAmount: number;
+  };
 
   return (
     <>
-      <LevaPanel />
+      <TweakpanePanel />
       <ThreeCanvas isFullscreen={true} grabCursor={false} gl={{ alpha: true }}>
         <SdfCollisionQuad
           gravity={controls.gravity}

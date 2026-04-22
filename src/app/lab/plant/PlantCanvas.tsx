@@ -1,13 +1,13 @@
 "use client";
 
-import { OrbitControls, StatsGl } from "@react-three/drei";
-import { useControls } from "leva";
+import { OrbitControls } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
 import { Color, PCFSoftShadowMap } from "three";
 
-import { LevaPanel } from "../../../components/LevaPanel";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useLinearColors } from "../../../lib/hooks/useLinearColor";
+import { useControls } from "../../../lib/tweakpane";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
@@ -48,11 +48,18 @@ export default function PlantCanvas() {
       }
     },
     { collapsed: true }
-  );
+  ) as {
+    groundColor: string;
+    groundShadowColor: string;
+    shadowPlaneEnabled: boolean;
+    shadowPlaneColor: string;
+    lightPitch: number;
+    lightYaw: number;
+  };
 
   const { currAge } = useControls({
     currAge: { value: 19, min: 0, max: 200 }
-  });
+  }) as { currAge: number };
 
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
@@ -62,7 +69,11 @@ export default function PlantCanvas() {
       leafSubsurfaceColor: { value: "#b7ff00", label: "Subsurface Color" }
     },
     { collapsed: true }
-  );
+  ) as {
+    leafBaseColor: string;
+    leafShadowColor: string;
+    leafSubsurfaceColor: string;
+  };
 
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
     useControls(
@@ -73,7 +84,11 @@ export default function PlantCanvas() {
         flowerSubsurfaceColor: { value: "#6300ff", label: "Subsurface Color" }
       },
       { collapsed: true }
-    );
+    ) as {
+      flowerBaseColor: string;
+      flowerShadowColor: string;
+      flowerSubsurfaceColor: string;
+    };
 
   const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
     useControls(
@@ -86,7 +101,13 @@ export default function PlantCanvas() {
         fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
       },
       { collapsed: true }
-    );
+    ) as {
+      fCount: number;
+      fMatureAge: number;
+      fBasePitch: number;
+      fBaseYaw: number;
+      fLayerHeight: number;
+    };
 
   const { potBaseColor, potShadowColor } = useControls(
     "Pot Colors",
@@ -95,7 +116,7 @@ export default function PlantCanvas() {
       potShadowColor: { value: "#201d2e", label: "Shadow Color" }
     },
     { collapsed: true }
-  );
+  ) as { potBaseColor: string; potShadowColor: string };
 
   const {
     potHeight,
@@ -151,7 +172,14 @@ export default function PlantCanvas() {
       }
     },
     { collapsed: true }
-  );
+  ) as {
+    potHeight: number;
+    potBottomRadius: number;
+    potTopRadius: number;
+    potRimHeight: number;
+    potRimThickness: number;
+    potThickness: number;
+  };
 
   // Convert pitch/yaw to cartesian coordinates
   const lightPosition: [number, number, number] = useMemo(() => {
@@ -194,13 +222,13 @@ export default function PlantCanvas() {
 
   return (
     <>
-      <LevaPanel />
+      <TweakpanePanel />
       <ThreeCanvas
         camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
         isFullscreen={true}
         shadows={{ type: PCFSoftShadowMap }}
       >
-        <StatsGl className="stats-gl" />
+        {/* <StatsGl className="stats-gl" /> */}
         <OrbitControls />
         <directionalLight
           position={lightPosition}

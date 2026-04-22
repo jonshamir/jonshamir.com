@@ -1,6 +1,6 @@
-import { useControls } from "leva";
 import { Color, Euler } from "three";
 
+import { useControls } from "../../../lib/tweakpane";
 import { CustomLeaf } from "./CustomLeaf";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 
@@ -31,7 +31,12 @@ export function Plant({
       layerHeight: { value: 0.01, min: 0, max: 0.2 }
     },
     { collapsed: true }
-  );
+  ) as {
+    matureAge: number;
+    basePitch: number;
+    baseYaw: number;
+    layerHeight: number;
+  };
 
   return (
     <PhyllotaxisSpawner
