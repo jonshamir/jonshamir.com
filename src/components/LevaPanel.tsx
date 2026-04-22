@@ -20,7 +20,7 @@ function LevaPanelInner() {
         zIndex: 1000
       }}
     >
-      <Leva fill flat />
+      <Leva fill flat hideCopyButton />
     </div>
   );
 }
