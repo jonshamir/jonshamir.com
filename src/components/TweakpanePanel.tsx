@@ -5,10 +5,11 @@ import { useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useRef } from "react";
 
 import { getPane } from "../lib/tweakpane";
+import styles from "./TweakpanePanel.module.css";
 
 function TweakpanePanelInner() {
   const searchParams = useSearchParams();
-  const debug = searchParams.has("debug");
+  const debug = true; //searchParams.has("debug");
   const hostRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -27,16 +28,7 @@ function TweakpanePanelInner() {
   if (!debug) return null;
 
   return (
-    <div
-      ref={hostRef}
-      style={{
-        position: "fixed",
-        bottom: 10,
-        right: 10,
-        width: 280,
-        zIndex: 1000
-      }}
-    />
+    <div ref={hostRef} className={styles.host} />
   );
 }
 
