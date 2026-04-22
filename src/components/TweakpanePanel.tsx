@@ -27,9 +27,7 @@ function TweakpanePanelInner() {
 
   if (!debug) return null;
 
-  return (
-    <div ref={hostRef} className={styles.host} />
-  );
+  return <div ref={hostRef} className={styles.host} />;
 }
 
 export function TweakpanePanel() {
