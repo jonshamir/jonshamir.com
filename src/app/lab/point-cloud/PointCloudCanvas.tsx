@@ -1,11 +1,14 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
+import { useMemo, useState } from "react";
 import { Color } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useControls } from "../../../lib/tweakpane";
+import { FocusControl } from "./FocusControl";
+import { mapFocus } from "./focusMapping";
 import { SparkRendererMount } from "./SparkRendererMount";
 import { SplatViewer } from "./SplatViewer";
 
@@ -23,52 +26,28 @@ export default function PointCloudCanvas() {
     file: { value: DEFAULT_URL, options: FILES, label: "Source" }
   }) as { file: string };
 
-  const { sizeScale, shapeStrength, backgroundColor, applyModifier, flipY } =
-    useControls("Display", {
-      sizeScale: {
-        value: 1.0,
-        min: 0.1,
-        max: 3.0,
-        step: 0.05,
-        label: "Splat Size"
-      },
-      shapeStrength: {
-        value: 0.0,
-        min: 0.0,
-        max: 1.0,
-        step: 0.01,
-        label: "Splat Roundness"
-      },
-      backgroundColor: { value: "#1e1e1e", label: "Background" },
-      applyModifier: { value: true, label: "Apply Modifier" },
-      flipY: { value: true, label: "Flip Y" }
-    }) as {
-      sizeScale: number;
-      shapeStrength: number;
-      backgroundColor: string;
-      applyModifier: boolean;
-      flipY: boolean;
-    };
+  const { backgroundColor, applyModifier, flipY } = useControls("Display", {
+    backgroundColor: { value: "#1e1e1e", label: "Background" },
+    applyModifier: { value: true, label: "Apply Modifier" },
+    flipY: { value: true, label: "Flip Y" }
+  }) as {
+    backgroundColor: string;
+    applyModifier: boolean;
+    flipY: boolean;
+  };
 
-  const { noiseAmp, noiseFreq, noiseSpeed } = useControls(
+  const { noiseFreq, noiseSpeed } = useControls(
     "Distortion",
     {
-      noiseAmp: {
-        value: 2.0,
-        min: 0.0,
-        max: 40.0,
-        step: 0.1,
-        label: "Noise Amount"
-      },
       noiseFreq: {
-        value: 0.2,
+        value: 0.18,
         min: 0.01,
-        max: 3.0,
-        step: 0.1,
+        max: 1.0,
+        step: 0.01,
         label: "Noise Frequency"
       },
       noiseSpeed: {
-        value: 0.05,
+        value: 0.03,
         min: 0.0,
         max: 0.1,
         step: 0.005,
@@ -76,7 +55,11 @@ export default function PointCloudCanvas() {
       }
     },
     { collapsed: false }
-  ) as { noiseAmp: number; noiseFreq: number; noiseSpeed: number };
+  ) as { noiseFreq: number; noiseSpeed: number };
+
+  const [focus, setFocus] = useState(0.5);
+
+  const focusParams = useMemo(() => mapFocus(focus), [focus]);
 
   const url = file;
   const bg = new Color(backgroundColor);
@@ -84,6 +67,7 @@ export default function PointCloudCanvas() {
   return (
     <>
       <TweakpanePanel />
+      <FocusControl focus={focus} onFocusChange={setFocus} />
       <ThreeCanvas
         camera={{ fov: 50, position: [0, 0, 4], near: 0.01, far: 1000 }}
         isFullscreen={true}
@@ -94,11 +78,12 @@ export default function PointCloudCanvas() {
         {url && (
           <SplatViewer
             url={url}
-            sizeScale={sizeScale}
-            noiseAmp={noiseAmp}
+            sizeScale={focusParams.sizeScale}
+            noiseAmp={focusParams.noiseAmp}
             noiseFreq={noiseFreq}
             noiseSpeed={noiseSpeed}
-            shapeStrength={shapeStrength}
+            shapeStrength={focusParams.shapeStrength}
+            sizeUniformity={focusParams.sizeUniformity}
             applyModifier={applyModifier}
             flipY={flipY}
           />

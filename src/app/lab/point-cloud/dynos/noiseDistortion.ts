@@ -49,6 +49,7 @@ export type NoiseDistortion = {
   setNoiseFreq: (v: number) => void;
   setNoiseSpeed: (v: number) => void;
   setShapeStrength: (v: number) => void;
+  setSizeUniformity: (v: number) => void;
 };
 
 // Spark GsplatModifier that perturbs splat centers with animated fake
@@ -60,6 +61,7 @@ export function createNoiseDistortion(): NoiseDistortion {
   const noiseFreq = dyno.dynoFloat(1.0, "uNoiseFreq");
   const noiseSpeed = dyno.dynoFloat(0.5, "uNoiseSpeed");
   const shapeStrength = dyno.dynoFloat(0.0, "uShapeStrength");
+  const sizeUniformity = dyno.dynoFloat(0.0, "uSizeUniformity");
 
   const modifier = dyno.dynoBlock(
     { gsplat: dyno.Gsplat },
@@ -96,16 +98,30 @@ export function createNoiseDistortion(): NoiseDistortion {
 
       const sizedScales = dyno.mul(split.scales, sizeScale);
 
-      // Lerp scales toward their mean so the Gaussian becomes isotropic.
-      // Isotropic 3D Gaussians project to circles from any view direction —
-      // no quaternion override needed for "camera-facing circular" splats.
+      // Two independent lerps:
+      //  1. roundness: scales → vec3(perSplatMean) makes the Gaussian
+      //     isotropic (circle from any view) while preserving its own size.
+      //  2. uniformity: scales → vec3(globalSize) collapses all splats to
+      //     the same size. Tied to sizeScale so the Splat Size slider still
+      //     drives the rounded/uniform target.
       const roundScales = dyno.dyno({
-        inTypes: { scales: "vec3", strength: "float" },
+        inTypes: {
+          scales: "vec3",
+          roundness: "float",
+          uniformity: "float",
+          size: "float"
+        },
         outTypes: { scales: "vec3" },
-        inputs: { scales: sizedScales, strength: shapeStrength },
+        inputs: {
+          scales: sizedScales,
+          roundness: shapeStrength,
+          uniformity: sizeUniformity,
+          size: sizeScale
+        },
         statements: ({ inputs, outputs }) => [
           `float m = (${inputs.scales}.x + ${inputs.scales}.y + ${inputs.scales}.z) / 3.0;`,
-          `${outputs.scales} = mix(${inputs.scales}, vec3(m), ${inputs.strength});`
+          `vec3 round = mix(${inputs.scales}, vec3(m), ${inputs.roundness});`,
+          `${outputs.scales} = mix(round, vec3(0.01 * ${inputs.size}), ${inputs.uniformity});`
         ]
       });
 
@@ -130,6 +146,7 @@ export function createNoiseDistortion(): NoiseDistortion {
     setNoiseAmp: (v) => setUniform(noiseAmp, v),
     setNoiseFreq: (v) => setUniform(noiseFreq, v),
     setNoiseSpeed: (v) => setUniform(noiseSpeed, v),
-    setShapeStrength: (v) => setUniform(shapeStrength, v)
+    setShapeStrength: (v) => setUniform(shapeStrength, v),
+    setSizeUniformity: (v) => setUniform(sizeUniformity, v)
   };
 }

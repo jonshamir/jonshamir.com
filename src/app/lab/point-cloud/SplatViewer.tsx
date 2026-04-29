@@ -23,6 +23,7 @@ type Props = {
   noiseFreq: number;
   noiseSpeed: number;
   shapeStrength: number;
+  sizeUniformity: number;
   applyModifier: boolean;
   flipY: boolean;
 };
@@ -56,6 +57,7 @@ export function SplatViewer({
   noiseFreq,
   noiseSpeed,
   shapeStrength,
+  sizeUniformity,
   applyModifier,
   flipY
 }: Props) {
@@ -160,6 +162,10 @@ export function SplatViewer({
   useEffect(() => {
     distortion.setShapeStrength(shapeStrength);
   }, [distortion, shapeStrength]);
+
+  useEffect(() => {
+    distortion.setSizeUniformity(sizeUniformity);
+  }, [distortion, sizeUniformity]);
 
   if (!mesh) return null;
   return (
