@@ -2,8 +2,6 @@
 
 import dynamic from "next/dynamic";
 
-import { LabMenu } from "../components/LabMenu/LabMenu";
-
 const Canvas = dynamic(() => import("./PointCloudCanvas"), {
   ssr: false
 });
