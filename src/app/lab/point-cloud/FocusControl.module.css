@@ -27,6 +27,7 @@
   -webkit-appearance: none;
   appearance: none;
   background: transparent !important;
+  cursor: pointer;
 }
 
 .slider::-webkit-slider-runnable-track {
