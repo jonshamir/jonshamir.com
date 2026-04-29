@@ -8,7 +8,7 @@ pre[data-theme] {
 }
 
 code[data-theme] {
-  font-family: "Fira Code", monospace;
+  font-family: var(--mono-font);
 }
 
 [data-line] {
@@ -35,7 +35,11 @@ code[data-theme*=" "] {
 
 code[data-theme*=" "],
 code[data-theme*=" "] span {
-  color: color-mix(in oklab, var(--shiki-light), var(--shiki-dark) var(--shiki-mix));
+  color: color-mix(
+    in oklab,
+    var(--shiki-light),
+    var(--shiki-dark) var(--shiki-mix)
+  );
 }
 
 /* Copy button styles */

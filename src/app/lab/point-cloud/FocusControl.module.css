@@ -16,7 +16,6 @@
 .label {
   letter-spacing: 0.05em;
   text-transform: uppercase;
-  opacity: 0.7;
 }
 
 .slider {
@@ -24,11 +23,43 @@
   accent-color: #fff;
   padding: 1rem !important;
   outline: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent !important;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+}
+
+.slider::-moz-range-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  border: none;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: none;
+  border-radius: 2px;
+  margin-top: -5px;
+}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: none;
+  border-radius: 2px;
 }
 
 .value {
-  font-variant-numeric: tabular-nums;
-  opacity: 0.7;
-  width: 2.4rem;
-  text-align: right;
+  font-family: var(--mono-font);
+  font-variant-numeric: tabular-nums !important;
 }
