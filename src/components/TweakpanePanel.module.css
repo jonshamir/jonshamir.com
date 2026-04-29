@@ -1,10 +1,6 @@
+/* Positioning lives in src/styles/three-canvas.css as a global class
+ * (.tweakpane-host) to avoid CSS-module hash desync during Fast Refresh. */
 .host {
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  width: 280px;
-  z-index: 1000;
-
   button {
     border-radius: 0;
 

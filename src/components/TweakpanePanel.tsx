@@ -20,18 +20,8 @@ export function TweakpanePanel() {
     };
   }, []);
 
-  // Inline positioning so HMR can't desync the CSS-module class hash and drop position:fixed.
-  return (
-    <div
-      ref={hostRef}
-      className={styles.host}
-      style={{
-        position: "fixed",
-        bottom: 10,
-        right: 10,
-        width: 280,
-        zIndex: 1000
-      }}
-    />
-  );
+  // Use a global (non-hashed) class for fixed positioning — see
+  // src/styles/three-canvas.css. Avoids CSS-module hash desync during Fast
+  // Refresh. The module class still provides Tweakpane theme overrides.
+  return <div ref={hostRef} className={`${styles.host} tweakpane-host`} />;
 }

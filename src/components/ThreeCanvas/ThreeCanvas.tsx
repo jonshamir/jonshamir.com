@@ -15,25 +15,14 @@ export function ThreeCanvas({
   grabCursor = true,
   ...rest
 }: ThreeCanvasProps) {
-  // Inline fullscreen positioning so HMR can't desync the CSS-module class hash and drop position:fixed.
-  const wrapperStyle: React.CSSProperties | undefined = isFullscreen
-    ? {
-        position: "fixed",
-        inset: 0,
-        width: "100vw",
-        height: "100vh",
-        zIndex: 10,
-        borderRadius: 0
-      }
-    : undefined;
-
   return (
     <div
       className={clsx(styles.ThreeCanvas, className, {
-        [styles.fullscreen]: isFullscreen,
+        // Global (non-hashed) class — see src/styles/three-canvas.css.
+        // Avoids CSS-module hash desync during Fast Refresh.
+        "three-canvas-fullscreen": isFullscreen,
         [styles.grabCursor]: grabCursor
       })}
-      style={wrapperStyle}
     >
       <Canvas {...rest}>{children}</Canvas>
     </div>

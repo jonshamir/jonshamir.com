@@ -6,6 +6,7 @@
 @import "supreme.css";
 @import "code.css";
 @import "easings.css";
+@import "three-canvas.css";
 
 @property --color-bg-rgb {
   syntax: "<number>#";

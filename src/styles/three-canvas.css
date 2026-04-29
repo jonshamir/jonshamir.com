@@ -1,0 +1,28 @@
+/* Layout-critical positioning for ThreeCanvas/Tweakpane.
+ * Kept in a global stylesheet (not a CSS module) so the class names aren't
+ * hashed — CSS-module hashes can briefly desync from the injected stylesheet
+ * during Fast Refresh, dropping position:fixed and collapsing these elements
+ * into the page grid. Global classes are immune to that race.
+ */
+
+.three-canvas-fullscreen {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  border-radius: 0;
+}
+
+.three-canvas-fullscreen canvas {
+  border-radius: 0;
+}
+
+.tweakpane-host {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 280px;
+
+  z-index: 1000;
+}

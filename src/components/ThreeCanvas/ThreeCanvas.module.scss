@@ -12,18 +12,9 @@
     }
   }
 
-  &.fullscreen {
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    inset: 0;
-    z-index: 10;
-    border-radius: 0;
-
-    canvas {
-      border-radius: 0;
-    }
-  }
+  // Fullscreen positioning lives in src/styles/three-canvas.css as a global
+  // class (.three-canvas-fullscreen) to avoid CSS-module hash desync during
+  // Fast Refresh.
 
   canvas {
     border-radius: var(--rounding-medium);
