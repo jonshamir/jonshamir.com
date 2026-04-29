@@ -10,9 +10,8 @@ export function AnalyticsProvider({ children }: { children: React.ReactNode }) {
       api_host: "https://us.i.posthog.com",
       person_profiles: "identified_only",
       capture_pageview: false, // Disable automatic pageview capture, as we capture manually
-      // Enable debug mode in development
       loaded: (posthog) => {
-        if (process.env.NODE_ENV === "development") posthog.debug();
+        posthog.debug(false);
       }
     });
   }, []);
