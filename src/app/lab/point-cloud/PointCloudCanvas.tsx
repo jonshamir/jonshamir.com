@@ -44,26 +44,33 @@ export default function PointCloudCanvas() {
     flipY: boolean;
   };
 
-  const { noiseAmp, noiseFreq } = useControls(
+  const { noiseAmp, noiseFreq, noiseSpeed } = useControls(
     "Distortion",
     {
       noiseAmp: {
-        value: 0.0,
+        value: 2.0,
         min: 0.0,
-        max: 1.0,
+        max: 10.0,
         step: 0.01,
         label: "Noise Amount"
       },
       noiseFreq: {
-        value: 1.0,
-        min: 0.1,
-        max: 10.0,
+        value: 0.2,
+        min: 0.01,
+        max: 3.0,
         step: 0.1,
         label: "Noise Frequency"
+      },
+      noiseSpeed: {
+        value: 0.2,
+        min: 0.0,
+        max: 1.0,
+        step: 0.05,
+        label: "Noise Speed"
       }
     },
     { collapsed: false }
-  ) as { noiseAmp: number; noiseFreq: number };
+  ) as { noiseAmp: number; noiseFreq: number; noiseSpeed: number };
 
   const url = file;
   const bg = new Color(backgroundColor);
@@ -84,6 +91,7 @@ export default function PointCloudCanvas() {
             sizeScale={sizeScale}
             noiseAmp={noiseAmp}
             noiseFreq={noiseFreq}
+            noiseSpeed={noiseSpeed}
             applyModifier={applyModifier}
             flipY={flipY}
           />
