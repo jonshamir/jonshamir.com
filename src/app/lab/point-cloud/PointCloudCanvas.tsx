@@ -38,6 +38,16 @@ export default function PointCloudCanvas() {
     flipY: boolean;
   };
 
+  const { rotationSpeed } = useControls("Camera", {
+    rotationSpeed: {
+      value: 1.5,
+      min: 0.0,
+      max: 4.0,
+      step: 0.1,
+      label: "Rotation Speed"
+    }
+  }) as { rotationSpeed: number };
+
   const { noiseFreq, noiseSpeed, noiseRise } = useControls(
     "Distortion",
     {
@@ -82,7 +92,11 @@ export default function PointCloudCanvas() {
         isFullscreen={true}
       >
         <color attach="background" args={[bg.r, bg.g, bg.b]} />
-        <OrbitControls makeDefault />
+        <OrbitControls
+          makeDefault
+          autoRotate={rotationSpeed > 0}
+          autoRotateSpeed={rotationSpeed}
+        />
         <SparkRendererMount />
         {url && (
           <SplatViewer

@@ -25,10 +25,10 @@ type FocusSpec = { start: number; end: number; easing: EaseFn };
 // Per-parameter mapping. `start` is the value at focus=0, `end` at focus=1,
 // `easing` is any (t: 0..1) => 0..1 function. Adjust freely.
 export const FOCUS_PARAMS: Record<FocusParamKey, FocusSpec> = {
-  sizeScale: { start: 5.0, end: 1.0, easing: easeIn },
+  sizeScale: { start: 4.0, end: 1.0, easing: easeIn },
   shapeStrength: { start: 1.0, end: 0.0, easing: easeInExp },
   sizeUniformity: { start: 1.0, end: 0.0, easing: easeInExp },
-  noiseAmp: { start: 8.0, end: 0.0, easing: linear }
+  noiseAmp: { start: 6.0, end: 0.0, easing: linear }
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
