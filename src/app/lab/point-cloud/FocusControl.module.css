@@ -22,6 +22,8 @@
 .slider {
   width: 18rem;
   accent-color: #fff;
+  padding: 1rem !important;
+  outline: none !important;
 }
 
 .value {

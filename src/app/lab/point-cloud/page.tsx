@@ -11,10 +11,6 @@ const Canvas = dynamic(() => import("./PointCloudCanvas"), {
 export default function Page() {
   return (
     <>
-      <LabMenu
-        title="Point Cloud"
-        description="Gaussian splat viewer with GPU-side distortion"
-      />
       <Canvas />
     </>
   );

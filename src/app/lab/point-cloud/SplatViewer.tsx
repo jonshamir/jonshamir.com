@@ -1,6 +1,6 @@
 "use client";
 
-import { useThree } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { SplatMesh } from "@sparkjsdev/spark";
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { Group } from "three";
@@ -166,6 +166,17 @@ export function SplatViewer({
   useEffect(() => {
     distortion.setSizeUniformity(sizeUniformity);
   }, [distortion, sizeUniformity]);
+
+  // Spark only re-runs splat generators when the camera moves or the mesh
+  // version bumps (see SparkRenderer.updateInternal). Our modifier reads
+  // SplatMesh.dynoTime, which is only advanced inside that gated update — so
+  // with a static camera the turbulence freezes until the user nudges
+  // OrbitControls. Bump the version each frame while animation is active.
+  const isAnimating = applyModifier && noiseSpeed > 0 && noiseAmp > 0;
+  useFrame(() => {
+    if (!mesh || !isAnimating) return;
+    mesh.needsUpdate = true;
+  });
 
   if (!mesh) return null;
   return (

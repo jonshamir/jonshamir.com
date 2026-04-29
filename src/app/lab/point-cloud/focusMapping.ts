@@ -7,6 +7,7 @@ export type EaseFn = (t: number) => number;
 // inline `(t) => ...` curve directly in FOCUS_PARAMS.
 export const linear: EaseFn = (t) => t;
 export const easeIn: EaseFn = (t) => t * t * t;
+export const easeInExp: EaseFn = (t) => (t <= 0 ? 0 : Math.pow(2, 10 * t - 10));
 export const easeOut: EaseFn = (t) => 1 - Math.pow(1 - t, 3);
 export const easeInOut: EaseFn = (t) =>
   t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -25,9 +26,9 @@ type FocusSpec = { start: number; end: number; easing: EaseFn };
 // `easing` is any (t: 0..1) => 0..1 function. Adjust freely.
 export const FOCUS_PARAMS: Record<FocusParamKey, FocusSpec> = {
   sizeScale: { start: 4.0, end: 1.0, easing: easeIn },
-  shapeStrength: { start: 1.0, end: 0.0, easing: easeIn },
-  sizeUniformity: { start: 1.0, end: 0.0, easing: easeIn },
-  noiseAmp: { start: 6.0, end: 0.0, easing: linear }
+  shapeStrength: { start: 1.0, end: 0.0, easing: easeInExp },
+  sizeUniformity: { start: 1.0, end: 0.0, easing: easeInExp },
+  noiseAmp: { start: 8.0, end: 0.0, easing: linear }
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
