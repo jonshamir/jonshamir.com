@@ -23,9 +23,8 @@ export default function PointCloudCanvas() {
     file: { value: DEFAULT_URL, options: FILES, label: "Source" }
   }) as { file: string };
 
-  const { sizeScale, backgroundColor, applyModifier, flipY } = useControls(
-    "Display",
-    {
+  const { sizeScale, shapeStrength, backgroundColor, applyModifier, flipY } =
+    useControls("Display", {
       sizeScale: {
         value: 1.0,
         min: 0.1,
@@ -33,16 +32,23 @@ export default function PointCloudCanvas() {
         step: 0.05,
         label: "Splat Size"
       },
+      shapeStrength: {
+        value: 0.0,
+        min: 0.0,
+        max: 1.0,
+        step: 0.01,
+        label: "Splat Roundness"
+      },
       backgroundColor: { value: "#1e1e1e", label: "Background" },
       applyModifier: { value: true, label: "Apply Modifier" },
       flipY: { value: true, label: "Flip Y" }
-    }
-  ) as {
-    sizeScale: number;
-    backgroundColor: string;
-    applyModifier: boolean;
-    flipY: boolean;
-  };
+    }) as {
+      sizeScale: number;
+      shapeStrength: number;
+      backgroundColor: string;
+      applyModifier: boolean;
+      flipY: boolean;
+    };
 
   const { noiseAmp, noiseFreq, noiseSpeed } = useControls(
     "Distortion",
@@ -50,8 +56,8 @@ export default function PointCloudCanvas() {
       noiseAmp: {
         value: 2.0,
         min: 0.0,
-        max: 20.0,
-        step: 0.01,
+        max: 40.0,
+        step: 0.1,
         label: "Noise Amount"
       },
       noiseFreq: {
@@ -65,7 +71,7 @@ export default function PointCloudCanvas() {
         value: 0.05,
         min: 0.0,
         max: 0.1,
-        step: 0.05,
+        step: 0.005,
         label: "Noise Speed"
       }
     },
@@ -92,6 +98,7 @@ export default function PointCloudCanvas() {
             noiseAmp={noiseAmp}
             noiseFreq={noiseFreq}
             noiseSpeed={noiseSpeed}
+            shapeStrength={shapeStrength}
             applyModifier={applyModifier}
             flipY={flipY}
           />

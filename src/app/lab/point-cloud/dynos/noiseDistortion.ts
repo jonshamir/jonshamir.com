@@ -48,6 +48,7 @@ export type NoiseDistortion = {
   setNoiseAmp: (v: number) => void;
   setNoiseFreq: (v: number) => void;
   setNoiseSpeed: (v: number) => void;
+  setShapeStrength: (v: number) => void;
 };
 
 // Spark GsplatModifier that perturbs splat centers with animated fake
@@ -58,6 +59,7 @@ export function createNoiseDistortion(): NoiseDistortion {
   const noiseAmp = dyno.dynoFloat(0.0, "uNoiseAmp");
   const noiseFreq = dyno.dynoFloat(1.0, "uNoiseFreq");
   const noiseSpeed = dyno.dynoFloat(0.5, "uNoiseSpeed");
+  const shapeStrength = dyno.dynoFloat(0.0, "uShapeStrength");
 
   const modifier = dyno.dynoBlock(
     { gsplat: dyno.Gsplat },
@@ -92,13 +94,26 @@ export function createNoiseDistortion(): NoiseDistortion {
         ]
       });
 
-      const newScales = dyno.mul(split.scales, sizeScale);
+      const sizedScales = dyno.mul(split.scales, sizeScale);
+
+      // Lerp scales toward their mean so the Gaussian becomes isotropic.
+      // Isotropic 3D Gaussians project to circles from any view direction —
+      // no quaternion override needed for "camera-facing circular" splats.
+      const roundScales = dyno.dyno({
+        inTypes: { scales: "vec3", strength: "float" },
+        outTypes: { scales: "vec3" },
+        inputs: { scales: sizedScales, strength: shapeStrength },
+        statements: ({ inputs, outputs }) => [
+          `float m = (${inputs.scales}.x + ${inputs.scales}.y + ${inputs.scales}.z) / 3.0;`,
+          `${outputs.scales} = mix(${inputs.scales}, vec3(m), ${inputs.strength});`
+        ]
+      });
 
       return {
         gsplat: dyno.combineGsplat({
           gsplat,
           center: distort.outputs.center,
-          scales: newScales
+          scales: roundScales.outputs.scales
         })
       };
     }
@@ -114,6 +129,7 @@ export function createNoiseDistortion(): NoiseDistortion {
     setSizeScale: (v) => setUniform(sizeScale, v),
     setNoiseAmp: (v) => setUniform(noiseAmp, v),
     setNoiseFreq: (v) => setUniform(noiseFreq, v),
-    setNoiseSpeed: (v) => setUniform(noiseSpeed, v)
+    setNoiseSpeed: (v) => setUniform(noiseSpeed, v),
+    setShapeStrength: (v) => setUniform(shapeStrength, v)
   };
 }
