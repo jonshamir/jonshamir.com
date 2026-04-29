@@ -38,7 +38,7 @@ export default function PointCloudCanvas() {
     flipY: boolean;
   };
 
-  const { noiseFreq, noiseSpeed } = useControls(
+  const { noiseFreq, noiseSpeed, noiseRise } = useControls(
     "Distortion",
     {
       noiseFreq: {
@@ -49,15 +49,22 @@ export default function PointCloudCanvas() {
         label: "Noise Frequency"
       },
       noiseSpeed: {
-        value: 0.02,
+        value: 0.01,
         min: 0.0,
         max: 0.1,
         step: 0.005,
         label: "Noise Speed"
+      },
+      noiseRise: {
+        value: 0.01,
+        min: -0.1,
+        max: 0.1,
+        step: 0.005,
+        label: "Noise Rise"
       }
     },
     { collapsed: false }
-  ) as { noiseFreq: number; noiseSpeed: number };
+  ) as { noiseFreq: number; noiseSpeed: number; noiseRise: number };
 
   const [focus, setFocus] = useState(0.5);
 
@@ -84,6 +91,7 @@ export default function PointCloudCanvas() {
             noiseAmp={focusParams.noiseAmp}
             noiseFreq={noiseFreq}
             noiseSpeed={noiseSpeed}
+            noiseRise={noiseRise}
             shapeStrength={focusParams.shapeStrength}
             sizeUniformity={focusParams.sizeUniformity}
             applyModifier={applyModifier}

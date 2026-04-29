@@ -50,6 +50,7 @@ export type NoiseDistortion = {
   setNoiseSpeed: (v: number) => void;
   setShapeStrength: (v: number) => void;
   setSizeUniformity: (v: number) => void;
+  setNoiseRise: (v: number) => void;
 };
 
 // Spark GsplatModifier that perturbs splat centers with animated fake
@@ -62,6 +63,11 @@ export function createNoiseDistortion(): NoiseDistortion {
   const noiseSpeed = dyno.dynoFloat(0.5, "uNoiseSpeed");
   const shapeStrength = dyno.dynoFloat(0.0, "uShapeStrength");
   const sizeUniformity = dyno.dynoFloat(0.0, "uSizeUniformity");
+  // Upward "scroll" of the noise field, in world units / second of dynoTime.
+  // Shifts the sample point along -Y over time so the turbulence pattern
+  // appears to drift upward through the cloud (rising-smoke feel) while the
+  // displacement magnitude stays bounded.
+  const noiseRise = dyno.dynoFloat(0.0, "uNoiseRise");
 
   const modifier = dyno.dynoBlock(
     { gsplat: dyno.Gsplat },
@@ -75,24 +81,32 @@ export function createNoiseDistortion(): NoiseDistortion {
       // from its render clock. Multiply by speed for a per-effect time scale.
       const animatedTime = dyno.mul(SplatMesh.dynoTime, noiseSpeed);
 
-      // newCenter = center + spark_turbulence(center * freq, time) * amp
+      // gmshaders.com/p/turbulence "fire": scroll the noise sample point
+      // along -Y over time so the field appears to flow upward through the
+      // static cloud. Each frame's tiny shift becomes a coherent upward
+      // drift in each splat's displacement vector.
+      const riseOffset = dyno.mul(SplatMesh.dynoTime, noiseRise);
+
       const distort = dyno.dyno({
         inTypes: {
           center: "vec3",
           freq: "float",
           amp: "float",
-          time: "float"
+          time: "float",
+          rise: "float"
         },
         outTypes: { center: "vec3" },
         inputs: {
           center: split.center,
           freq: noiseFreq,
           amp: noiseAmp,
-          time: animatedTime
+          time: animatedTime,
+          rise: riseOffset
         },
         globals: () => [turbulenceGlobals],
         statements: ({ inputs, outputs }) => [
-          `${outputs.center} = ${inputs.center} + spark_turbulence(${inputs.center} * ${inputs.freq}, ${inputs.time}) * ${inputs.amp};`
+          `vec3 sampleP = ${inputs.center} * ${inputs.freq} - vec3(0.0, ${inputs.rise}, 0.0);`,
+          `${outputs.center} = ${inputs.center} + spark_turbulence(sampleP, ${inputs.time}) * ${inputs.amp};`
         ]
       });
 
@@ -147,6 +161,7 @@ export function createNoiseDistortion(): NoiseDistortion {
     setNoiseFreq: (v) => setUniform(noiseFreq, v),
     setNoiseSpeed: (v) => setUniform(noiseSpeed, v),
     setShapeStrength: (v) => setUniform(shapeStrength, v),
-    setSizeUniformity: (v) => setUniform(sizeUniformity, v)
+    setSizeUniformity: (v) => setUniform(sizeUniformity, v),
+    setNoiseRise: (v) => setUniform(noiseRise, v)
   };
 }

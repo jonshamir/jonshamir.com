@@ -22,6 +22,7 @@ type Props = {
   noiseAmp: number;
   noiseFreq: number;
   noiseSpeed: number;
+  noiseRise: number;
   shapeStrength: number;
   sizeUniformity: number;
   applyModifier: boolean;
@@ -56,6 +57,7 @@ export function SplatViewer({
   noiseAmp,
   noiseFreq,
   noiseSpeed,
+  noiseRise,
   shapeStrength,
   sizeUniformity,
   applyModifier,
@@ -160,6 +162,10 @@ export function SplatViewer({
   }, [distortion, noiseSpeed]);
 
   useEffect(() => {
+    distortion.setNoiseRise(noiseRise);
+  }, [distortion, noiseRise]);
+
+  useEffect(() => {
     distortion.setShapeStrength(shapeStrength);
   }, [distortion, shapeStrength]);
 
@@ -172,7 +178,8 @@ export function SplatViewer({
   // SplatMesh.dynoTime, which is only advanced inside that gated update — so
   // with a static camera the turbulence freezes until the user nudges
   // OrbitControls. Bump the version each frame while animation is active.
-  const isAnimating = applyModifier && noiseSpeed > 0 && noiseAmp > 0;
+  const isAnimating =
+    applyModifier && noiseAmp > 0 && (noiseSpeed > 0 || noiseRise > 0);
   useFrame(() => {
     if (!mesh || !isAnimating) return;
     mesh.needsUpdate = true;
