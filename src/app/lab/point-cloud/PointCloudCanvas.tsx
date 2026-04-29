@@ -16,7 +16,9 @@ import { SplatViewer } from "./SplatViewer";
 // `Display Name`: `/path/to/file.ext` — Tweakpane's list binding uses the
 // keys as labels and the values as the bound state.
 const FILES: Record<string, string> = {
-  "Bonsai Tree": "/lab/point-cloud/Bonsai Tree.sog"
+  "Bonsai Tree": "/lab/point-cloud/Bonsai Tree.sog",
+  "Walton Hall": "/lab/point-cloud/Walton Hall.sog",
+  Windmill: "/lab/point-cloud/Windmill.sog"
 };
 
 const DEFAULT_URL = Object.values(FILES)[0] ?? "";
