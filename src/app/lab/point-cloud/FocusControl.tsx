@@ -18,9 +18,10 @@ export function FocusControl({ focus, onFocusChange }: Props) {
         max={1}
         step={0.001}
         value={focus}
+        style={{ ["--fill" as string]: `${focus * 100}%` }}
         onChange={(e) => onFocusChange(Number(e.target.value))}
       />
-      <span className={styles.value}>{focus.toFixed(2)}</span>
+      <span>{focus.toFixed(2)}</span>
     </div>
   );
 }
