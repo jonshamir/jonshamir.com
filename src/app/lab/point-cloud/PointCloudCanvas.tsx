@@ -56,8 +56,8 @@ export default function PointCloudCanvas() {
         label: "Noise Speed"
       },
       noiseRise: {
-        value: 0.01,
-        min: -0.1,
+        value: 0.04,
+        min: 0.0,
         max: 0.1,
         step: 0.005,
         label: "Noise Rise"
