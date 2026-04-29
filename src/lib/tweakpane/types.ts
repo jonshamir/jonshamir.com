@@ -26,6 +26,17 @@ export type Point2DField = {
   label?: string;
 };
 
-export type Field = NumberField | BooleanField | ColorField | Point2DField;
+export type ListField = {
+  value: string;
+  options: Record<string, string> | string[];
+  label?: string;
+};
+
+export type Field =
+  | NumberField
+  | BooleanField
+  | ColorField
+  | Point2DField
+  | ListField;
 
 export type Schema = Record<string, Field | FolderNode>;

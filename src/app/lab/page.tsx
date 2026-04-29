@@ -9,7 +9,8 @@ const EXPERIMENTS = [
   { title: "Earth", slug: "earth" },
   { title: "Craters", slug: "craters" },
   { title: "Plant", slug: "plant" },
-  { title: "Moon", slug: "moon" }
+  { title: "Moon", slug: "moon" },
+  { title: "Point Cloud", slug: "point-cloud" }
 ];
 
 export default function Page() {
