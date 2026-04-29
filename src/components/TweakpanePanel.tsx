@@ -20,5 +20,18 @@ export function TweakpanePanel() {
     };
   }, []);
 
-  return <div ref={hostRef} className={styles.host} />;
+  // Inline positioning so HMR can't desync the CSS-module class hash and drop position:fixed.
+  return (
+    <div
+      ref={hostRef}
+      className={styles.host}
+      style={{
+        position: "fixed",
+        bottom: 10,
+        right: 10,
+        width: 280,
+        zIndex: 1000
+      }}
+    />
+  );
 }
