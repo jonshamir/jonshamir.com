@@ -2,7 +2,8 @@
 
 import { useThree } from "@react-three/fiber";
 import { SplatMesh } from "@sparkjsdev/spark";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { Group } from "three";
 import { Vector3 } from "three";
 
 import {
@@ -24,10 +25,27 @@ type Props = {
   flipY: boolean;
 };
 
-const log = (...args: unknown[]) => {
-  // eslint-disable-next-line no-console
-  console.log("[SplatViewer]", ...args);
-};
+// Opacity-weighted centroid of all splats. Background floaters with low
+// opacity contribute proportionally less, so the orbit pivot stays on the
+// subject instead of drifting to the bbox center.
+function computeWeightedCentroid(mesh: SplatMesh): Vector3 {
+  const sum = new Vector3();
+  let totalWeight = 0;
+  let count = 0;
+  mesh.forEachSplat((_index, center, _scales, _quat, opacity) => {
+    const w = Math.max(0, opacity);
+    sum.addScaledVector(center, w);
+    totalWeight += w;
+    count += 1;
+  });
+  if (totalWeight > 0) return sum.divideScalar(totalWeight);
+  if (count > 0) {
+    const fallback = new Vector3();
+    mesh.forEachSplat((_index, center) => fallback.add(center));
+    return fallback.divideScalar(count);
+  }
+  return new Vector3();
+}
 
 export function SplatViewer({
   url,
@@ -42,139 +60,81 @@ export function SplatViewer({
     []
   );
   const [mesh, setMesh] = useState<SplatMesh | null>(null);
+  const groupRef = useRef<Group>(null);
   const getThree = useThree((s) => s.get);
 
   // Load / dispose the SplatMesh. Deps are intentionally only the things that
-  // require a *new* mesh (url, modifier toggle). We read camera/controls
-  // imperatively in the framing effect below so transient null→instance
-  // transitions on `controls` don't tear down the mesh.
+  // require a *new* mesh — camera/controls are read imperatively in the
+  // framing effect so a transient null→instance transition on `controls`
+  // doesn't tear down the mesh.
   useEffect(() => {
     if (!url) return;
     let cancelled = false;
-    const t0 = performance.now();
 
-    log("HEAD probe →", url);
-    fetch(url, { method: "HEAD" })
-      .then((res) =>
-        log("HEAD result", {
-          ok: res.ok,
-          status: res.status,
-          contentType: res.headers.get("content-type"),
-          contentLength: res.headers.get("content-length")
-        })
-      )
-      .catch((err) => log("HEAD failed", err));
-
-    log("constructing SplatMesh", { url, applyModifier });
-    const m = new SplatMesh({
-      url,
-      onProgress: (e: ProgressEvent) =>
-        log("progress", {
-          loaded: e.loaded,
-          total: e.total,
-          lengthComputable: e.lengthComputable
-        })
-    });
-
+    const m = new SplatMesh({ url });
     if (applyModifier) {
-      try {
-        m.objectModifier = distortion.modifier;
-        m.updateGenerator();
-        log("attached objectModifier");
-      } catch (err) {
-        log("failed to attach objectModifier", err);
-      }
-    } else {
-      log("modifier disabled");
+      m.objectModifier = distortion.modifier;
+      m.updateGenerator();
     }
 
     m.initialized
       .then(() => {
-        const t1 = performance.now();
         if (cancelled) {
-          log("init resolved but cancelled — disposing");
           m.dispose();
           return;
         }
-        log("init resolved", {
-          ms: Math.round(t1 - t0),
-          numSplats: m.numSplats,
-          isInitialized: m.isInitialized
-        });
         setMesh(m);
       })
       .catch((err) => {
-        log("FAILED to load", url, err);
+        console.error("[SplatViewer] failed to load", url, err);
       });
 
     return () => {
       cancelled = true;
       setMesh((prev) => (prev === m ? null : prev));
       m.dispose();
-      log("cleanup ran for", url);
     };
   }, [url, distortion, applyModifier]);
 
-  // Frame the camera once per loaded mesh. Reads camera/controls via
-  // useThree.getState() so it doesn't depend on their identity stabilizing.
+  // Frame the camera once per loaded mesh, targeting the centroid.
   useEffect(() => {
     if (!mesh) return;
-    try {
-      const box = mesh.getBoundingBox(true);
-      const center = box.getCenter(new Vector3());
-      const sizeVec = box.getSize(new Vector3());
-      const size = sizeVec.length();
-      log("bounding box", {
-        min: box.min.toArray(),
-        max: box.max.toArray(),
-        center: center.toArray(),
-        sizeXYZ: sizeVec.toArray(),
-        sizeDiagonal: size
-      });
+    const box = mesh.getBoundingBox(true);
+    const size = box.getSize(new Vector3()).length();
+    const centroid = computeWeightedCentroid(mesh);
 
-      mesh.position.sub(center);
+    mesh.position.sub(centroid);
 
-      if (!(size > 0 && Number.isFinite(size))) {
-        log("invalid bounding-box size; skipping camera framing");
-        return;
-      }
+    if (!(size > 0 && Number.isFinite(size))) return;
 
-      const { camera, controls } = getThree();
-      const orbit = controls as OrbitControlsLike | null;
-      const target = new Vector3(0, 0, 0);
-      const dist = size * 1.2;
-      camera.position.set(0, size * 0.1, dist);
-      // perspective camera fields
-      const persp = camera as unknown as {
-        near: number;
-        far: number;
-        updateProjectionMatrix: () => void;
-      };
-      persp.near = Math.max(0.001, size / 1000);
-      persp.far = Math.max(1000, size * 100);
-      persp.updateProjectionMatrix();
-      camera.lookAt(target);
-      if (orbit) {
-        orbit.target.copy(target);
-        orbit.update();
-        log("camera framed", {
-          position: camera.position.toArray(),
-          near: persp.near,
-          far: persp.far
-        });
-      } else {
-        log("no orbit controls in scene; camera positioned directly");
-      }
-    } catch (err) {
-      log("framing failed", err);
+    const { camera, controls } = getThree();
+    const orbit = controls as OrbitControlsLike | null;
+    const target = new Vector3(0, 0, 0);
+    const dist = size * 1.2;
+    camera.position.set(0, size * 0.1, dist);
+    const persp = camera as unknown as {
+      near: number;
+      far: number;
+      updateProjectionMatrix: () => void;
+    };
+    persp.near = Math.max(0.001, size / 1000);
+    persp.far = Math.max(1000, size * 100);
+    persp.updateProjectionMatrix();
+    camera.lookAt(target);
+    if (orbit) {
+      orbit.target.copy(target);
+      orbit.update();
     }
   }, [mesh, getThree]);
 
   useEffect(() => {
-    if (!mesh) return;
+    const g = groupRef.current;
+    if (!g) return;
     // Splat scenes from 3DGS / COLMAP / SuperSplat are typically Y-down.
-    // Rotating 180° around Z flips the model upright without mirroring.
-    mesh.rotation.z = flipY ? Math.PI : 0;
+    // Rotating the wrapper group keeps the inner mesh's recentering offset
+    // intact — rotating the mesh itself would rotate around its offset
+    // origin and pull the centroid off-target.
+    g.rotation.z = flipY ? Math.PI : 0;
   }, [mesh, flipY]);
 
   useEffect(() => {
@@ -190,5 +150,9 @@ export function SplatViewer({
   }, [distortion, noiseFreq]);
 
   if (!mesh) return null;
-  return <primitive object={mesh} />;
+  return (
+    <group ref={groupRef}>
+      <primitive object={mesh} />
+    </group>
+  );
 }

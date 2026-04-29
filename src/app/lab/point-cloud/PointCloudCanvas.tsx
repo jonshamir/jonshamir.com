@@ -33,7 +33,7 @@ export default function PointCloudCanvas() {
         step: 0.05,
         label: "Splat Size"
       },
-      backgroundColor: { value: "#1a1a1f", label: "Background" },
+      backgroundColor: { value: "#1e1e1e", label: "Background" },
       applyModifier: { value: true, label: "Apply Modifier" },
       flipY: { value: true, label: "Flip Y" }
     }

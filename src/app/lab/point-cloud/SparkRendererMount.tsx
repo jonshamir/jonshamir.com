@@ -14,8 +14,6 @@ export function SparkRendererMount() {
 
   useEffect(() => {
     scene.add(spark);
-    // eslint-disable-next-line no-console
-    console.log("[SparkRendererMount] mounted SparkRenderer in scene");
     return () => {
       scene.remove(spark);
       spark.dispose();
