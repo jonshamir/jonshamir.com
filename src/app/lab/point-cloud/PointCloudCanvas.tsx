@@ -50,7 +50,7 @@ export default function PointCloudCanvas() {
       noiseAmp: {
         value: 2.0,
         min: 0.0,
-        max: 10.0,
+        max: 20.0,
         step: 0.01,
         label: "Noise Amount"
       },
@@ -62,9 +62,9 @@ export default function PointCloudCanvas() {
         label: "Noise Frequency"
       },
       noiseSpeed: {
-        value: 0.2,
+        value: 0.05,
         min: 0.0,
-        max: 1.0,
+        max: 0.1,
         step: 0.05,
         label: "Noise Speed"
       }

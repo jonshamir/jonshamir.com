@@ -2,20 +2,43 @@ import type { GsplatModifier } from "@sparkjsdev/spark";
 import { dyno, SplatMesh } from "@sparkjsdev/spark";
 
 // "Fake turbulence" via iterated sin-domain warping (gmshaders.com/p/turbulence).
-// Cheap, smoothly animated, and gives the curling/swirling look of real
-// turbulence without any noise textures or expensive value noise.
+// Cheap, smoothly animated, gives the curling/swirling look of real turbulence
+// without noise textures or expensive value noise.
+//
+// We post-process the raw vec3 output so the *length* of the displacement is
+// bounded by 1 (i.e. it lives in the unit ball, not the unit cube). Without
+// this, sin() output per-component biases displacements toward the AABB
+// corners and the cloud spreads into a box rather than a sphere.
 const turbulenceGlobals = `
 vec3 spark_turbulence(vec3 p, float t) {
-  // Iteratively advect p by sin of itself with a time offset.
-  // Each iteration halves amplitude and doubles frequency for fractal detail.
-  float amp = 1.0;
+  // Iterated sin-domain warping (Xor / gmshaders.com) — chaotic vec3 in q.
+  vec3 q = p;
+  float a = 1.0;
   for (int i = 0; i < 4; i++) {
-    p += sin(p.yzx + t) * amp;
-    p *= 2.0;
-    amp *= 0.5;
+    q += sin(q.yzx + t) * a;
+    q *= 2.0;
+    a *= 0.5;
   }
-  // Map back to a smooth, bounded vec3 displacement in roughly [-1, 1].
-  return sin(p);
+
+  // Direction: three INDEPENDENT phase-offset samples. Reading sin() of the
+  // same q for all three components correlates the signs and pushes the
+  // displacement toward the (±1, ±1, ±1) corners of the unit cube. With
+  // independent phases the components decorrelate and their joint distribution
+  // approximates a small isotropic blob — normalize that to get a roughly
+  // uniform direction on the sphere.
+  vec3 raw = vec3(
+    sin(q.x),
+    sin(q.y + 17.93),
+    sin(q.z - 21.71)
+  );
+  vec3 dir = raw / max(length(raw), 1e-5);
+
+  // Magnitude: a fourth, independent scalar in [0, 1] derived from q + t.
+  // Decoupling magnitude from direction means the displacement envelope is
+  // a ball of radius 1, not the cube the per-component sin() naturally fills.
+  float mag = 0.5 + 0.5 * sin(dot(q, vec3(0.31, 0.71, 1.13)) + t);
+
+  return dir * mag;
 }
 `;
 
