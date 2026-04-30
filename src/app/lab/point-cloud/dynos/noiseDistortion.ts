@@ -52,6 +52,7 @@ export type NoiseDistortion = {
   setSizeUniformity: (v: number) => void;
   setNoiseRise: (v: number) => void;
   setMaxSize: (v: number) => void;
+  setModelScale: (v: number) => void;
 };
 
 // Spark GsplatModifier that perturbs splat centers with animated fake
@@ -73,6 +74,11 @@ export function createNoiseDistortion(): NoiseDistortion {
   // clamped down (the splat shrinks rather than disappearing). Default 1.0 is
   // large enough to leave typical scenes untouched.
   const maxSize = dyno.dynoFloat(1.0, "uMaxSize");
+  // Ratio of this splat's bbox size to a reference splat's bbox size (Bonsai).
+  // Used to keep effect parameters perceptually consistent across splats with
+  // different scales — sample density divides by it, displacement/clamp
+  // multiply by it. 1.0 = reference splat, no correction.
+  const modelScale = dyno.dynoFloat(1.0, "uModelScale");
 
   const modifier = dyno.dynoBlock(
     { gsplat: dyno.Gsplat },
@@ -98,7 +104,8 @@ export function createNoiseDistortion(): NoiseDistortion {
           freq: "float",
           amp: "float",
           time: "float",
-          rise: "float"
+          rise: "float",
+          modelScale: "float"
         },
         outTypes: { center: "vec3" },
         inputs: {
@@ -106,12 +113,13 @@ export function createNoiseDistortion(): NoiseDistortion {
           freq: noiseFreq,
           amp: noiseAmp,
           time: animatedTime,
-          rise: riseOffset
+          rise: riseOffset,
+          modelScale: modelScale
         },
         globals: () => [turbulenceGlobals],
         statements: ({ inputs, outputs }) => [
-          `vec3 sampleP = ${inputs.center} * ${inputs.freq} - vec3(0.0, ${inputs.rise}, 0.0);`,
-          `${outputs.center} = ${inputs.center} + spark_turbulence(sampleP, ${inputs.time}) * ${inputs.amp};`
+          `vec3 sampleP = (${inputs.center} / ${inputs.modelScale}) * ${inputs.freq} - vec3(0.0, ${inputs.rise}, 0.0);`,
+          `${outputs.center} = ${inputs.center} + spark_turbulence(sampleP, ${inputs.time}) * ${inputs.amp} * ${inputs.modelScale};`
         ]
       });
 
@@ -119,11 +127,15 @@ export function createNoiseDistortion(): NoiseDistortion {
       // expressed in raw-scale units so the Splat Size slider doesn't move
       // the cap.
       const clampedRaw = dyno.dyno({
-        inTypes: { rawScales: "vec3", maxSize: "float" },
+        inTypes: { rawScales: "vec3", maxSize: "float", modelScale: "float" },
         outTypes: { scales: "vec3" },
-        inputs: { rawScales: split.scales, maxSize: maxSize },
+        inputs: {
+          rawScales: split.scales,
+          maxSize: maxSize,
+          modelScale: modelScale
+        },
         statements: ({ inputs, outputs }) => [
-          `${outputs.scales} = min(${inputs.rawScales}, vec3(${inputs.maxSize}));`
+          `${outputs.scales} = min(${inputs.rawScales}, vec3(${inputs.maxSize} * ${inputs.modelScale}));`
         ]
       });
 
@@ -140,19 +152,21 @@ export function createNoiseDistortion(): NoiseDistortion {
           scales: "vec3",
           roundness: "float",
           uniformity: "float",
-          size: "float"
+          size: "float",
+          modelScale: "float"
         },
         outTypes: { scales: "vec3" },
         inputs: {
           scales: sizedScales,
           roundness: shapeStrength,
           uniformity: sizeUniformity,
-          size: sizeScale
+          size: sizeScale,
+          modelScale: modelScale
         },
         statements: ({ inputs, outputs }) => [
           `float m = (${inputs.scales}.x + ${inputs.scales}.y + ${inputs.scales}.z) / 3.0;`,
           `vec3 round = mix(${inputs.scales}, vec3(m), ${inputs.roundness});`,
-          `${outputs.scales} = mix(round, vec3(0.01 * ${inputs.size}), ${inputs.uniformity});`
+          `${outputs.scales} = mix(round, vec3(0.01 * ${inputs.size} * ${inputs.modelScale}), ${inputs.uniformity});`
         ]
       });
 
@@ -180,6 +194,7 @@ export function createNoiseDistortion(): NoiseDistortion {
     setShapeStrength: (v) => setUniform(shapeStrength, v),
     setSizeUniformity: (v) => setUniform(sizeUniformity, v),
     setNoiseRise: (v) => setUniform(noiseRise, v),
-    setMaxSize: (v) => setUniform(maxSize, v)
+    setMaxSize: (v) => setUniform(maxSize, v),
+    setModelScale: (v) => setUniform(modelScale, v)
   };
 }

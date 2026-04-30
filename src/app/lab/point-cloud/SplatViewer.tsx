@@ -16,6 +16,19 @@ type OrbitControlsLike = {
   update: () => void;
 };
 
+// Reference bbox diagonal length (Vector3.length() of getBoundingBox().getSize())
+// for the Bonsai Tree splat — the source-of-truth scene whose default slider
+// values are tuned to look right. Other splats normalize to this so the
+// turbulence pattern density and displacement envelope stay consistent.
+//
+// To recalibrate: temporarily log `size` in the framing effect below, load
+// Bonsai Tree, and update this constant. The active value auto-updates the
+// first time Bonsai Tree is loaded in a session (see refreshing below), so the
+// constant is only the cold-start fallback for sessions that open with a
+// different file.
+let bonsaiReferenceBboxSize = 5.0;
+const BONSAI_URL = "/lab/point-cloud/Bonsai Tree.sog";
+
 type Props = {
   url: string;
   sizeScale: number;
@@ -71,6 +84,8 @@ export function SplatViewer({
   );
   const [mesh, setMesh] = useState<SplatMesh | null>(null);
   const groupRef = useRef<Group>(null);
+  const urlRef = useRef(url);
+  urlRef.current = url;
   const getThree = useThree((s) => s.get);
 
   // Load / dispose the SplatMesh. Deps are intentionally only the things that
@@ -117,6 +132,11 @@ export function SplatViewer({
 
     if (!(size > 0 && Number.isFinite(size))) return;
 
+    // If this is Bonsai (the reference), capture its actual bbox size so
+    // subsequent loads of other splats normalize against the real value.
+    if (urlRef.current === BONSAI_URL) bonsaiReferenceBboxSize = size;
+    distortion.setModelScale(size / bonsaiReferenceBboxSize);
+
     const { camera, controls } = getThree();
     const orbit = controls as OrbitControlsLike | null;
     const target = new Vector3(0, 0, 0);
@@ -135,7 +155,7 @@ export function SplatViewer({
       orbit.target.copy(target);
       orbit.update();
     }
-  }, [mesh, getThree]);
+  }, [mesh, getThree, distortion]);
 
   useEffect(() => {
     const g = groupRef.current;
