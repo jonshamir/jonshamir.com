@@ -51,6 +51,7 @@ export type NoiseDistortion = {
   setShapeStrength: (v: number) => void;
   setSizeUniformity: (v: number) => void;
   setNoiseRise: (v: number) => void;
+  setMaxSize: (v: number) => void;
 };
 
 // Spark GsplatModifier that perturbs splat centers with animated fake
@@ -68,6 +69,10 @@ export function createNoiseDistortion(): NoiseDistortion {
   // appears to drift upward through the cloud (rising-smoke feel) while the
   // displacement magnitude stays bounded.
   const noiseRise = dyno.dynoFloat(0.0, "uNoiseRise");
+  // Per-axis upper bound on raw splat scales — any axis larger than this is
+  // clamped down (the splat shrinks rather than disappearing). Default 1.0 is
+  // large enough to leave typical scenes untouched.
+  const maxSize = dyno.dynoFloat(1.0, "uMaxSize");
 
   const modifier = dyno.dynoBlock(
     { gsplat: dyno.Gsplat },
@@ -110,7 +115,19 @@ export function createNoiseDistortion(): NoiseDistortion {
         ]
       });
 
-      const sizedScales = dyno.mul(split.scales, sizeScale);
+      // Clamp raw scales per-axis before size scaling. Keeps the threshold
+      // expressed in raw-scale units so the Splat Size slider doesn't move
+      // the cap.
+      const clampedRaw = dyno.dyno({
+        inTypes: { rawScales: "vec3", maxSize: "float" },
+        outTypes: { scales: "vec3" },
+        inputs: { rawScales: split.scales, maxSize: maxSize },
+        statements: ({ inputs, outputs }) => [
+          `${outputs.scales} = min(${inputs.rawScales}, vec3(${inputs.maxSize}));`
+        ]
+      });
+
+      const sizedScales = dyno.mul(clampedRaw.outputs.scales, sizeScale);
 
       // Two independent lerps:
       //  1. roundness: scales → vec3(perSplatMean) makes the Gaussian
@@ -162,6 +179,7 @@ export function createNoiseDistortion(): NoiseDistortion {
     setNoiseSpeed: (v) => setUniform(noiseSpeed, v),
     setShapeStrength: (v) => setUniform(shapeStrength, v),
     setSizeUniformity: (v) => setUniform(sizeUniformity, v),
-    setNoiseRise: (v) => setUniform(noiseRise, v)
+    setNoiseRise: (v) => setUniform(noiseRise, v),
+    setMaxSize: (v) => setUniform(maxSize, v)
   };
 }

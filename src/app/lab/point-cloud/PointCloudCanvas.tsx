@@ -17,7 +17,7 @@ import { SplatViewer } from "./SplatViewer";
 // keys as labels and the values as the bound state.
 const FILES: Record<string, string> = {
   "Bonsai Tree": "/lab/point-cloud/Bonsai Tree.sog",
-  "Walton Hall": "/lab/point-cloud/Walton Hall.sog",
+  DeLonghi: "/lab/point-cloud/DeLonghi.sog",
   Windmill: "/lab/point-cloud/Windmill.sog"
 };
 
@@ -48,7 +48,7 @@ export default function PointCloudCanvas() {
     }
   }) as { rotationSpeed: number };
 
-  const { noiseFreq, noiseSpeed, noiseRise } = useControls(
+  const { noiseFreq, noiseSpeed, noiseRise, maxSize } = useControls(
     "Distortion",
     {
       noiseFreq: {
@@ -71,12 +71,24 @@ export default function PointCloudCanvas() {
         max: 0.1,
         step: 0.005,
         label: "Noise Rise"
+      },
+      maxSize: {
+        value: 0.5,
+        min: 0.001,
+        max: 1.0,
+        step: 0.001,
+        label: "Max Splat Size"
       }
     },
     { collapsed: false }
-  ) as { noiseFreq: number; noiseSpeed: number; noiseRise: number };
+  ) as {
+    noiseFreq: number;
+    noiseSpeed: number;
+    noiseRise: number;
+    maxSize: number;
+  };
 
-  const [focus, setFocus] = useState(0.5);
+  const [focus, setFocus] = useState(1.0);
 
   const focusParams = useMemo(() => mapFocus(focus), [focus]);
 
@@ -108,6 +120,7 @@ export default function PointCloudCanvas() {
             noiseRise={noiseRise}
             shapeStrength={focusParams.shapeStrength}
             sizeUniformity={focusParams.sizeUniformity}
+            maxSize={maxSize}
             applyModifier={applyModifier}
             flipY={flipY}
           />

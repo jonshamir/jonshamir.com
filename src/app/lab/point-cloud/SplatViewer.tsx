@@ -25,6 +25,7 @@ type Props = {
   noiseRise: number;
   shapeStrength: number;
   sizeUniformity: number;
+  maxSize: number;
   applyModifier: boolean;
   flipY: boolean;
 };
@@ -60,6 +61,7 @@ export function SplatViewer({
   noiseRise,
   shapeStrength,
   sizeUniformity,
+  maxSize,
   applyModifier,
   flipY
 }: Props) {
@@ -172,6 +174,10 @@ export function SplatViewer({
   useEffect(() => {
     distortion.setSizeUniformity(sizeUniformity);
   }, [distortion, sizeUniformity]);
+
+  useEffect(() => {
+    distortion.setMaxSize(maxSize);
+  }, [distortion, maxSize]);
 
   // Spark only re-runs splat generators when the camera moves or the mesh
   // version bumps (see SparkRenderer.updateInternal). Our modifier reads
