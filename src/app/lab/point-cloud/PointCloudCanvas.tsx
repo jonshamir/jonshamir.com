@@ -17,7 +17,7 @@ import { SplatViewer } from "./SplatViewer";
 // keys as labels and the values as the bound state.
 const FILES: Record<string, string> = {
   "Bonsai Tree": "/lab/point-cloud/Bonsai Tree.sog",
-  DeLonghi: "/lab/point-cloud/DeLonghi.sog",
+  Tomatoes: "/lab/point-cloud/Tomatoes.sog",
   Windmill: "/lab/point-cloud/Windmill.sog"
 };
 
