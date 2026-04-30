@@ -6,6 +6,7 @@
 @import "supreme.css";
 @import "code.css";
 @import "easings.css";
+@import "three-canvas.css";
 
 @property --color-bg-rgb {
   syntax: "<number>#";
@@ -39,6 +40,8 @@
   --rounding-small: 0.3rem;
   --rounding-medium: 0.6rem;
   --rounding-full: 999px;
+
+  --mono-font: "Fira Code", monospace;
 
   --color-accent: #536bf2;
   --color-link: #475ddc;

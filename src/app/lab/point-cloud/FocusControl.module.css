@@ -1,0 +1,71 @@
+.FocusControl {
+  position: fixed;
+  top: 5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 1rem;
+  color: #eee;
+  font-size: 0.8rem;
+  pointer-events: auto;
+  font-family: var(--mono-font);
+}
+
+.label {
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.slider {
+  width: 18rem;
+  accent-color: #fff;
+  padding: 1rem !important;
+  outline: none !important;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent !important;
+  cursor: pointer;
+}
+
+.slider::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(
+    to right,
+    #eee 0 var(--fill, 0%),
+    rgba(255, 255, 255, 0.3) var(--fill, 0%) 100%
+  );
+  border: none;
+}
+
+.slider::-moz-range-track {
+  height: 2px;
+  background: rgba(255, 255, 255, 0.3);
+  border: none;
+}
+
+.slider::-moz-range-progress {
+  height: 2px;
+  background: #eee;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: none;
+  border-radius: 2px;
+  margin-top: -5px;
+}
+
+.slider::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border: none;
+  border-radius: 2px;
+}

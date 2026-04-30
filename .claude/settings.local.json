@@ -29,7 +29,9 @@
       "Bash(bunx prettier *)",
       "Bash(gh pr *)",
       "Bash(bunx tsc *)",
-      "Bash(bunx next *)"
+      "Bash(bunx next *)",
+      "Bash(bunx @playcanvas/splat-transform -m \"public/lab/point-cloud/Windmill.sog\" null)",
+      "Bash(bunx @playcanvas/splat-transform \"public/lab/point-cloud/Windmill.sog\" -m null)"
     ],
     "deny": []
   }

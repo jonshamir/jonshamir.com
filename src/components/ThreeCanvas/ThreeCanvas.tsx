@@ -18,7 +18,9 @@ export function ThreeCanvas({
   return (
     <div
       className={clsx(styles.ThreeCanvas, className, {
-        [styles.fullscreen]: isFullscreen,
+        // Global (non-hashed) class — see src/styles/three-canvas.css.
+        // Avoids CSS-module hash desync during Fast Refresh.
+        "three-canvas-fullscreen": isFullscreen,
         [styles.grabCursor]: grabCursor
       })}
     >

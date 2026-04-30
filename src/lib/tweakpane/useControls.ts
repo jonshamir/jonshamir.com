@@ -111,6 +111,11 @@ function addBinding(
     if (f.min !== undefined) opts.min = f.min;
     if (f.max !== undefined) opts.max = f.max;
     if (f.step !== undefined) opts.step = f.step;
+  } else if (typeof field.value === "string" && "options" in field) {
+    const f = field as { options: Record<string, string> | string[] };
+    opts.options = Array.isArray(f.options)
+      ? Object.fromEntries(f.options.map((v) => [v, v]))
+      : f.options;
   } else if (typeof field.value === "string" && field.value.startsWith("#")) {
     opts.view = "color";
   } else if (

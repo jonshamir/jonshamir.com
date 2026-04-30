@@ -20,5 +20,8 @@ export function TweakpanePanel() {
     };
   }, []);
 
-  return <div ref={hostRef} className={styles.host} />;
+  // Use a global (non-hashed) class for fixed positioning — see
+  // src/styles/three-canvas.css. Avoids CSS-module hash desync during Fast
+  // Refresh. The module class still provides Tweakpane theme overrides.
+  return <div ref={hostRef} className={`${styles.host} tweakpane-host`} />;
 }
