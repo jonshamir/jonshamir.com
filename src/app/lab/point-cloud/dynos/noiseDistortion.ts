@@ -53,6 +53,7 @@ export type NoiseDistortion = {
   setNoiseRise: (v: number) => void;
   setMaxSize: (v: number) => void;
   setModelScale: (v: number) => void;
+  setDissolve: (v: number) => void;
 };
 
 // Spark GsplatModifier that perturbs splat centers with animated fake
@@ -79,6 +80,11 @@ export function createNoiseDistortion(): NoiseDistortion {
   // different scales — sample density divides by it, displacement/clamp
   // multiply by it. 1.0 = reference splat, no correction.
   const modelScale = dyno.dynoFloat(1.0, "uModelScale");
+  // Per-splat reveal threshold sweep in [0, 1]. Each splat hashes its raw
+  // center to a stable random in [0, 1]; if dissolve >= that hash the splat
+  // keeps its scale, otherwise scale collapses to 0. At 0 nothing is visible,
+  // at 1 everything is, in between splats appear in a stable scattered order.
+  const dissolve = dyno.dynoFloat(1.0, "uDissolve");
 
   const modifier = dyno.dynoBlock(
     { gsplat: dyno.Gsplat },
@@ -170,11 +176,25 @@ export function createNoiseDistortion(): NoiseDistortion {
         ]
       });
 
+      const dissolveMasked = dyno.dyno({
+        inTypes: { scales: "vec3", center: "vec3", dissolve: "float" },
+        outTypes: { scales: "vec3" },
+        inputs: {
+          scales: roundScales.outputs.scales,
+          center: split.center,
+          dissolve: dissolve
+        },
+        statements: ({ inputs, outputs }) => [
+          `float h = fract(sin(dot(${inputs.center}, vec3(12.9898, 78.233, 37.719))) * 43758.5453);`,
+          `${outputs.scales} = ${inputs.scales} * smoothstep(h - 0.1, h, ${inputs.dissolve});`
+        ]
+      });
+
       return {
         gsplat: dyno.combineGsplat({
           gsplat,
           center: distort.outputs.center,
-          scales: roundScales.outputs.scales
+          scales: dissolveMasked.outputs.scales
         })
       };
     }
@@ -195,6 +215,7 @@ export function createNoiseDistortion(): NoiseDistortion {
     setSizeUniformity: (v) => setUniform(sizeUniformity, v),
     setNoiseRise: (v) => setUniform(noiseRise, v),
     setMaxSize: (v) => setUniform(maxSize, v),
-    setModelScale: (v) => setUniform(modelScale, v)
+    setModelScale: (v) => setUniform(modelScale, v),
+    setDissolve: (v) => setUniform(dissolve, v)
   };
 }
