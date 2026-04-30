@@ -16,7 +16,8 @@ export type FocusParamKey =
   | "sizeScale"
   | "shapeStrength"
   | "sizeUniformity"
-  | "noiseAmp";
+  | "noiseAmp"
+  | "dissolve";
 
 export type FocusParams = Record<FocusParamKey, number>;
 
@@ -28,7 +29,8 @@ export const FOCUS_PARAMS: Record<FocusParamKey, FocusSpec> = {
   sizeScale: { start: 6.0, end: 1.0, easing: easeIn },
   shapeStrength: { start: 1.0, end: 0.0, easing: easeInExp },
   sizeUniformity: { start: 1.0, end: 0.0, easing: easeInExp },
-  noiseAmp: { start: 6.0, end: 0.0, easing: linear }
+  noiseAmp: { start: 6.0, end: 0.0, easing: linear },
+  dissolve: { start: 0.0, end: 1.0, easing: easeIn }
 };
 
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;

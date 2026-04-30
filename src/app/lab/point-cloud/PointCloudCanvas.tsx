@@ -48,7 +48,7 @@ export default function PointCloudCanvas() {
     }
   }) as { rotationSpeed: number };
 
-  const { noiseFreq, noiseSpeed, noiseRise, maxSize, dissolve } = useControls(
+  const { noiseFreq, noiseSpeed, noiseRise, maxSize } = useControls(
     "Distortion",
     {
       noiseFreq: {
@@ -78,13 +78,6 @@ export default function PointCloudCanvas() {
         max: 1.0,
         step: 0.001,
         label: "Max Splat Size"
-      },
-      dissolve: {
-        value: 1.0,
-        min: 0.0,
-        max: 1.0,
-        step: 0.01,
-        label: "Dissolve"
       }
     },
     { collapsed: false }
@@ -93,7 +86,6 @@ export default function PointCloudCanvas() {
     noiseSpeed: number;
     noiseRise: number;
     maxSize: number;
-    dissolve: number;
   };
 
   const [focus, setFocus] = useState(1.0);
@@ -129,7 +121,7 @@ export default function PointCloudCanvas() {
             shapeStrength={focusParams.shapeStrength}
             sizeUniformity={focusParams.sizeUniformity}
             maxSize={maxSize}
-            dissolve={dissolve}
+            dissolve={focusParams.dissolve}
             applyModifier={applyModifier}
             flipY={flipY}
           />
