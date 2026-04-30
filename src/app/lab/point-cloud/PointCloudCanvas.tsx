@@ -28,14 +28,25 @@ export default function PointCloudCanvas() {
     file: { value: DEFAULT_URL, options: FILES, label: "Source" }
   }) as { file: string };
 
-  const { backgroundColor, applyModifier, flipY } = useControls("Display", {
-    backgroundColor: { value: "#1e1e1e", label: "Background" },
-    applyModifier: { value: true, label: "Apply Modifier" },
-    flipY: { value: true, label: "Flip Y" }
-  }) as {
+  const { backgroundColor, applyModifier, flipY, cullRadius } = useControls(
+    "Display",
+    {
+      backgroundColor: { value: "#1e1e1e", label: "Background" },
+      applyModifier: { value: true, label: "Apply Modifier" },
+      flipY: { value: true, label: "Flip Y" },
+      cullRadius: {
+        value: 1.0,
+        min: 0.05,
+        max: 1.0,
+        step: 0.05,
+        label: "Cull Radius"
+      }
+    }
+  ) as {
     backgroundColor: string;
     applyModifier: boolean;
     flipY: boolean;
+    cullRadius: number;
   };
 
   const { rotationSpeed } = useControls("Camera", {
@@ -110,6 +121,7 @@ export default function PointCloudCanvas() {
             sizeUniformity={focusParams.sizeUniformity}
             applyModifier={applyModifier}
             flipY={flipY}
+            cullRadius={cullRadius}
           />
         )}
       </ThreeCanvas>

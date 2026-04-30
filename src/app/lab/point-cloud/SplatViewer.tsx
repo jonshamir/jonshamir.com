@@ -27,6 +27,7 @@ type Props = {
   sizeUniformity: number;
   applyModifier: boolean;
   flipY: boolean;
+  cullRadius: number;
 };
 
 // Opacity-weighted centroid of all splats. Background floaters with low
@@ -61,7 +62,8 @@ export function SplatViewer({
   shapeStrength,
   sizeUniformity,
   applyModifier,
-  flipY
+  flipY,
+  cullRadius
 }: Props) {
   const distortion: NoiseDistortion = useMemo(
     () => createNoiseDistortion(),
@@ -79,19 +81,124 @@ export function SplatViewer({
     if (!url) return;
     let cancelled = false;
 
-    const m = new SplatMesh({ url });
-    if (applyModifier) {
-      m.objectModifier = distortion.modifier;
-      m.updateGenerator();
-    }
+    const m = new SplatMesh({ url, lod: true });
+    let displayed: SplatMesh = m;
+
+    const attachModifier = (target: SplatMesh) => {
+      if (applyModifier) {
+        target.objectModifier = distortion.modifier;
+        target.updateGenerator();
+      }
+    };
+    attachModifier(m);
 
     m.initialized
-      .then(() => {
+      .then(async () => {
         if (cancelled) {
           m.dispose();
           return;
         }
-        setMesh(m);
+
+        // Cull splats outside `cullRadius * bbox-half-diagonal` from the
+        // weighted centroid. Build a fresh SplatMesh via constructSplats so
+        // the new mesh owns its own PackedSplats with correct encoding —
+        // passing an already-extracted PackedSplats causes encoding stomp
+        // and renders nothing.
+        if (cullRadius < 1.0) {
+          // With `lod: true`, splat data lives in packedSplats.lodSplats.
+          // That set contains both the originals and the coarse LOD
+          // "super-splats"; we filter the latter out below by scale.
+          const srcPacked =
+            m.packedSplats?.lodSplats ?? m.packedSplats ?? null;
+          if (!srcPacked || srcPacked.numSplats === 0) {
+            console.warn("[cull] no source splats to cull from");
+            setMesh(m);
+            return;
+          }
+
+          // First pass: bbox/centroid + log-scale stats. Coarse LOD
+          // super-splats sit far out in the tail of the scale distribution
+          // (often 5-50× larger than typical splats), so dropping splats
+          // above mean+K*stdev in log-scale removes them without harming
+          // the genuine fine splats.
+          const minVec = new Vector3(Infinity, Infinity, Infinity);
+          const maxVec = new Vector3(-Infinity, -Infinity, -Infinity);
+          const sum = new Vector3();
+          let totalWeight = 0;
+          let logSizeSum = 0;
+          let logSizeSqSum = 0;
+          let logSizeN = 0;
+          srcPacked.forEachSplat((_i, center, scales, _q, opacity) => {
+            minVec.min(center);
+            maxVec.max(center);
+            const w = Math.max(0, opacity);
+            sum.addScaledVector(center, w);
+            totalWeight += w;
+            const maxAxis = Math.max(scales.x, scales.y, scales.z);
+            if (maxAxis > 0) {
+              const ls = Math.log(maxAxis);
+              logSizeSum += ls;
+              logSizeSqSum += ls * ls;
+              logSizeN += 1;
+            }
+          });
+          const centroid =
+            totalWeight > 0
+              ? sum.divideScalar(totalWeight)
+              : new Vector3()
+                  .addVectors(minVec, maxVec)
+                  .multiplyScalar(0.5);
+          const halfSize =
+            new Vector3().subVectors(maxVec, minVec).length() / 2;
+          const radius = halfSize * cullRadius;
+          const r2 = radius * radius;
+
+          const meanLog = logSizeSum / Math.max(1, logSizeN);
+          const varLog =
+            logSizeSqSum / Math.max(1, logSizeN) - meanLog * meanLog;
+          const stdLog = Math.sqrt(Math.max(0, varLog));
+          const sizeThreshold = Math.exp(meanLog + 3 * stdLog);
+
+          // pushSplat ignores splatEncoding and always re-encodes with the
+          // built-in defaults (lnScale -12..9, no lodOpacity). So the new
+          // mesh must use defaults too — forwarding the source's encoding
+          // would mismatch decode vs. encode and produce wrong scales.
+          // The source's `lodOpacity` flag, if set, means unpackSplat returns
+          // opacity already doubled; pre-halve it so it round-trips correctly.
+          const lodOpacity = srcPacked.splatEncoding?.lodOpacity === true;
+          const culled = new SplatMesh({
+            constructSplats: (splats) => {
+              srcPacked.forEachSplat(
+                (_index, center, scales, quaternion, opacity, color) => {
+                  const dx = center.x - centroid.x;
+                  const dy = center.y - centroid.y;
+                  const dz = center.z - centroid.z;
+                  if (dx * dx + dy * dy + dz * dz >= r2) return;
+                  const maxAxis = Math.max(scales.x, scales.y, scales.z);
+                  if (maxAxis > sizeThreshold) return;
+                  splats.pushSplat(
+                    center,
+                    scales,
+                    quaternion,
+                    lodOpacity ? opacity * 0.5 : opacity,
+                    color
+                  );
+                }
+              );
+            }
+          });
+          attachModifier(culled);
+          await culled.initialized;
+          m.dispose();
+          if (cancelled) {
+            culled.dispose();
+            return;
+          }
+          displayed = culled;
+          setMesh(culled);
+        } else {
+          setMesh(m);
+        }
       })
       .catch((err) => {
         console.error("[SplatViewer] failed to load", url, err);
@@ -99,10 +206,10 @@ export function SplatViewer({
 
     return () => {
       cancelled = true;
-      setMesh((prev) => (prev === m ? null : prev));
-      m.dispose();
+      setMesh((prev) => (prev === displayed ? null : prev));
+      displayed.dispose();
     };
-  }, [url, distortion, applyModifier]);
+  }, [url, distortion, applyModifier, cullRadius]);
 
   // Frame the camera once per loaded mesh, targeting the centroid.
   useEffect(() => {

@@ -10,7 +10,16 @@ export function SparkRendererMount() {
   const gl = useThree((s) => s.gl);
   const scene = useThree((s) => s.scene);
 
-  const spark = useMemo(() => new SparkRenderer({ renderer: gl }), [gl]);
+  const spark = useMemo(
+    () =>
+      new SparkRenderer({
+        renderer: gl,
+        enableLod: true,
+        lodRenderScale: 1.5,
+        lodSplatScale: 0.5
+      }),
+    [gl]
+  );
 
   useEffect(() => {
     scene.add(spark);
