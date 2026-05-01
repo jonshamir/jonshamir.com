@@ -73,7 +73,7 @@ export default function PointCloudCanvas() {
         label: "Noise Rise"
       },
       maxSize: {
-        value: 0.5,
+        value: 0.8,
         min: 0.001,
         max: 1.0,
         step: 0.001,

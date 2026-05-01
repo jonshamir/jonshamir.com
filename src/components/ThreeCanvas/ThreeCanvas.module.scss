@@ -1,7 +1,6 @@
 .ThreeCanvas {
   width: 100%;
   overflow: hidden;
-  border-radius: var(--rounding-medium);
   margin-bottom: 1rem;
 
   &.grabCursor {
@@ -17,7 +16,6 @@
   // Fast Refresh.
 
   canvas {
-    border-radius: var(--rounding-medium);
     min-height: 30rem;
   }
 }
