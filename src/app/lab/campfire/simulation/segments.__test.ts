@@ -12,6 +12,7 @@ import {
 import {
   buildSegments,
   charSegments,
+  conductAxial,
   rolloverSegments,
   updateSegmentStates
 } from "./segments";
@@ -87,6 +88,29 @@ import { createSurfaceField, igniteBand } from "./surfaceField";
   assert.equal(segs[2].state, "flaming");
   assert.equal(segs[3].state, "embering");
   assert.equal(segs[4].state, "ash");
+}
+
+// 6. conductAxial: hot segment warms cold neighbour; cold neighbour cools hot.
+{
+  const segs = buildSegments({ length: 0.3, radius: 0.025, segmentCount: 3 });
+  segs[0].temperature = 1000;
+  segs[1].temperature = T_AMBIENT;
+  segs[2].temperature = T_AMBIENT;
+  conductAxial(segs, 1.0);
+  assert.ok(segs[1].temperature > T_AMBIENT, `n1 should warm: ${segs[1].temperature}`);
+  assert.ok(segs[0].temperature < 1000, `n0 should cool: ${segs[0].temperature}`);
+  // segment 2 is two hops away — only direct neighbours conduct in one pass:
+  assert.ok(Math.abs(segs[2].temperature - T_AMBIENT) < 1e-6);
+}
+
+// 7. conductAxial: destroyed middle segment breaks the chain.
+{
+  const segs = buildSegments({ length: 0.3, radius: 0.025, segmentCount: 3 });
+  segs[0].temperature = 1000;
+  segs[1].destroyed = true;
+  segs[2].temperature = T_AMBIENT;
+  conductAxial(segs, 1.0);
+  assert.equal(segs[2].temperature, T_AMBIENT, "no conduction across destroyed segment");
 }
 
 console.log("segments __test passed");

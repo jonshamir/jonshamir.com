@@ -1,7 +1,9 @@
 import {
   BETA_CHAR,
+  CP_WOOD,
   FUEL_FRAC_ASH,
   FUEL_FRAC_EMBERING,
+  K_WOOD,
   MIN_RADIUS,
   RHO_WOOD,
   T_AMBIENT,
@@ -96,5 +98,34 @@ export function updateSegmentStates(segments: Segment[]): void {
     } else {
       s.state = "cold";
     }
+  }
+}
+
+export function conductAxial(segments: Segment[], dt: number): void {
+  if (segments.length < 2) return;
+
+  const fluxes: number[] = new Array(segments.length).fill(0);
+
+  for (let i = 0; i < segments.length - 1; i++) {
+    const a = segments[i];
+    const b = segments[i + 1];
+    if (a.destroyed || b.destroyed) continue;
+    const rMin = Math.min(a.radius, b.radius);
+    const crossArea = Math.PI * rMin * rMin;
+    const distance = (a.length + b.length) / 2;
+    const Q = (K_WOOD * crossArea * (b.temperature - a.temperature)) / distance; // W
+
+    const massA = RHO_WOOD * Math.PI * a.radius * a.radius * a.length;
+    const massB = RHO_WOOD * Math.PI * b.radius * b.radius * b.length;
+    const dTa = (Q * dt) / (massA * CP_WOOD);
+    const dTb = (-Q * dt) / (massB * CP_WOOD);
+
+    fluxes[i] += dTa;
+    fluxes[i + 1] += dTb;
+  }
+
+  for (let i = 0; i < segments.length; i++) {
+    if (segments[i].destroyed) continue;
+    segments[i].temperature += fluxes[i];
   }
 }
