@@ -1,49 +1,114 @@
+// src/app/lab/campfire/CampfireCanvas.tsx
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
+import { useEffect } from "react";
 import { Color } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
-import { useControls } from "../../../lib/tweakpane";
+import { folder, getPane, useControls } from "../../../lib/tweakpane";
+import { LogMesh } from "./rendering/LogMesh";
+import { useLogSimulation } from "./rendering/useLogSimulation";
 
 export default function CampfireCanvas() {
-  const { backgroundColor } = useControls("Display", {
-    backgroundColor: { value: "#1a1410", label: "Background" }
+  const display = useControls("Display", {
+    backgroundColor: { value: "#1a1410", label: "Background" },
+    showHeatmap: { value: false, label: "Heat-map" },
+    showSegmentIndices: { value: false, label: "Indices" }
   });
 
-  const { radius, height, radialSegments, color } = useControls("Cylinder", {
-    radius: { value: 0.5, min: 0.1, max: 2, step: 0.05, label: "Radius" },
-    height: { value: 1.5, min: 0.1, max: 4, step: 0.05, label: "Height" },
-    radialSegments: {
-      value: 32,
-      min: 3,
-      max: 64,
-      step: 1,
-      label: "Radial Segments"
+  const log = useControls("Log", {
+    length: {
+      value: 0.3,
+      min: 0.05,
+      max: 0.5,
+      step: 0.005,
+      label: "Length (m)"
     },
-    color: { value: "#c66a2b", label: "Color" }
+    radius: {
+      value: 0.025,
+      min: 0.003,
+      max: 0.05,
+      step: 0.001,
+      label: "Radius (m)"
+    },
+    segmentCount: { value: 20, min: 5, max: 40, step: 1, label: "Segments" },
+    surfaceRes: folder(
+      {
+        surfaceWidth: {
+          value: 32,
+          min: 16,
+          max: 128,
+          step: 16,
+          label: "Tex U"
+        },
+        surfaceHeight: {
+          value: 256,
+          min: 64,
+          max: 512,
+          step: 32,
+          label: "Tex V"
+        }
+      },
+      { collapsed: true }
+    )
   });
 
-  const bg = new Color(backgroundColor);
+  const sim = useLogSimulation({
+    length: log.length as number,
+    radius: log.radius as number,
+    segmentCount: log.segmentCount as number,
+    surfaceWidth: log.surfaceWidth as number,
+    surfaceHeight: log.surfaceHeight as number
+  });
+
+  // Action buttons via raw Tweakpane API (useControls has no button binding).
+  useEffect(() => {
+    const pane = getPane();
+    const folderApi = pane.addFolder({ title: "Actions", expanded: true });
+    const igniteBtn = folderApi.addButton({ title: "Ignite end" });
+    const resetBtn = folderApi.addButton({ title: "Reset" });
+    const params = { K: 0 };
+    const kBinding = folderApi.addBinding(params, "K", {
+      min: 0,
+      max: (log.segmentCount as number) - 1,
+      step: 1,
+      label: "Debug ignite K"
+    });
+    const igniteKBtn = folderApi.addButton({ title: "Ignite at K" });
+
+    const subs = [
+      igniteBtn.on("click", () => sim.igniteEnd()),
+      resetBtn.on("click", () => sim.reset()),
+      igniteKBtn.on("click", () => sim.igniteAtSegment(params.K))
+    ];
+
+    return () => {
+      for (const s of subs) s.dispose?.();
+      kBinding.dispose();
+      folderApi.dispose();
+    };
+  }, [sim, log.segmentCount]);
+
+  const bg = new Color(display.backgroundColor as string);
 
   return (
     <>
       <TweakpanePanel />
       <ThreeCanvas
-        camera={{ fov: 50, position: [0, 1.5, 4], near: 0.01, far: 100 }}
+        camera={{ fov: 50, position: [0, 0.4, 1.2], near: 0.01, far: 100 }}
         isFullscreen={true}
       >
         <color attach="background" args={[bg.r, bg.g, bg.b]} />
         <OrbitControls makeDefault />
-
         <ambientLight intensity={0.4} />
         <pointLight position={[5, 5, 5]} intensity={1.2} />
-
-        <mesh>
-          <cylinderGeometry args={[radius, radius, height, radialSegments]} />
-          <meshStandardMaterial color={color} />
-        </mesh>
+        <LogMesh
+          log={sim.log}
+          showHeatmap={display.showHeatmap as boolean}
+          showSegmentIndices={display.showSegmentIndices as boolean}
+        />
       </ThreeCanvas>
     </>
   );
