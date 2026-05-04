@@ -2,7 +2,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { Color } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
@@ -15,7 +15,8 @@ export default function CampfireCanvas() {
   const display = useControls("Display", {
     backgroundColor: { value: "#1a1410", label: "Background" },
     showHeatmap: { value: false, label: "Heat-map" },
-    showSegmentIndices: { value: false, label: "Indices" }
+    showSegmentIndices: { value: false, label: "Indices" },
+    showWireframe: { value: false, label: "Wireframe" }
   });
 
   const log = useControls("Log", {
@@ -63,6 +64,13 @@ export default function CampfireCanvas() {
     surfaceHeight: log.surfaceHeight as number
   });
 
+  // `sim` gets a new identity every animation frame (useLogSimulation calls
+  // setTick per frame). Read it through a ref so the buttons effect stays
+  // mounted across frames — otherwise the Actions folder would be disposed
+  // and recreated ~60x/sec, swallowing clicks.
+  const simRef = useRef(sim);
+  simRef.current = sim;
+
   // Action buttons via raw Tweakpane API (useControls has no button binding).
   useEffect(() => {
     const pane = getPane();
@@ -79,9 +87,9 @@ export default function CampfireCanvas() {
     const igniteKBtn = folderApi.addButton({ title: "Ignite at K" });
 
     const subs = [
-      igniteBtn.on("click", () => sim.igniteEnd()),
-      resetBtn.on("click", () => sim.reset()),
-      igniteKBtn.on("click", () => sim.igniteAtSegment(params.K))
+      igniteBtn.on("click", () => simRef.current.igniteEnd()),
+      resetBtn.on("click", () => simRef.current.reset()),
+      igniteKBtn.on("click", () => simRef.current.igniteAtSegment(params.K))
     ];
 
     return () => {
@@ -89,7 +97,7 @@ export default function CampfireCanvas() {
       kBinding.dispose();
       folderApi.dispose();
     };
-  }, [sim, log.segmentCount]);
+  }, [log.segmentCount]);
 
   const bg = new Color(display.backgroundColor as string);
 
@@ -108,6 +116,7 @@ export default function CampfireCanvas() {
           log={sim.log}
           showHeatmap={display.showHeatmap as boolean}
           showSegmentIndices={display.showSegmentIndices as boolean}
+          showWireframe={display.showWireframe as boolean}
         />
       </ThreeCanvas>
     </>
