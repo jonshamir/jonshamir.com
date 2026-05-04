@@ -14,7 +14,7 @@ export const HRRPUA = 180e3; // W/m^2
 export const BETA_CHAR = 1.08e-5; // m/s (0.65 mm/min)
 export const H_CONV = 15; // W/(m^2*K)
 
-export const D_SURFACE = 5e-6; // m^2/s — TUNE empirically
+export const D_SURFACE = 1e-5; // m^2/s — TUNE empirically
 export const MIN_RADIUS = 0.0005; // m, burn-through threshold
 
 export const SIM_HZ = 30;
