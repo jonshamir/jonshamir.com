@@ -1,5 +1,6 @@
 // src/app/lab/campfire/simulation/combustion.ts
 import {
+  CHAR_RATE_MAX,
   CP_WOOD,
   DELTA_HC,
   HRRPUA,
@@ -30,12 +31,17 @@ export function combustStep(field: SurfaceField, opts: CombustOptions): void {
 
   for (let i = 0; i < field.temperature.length; i++) {
     const T = field.temperature[i];
+    if (T < T_IGNITE) continue;
+
+    // Pyrolysis blackens the surface while it's hot, independent of fuel.
+    const heatFactor = Math.min(1, (T - T_IGNITE) / (T_FLAME_MAX - T_IGNITE));
+    field.char[i] = Math.min(1, field.char[i] + CHAR_RATE_MAX * heatFactor * dt);
+
     const fuel = field.fuel[i];
-    if (T < T_IGNITE || fuel <= 0) continue;
+    if (fuel <= 0) continue;
 
     const burnFrac = Math.min(fuel, fuelDecayRate * dt);
     field.fuel[i] = fuel - burnFrac;
-    field.char[i] = Math.min(1, field.char[i] + burnFrac);
 
     const energy = burnFrac * texelMass * DELTA_HC; // J
     const dT = energy / heatCap;

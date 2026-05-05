@@ -19,6 +19,7 @@ export interface UseLogSimulationOptions {
   surfaceWidth: number;
   surfaceHeight: number;
   paused?: boolean;
+  timeScale?: number; // sim seconds per real second; default 1
 }
 
 export interface UseLogSimulationResult {
@@ -30,7 +31,9 @@ export interface UseLogSimulationResult {
   tick: number;
 }
 
-const MAX_STEPS_PER_FRAME = 5;
+// Cap is generous so high time-scale values can keep up at 60 fps without
+// the accumulator drifting indefinitely. Each step is cheap (8k texels).
+const MAX_STEPS_PER_FRAME = 240;
 
 export function useLogSimulation(opts: UseLogSimulationOptions): UseLogSimulationResult {
   // Re-create the log when topology params change.
@@ -50,25 +53,33 @@ export function useLogSimulation(opts: UseLogSimulationOptions): UseLogSimulatio
   const accRef = useRef(0);
   const lastRef = useRef(performance.now());
   const pausedRef = useRef(opts.paused ?? false);
+  const timeScaleRef = useRef(opts.timeScale ?? 1);
 
   useEffect(() => {
     pausedRef.current = opts.paused ?? false;
   }, [opts.paused]);
 
   useEffect(() => {
+    timeScaleRef.current = opts.timeScale ?? 1;
+  }, [opts.timeScale]);
+
+  useEffect(() => {
     let raf = 0;
     const loop = () => {
       const now = performance.now();
-      const dt = Math.min(0.1, (now - lastRef.current) / 1000); // cap at 100 ms
+      const realDt = Math.min(0.1, (now - lastRef.current) / 1000);
       lastRef.current = now;
       if (!pausedRef.current) {
-        accRef.current += dt;
+        accRef.current += realDt * timeScaleRef.current;
         let steps = 0;
         while (accRef.current >= SIM_DT && steps < MAX_STEPS_PER_FRAME) {
           stepLog(log, SIM_DT);
           accRef.current -= SIM_DT;
           steps++;
         }
+        // If we hit the cap, drop remaining accumulated time to prevent
+        // unbounded growth at high time-scales on slow frames.
+        if (steps >= MAX_STEPS_PER_FRAME) accRef.current = 0;
         if (steps > 0) setTick((t) => t + 1);
       }
       raf = requestAnimationFrame(loop);
@@ -89,7 +100,8 @@ export function useLogSimulation(opts: UseLogSimulationOptions): UseLogSimulatio
         s.radius = s.initialRadius;
         s.fuelMass = s.initialFuelMass;
         s.charDepth = 0;
-        s.temperature = 293;
+        s.surfaceTemperature = 293;
+        s.bulkTemperature = 293;
         s.state = "cold";
         s.destroyed = false;
         s.HRR = 0;

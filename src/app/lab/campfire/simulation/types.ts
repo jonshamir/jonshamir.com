@@ -16,7 +16,8 @@ export interface Segment {
   radius: number; // m, current
   initialFuelMass: number; // kg
   fuelMass: number; // kg
-  temperature: number; // K, volume-averaged
+  surfaceTemperature: number; // K, average of surface texels in this segment's V-band
+  bulkTemperature: number; // K, separate reservoir for the wood beneath the skin
   charDepth: number; // m
   state: SegmentState;
   HRR: number; // W

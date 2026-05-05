@@ -3,6 +3,7 @@ import {
   CP_WOOD,
   FUEL_FRAC_ASH,
   FUEL_FRAC_EMBERING,
+  H_INTERNAL,
   K_WOOD,
   MIN_RADIUS,
   RHO_WOOD,
@@ -34,7 +35,8 @@ export function buildSegments(opts: BuildSegmentsOptions): Segment[] {
       radius,
       initialFuelMass: segMass,
       fuelMass: segMass,
-      temperature: T_AMBIENT,
+      surfaceTemperature: T_AMBIENT,
+      bulkTemperature: T_AMBIENT,
       charDepth: 0,
       state: "cold",
       HRR: 0,
@@ -48,7 +50,7 @@ export function buildSegments(opts: BuildSegmentsOptions): Segment[] {
 export function rolloverSegments(segments: Segment[], surface: SurfaceField): void {
   for (const s of segments) {
     if (s.destroyed) continue;
-    s.temperature = averageInVRange(
+    s.surfaceTemperature = averageInVRange(
       surface.temperature,
       surface.width,
       surface.height,
@@ -71,7 +73,7 @@ export function rolloverSegments(segments: Segment[], surface: SurfaceField): vo
 export function charSegments(segments: Segment[], dt: number): void {
   for (const s of segments) {
     if (s.destroyed) continue;
-    if (s.temperature < 700) continue; // only char while surface is hot
+    if (s.surfaceTemperature < 700) continue; // only char while surface is hot
     s.charDepth += BETA_CHAR * dt;
     s.radius = Math.max(0, s.initialRadius - s.charDepth);
     if (s.radius <= MIN_RADIUS) {
@@ -91,9 +93,9 @@ export function updateSegmentStates(segments: Segment[]): void {
       s.state = "ash";
     } else if (fuelFrac < FUEL_FRAC_EMBERING) {
       s.state = "embering";
-    } else if (s.temperature >= T_IGNITE) {
+    } else if (s.surfaceTemperature >= T_IGNITE) {
       s.state = "flaming";
-    } else if (s.temperature >= T_HEATING) {
+    } else if (s.surfaceTemperature >= T_HEATING) {
       s.state = "heating";
     } else {
       s.state = "cold";
@@ -113,7 +115,8 @@ export function conductAxial(segments: Segment[], dt: number): void {
     const rMin = Math.min(a.radius, b.radius);
     const crossArea = Math.PI * rMin * rMin;
     const distance = (a.length + b.length) / 2;
-    const Q = (K_WOOD * crossArea * (b.temperature - a.temperature)) / distance; // W
+    const Q =
+      (K_WOOD * crossArea * (b.bulkTemperature - a.bulkTemperature)) / distance; // W
 
     const massA = RHO_WOOD * Math.PI * a.radius * a.radius * a.length;
     const massB = RHO_WOOD * Math.PI * b.radius * b.radius * b.length;
@@ -126,6 +129,56 @@ export function conductAxial(segments: Segment[], dt: number): void {
 
   for (let i = 0; i < segments.length; i++) {
     if (segments[i].destroyed) continue;
-    segments[i].temperature += fluxes[i];
+    segments[i].bulkTemperature += fluxes[i];
+  }
+}
+
+export interface CoupleSkinBulkOptions {
+  dt: number;
+  dxU: number; // m, texel circumferential pitch
+  dxV: number; // m, texel longitudinal pitch
+  skinThickness: number; // m, surface skin thickness used in combustion math
+}
+
+// Radial conduction between the surface skin (per-texel temperatures) and
+// each segment's bulk reservoir. Energy-conserving: heat removed from the
+// skin texels in a segment's V-band is exactly the heat added to that
+// segment's bulkTemperature.
+export function coupleSkinBulk(
+  segments: Segment[],
+  surface: import("./types").SurfaceField,
+  opts: CoupleSkinBulkOptions
+): void {
+  const { dt, dxU, dxV, skinThickness } = opts;
+  const texelArea = dxU * dxV;
+  const texelMass = RHO_WOOD * texelArea * skinThickness;
+  const skinHeatCap = texelMass * CP_WOOD; // J/K per texel
+
+  for (const s of segments) {
+    if (s.destroyed) continue;
+
+    // Determine the row range this segment owns in the surface texture.
+    const [vMin, vMax] = s.uvVRange;
+    const rMin = Math.max(0, Math.floor(vMin * surface.height));
+    const rMax = Math.min(surface.height, Math.ceil(vMax * surface.height));
+    if (rMax <= rMin) continue;
+
+    const bulkVolume = Math.PI * s.radius * s.radius * s.length;
+    const bulkHeatCap = RHO_WOOD * bulkVolume * CP_WOOD;
+    if (bulkHeatCap <= 0) continue;
+
+    let energyToBulk = 0;
+    const start = rMin * surface.width;
+    const end = rMax * surface.width;
+    for (let i = start; i < end; i++) {
+      const Tskin = surface.temperature[i];
+      // Heat flow into bulk per texel (W): H * texelArea * (Tskin - Tbulk)
+      const Q = H_INTERNAL * texelArea * (Tskin - s.bulkTemperature);
+      const dE = Q * dt; // J this tick
+      // Apply to skin texel: reduce by energy / skinHeatCap.
+      surface.temperature[i] = Tskin - dE / skinHeatCap;
+      energyToBulk += dE;
+    }
+    s.bulkTemperature += energyToBulk / bulkHeatCap;
   }
 }

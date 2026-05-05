@@ -15,6 +15,7 @@ import {
   buildSegments,
   charSegments,
   conductAxial,
+  coupleSkinBulk,
   rolloverSegments,
   updateSegmentStates
 } from "./segments";
@@ -30,7 +31,11 @@ export interface CreateLogOptions {
 }
 
 const SKIN_THICKNESS = 0.001; // m, nominal heating layer for combustion math
-const LAMBDA_LOSS = 0.1; // 1/s, surface convective loss coefficient
+// Newtonian cooling rate of the skin to ambient air. Derived from
+// H_CONV / (RHO_WOOD * skinThickness * CP_WOOD) ≈ 15/(500·0.001·1700) ≈ 0.018.
+// (Was 0.1 before bulk coupling existed — that value implicitly included
+// the bulk-drain term, which is now modeled explicitly.)
+const LAMBDA_LOSS = 0.02; // 1/s
 
 function makeFloatTexture(
   data: Float32Array,
@@ -101,8 +106,36 @@ export function stepLog(log: LogModel, dt: number = SIM_DT): void {
     diffusivity: D_SURFACE
   });
   combustStep(log.surface, { dt, dxU, dxV, skinThickness: SKIN_THICKNESS });
+  // Skin <-> bulk radial conduction is the mechanism that gives thin sticks
+  // a sustained surface flame and fat logs a stalled one. Run after the
+  // combustion energy has been deposited into the skin, before rollup.
+  coupleSkinBulk(log.segments, log.surface, {
+    dt,
+    dxU,
+    dxV,
+    skinThickness: SKIN_THICKNESS
+  });
   rolloverSegments(log.segments, log.surface);
+
+  // Snapshot destroyed-state before charSegments mutates it, so we can detect
+  // segments that just burned through this tick and ignite their neighbours.
+  // Models the exposed-end-grain feedback: a destroyed segment leaves fresh
+  // wood face on its neighbour, which radiantly re-ignites.
+  const wasDestroyed = log.segments.map((s) => s.destroyed);
   charSegments(log.segments, dt);
+  for (let i = 0; i < log.segments.length; i++) {
+    if (log.segments[i].destroyed && !wasDestroyed[i]) {
+      const left = log.segments[i - 1];
+      const right = log.segments[i + 1];
+      if (left && !left.destroyed) {
+        igniteBand(log.surface, left.uvVRange, T_FLAME_MAX, 0.5);
+      }
+      if (right && !right.destroyed) {
+        igniteBand(log.surface, right.uvVRange, T_FLAME_MAX, 0.5);
+      }
+    }
+  }
+
   conductAxial(log.segments, dt);
   updateSegmentStates(log.segments);
 

@@ -17,48 +17,54 @@ import { createLog, igniteEnd, stepLog } from "./log";
   assert.equal(log.surface.width, 16);
   assert.equal(log.surface.height, 60);
   assert.equal(log.simTime, 0);
-  // textures wrap the same buffers
   assert.equal(log.textures.temperature.image.data, log.surface.temperature);
   assert.equal(log.textures.char.image.data, log.surface.char);
   assert.equal(log.textures.fuel.image.data, log.surface.fuel);
 }
 
-// 2. SAV scenario — thin twig: lit at one end, burns through.
+// 2 + 3. Apples-to-apples SAV: same length, same segment count, vary only radius.
+//        With the two-layer thermal model the difference between thin and fat
+//        must come from physics, not from differing test geometry.
 {
-  const log = createLog({
-    length: 0.15,
-    radius: 0.0025, // 5 mm dia thin twig
-    segmentCount: 12,
-    surfaceWidth: 32,
-    surfaceHeight: 240
-  });
-  igniteEnd(log);
-  // Run ~5 simulated minutes at 30 Hz
-  for (let k = 0; k < 30 * 300; k++) stepLog(log);
-  const remaining = log.segments.filter((s) => !s.destroyed).length;
-  assert.ok(
-    remaining < log.segments.length / 2,
-    `thin twig should mostly burn: remaining=${remaining}`
-  );
-}
+  function runScenario(radius: number) {
+    const log = createLog({
+      length: 0.3,
+      radius,
+      segmentCount: 20,
+      surfaceWidth: 32,
+      surfaceHeight: 256
+    });
+    igniteEnd(log);
+    for (let k = 0; k < 30 * 300; k++) stepLog(log);
+    const destroyed = log.segments.filter((s) => s.destroyed).length;
+    const farEnd = log.segments[log.segments.length - 1];
+    return { destroyed, farEndT: farEnd.surfaceTemperature, farEndDestroyed: farEnd.destroyed };
+  }
 
-// 3. SAV scenario — fat log: lit at one end, far end stays cold.
-{
-  const log = createLog({
-    length: 0.3,
-    radius: 0.025, // 50 mm dia
-    segmentCount: 20,
-    surfaceWidth: 32,
-    surfaceHeight: 320
-  });
-  igniteEnd(log);
-  for (let k = 0; k < 30 * 300; k++) stepLog(log);
-  const farEnd = log.segments[log.segments.length - 1];
+  const thin = runScenario(0.005); // 10 mm dia
+  const fat = runScenario(0.05); // 100 mm dia
+
+  // Thin: many segments destroyed (>= half the log).
   assert.ok(
-    farEnd.temperature < T_AMBIENT + 100,
-    `fat log far end should stay near ambient: T=${farEnd.temperature}`
+    thin.destroyed >= 10,
+    `thin should mostly burn through: destroyed=${thin.destroyed}`
   );
-  assert.equal(farEnd.destroyed, false);
+  // Fat: very little or no destruction.
+  assert.ok(
+    fat.destroyed <= 3,
+    `fat should mostly stall: destroyed=${fat.destroyed}`
+  );
+  // Thin > fat by a wide margin.
+  assert.ok(
+    thin.destroyed > fat.destroyed + 5,
+    `radius dependence too weak: thin=${thin.destroyed} fat=${fat.destroyed}`
+  );
+  // Fat log: far end stays cool.
+  assert.ok(
+    fat.farEndT < T_AMBIENT + 100,
+    `fat log far end should stay near ambient: T=${fat.farEndT}`
+  );
+  assert.equal(fat.farEndDestroyed, false);
 }
 
 console.log("log __test passed");

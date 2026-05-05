@@ -30,7 +30,8 @@ import { createSurfaceField } from "./surfaceField";
   assert.ok(f.temperature[0] <= T_FLAME_MAX);
 }
 
-// 3. Hot texel with no fuel: nothing burns; T unaffected by combustion.
+// 3. Hot texel with no fuel: combustion does not heat or consume fuel, but
+//    pyrolysis still blackens the surface (heat-driven, fuel-independent).
 {
   const f = createSurfaceField(4, 4);
   f.temperature[0] = T_IGNITE + 200;
@@ -38,7 +39,7 @@ import { createSurfaceField } from "./surfaceField";
   const T0 = f.temperature[0];
   combustStep(f, { dt: 1 / 30, dxU: 0.005, dxV: 0.005, skinThickness: 0.001 });
   assert.equal(f.fuel[0], 0);
-  assert.equal(f.char[0], 0);
+  assert.ok(f.char[0] > 0, `char should grow even with no fuel: ${f.char[0]}`);
   assert.equal(f.temperature[0], T0);
 }
 

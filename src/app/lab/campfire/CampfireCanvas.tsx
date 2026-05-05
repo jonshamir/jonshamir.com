@@ -13,10 +13,14 @@ import { useLogSimulation } from "./rendering/useLogSimulation";
 
 export default function CampfireCanvas() {
   const display = useControls("Display", {
-    backgroundColor: { value: "#1a1410", label: "Background" },
+    backgroundColor: { value: "#1e1e1e", label: "Background" },
     showHeatmap: { value: false, label: "Heat-map" },
     showSegmentIndices: { value: false, label: "Indices" },
     showWireframe: { value: false, label: "Wireframe" }
+  });
+
+  const sim_ = useControls("Simulation", {
+    timeScale: { value: 1, min: 0.1, max: 60, step: 0.1, label: "Time scale" }
   });
 
   const log = useControls("Log", {
@@ -35,6 +39,13 @@ export default function CampfireCanvas() {
       label: "Radius (m)"
     },
     segmentCount: { value: 20, min: 5, max: 40, step: 1, label: "Segments" },
+    radialSegments: {
+      value: 6,
+      min: 3,
+      max: 64,
+      step: 1,
+      label: "Radial segments"
+    },
     surfaceRes: folder(
       {
         surfaceWidth: {
@@ -61,7 +72,8 @@ export default function CampfireCanvas() {
     radius: log.radius as number,
     segmentCount: log.segmentCount as number,
     surfaceWidth: log.surfaceWidth as number,
-    surfaceHeight: log.surfaceHeight as number
+    surfaceHeight: log.surfaceHeight as number,
+    timeScale: sim_.timeScale as number
   });
 
   // `sim` gets a new identity every animation frame (useLogSimulation calls
@@ -117,6 +129,7 @@ export default function CampfireCanvas() {
           showHeatmap={display.showHeatmap as boolean}
           showSegmentIndices={display.showSegmentIndices as boolean}
           showWireframe={display.showWireframe as boolean}
+          radialSegments={log.radialSegments as number}
         />
       </ThreeCanvas>
     </>
