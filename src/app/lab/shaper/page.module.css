@@ -1,5 +1,15 @@
 .container {
+  width: 450px;
+  height: 550px;
+  background-color: black;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  border-radius: 999px;
 }
 
 .time {
+  color: white;
+  font-size: 24px;
+  text-align: center;
 }
