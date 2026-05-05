@@ -11,6 +11,8 @@
   padding: 40px 0;
   box-sizing: border-box;
   position: relative;
+  color: var(--main-color);
+  --main-color: rgb(230, 230, 230);
 }
 
 .containerIdle {
@@ -22,7 +24,6 @@
 }
 
 .time {
-  color: white;
   text-align: center;
   margin: 0;
 
@@ -41,11 +42,29 @@
 
 .viewport {
   position: absolute;
-  top: 120px;
+  top: 40px;
   left: 0;
   right: 0;
   bottom: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.container button {
+  background-color: var(--main-color);
+  color: black;
+  margin: 0.5rem;
+  border-radius: 999px;
+  padding: 0.5em 1.5em;
+  font-weight: 450;
+}
+
+.container button:hover {
+  background-color: rgb(200, 200, 200);
+}
+
+.container button:active,
+.container button:focus {
+  outline: none;
 }
