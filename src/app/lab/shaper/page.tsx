@@ -50,6 +50,15 @@ export default function Page() {
     setStepId(controls.step);
   }, [controls.step]);
 
+  useEffect(() => {
+    if (stepId !== "sent") return;
+    const t = setTimeout(() => {
+      setStepId("idle");
+      setPhrasingIndex(0);
+    }, 3000);
+    return () => clearTimeout(t);
+  }, [stepId]);
+
   const goTo = (s: StepId) => setStepId(s);
   const reset = () => {
     setStepId("idle");
@@ -84,6 +93,7 @@ export default function Page() {
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.25 }}
+              className={styles.screenContent}
             >
               {stepId === "idle" && <IdleView />}
               {stepId === "intent" && (
