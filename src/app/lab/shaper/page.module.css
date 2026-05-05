@@ -25,6 +25,10 @@
   color: white;
   text-align: center;
   margin: 0;
+
+  span {
+    vertical-align: 0.1em;
+  }
 }
 
 .clockLarge {

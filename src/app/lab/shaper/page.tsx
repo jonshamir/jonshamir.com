@@ -74,7 +74,7 @@ export default function Page() {
           transition={layoutTransition}
           className={`${styles.time} ${isIdle ? styles.clockLarge : styles.clockSmall}`}
         >
-          09:34
+          09<span>:</span>34
         </motion.p>
         <div className={styles.viewport}>
           <AnimatePresence mode="wait">
