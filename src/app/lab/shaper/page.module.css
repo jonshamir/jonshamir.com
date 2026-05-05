@@ -5,13 +5,43 @@
   align-items: center;
   justify-content: center;
   display: flex;
+  flex-direction: column;
   border-radius: 999px;
   margin: 100px auto;
+  padding: 40px 0;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.containerIdle {
+  justify-content: center;
+}
+
+.containerActive {
+  justify-content: flex-start;
 }
 
 .time {
   color: white;
-  font-size: 64px;
   text-align: center;
-  font-weight: 100;
+  margin: 0;
+}
+
+.clockLarge {
+  font-size: 64px;
+}
+
+.clockSmall {
+  font-size: 20px;
+}
+
+.viewport {
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+  bottom: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -1,5 +1,13 @@
 import styles from "./page.module.css";
 
-export function Screen({ children }: { children: React.ReactNode }) {
-  return <div className={styles.container}>{children}</div>;
+export function Screen({
+  children,
+  className
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  return (
+    <div className={`${styles.container} ${className ?? ""}`}>{children}</div>
+  );
 }
