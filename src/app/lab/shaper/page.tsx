@@ -80,9 +80,9 @@ export default function Page() {
           <AnimatePresence mode="wait">
             <motion.div
               key={stepId}
-              initial={{ opacity: 0, filter: "blur(8px)" }}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, filter: "blur(8px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.25 }}
             >
               {stepId === "idle" && <IdleView />}

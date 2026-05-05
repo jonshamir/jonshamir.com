@@ -52,16 +52,17 @@
 }
 
 .container button {
-  background-color: var(--main-color);
-  color: black;
+  background-color: transparent;
+  color: currentColor;
   margin: 0.5rem;
   border-radius: 999px;
   padding: 0.5em 1.5em;
   font-weight: 450;
+  border: 1.5px solid rgba(230, 230, 230, 0.5);
 }
 
 .container button:hover {
-  background-color: rgb(200, 200, 200);
+  background-color: transparent;
 }
 
 .container button:active,
