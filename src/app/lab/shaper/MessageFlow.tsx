@@ -5,9 +5,9 @@ import { TextMorph } from "torph/react";
 import { ActionButton } from "./ActionButton";
 import styles from "./page.module.css";
 
-const ENTER_SETTLE_MS = 400;
-const OPTION_INTERVAL_MS = 1800;
-const REVEAL_DELAY_MS = 600;
+const ENTER_SETTLE_MS = 100;
+const OPTION_INTERVAL_MS = 1200;
+const REVEAL_DELAY_MS = 1200;
 const MESSAGE_EXPAND_MS = 0.3;
 const CONFIRM_HOLD = 1;
 const MESSAGE_TEXT_DELAY = CONFIRM_HOLD + 0.35;

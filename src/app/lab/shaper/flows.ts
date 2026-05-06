@@ -12,7 +12,7 @@ export const FLOWS: Flow[] = [
   {
     id: "message-michael",
     label: "Message Michael",
-    recipientCandidates: ["Mom", "Michael Lambert"],
+    recipientCandidates: ["Mom", "Mike M.", "Michael Lambert"],
     phrasingOptions: [
       "I might be late",
       "I'm running late",
