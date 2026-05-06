@@ -8,15 +8,13 @@ import styles from "./page.module.css";
 const ENTER_SETTLE_MS = 400;
 const OPTION_INTERVAL_MS = 1800;
 const REVEAL_DELAY_MS = 600;
+const MESSAGE_EXPAND_MS = 0.3;
+const MESSAGE_TEXT_DELAY = 0.35;
 
 const BUTTON_ROW_MIN_HEIGHT = 56;
 const MESSAGE_TOP_GAP = 16;
 
-type Sub =
-  | "cyclingRecipient"
-  | "awaitingConfirm"
-  | "cyclingMessage"
-  | "awaitingSend";
+type Sub = "recipient" | "cyclingMessage" | "awaitingSend";
 
 export function MessageFlow({
   recipientCandidates,
@@ -29,7 +27,7 @@ export function MessageFlow({
   onCancel: () => void;
   onSend: () => void;
 }) {
-  const [sub, setSub] = useState<Sub>("cyclingRecipient");
+  const [sub, setSub] = useState<Sub>("recipient");
   const [recipientIdx, setRecipientIdx] = useState(0);
   const [messageIdx, setMessageIdx] = useState(0);
   const [settled, setSettled] = useState(false);
@@ -40,11 +38,8 @@ export function MessageFlow({
   }, []);
 
   useEffect(() => {
-    if (!settled || sub !== "cyclingRecipient") return;
-    if (recipientIdx >= recipientCandidates.length - 1) {
-      const t = setTimeout(() => setSub("awaitingConfirm"), REVEAL_DELAY_MS);
-      return () => clearTimeout(t);
-    }
+    if (!settled || sub !== "recipient") return;
+    if (recipientIdx >= recipientCandidates.length - 1) return;
     const t = setTimeout(
       () => setRecipientIdx((i) => i + 1),
       OPTION_INTERVAL_MS
@@ -64,8 +59,8 @@ export function MessageFlow({
 
   const recipientText = `Message ${recipientCandidates[recipientIdx]}`;
   const showMessage = sub === "cyclingMessage" || sub === "awaitingSend";
-  const showButtons = sub === "awaitingConfirm" || sub === "awaitingSend";
-  const buttonsKey = sub === "awaitingConfirm" ? "confirm" : "send";
+  const showButtons = sub === "recipient" || sub === "awaitingSend";
+  const buttonsKey = sub === "recipient" ? "confirm" : "send";
 
   return (
     <motion.div
@@ -88,15 +83,30 @@ export function MessageFlow({
             layout
             key="message"
             className={styles.messageText}
-            initial={{ opacity: 0, filter: "blur(10px)", height: 0 }}
-            animate={{
-              opacity: 1,
-              filter: "blur(0px)",
-              height: "auto",
-              marginTop: MESSAGE_TOP_GAP
+            initial={{
+              height: 0,
+              marginTop: 0,
+              opacity: 0,
+              filter: "blur(10px)"
             }}
-            exit={{ opacity: 0, filter: "blur(10px)", height: 0, marginTop: 0 }}
-            transition={{ duration: 0.3 }}
+            animate={{
+              height: "auto",
+              marginTop: MESSAGE_TOP_GAP,
+              opacity: 1,
+              filter: "blur(0px)"
+            }}
+            exit={{
+              height: 0,
+              marginTop: 0,
+              opacity: 0,
+              filter: "blur(10px)"
+            }}
+            transition={{
+              height: { duration: MESSAGE_EXPAND_MS },
+              marginTop: { duration: MESSAGE_EXPAND_MS },
+              opacity: { duration: 0.25, delay: MESSAGE_TEXT_DELAY },
+              filter: { duration: 0.25, delay: MESSAGE_TEXT_DELAY }
+            }}
             style={{ overflow: "hidden" }}
           >
             <TextMorph style={{ willChange: "transform" }}>
