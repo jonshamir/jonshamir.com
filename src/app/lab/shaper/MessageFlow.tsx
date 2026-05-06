@@ -14,7 +14,7 @@ const MESSAGE_TEXT_DELAY = CONFIRM_HOLD + 0.35;
 
 const VIEWPORT_H = 470;
 const BUTTONS_H = 56;
-const GROUP_GAP = 16;
+const GROUP_GAP = 18;
 const MESSAGE_BUTTONS_GAP = 32;
 const LAYOUT_DURATION = 0.4;
 const LAYOUT_EASE = [0.25, 0.46, 0.45, 0.94] as const;
@@ -122,7 +122,7 @@ export function MessageFlow({
   }, [showButtons, buttonsKey]);
 
   const recipientH = recipientHMeasured || RECIPIENT_FALLBACK_H;
-  const messageH = messageHMeasured || MESSAGE_FALLBACK_H;
+  const messageH = (messageHMeasured || MESSAGE_FALLBACK_H) + 40;
 
   const allTargets = computeTargets([
     { key: "recipient", h: recipientH },
@@ -150,6 +150,7 @@ export function MessageFlow({
       : (allTargets.message ?? 0),
     buttons: showButtons ? (visTargets.buttons ?? 0) : (allTargets.buttons ?? 0)
   };
+  if (sub === "awaitingSend") targets.buttons -= 32;
 
   const layoutTransition = (key: Key) => ({
     duration: LAYOUT_DURATION,
@@ -188,7 +189,7 @@ export function MessageFlow({
       {/* Recipient */}
       <motion.div
         initial={false}
-        animate={{ y: targets.recipient }}
+        animate={{ y: targets.recipient, opacity: showMessage ? 0.5 : 1 }}
         transition={layoutTransition("recipient")}
         style={{
           position: "absolute",
@@ -196,7 +197,7 @@ export function MessageFlow({
           left: 0,
           right: 0,
           textAlign: "center",
-          willChange: "transform"
+          willChange: "transform, opacity"
         }}
       >
         <div ref={recipientRef} style={{ display: "inline-block" }}>
