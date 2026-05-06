@@ -1,10 +1,9 @@
-export type StepId = "idle" | "intent" | "solidify" | "preview" | "sent";
+export type StepId = "idle" | "intentPrelude" | "compose" | "sent";
 
 export type Flow = {
   id: string;
   label: string;
-  recipient: string;
-  intentPrompt: string;
+  recipientCandidates: string[];
   phrasingOptions: string[];
   steps: StepId[];
 };
@@ -13,8 +12,7 @@ export const FLOWS: Flow[] = [
   {
     id: "message-michael",
     label: "Message Michael",
-    recipient: "Michael",
-    intentPrompt: "Send a message to Michael?",
+    recipientCandidates: ["Intent", "Michelle Smith", "Michael Lambert"],
     phrasingOptions: [
       "I might be late",
       "I'm running late",
@@ -22,7 +20,7 @@ export const FLOWS: Flow[] = [
       "I might not make it at all",
       "I might not make it on time"
     ],
-    steps: ["idle", "intent", "solidify", "preview", "sent"]
+    steps: ["idle", "intentPrelude", "compose", "sent"]
   }
 ];
 

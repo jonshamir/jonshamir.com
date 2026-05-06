@@ -6,28 +6,22 @@ import { useEffect, useState } from "react";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useControls } from "../../../lib/tweakpane";
 import { FLOW_BY_ID, FLOWS, type StepId } from "./flows";
+import { MessageFlow } from "./MessageFlow";
 import styles from "./page.module.css";
 import { Screen } from "./Screen";
 import { IdleView } from "./views/IdleView";
-import { IntentView } from "./views/IntentView";
-import { PreviewView } from "./views/PreviewView";
 import { SentView } from "./views/SentView";
-import { SolidifyView } from "./views/SolidifyView";
 
-const STEP_OPTIONS: StepId[] = [
-  "idle",
-  "intent",
-  "solidify",
-  "preview",
-  "sent"
-];
+const STEP_OPTIONS: StepId[] = ["idle", "intentPrelude", "compose", "sent"];
+const PRELUDE_MS = 1000;
 
 export default function Page() {
   const [flowId, setFlowId] = useState<string>(FLOWS[0].id);
   const [stepId, setStepId] = useState<StepId>("idle");
-  const [phrasingIndex, setPhrasingIndex] = useState(0);
 
   const flow = FLOW_BY_ID[flowId];
+  const recipient =
+    flow.recipientCandidates[flow.recipientCandidates.length - 1];
 
   const controls = useControls({
     flow: {
@@ -51,22 +45,22 @@ export default function Page() {
   }, [controls.step]);
 
   useEffect(() => {
+    if (stepId !== "intentPrelude") return;
+    const t = setTimeout(() => setStepId("compose"), PRELUDE_MS);
+    return () => clearTimeout(t);
+  }, [stepId]);
+
+  useEffect(() => {
     if (stepId !== "sent") return;
-    const t = setTimeout(() => {
-      setStepId("idle");
-      setPhrasingIndex(0);
-    }, 3000);
+    const t = setTimeout(() => setStepId("idle"), 3000);
     return () => clearTimeout(t);
   }, [stepId]);
 
   const goTo = (s: StepId) => setStepId(s);
-  const reset = () => {
-    setStepId("idle");
-    setPhrasingIndex(0);
-  };
+  const reset = () => setStepId("idle");
 
   const shouldReduceMotion = useReducedMotion();
-  const isIdle = stepId === "idle";
+  const clockLarge = stepId === "idle" || stepId === "intentPrelude";
   const layoutTransition = shouldReduceMotion
     ? { duration: 0 }
     : { duration: 0.3, ease: [0.645, 0.045, 0.355, 1] as const };
@@ -75,13 +69,15 @@ export default function Page() {
     <>
       <TweakpanePanel />
       <Screen
-        className={isIdle ? styles.containerIdle : styles.containerActive}
+        className={
+          stepId === "idle" ? styles.containerIdle : styles.containerActive
+        }
       >
         <motion.p
           layout
-          animate={{ fontWeight: isIdle ? 100 : 400 }}
+          animate={{ fontWeight: clockLarge ? 100 : 400 }}
           transition={layoutTransition}
-          className={`${styles.time} ${isIdle ? styles.clockLarge : styles.clockSmall}`}
+          className={`${styles.time} ${clockLarge ? styles.clockLarge : styles.clockSmall}`}
         >
           09<span>:</span>34
         </motion.p>
@@ -96,37 +92,24 @@ export default function Page() {
               className={styles.screenContent}
             >
               {stepId === "idle" && <IdleView />}
-              {stepId === "intent" && (
-                <IntentView
-                  prompt={flow.intentPrompt}
-                  onCancel={reset}
-                  onConfirm={() => goTo("solidify")}
-                />
-              )}
-              {stepId === "solidify" && (
-                <SolidifyView
-                  options={flow.phrasingOptions}
-                  selectedIndex={phrasingIndex}
-                  onSelect={setPhrasingIndex}
-                  onCancel={reset}
-                  onConfirm={() => goTo("preview")}
-                />
-              )}
-              {stepId === "preview" && (
-                <PreviewView
-                  recipient={flow.recipient}
-                  message={flow.phrasingOptions[phrasingIndex]}
+              {(stepId === "intentPrelude" || stepId === "compose") && (
+                <MessageFlow
+                  recipientCandidates={flow.recipientCandidates}
+                  phrasingOptions={flow.phrasingOptions}
+                  prelude={stepId === "intentPrelude"}
                   onCancel={reset}
                   onSend={() => goTo("sent")}
                 />
               )}
-              {stepId === "sent" && <SentView recipient={flow.recipient} />}
+              {stepId === "sent" && <SentView recipient={recipient} />}
             </motion.div>
           </AnimatePresence>
         </div>
       </Screen>
       <div style={{ textAlign: "center" }}>
-        <button onClick={() => goTo(stepId === "idle" ? "intent" : "idle")}>
+        <button
+          onClick={() => goTo(stepId === "idle" ? "intentPrelude" : "idle")}
+        >
           Toggle Intent
         </button>
       </div>
