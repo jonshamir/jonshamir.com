@@ -15,6 +15,7 @@ const MESSAGE_TEXT_DELAY = CONFIRM_HOLD + 0.35;
 const VIEWPORT_H = 470;
 const BUTTONS_H = 56;
 const GROUP_GAP = 16;
+const MESSAGE_BUTTONS_GAP = 32;
 const LAYOUT_DURATION = 0.4;
 const LAYOUT_EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
@@ -40,16 +41,19 @@ function useMeasuredHeight() {
   return [ref, h] as const;
 }
 
-function computeTargets(items: Array<{ key: Key; h: number }>) {
-  const groupH =
-    items.reduce((s, it) => s + it.h, 0) +
-    GROUP_GAP * Math.max(0, items.length - 1);
+function computeTargets(
+  items: Array<{ key: Key; h: number; gapAfter?: number }>
+) {
+  const totalGaps = items
+    .slice(0, -1)
+    .reduce((s, it) => s + (it.gapAfter ?? GROUP_GAP), 0);
+  const groupH = items.reduce((s, it) => s + it.h, 0) + totalGaps;
   const groupTop = (VIEWPORT_H - groupH) / 2;
   const result: Partial<Record<Key, number>> = {};
   let cursor = groupTop;
   for (const it of items) {
     result[it.key] = cursor;
-    cursor += it.h + GROUP_GAP;
+    cursor += it.h + (it.gapAfter ?? GROUP_GAP);
   }
   return result;
 }
@@ -115,14 +119,20 @@ export function MessageFlow({
 
   const allTargets = computeTargets([
     { key: "recipient", h: recipientH },
-    { key: "message", h: messageH },
+    { key: "message", h: messageH, gapAfter: MESSAGE_BUTTONS_GAP },
     { key: "buttons", h: BUTTONS_H }
   ]);
 
-  const visItems: Array<{ key: Key; h: number }> = [
+  const visItems: Array<{ key: Key; h: number; gapAfter?: number }> = [
     { key: "recipient", h: recipientH }
   ];
-  if (showMessage) visItems.push({ key: "message", h: messageH });
+  if (showMessage) {
+    visItems.push({
+      key: "message",
+      h: messageH,
+      gapAfter: showButtons ? MESSAGE_BUTTONS_GAP : GROUP_GAP
+    });
+  }
   if (showButtons) visItems.push({ key: "buttons", h: BUTTONS_H });
   const visTargets = computeTargets(visItems);
 

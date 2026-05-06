@@ -105,6 +105,7 @@
   background-color: rgb(59, 102, 209);
   padding: 0.5rem 1rem;
   border-radius: 999px;
+  border-bottom-left-radius: 0;
 }
 
 .buttonRow {
