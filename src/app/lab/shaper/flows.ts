@@ -16,9 +16,11 @@ export const FLOWS: Flow[] = [
     recipient: "Michael",
     intentPrompt: "Send a message to Michael?",
     phrasingOptions: [
-      "Hey Michael, want to grab coffee later?",
-      "Michael — coffee later?",
-      "Coffee later, Michael?"
+      "I might be late",
+      "I'm running late",
+      "I'll arrive 5 minutes late",
+      "I might not make it at all",
+      "I might not make it on time"
     ],
     steps: ["idle", "intent", "solidify", "preview", "sent"]
   }

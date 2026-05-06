@@ -40,6 +40,7 @@
     "shiki": "^3.23.0",
     "three": "^0.184.0",
     "three-custom-shader-material": "^6.4.0",
+    "torph": "^0.0.9",
     "tweakpane": "^4.0.5",
     "unist-util-visit": "^5.1.0",
     "usehooks-ts": "^3.1.1"
