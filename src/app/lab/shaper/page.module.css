@@ -114,3 +114,21 @@
   margin: 0;
   z-index: 1;
 }
+
+@keyframes preludePulse {
+  0%,
+  100% {
+    background-color: rgba(230, 230, 230, 0.1);
+  }
+  50% {
+    background-color: rgba(230, 230, 230, 0.2);
+  }
+}
+
+.container .preludeText::after {
+  animation: preludePulse 2s ease-in-out infinite;
+}
+
+.container .preludeText:hover::after {
+  /* animation: none; */
+}
