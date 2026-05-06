@@ -37,7 +37,7 @@
 }
 
 .clockSmall {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .viewport {
@@ -104,11 +104,13 @@
   border-radius: 999px;
 }
 
-.preludeText {
-  position: absolute;
-  top: 60%;
-  left: 0;
-  right: 0;
-  text-align: center;
+.headerStack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container .preludeText {
   margin: 0;
+  z-index: 1;
 }

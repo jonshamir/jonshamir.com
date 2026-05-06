@@ -13,7 +13,6 @@ import { IdleView } from "./views/IdleView";
 import { SentView } from "./views/SentView";
 
 const STEP_OPTIONS: StepId[] = ["idle", "intentPrelude", "compose", "sent"];
-const PRELUDE_MS = 1000;
 
 export default function Page() {
   const [flowId, setFlowId] = useState<string>(FLOWS[0].id);
@@ -45,12 +44,6 @@ export default function Page() {
   }, [controls.step]);
 
   useEffect(() => {
-    if (stepId !== "intentPrelude") return;
-    const t = setTimeout(() => setStepId("compose"), PRELUDE_MS);
-    return () => clearTimeout(t);
-  }, [stepId]);
-
-  useEffect(() => {
     if (stepId !== "sent") return;
     const t = setTimeout(() => setStepId("idle"), 3000);
     return () => clearTimeout(t);
@@ -72,31 +65,34 @@ export default function Page() {
       <Screen
         className={idleLayout ? styles.containerIdle : styles.containerActive}
       >
-        <motion.p
-          layout
-          initial={{ fontWeight: 150 }}
-          animate={{ fontWeight: clockLarge ? 150 : 400 }}
-          transition={layoutTransition}
-          className={`${styles.time} ${clockLarge ? styles.clockLarge : styles.clockSmall}`}
-          style={{ willChange: "transform" }}
-        >
-          09<span>:</span>34
-        </motion.p>
-        <AnimatePresence>
-          {stepId === "intentPrelude" && (
-            <motion.p
-              key="prelude"
-              className={styles.preludeText}
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              animate={{ opacity: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, filter: "blur(10px)" }}
-              transition={{ duration: 0.3 }}
-              style={{ willChange: "opacity, filter" }}
-            >
-              Message Intent
-            </motion.p>
-          )}
-        </AnimatePresence>
+        <div className={styles.headerStack}>
+          <motion.p
+            layout
+            initial={{ fontWeight: 150 }}
+            animate={{ fontWeight: clockLarge ? 150 : 400 }}
+            transition={layoutTransition}
+            className={`${styles.time} ${clockLarge ? styles.clockLarge : styles.clockSmall}`}
+            style={{ willChange: "transform" }}
+          >
+            09<span>:</span>34
+          </motion.p>
+          <AnimatePresence mode="popLayout">
+            {stepId === "intentPrelude" && (
+              <motion.button
+                key="prelude"
+                className={styles.preludeText}
+                onClick={() => goTo("compose")}
+                initial={{ opacity: 0, filter: "blur(10px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(10px)" }}
+                transition={{ duration: 0.3 }}
+                style={{ willChange: "opacity, filter" }}
+              >
+                Send message
+              </motion.button>
+            )}
+          </AnimatePresence>
+        </div>
         <div className={styles.viewport}>
           <AnimatePresence mode="wait">
             <motion.div
