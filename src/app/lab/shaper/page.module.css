@@ -78,13 +78,13 @@
   content: "";
   border-radius: 999px;
   /* border: 2px solid rgba(230, 230, 230, 0.5); */
-  background-color: rgba(230, 230, 230, 0.2);
-  filter: blur(6px);
+  background-color: rgba(230, 230, 230, 0.15);
+  filter: blur(8px);
   transition: all 0.3s;
 }
 
 .container button:hover::after {
-  background-color: rgba(230, 230, 230, 0.3);
+  background-color: rgba(230, 230, 230, 0.25);
 
   filter: blur(0);
 }
