@@ -114,6 +114,13 @@ export function MessageFlow({
   const showButtons = sub === "awaitingConfirm" || sub === "awaitingSend";
   const buttonsKey = sub === "awaitingConfirm" ? "confirm" : "send";
 
+  const [displayedButtonsKey, setDisplayedButtonsKey] = useState<
+    "confirm" | "send"
+  >("confirm");
+  useEffect(() => {
+    if (showButtons) setDisplayedButtonsKey(buttonsKey);
+  }, [showButtons, buttonsKey]);
+
   const recipientH = recipientHMeasured || RECIPIENT_FALLBACK_H;
   const messageH = messageHMeasured || MESSAGE_FALLBACK_H;
 
@@ -255,10 +262,12 @@ export function MessageFlow({
       >
         <ActionButton label="Cancel" variant="secondary" onClick={onCancel} />
         <ActionButton
-          label={buttonsKey === "confirm" ? "Confirm" : "Send"}
+          label={displayedButtonsKey === "confirm" ? "Confirm" : "Send"}
           variant="primary"
           onClick={
-            buttonsKey === "confirm" ? () => setSub("cyclingMessage") : onSend
+            displayedButtonsKey === "confirm"
+              ? () => setSub("cyclingMessage")
+              : onSend
           }
         />
       </motion.div>
