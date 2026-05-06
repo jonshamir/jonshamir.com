@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { TextMorph } from "torph/react";
 
 import { ActionButton } from "./ActionButton";
@@ -12,10 +12,47 @@ const MESSAGE_EXPAND_MS = 0.3;
 const CONFIRM_HOLD = 1;
 const MESSAGE_TEXT_DELAY = CONFIRM_HOLD + 0.35;
 
-const BUTTON_ROW_MIN_HEIGHT = 56;
-const MESSAGE_TOP_GAP = 16;
+const VIEWPORT_H = 470;
+const BUTTONS_H = 56;
+const GROUP_GAP = 16;
+const LAYOUT_DURATION = 0.4;
+const LAYOUT_EASE = [0.25, 0.46, 0.45, 0.94] as const;
 
-type Sub = "recipient" | "cyclingMessage" | "awaitingSend";
+const RECIPIENT_FALLBACK_H = 24;
+const MESSAGE_FALLBACK_H = 40;
+
+type Sub = "recipient" | "awaitingConfirm" | "cyclingMessage" | "awaitingSend";
+type Key = "recipient" | "message" | "buttons";
+
+function useMeasuredHeight() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState(0);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) setH(entry.contentRect.height);
+    });
+    ro.observe(node);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, h] as const;
+}
+
+function computeTargets(items: Array<{ key: Key; h: number }>) {
+  const groupH =
+    items.reduce((s, it) => s + it.h, 0) +
+    GROUP_GAP * Math.max(0, items.length - 1);
+  const groupTop = (VIEWPORT_H - groupH) / 2;
+  const result: Partial<Record<Key, number>> = {};
+  let cursor = groupTop;
+  for (const it of items) {
+    result[it.key] = cursor;
+    cursor += it.h + GROUP_GAP;
+  }
+  return result;
+}
 
 export function MessageFlow({
   recipientCandidates,
@@ -33,6 +70,9 @@ export function MessageFlow({
   const [messageIdx, setMessageIdx] = useState(0);
   const [settled, setSettled] = useState(false);
 
+  const [recipientRef, recipientHMeasured] = useMeasuredHeight();
+  const [messageMirrorRef, messageHMeasured] = useMeasuredHeight();
+
   useEffect(() => {
     const t = setTimeout(() => setSettled(true), ENTER_SETTLE_MS);
     return () => clearTimeout(t);
@@ -40,7 +80,10 @@ export function MessageFlow({
 
   useEffect(() => {
     if (!settled || sub !== "recipient") return;
-    if (recipientIdx >= recipientCandidates.length - 1) return;
+    if (recipientIdx >= recipientCandidates.length - 1) {
+      const t = setTimeout(() => setSub("awaitingConfirm"), REVEAL_DELAY_MS);
+      return () => clearTimeout(t);
+    }
     const t = setTimeout(
       () => setRecipientIdx((i) => i + 1),
       OPTION_INTERVAL_MS
@@ -64,108 +107,151 @@ export function MessageFlow({
 
   const recipientText = `Message ${recipientCandidates[recipientIdx]}`;
   const showMessage = sub === "cyclingMessage" || sub === "awaitingSend";
-  const showButtons = sub === "recipient" || sub === "awaitingSend";
-  const buttonsKey = sub === "recipient" ? "confirm" : "send";
+  const showButtons = sub === "awaitingConfirm" || sub === "awaitingSend";
+  const buttonsKey = sub === "awaitingConfirm" ? "confirm" : "send";
+
+  const recipientH = recipientHMeasured || RECIPIENT_FALLBACK_H;
+  const messageH = messageHMeasured || MESSAGE_FALLBACK_H;
+
+  const allTargets = computeTargets([
+    { key: "recipient", h: recipientH },
+    { key: "message", h: messageH },
+    { key: "buttons", h: BUTTONS_H }
+  ]);
+
+  const visItems: Array<{ key: Key; h: number }> = [
+    { key: "recipient", h: recipientH }
+  ];
+  if (showMessage) visItems.push({ key: "message", h: messageH });
+  if (showButtons) visItems.push({ key: "buttons", h: BUTTONS_H });
+  const visTargets = computeTargets(visItems);
+
+  const targets: Record<Key, number> = {
+    recipient: visTargets.recipient ?? 0,
+    message: showMessage
+      ? (visTargets.message ?? 0)
+      : (allTargets.message ?? 0),
+    buttons: showButtons ? (visTargets.buttons ?? 0) : (allTargets.buttons ?? 0)
+  };
+
+  const layoutTransition = (key: Key) => ({
+    duration: LAYOUT_DURATION,
+    ease: LAYOUT_EASE,
+    delay: sub === "cyclingMessage" && key !== "buttons" ? CONFIRM_HOLD : 0
+  });
 
   return (
     <motion.div
-      layout
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
+        position: "relative",
+        width: "100%",
+        height: "100%",
         willChange: "transform"
       }}
     >
-      <motion.div layout="position" style={{ willChange: "transform" }}>
-        {!settled ? (
-          <p style={{ margin: 0 }}>{recipientText}</p>
-        ) : (
-          <TextMorph style={{ willChange: "transform" }}>
-            {recipientText}
-          </TextMorph>
-        )}
-      </motion.div>
-
-      <AnimatePresence initial={false}>
-        {showMessage && (
-          <motion.div
-            layout
-            key="message"
-            className={styles.messageText}
-            initial={{
-              height: 0,
-              marginTop: 0,
-              opacity: 0,
-              filter: "blur(10px)"
-            }}
-            animate={{
-              height: "auto",
-              marginTop: MESSAGE_TOP_GAP,
-              opacity: 1,
-              filter: "blur(0px)"
-            }}
-            exit={{
-              height: 0,
-              marginTop: 0,
-              opacity: 0,
-              filter: "blur(10px)"
-            }}
-            transition={{
-              height: { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
-              marginTop: { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
-              opacity: { duration: 0.25, delay: MESSAGE_TEXT_DELAY },
-              filter: { duration: 0.25, delay: MESSAGE_TEXT_DELAY }
-            }}
-            style={{
-              overflow: "hidden",
-              willChange: "transform, opacity, filter"
-            }}
-          >
-            <TextMorph style={{ willChange: "transform" }}>
-              {phrasingOptions[messageIdx]}
-            </TextMorph>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
+      {/* Hidden mirror for measuring message bubble peak height */}
       <div
+        aria-hidden
         style={{
-          minHeight: BUTTON_ROW_MIN_HEIGHT,
-          marginTop: MESSAGE_TOP_GAP,
+          position: "absolute",
+          visibility: "hidden",
+          pointerEvents: "none",
+          top: 0,
+          left: 0,
+          right: 0,
           display: "flex",
-          alignItems: "center",
           justifyContent: "center"
         }}
       >
-        <AnimatePresence mode="wait" initial={false}>
-          {showButtons && (
+        <div ref={messageMirrorRef} className={styles.messageText}>
+          <span>{phrasingOptions[messageIdx]}</span>
+        </div>
+      </div>
+
+      {/* Recipient */}
+      <motion.div
+        initial={false}
+        animate={{ y: targets.recipient }}
+        transition={layoutTransition("recipient")}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          willChange: "transform"
+        }}
+      >
+        <div ref={recipientRef} style={{ display: "inline-block" }}>
+          {!settled ? (
+            <p style={{ margin: 0 }}>{recipientText}</p>
+          ) : (
+            <TextMorph style={{ willChange: "transform" }}>
+              {recipientText}
+            </TextMorph>
+          )}
+        </div>
+      </motion.div>
+
+      {/* Message */}
+      <motion.div
+        initial={false}
+        animate={{ y: targets.message }}
+        transition={layoutTransition("message")}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          willChange: "transform"
+        }}
+      >
+        <AnimatePresence initial={false}>
+          {showMessage && (
             <motion.div
-              key={buttonsKey}
-              initial={{ opacity: 0, filter: "blur(10px)" }}
-              animate={{ opacity: 1, filter: "blur(0px)" }}
+              key="message"
+              className={styles.messageText}
+              initial={{ height: 0, opacity: 0, filter: "blur(10px)" }}
+              animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
-              transition={{ duration: 0.2 }}
-              style={{ willChange: "opacity, filter" }}
+              transition={{
+                height: { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
+                opacity: { duration: 0.25, delay: MESSAGE_TEXT_DELAY },
+                filter: { duration: 0.25, delay: MESSAGE_TEXT_DELAY }
+              }}
+              style={{
+                overflow: "hidden",
+                willChange: "transform, opacity, filter"
+              }}
             >
-              <ActionButton
-                label="Cancel"
-                variant="secondary"
-                onClick={onCancel}
-              />
-              <ActionButton
-                label={buttonsKey === "confirm" ? "Confirm" : "Send"}
-                variant="primary"
-                onClick={
-                  buttonsKey === "confirm"
-                    ? () => setSub("cyclingMessage")
-                    : onSend
-                }
-              />
+              <TextMorph style={{ willChange: "transform" }}>
+                {phrasingOptions[messageIdx]}
+              </TextMorph>
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </motion.div>
+
+      {/* Buttons */}
+      <motion.div
+        initial={false}
+        animate={{ y: targets.buttons }}
+        transition={layoutTransition("buttons")}
+        className={`${styles.buttonRow}${
+          showButtons ? ` ${styles.buttonRowVisible}` : ""
+        }`}
+      >
+        <ActionButton label="Cancel" variant="secondary" onClick={onCancel} />
+        <ActionButton
+          label={buttonsKey === "confirm" ? "Confirm" : "Send"}
+          variant="primary"
+          onClick={
+            buttonsKey === "confirm" ? () => setSub("cyclingMessage") : onSend
+          }
+        />
+      </motion.div>
     </motion.div>
   );
 }
