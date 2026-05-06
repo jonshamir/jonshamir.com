@@ -77,6 +77,7 @@ export default function Page() {
           animate={{ fontWeight: clockLarge ? 100 : 400 }}
           transition={layoutTransition}
           className={`${styles.time} ${clockLarge ? styles.clockLarge : styles.clockSmall}`}
+          style={{ willChange: "transform" }}
         >
           09<span>:</span>34
         </motion.p>
@@ -89,6 +90,7 @@ export default function Page() {
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.3 }}
+              style={{ willChange: "opacity, filter" }}
             >
               Message Intent
             </motion.p>
@@ -103,6 +105,7 @@ export default function Page() {
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.25 }}
               className={styles.screenContent}
+              style={{ willChange: "opacity, filter" }}
             >
               {(stepId === "idle" || stepId === "intentPrelude") && (
                 <IdleView />

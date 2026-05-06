@@ -70,6 +70,7 @@
   padding: 0.3em 1.2em;
   font-weight: 450;
   border: 1.5px solid rgba(230, 230, 230, 0.2);
+  position: relative;
 }
 
 .container button:hover {

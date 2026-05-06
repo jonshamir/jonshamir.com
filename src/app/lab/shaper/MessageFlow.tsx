@@ -9,7 +9,8 @@ const ENTER_SETTLE_MS = 400;
 const OPTION_INTERVAL_MS = 1800;
 const REVEAL_DELAY_MS = 600;
 const MESSAGE_EXPAND_MS = 0.3;
-const MESSAGE_TEXT_DELAY = 0.35;
+const CONFIRM_HOLD = 1;
+const MESSAGE_TEXT_DELAY = CONFIRM_HOLD + 0.35;
 
 const BUTTON_ROW_MIN_HEIGHT = 56;
 const MESSAGE_TOP_GAP = 16;
@@ -53,7 +54,11 @@ export function MessageFlow({
       const t = setTimeout(() => setSub("awaitingSend"), REVEAL_DELAY_MS);
       return () => clearTimeout(t);
     }
-    const t = setTimeout(() => setMessageIdx((i) => i + 1), OPTION_INTERVAL_MS);
+    const isFirst = messageIdx === 0;
+    const delayMs = isFirst
+      ? CONFIRM_HOLD * 1000 + OPTION_INTERVAL_MS
+      : OPTION_INTERVAL_MS;
+    const t = setTimeout(() => setMessageIdx((i) => i + 1), delayMs);
     return () => clearTimeout(t);
   }, [sub, messageIdx, phrasingOptions.length]);
 
@@ -65,9 +70,14 @@ export function MessageFlow({
   return (
     <motion.div
       layout
-      style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        willChange: "transform"
+      }}
     >
-      <motion.div layout="position">
+      <motion.div layout="position" style={{ willChange: "transform" }}>
         {!settled ? (
           <p style={{ margin: 0 }}>{recipientText}</p>
         ) : (
@@ -102,12 +112,15 @@ export function MessageFlow({
               filter: "blur(10px)"
             }}
             transition={{
-              height: { duration: MESSAGE_EXPAND_MS },
-              marginTop: { duration: MESSAGE_EXPAND_MS },
+              height: { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
+              marginTop: { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
               opacity: { duration: 0.25, delay: MESSAGE_TEXT_DELAY },
               filter: { duration: 0.25, delay: MESSAGE_TEXT_DELAY }
             }}
-            style={{ overflow: "hidden" }}
+            style={{
+              overflow: "hidden",
+              willChange: "transform, opacity, filter"
+            }}
           >
             <TextMorph style={{ willChange: "transform" }}>
               {phrasingOptions[messageIdx]}
@@ -133,6 +146,7 @@ export function MessageFlow({
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.2 }}
+              style={{ willChange: "opacity, filter" }}
             >
               <ActionButton
                 label="Cancel"
