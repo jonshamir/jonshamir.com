@@ -74,7 +74,8 @@ export default function Page() {
       >
         <motion.p
           layout
-          animate={{ fontWeight: clockLarge ? 100 : 400 }}
+          initial={{ fontWeight: 150 }}
+          animate={{ fontWeight: clockLarge ? 150 : 400 }}
           transition={layoutTransition}
           className={`${styles.time} ${clockLarge ? styles.clockLarge : styles.clockSmall}`}
           style={{ willChange: "transform" }}
