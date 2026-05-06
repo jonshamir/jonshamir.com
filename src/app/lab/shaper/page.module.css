@@ -69,8 +69,24 @@
   border-radius: 999px;
   padding: 0.3em 1.2em;
   font-weight: 450;
-  border: 1.5px solid rgba(230, 230, 230, 0.2);
   position: relative;
+}
+
+.container button::after {
+  position: absolute;
+  inset: 0;
+  content: "";
+  border-radius: 999px;
+  /* border: 2px solid rgba(230, 230, 230, 0.5); */
+  background-color: rgba(230, 230, 230, 0.2);
+  filter: blur(6px);
+  transition: all 0.3s;
+}
+
+.container button:hover::after {
+  background-color: rgba(230, 230, 230, 0.3);
+
+  filter: blur(0);
 }
 
 .container button:hover {
