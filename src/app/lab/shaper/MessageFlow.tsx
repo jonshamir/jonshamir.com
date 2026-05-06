@@ -18,18 +18,14 @@ type Sub =
   | "cyclingMessage"
   | "awaitingSend";
 
-type ButtonsKey = "none" | "confirm" | "send";
-
 export function MessageFlow({
   recipientCandidates,
   phrasingOptions,
-  prelude,
   onCancel,
   onSend
 }: {
   recipientCandidates: string[];
   phrasingOptions: string[];
-  prelude: boolean;
   onCancel: () => void;
   onSend: () => void;
 }) {
@@ -39,13 +35,12 @@ export function MessageFlow({
   const [settled, setSettled] = useState(false);
 
   useEffect(() => {
-    if (prelude) return;
     const t = setTimeout(() => setSettled(true), ENTER_SETTLE_MS);
     return () => clearTimeout(t);
-  }, [prelude]);
+  }, []);
 
   useEffect(() => {
-    if (prelude || !settled || sub !== "cyclingRecipient") return;
+    if (!settled || sub !== "cyclingRecipient") return;
     if (recipientIdx >= recipientCandidates.length - 1) {
       const t = setTimeout(() => setSub("awaitingConfirm"), REVEAL_DELAY_MS);
       return () => clearTimeout(t);
@@ -55,7 +50,7 @@ export function MessageFlow({
       OPTION_INTERVAL_MS
     );
     return () => clearTimeout(t);
-  }, [prelude, settled, sub, recipientIdx, recipientCandidates.length]);
+  }, [settled, sub, recipientIdx, recipientCandidates.length]);
 
   useEffect(() => {
     if (sub !== "cyclingMessage") return;
@@ -67,19 +62,10 @@ export function MessageFlow({
     return () => clearTimeout(t);
   }, [sub, messageIdx, phrasingOptions.length]);
 
-  const recipientText = prelude
-    ? `Message ${recipientCandidates[0]}`
-    : `Message ${recipientCandidates[recipientIdx]}`;
-
+  const recipientText = `Message ${recipientCandidates[recipientIdx]}`;
   const showMessage = sub === "cyclingMessage" || sub === "awaitingSend";
-
-  const buttonsKey: ButtonsKey = prelude
-    ? "none"
-    : sub === "awaitingConfirm"
-      ? "confirm"
-      : sub === "awaitingSend"
-        ? "send"
-        : "none";
+  const showButtons = sub === "awaitingConfirm" || sub === "awaitingSend";
+  const buttonsKey = sub === "awaitingConfirm" ? "confirm" : "send";
 
   return (
     <motion.div
@@ -87,7 +73,7 @@ export function MessageFlow({
       style={{ display: "flex", flexDirection: "column", alignItems: "center" }}
     >
       <motion.div layout="position">
-        {prelude || !settled ? (
+        {!settled ? (
           <p style={{ margin: 0 }}>{recipientText}</p>
         ) : (
           <TextMorph style={{ willChange: "transform" }}>
@@ -130,7 +116,7 @@ export function MessageFlow({
         }}
       >
         <AnimatePresence mode="wait" initial={false}>
-          {buttonsKey !== "none" && (
+          {showButtons && (
             <motion.div
               key={buttonsKey}
               initial={{ opacity: 0, filter: "blur(10px)" }}

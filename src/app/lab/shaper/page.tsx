@@ -61,6 +61,7 @@ export default function Page() {
 
   const shouldReduceMotion = useReducedMotion();
   const clockLarge = stepId === "idle" || stepId === "intentPrelude";
+  const idleLayout = stepId === "idle" || stepId === "intentPrelude";
   const layoutTransition = shouldReduceMotion
     ? { duration: 0 }
     : { duration: 0.3, ease: [0.645, 0.045, 0.355, 1] as const };
@@ -69,9 +70,7 @@ export default function Page() {
     <>
       <TweakpanePanel />
       <Screen
-        className={
-          stepId === "idle" ? styles.containerIdle : styles.containerActive
-        }
+        className={idleLayout ? styles.containerIdle : styles.containerActive}
       >
         <motion.p
           layout
@@ -81,22 +80,37 @@ export default function Page() {
         >
           09<span>:</span>34
         </motion.p>
+        <AnimatePresence>
+          {stepId === "intentPrelude" && (
+            <motion.p
+              key="prelude"
+              className={styles.preludeText}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
+              transition={{ duration: 0.3 }}
+            >
+              Message Intent
+            </motion.p>
+          )}
+        </AnimatePresence>
         <div className={styles.viewport}>
           <AnimatePresence mode="wait">
             <motion.div
-              key={stepId}
+              key={stepId === "intentPrelude" ? "idle" : stepId}
               initial={{ opacity: 0, filter: "blur(10px)" }}
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.25 }}
               className={styles.screenContent}
             >
-              {stepId === "idle" && <IdleView />}
-              {(stepId === "intentPrelude" || stepId === "compose") && (
+              {(stepId === "idle" || stepId === "intentPrelude") && (
+                <IdleView />
+              )}
+              {stepId === "compose" && (
                 <MessageFlow
                   recipientCandidates={flow.recipientCandidates}
                   phrasingOptions={flow.phrasingOptions}
-                  prelude={stepId === "intentPrelude"}
                   onCancel={reset}
                   onSend={() => goTo("sent")}
                 />
