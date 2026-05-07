@@ -40,9 +40,8 @@ export function ImagineFlow({
       id: "awaitingSend",
       showBody: false,
       showButtons: true,
-      primary: { label: "Send", variant: "primary", onClick: onSend },
-      compactRecipient: true,
-      autoAdvanceMs: 1800
+      primary: { label: "Send", variant: "primary", onClick: advance },
+      compactRecipient: true
     },
     {
       id: "warning",

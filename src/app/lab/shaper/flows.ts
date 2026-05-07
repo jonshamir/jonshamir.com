@@ -15,6 +15,15 @@ export type Flow = {
 
 export const FLOWS: Flow[] = [
   {
+    id: "imagine-michael",
+    label: "Imagine to Michael",
+    kind: "imagine",
+    recipientCandidates: ["Mom", "Mike M.", "Michael Lambert"],
+    sceneAsset: "/lab/point-cloud/Bonsai Tree.sog",
+    warningCopy: "Michael's capacity is low — send anyway?",
+    steps: ["idle", "intentPrelude", "compose", "sent"]
+  },
+  {
     id: "message-michael",
     label: "Message Michael",
     kind: "compose",
@@ -26,15 +35,6 @@ export const FLOWS: Flow[] = [
       "Want to meet later today in Marylebone for coffee at special guests, 14:30?",
       "Want to meet later today in Marylebone for coffee at special guests at 15:00?"
     ],
-    steps: ["idle", "intentPrelude", "compose", "sent"]
-  },
-  {
-    id: "imagine-michael",
-    label: "Imagine to Michael",
-    kind: "imagine",
-    recipientCandidates: ["Mom", "Mike M.", "Michael Lambert"],
-    sceneAsset: "/lab/point-cloud/Bonsai Tree.sog",
-    warningCopy: "Michael's capacity is low — send anyway?",
     steps: ["idle", "intentPrelude", "compose", "sent"]
   }
 ];
