@@ -183,7 +183,7 @@ export function ComposeShell({
     targets.recipient = 48;
   }
 
-  if (compactRecipient && !showBody && showButtons) {
+  if (compactRecipient && !showBody && showButtons && !showMiddle) {
     targets.buttons = VIEWPORT_H - BUTTONS_H - 24;
   }
 

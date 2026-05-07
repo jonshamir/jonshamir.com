@@ -64,7 +64,11 @@ function FocusDriver({
     if (phaseId === "solidifying") {
       mode.current = "shaping";
       shapeStart.current = tElapsed.current;
-    } else if (phaseId === "awaitingSend" || phaseId === "warning") {
+    } else if (
+      phaseId === "awaitingSend" ||
+      phaseId === "blurring" ||
+      phaseId === "warning"
+    ) {
       mode.current = "static";
       focus.current = SHAPE_FINAL_V;
     } else {

@@ -44,6 +44,14 @@ export function ImagineFlow({
       compactRecipient: true
     },
     {
+      id: "blurring",
+      showBody: false,
+      showButtons: false,
+      primary: null,
+      compactRecipient: true,
+      autoAdvanceMs: 1000
+    },
+    {
       id: "warning",
       showBody: false,
       showButtons: true,
@@ -61,19 +69,22 @@ export function ImagineFlow({
       renderBackground={({ phase, advance }) => {
         const visible = phase != null && phase.id !== "awaitingConfirm";
         const scaled =
-          phase?.showButtons === true && phase?.compactRecipient === true;
+          phase?.compactRecipient === true && phase?.id !== "solidifying";
+        const blurred = phase?.id === "blurring" || phase?.id === "warning";
         return (
           <motion.div
             initial={false}
             animate={{
-              opacity: visible ? 1 : 0,
-              scale: scaled ? 0.8 : 1,
-              y: scaled ? -40 : 0
+              opacity: visible && !blurred ? 1 : 0,
+              scale: !blurred && scaled ? 0.8 : 1,
+              y: scaled ? -40 : 0,
+              filter: blurred ? "blur(10px)" : "blur(0px)"
             }}
             transition={{
               opacity: { duration: 0.4, delay: visible ? 0.3 : 0 },
               scale: { duration: 0.4 },
-              y: { duration: 0.4 }
+              y: { duration: 0.4 },
+              filter: { duration: 0.4 }
             }}
             style={{
               width: "100%",
