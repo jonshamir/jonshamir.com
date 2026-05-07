@@ -18,6 +18,7 @@ function fillerLines(count: number) {
 
 const ENTER_SETTLE_MS = 100;
 const OPTION_INTERVAL_MS = 1200;
+const MESSAGE_INTERVAL_MS = 1800;
 const REVEAL_DELAY_MS = 1200;
 const MESSAGE_EXPAND_MS = 0.3;
 const CONFIRM_HOLD = 0.6;
@@ -139,8 +140,8 @@ export function MessageFlow({
     }
     const isFirst = messageIdx === 0;
     const delayMs = isFirst
-      ? CONFIRM_HOLD * 1000 + OPTION_INTERVAL_MS
-      : OPTION_INTERVAL_MS;
+      ? CONFIRM_HOLD * 1000 + MESSAGE_INTERVAL_MS
+      : MESSAGE_INTERVAL_MS;
     const t = setTimeout(() => setMessageIdx((i) => i + 1), delayMs);
     return () => clearTimeout(t);
   }, [sub, messageIdx, phrasingOptions.length]);
