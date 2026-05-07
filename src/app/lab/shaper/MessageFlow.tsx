@@ -80,10 +80,18 @@ export function MessageFlow({
   const [recipientRef, recipientHMeasured] = useMeasuredHeight();
   const [messageMirrorRef, messageHMeasured] = useMeasuredHeight();
   const [messageFont, setMessageFont] = useState("");
+  const [messageLineHeight, setMessageLineHeight] = useState(0);
+  const [messagePaddingY, setMessagePaddingY] = useState(0);
   useEffect(() => {
     const node = messageMirrorRef.current;
     if (!node) return;
-    setMessageFont(getComputedStyle(node).font);
+    const cs = getComputedStyle(node);
+    setMessageFont(cs.font);
+    const lh = parseFloat(cs.lineHeight);
+    if (!Number.isNaN(lh)) setMessageLineHeight(lh);
+    const pt = parseFloat(cs.paddingTop) || 0;
+    const pb = parseFloat(cs.paddingBottom) || 0;
+    setMessagePaddingY(pt + pb);
   }, [messageMirrorRef]);
 
   const messageLines = useWrappedLines(
@@ -131,6 +139,18 @@ export function MessageFlow({
 
   const recipientName = recipientCandidates[recipientIdx];
   const showMessage = sub === "cyclingMessage" || sub === "awaitingSend";
+  const [messageEntered, setMessageEntered] = useState(false);
+  useEffect(() => {
+    if (!showMessage) {
+      setMessageEntered(false);
+      return;
+    }
+    const t = setTimeout(
+      () => setMessageEntered(true),
+      (CONFIRM_HOLD + MESSAGE_EXPAND_MS) * 1000
+    );
+    return () => clearTimeout(t);
+  }, [showMessage]);
   const showButtons = sub === "awaitingConfirm" || sub === "awaitingSend";
   const buttonsKey = sub === "awaitingConfirm" ? "confirm" : "send";
 
@@ -271,15 +291,24 @@ export function MessageFlow({
                 sub === "cyclingMessage" ? ` ${styles.focused}` : ""
               }`}
               initial={{ height: 0, opacity: 0, filter: "blur(10px)" }}
-              animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
+              animate={{
+                height:
+                  messageLineHeight > 0
+                    ? messageLines.length * messageLineHeight + messagePaddingY
+                    : "auto",
+                opacity: 1,
+                filter: "blur(0px)"
+              }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{
-                height: { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
+                height: messageEntered
+                  ? { duration: LAYOUT_DURATION, ease: LAYOUT_EASE }
+                  : { duration: MESSAGE_EXPAND_MS, delay: CONFIRM_HOLD },
                 opacity: { duration: 0.25, delay: MESSAGE_TEXT_DELAY },
                 filter: { duration: 0.25, delay: MESSAGE_TEXT_DELAY }
               }}
               style={{
-                overflow: "visible",
+                overflow: "hidden",
                 willChange: "transform, opacity, filter"
               }}
             >

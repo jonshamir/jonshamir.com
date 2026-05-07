@@ -17,10 +17,8 @@ export const FLOWS: Flow[] = [
       "Wanna meet today for coffee?",
       "Wanna meet later today in Marylebone?",
       "Want to meet later today in Marylebone for coffee at special guests?",
-      "Wanna meet later today in Marylebone?",
       "Want to meet later today in Marylebone for coffee at special guests, 14:30?",
-      "Wanna meet later today in Marylebone?",
-      "Want to meet later today in Marylebone for coffee at special guests, 15:00?"
+      "Want to meet later today in Marylebone for coffee at special guests at 15:00?"
     ],
     steps: ["idle", "intentPrelude", "compose", "sent"]
   }
