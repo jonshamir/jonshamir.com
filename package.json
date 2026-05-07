@@ -9,6 +9,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@chenglou/pretext": "^0.0.6",
     "@fontsource-variable/manrope": "^5.2.8",
     "@fontsource-variable/open-sans": "^5.2.7",
     "@mdx-js/loader": "^3.1.1",

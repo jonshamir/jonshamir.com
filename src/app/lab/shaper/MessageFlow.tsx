@@ -4,6 +4,9 @@ import { TextMorph } from "torph/react";
 
 import { ActionButton } from "./ActionButton";
 import styles from "./page.module.css";
+import { useWrappedLines } from "./useWrappedLines";
+
+const MESSAGE_MAX_WIDTH = 320;
 
 const ENTER_SETTLE_MS = 100;
 const OPTION_INTERVAL_MS = 1200;
@@ -76,6 +79,18 @@ export function MessageFlow({
 
   const [recipientRef, recipientHMeasured] = useMeasuredHeight();
   const [messageMirrorRef, messageHMeasured] = useMeasuredHeight();
+  const [messageFont, setMessageFont] = useState("");
+  useEffect(() => {
+    const node = messageMirrorRef.current;
+    if (!node) return;
+    setMessageFont(getComputedStyle(node).font);
+  }, [messageMirrorRef]);
+
+  const messageLines = useWrappedLines(
+    phrasingOptions[messageIdx] ?? "",
+    MESSAGE_MAX_WIDTH,
+    messageFont
+  );
 
   useEffect(() => {
     const t = setTimeout(() => setSettled(true), ENTER_SETTLE_MS);
@@ -181,8 +196,14 @@ export function MessageFlow({
           justifyContent: "center"
         }}
       >
-        <div ref={messageMirrorRef} className={styles.messageText}>
-          <span>{phrasingOptions[messageIdx]}</span>
+        <div
+          ref={messageMirrorRef}
+          className={styles.messageText}
+          style={{ maxWidth: MESSAGE_MAX_WIDTH }}
+        >
+          {messageLines.map((line, i) => (
+            <div key={i}>{line}</div>
+          ))}
         </div>
       </div>
       {/* Recipient */}
@@ -257,9 +278,20 @@ export function MessageFlow({
                 willChange: "transform, opacity, filter"
               }}
             >
-              <TextMorph style={{ willChange: "transform" }}>
-                {phrasingOptions[messageIdx]}
-              </TextMorph>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  maxWidth: MESSAGE_MAX_WIDTH
+                }}
+              >
+                {messageLines.map((line, i) => (
+                  <TextMorph key={i} style={{ willChange: "transform" }}>
+                    {line}
+                  </TextMorph>
+                ))}
+              </div>
             </motion.div>
           )}
         </AnimatePresence>
