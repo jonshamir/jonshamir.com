@@ -88,8 +88,11 @@
 
 .container button:hover::after {
   background-color: rgba(230, 230, 230, 0.25);
-
   filter: blur(0);
+}
+
+.container button:active::after {
+  background-color: rgba(230, 230, 230, 0.5) !important;
 }
 
 .container button:hover {
