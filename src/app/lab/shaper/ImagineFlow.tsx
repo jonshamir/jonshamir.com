@@ -1,5 +1,12 @@
+import { ImagineBody } from "./bodies/ImagineBody";
+import { ComposeShell, type ShellPhase } from "./ComposeShell";
+
 export function ImagineFlow({
-  onCancel
+  recipientCandidates,
+  sceneAsset,
+  warningCopy,
+  onCancel,
+  onSend
 }: {
   recipientCandidates: string[];
   sceneAsset: string;
@@ -7,10 +14,46 @@ export function ImagineFlow({
   onCancel: () => void;
   onSend: () => void;
 }) {
+  const phases = (advance: () => void): ShellPhase[] => [
+    {
+      id: "awaitingConfirm",
+      showBody: true,
+      showButtons: true,
+      primary: { label: "Confirm", variant: "primary", onClick: advance }
+    },
+    {
+      id: "active",
+      showBody: true,
+      showButtons: false,
+      primary: null,
+      bodyFocused: true
+    },
+    {
+      id: "warning",
+      showBody: true,
+      showButtons: true,
+      showMiddleSlot: true,
+      primary: { label: "Confirm", variant: "warning", onClick: advance }
+    },
+    {
+      id: "awaitingSend",
+      showBody: true,
+      showButtons: true,
+      primary: { label: "Send", variant: "primary", onClick: onSend }
+    }
+  ];
+
   return (
-    <div style={{ textAlign: "center", padding: 40 }}>
-      <p>Imagine flow stub</p>
-      <button onClick={onCancel}>Cancel</button>
-    </div>
+    <ComposeShell
+      recipientCandidates={recipientCandidates}
+      phases={phases}
+      onCancel={onCancel}
+      renderBody={(props) => <ImagineBody {...props} sceneAsset={sceneAsset} />}
+      middleSlot={
+        <p style={{ margin: 0, textAlign: "center", opacity: 0.85 }}>
+          {warningCopy}
+        </p>
+      }
+    />
   );
 }
