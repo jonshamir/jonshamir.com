@@ -43,13 +43,13 @@ function FocusDriver({
 
   useEffect(() => {
     announcedDone.current = false;
-    if (phaseId === "awaitingConfirm") {
+    if (phaseId === "awaitingConfirm" || phaseId === "imagining") {
       mode.current = "drift";
       driftBase.current = FOCUS_BLURRY;
-    } else if (phaseId === "active") {
+    } else if (phaseId === "solidifying") {
       mode.current = "solidify";
       solidifyStart.current = tElapsed.current;
-    } else if (phaseId === "warning" || phaseId === "awaitingSend") {
+    } else if (phaseId === "awaitingSend" || phaseId === "warning") {
       mode.current = "static";
       focus.current = FOCUS_CLEAR;
     }

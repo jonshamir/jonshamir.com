@@ -16,6 +16,8 @@ export type ShellPhase = {
   } | null;
   bodyFocused?: boolean;
   showMiddleSlot?: boolean;
+  compactRecipient?: boolean;
+  autoAdvanceMs?: number;
 };
 
 export type ComposeBodyProps = {
@@ -131,6 +133,14 @@ export function ComposeShell({
   const showBody = phase?.showBody ?? false;
   const showButtons = phase?.showButtons ?? false;
   const showMiddle = phase?.showMiddleSlot ?? false;
+  const compactRecipient = phase?.compactRecipient ?? showBody;
+
+  useEffect(() => {
+    if (!phase?.autoAdvanceMs) return;
+    const t = setTimeout(advance, phase.autoAdvanceMs);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phaseIdx, phase?.autoAdvanceMs]);
 
   const recipientH = recipientHMeasured || RECIPIENT_FALLBACK_H;
   const bodyH = bodyHMeasured || BODY_FALLBACK_H;
@@ -203,10 +213,10 @@ export function ComposeShell({
         initial={false}
         animate={{
           y: targets.recipient,
-          opacity: showBody ? 0.9 : 1,
-          fontWeight: showBody ? 500 : 450,
-          letterSpacing: showBody ? "0.02em" : "0em",
-          scale: showBody ? 0.8 : 1
+          opacity: compactRecipient ? 0.9 : 1,
+          fontWeight: compactRecipient ? 500 : 450,
+          letterSpacing: compactRecipient ? "0.02em" : "0em",
+          scale: compactRecipient ? 0.8 : 1
         }}
         transition={layoutTransition()}
         style={{
