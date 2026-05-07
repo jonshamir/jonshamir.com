@@ -109,7 +109,7 @@ export function MessageFlow({
     return () => clearTimeout(t);
   }, [sub, messageIdx, phrasingOptions.length]);
 
-  const recipientText = `Message ${recipientCandidates[recipientIdx]}`;
+  const recipientName = recipientCandidates[recipientIdx];
   const showMessage = sub === "cyclingMessage" || sub === "awaitingSend";
   const showButtons = sub === "awaitingConfirm" || sub === "awaitingSend";
   const buttonsKey = sub === "awaitingConfirm" ? "confirm" : "send";
@@ -201,13 +201,20 @@ export function MessageFlow({
         }}
       >
         <div ref={recipientRef} style={{ display: "inline-block" }}>
-          {!settled ? (
-            <p style={{ margin: 0 }}>{recipientText}</p>
-          ) : (
-            <TextMorph style={{ willChange: "transform" }}>
-              {recipientText}
-            </TextMorph>
-          )}
+          <span>Message </span>
+          <span
+            className={`${styles.recipientName}${
+              sub === "recipient" ? ` ${styles.focused}` : ""
+            }`}
+          >
+            {!settled ? (
+              recipientName
+            ) : (
+              <TextMorph style={{ willChange: "transform" }}>
+                {recipientName}
+              </TextMorph>
+            )}
+          </span>
         </div>
       </motion.div>
 
