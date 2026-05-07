@@ -1,4 +1,4 @@
-type Variant = "primary" | "secondary";
+type Variant = "primary" | "secondary" | "warning";
 
 export function ActionButton({
   label,
