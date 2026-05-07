@@ -131,7 +131,7 @@ export default function ImagineScene({
     <div style={{ width: "100%", height: "100%" }}>
       <ThreeCanvas
         className={styles.scene}
-        camera={{ fov: 50, position: [0, 0, 4], near: 0.01, far: 1000 }}
+        camera={{ fov: 60, position: [0, 0, 6], near: 0.01, far: 1000 }}
         isFullscreen={false}
         grabCursor={false}
       >
