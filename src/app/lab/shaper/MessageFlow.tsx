@@ -8,6 +8,14 @@ import { useMaxWrappedLineCount, useWrappedLines } from "./useWrappedLines";
 
 const MESSAGE_MAX_WIDTH = 320;
 
+function fillerLines(count: number) {
+  const out: React.ReactElement[] = [];
+  for (let i = 0; i < count; i++) {
+    out.push(<div key={i}>&nbsp;</div>);
+  }
+  return out;
+}
+
 const ENTER_SETTLE_MS = 100;
 const OPTION_INTERVAL_MS = 1200;
 const REVEAL_DELAY_MS = 1200;
@@ -226,9 +234,7 @@ export function MessageFlow({
           className={styles.messageText}
           style={{ maxWidth: MESSAGE_MAX_WIDTH }}
         >
-          {Array.from({ length: maxLineCount }, (_, i) => (
-            <div key={i}>&nbsp;</div>
-          ))}
+          {fillerLines(maxLineCount)}
         </div>
       </div>
       {/* Recipient */}
