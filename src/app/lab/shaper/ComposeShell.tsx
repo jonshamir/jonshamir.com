@@ -177,6 +177,12 @@ export function ComposeShell({
     buttons: showButtons ? (visTargets.buttons ?? 0) : (allTargets.buttons ?? 0)
   };
 
+  // Pin recipient near the top of the frame when compact and no body slot
+  // (imagine flow). Compose flow keeps recipient grouped above the message.
+  if (compactRecipient && !showBody) {
+    targets.recipient = 50;
+  }
+
   const layoutTransition = () => ({
     duration: LAYOUT_DURATION,
     ease: LAYOUT_EASE
