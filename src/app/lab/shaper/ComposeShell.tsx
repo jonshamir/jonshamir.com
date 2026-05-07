@@ -1,0 +1,312 @@
+import { AnimatePresence, motion } from "motion/react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
+import { TextMorph } from "torph/react";
+
+import { ActionButton } from "./ActionButton";
+import styles from "./page.module.css";
+
+export type ShellPhase = {
+  id: string;
+  showBody: boolean;
+  showButtons: boolean;
+  primary: {
+    label: string;
+    variant?: "primary" | "secondary" | "warning";
+    onClick: () => void;
+  } | null;
+  bodyFocused?: boolean;
+  showMiddleSlot?: boolean;
+};
+
+export type ComposeBodyProps = {
+  phase: ShellPhase;
+  onAdvance: () => void;
+  measureRef: (el: HTMLElement | null) => void;
+};
+
+const VIEWPORT_H = 470;
+const BUTTONS_H = 56;
+const GROUP_GAP = 18;
+const MESSAGE_BUTTONS_GAP = 32;
+const LAYOUT_DURATION = 0.4;
+const LAYOUT_EASE = [0.25, 0.46, 0.45, 0.94] as const;
+const RECIPIENT_FALLBACK_H = 24;
+const BODY_FALLBACK_H = 80;
+const MIDDLE_FALLBACK_H = 28;
+const ENTER_SETTLE_MS = 100;
+const RECIPIENT_INTERVAL_MS = 1200;
+const REVEAL_DELAY_MS = 1200;
+
+type Key = "recipient" | "body" | "middle" | "buttons";
+
+function useMeasuredHeight() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [h, setH] = useState(0);
+  useEffect(() => {
+    const node = ref.current;
+    if (!node) return;
+    const ro = new ResizeObserver((entries) => {
+      const entry = entries[0];
+      if (entry) setH(entry.contentRect.height);
+    });
+    ro.observe(node);
+    return () => ro.disconnect();
+  }, []);
+  return [ref, h] as const;
+}
+
+function computeTargets(
+  items: Array<{ key: Key; h: number; gapAfter?: number }>
+) {
+  const totalGaps = items
+    .slice(0, -1)
+    .reduce((s, it) => s + (it.gapAfter ?? GROUP_GAP), 0);
+  const groupH = items.reduce((s, it) => s + it.h, 0) + totalGaps;
+  const groupTop = (VIEWPORT_H - groupH) / 2;
+  const result: Partial<Record<Key, number>> = {};
+  let cursor = groupTop;
+  for (const it of items) {
+    result[it.key] = cursor;
+    cursor += it.h + (it.gapAfter ?? GROUP_GAP);
+  }
+  return result;
+}
+
+export function ComposeShell({
+  recipientCandidates,
+  phases,
+  onCancel,
+  renderBody,
+  middleSlot
+}: {
+  recipientCandidates: string[];
+  phases: (advance: () => void) => ShellPhase[];
+  onCancel: () => void;
+  renderBody: (props: ComposeBodyProps) => ReactNode;
+  middleSlot?: ReactNode;
+}) {
+  const [recipientIdx, setRecipientIdx] = useState(0);
+  const [phaseIdx, setPhaseIdx] = useState(-1); // -1 = still cycling recipient
+  const [settled, setSettled] = useState(false);
+
+  const [recipientRef, recipientHMeasured] = useMeasuredHeight();
+  const [bodyMirrorRef, bodyHMeasured] = useMeasuredHeight();
+  const [middleRef, middleHMeasured] = useMeasuredHeight();
+
+  const phasesRef = useRef<ShellPhase[]>([]);
+  const advance = () => {
+    setPhaseIdx((i) =>
+      i < phasesRef.current.length - 1 ? i + 1 : i
+    );
+  };
+  const resolvedPhases = phases(advance);
+  phasesRef.current = resolvedPhases;
+
+  useEffect(() => {
+    const t = setTimeout(() => setSettled(true), ENTER_SETTLE_MS);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (!settled || phaseIdx >= 0) return;
+    if (recipientIdx >= recipientCandidates.length - 1) {
+      const t = setTimeout(() => setPhaseIdx(0), REVEAL_DELAY_MS);
+      return () => clearTimeout(t);
+    }
+    const t = setTimeout(
+      () => setRecipientIdx((i) => i + 1),
+      RECIPIENT_INTERVAL_MS
+    );
+    return () => clearTimeout(t);
+  }, [settled, phaseIdx, recipientIdx, recipientCandidates.length]);
+
+  const phase: ShellPhase | null =
+    phaseIdx >= 0 ? resolvedPhases[phaseIdx] : null;
+  const recipientName = recipientCandidates[recipientIdx];
+  const recipientFocused = phaseIdx < 0;
+
+  const showBody = phase?.showBody ?? false;
+  const showButtons = phase?.showButtons ?? false;
+  const showMiddle = phase?.showMiddleSlot ?? false;
+
+  const recipientH = recipientHMeasured || RECIPIENT_FALLBACK_H;
+  const bodyH = bodyHMeasured || BODY_FALLBACK_H;
+  const middleH = middleHMeasured || MIDDLE_FALLBACK_H;
+
+  const allItems: Array<{ key: Key; h: number; gapAfter?: number }> = [
+    { key: "recipient", h: recipientH },
+    { key: "body", h: bodyH, gapAfter: GROUP_GAP },
+    { key: "middle", h: middleH, gapAfter: GROUP_GAP },
+    { key: "buttons", h: BUTTONS_H }
+  ];
+  const allTargets = computeTargets(allItems);
+
+  const visItems: Array<{ key: Key; h: number; gapAfter?: number }> = [
+    { key: "recipient", h: recipientH }
+  ];
+  if (showBody) {
+    visItems.push({
+      key: "body",
+      h: bodyH,
+      gapAfter: showMiddle || showButtons ? MESSAGE_BUTTONS_GAP : GROUP_GAP
+    });
+  }
+  if (showMiddle) {
+    visItems.push({ key: "middle", h: middleH, gapAfter: GROUP_GAP });
+  }
+  if (showButtons) visItems.push({ key: "buttons", h: BUTTONS_H });
+  const visTargets = computeTargets(visItems);
+
+  const targets: Record<Key, number> = {
+    recipient: visTargets.recipient ?? 0,
+    body: showBody ? (visTargets.body ?? 0) : (allTargets.body ?? 0),
+    middle: showMiddle ? (visTargets.middle ?? 0) : (allTargets.middle ?? 0),
+    buttons: showButtons
+      ? (visTargets.buttons ?? 0)
+      : (allTargets.buttons ?? 0)
+  };
+
+  const layoutTransition = () => ({
+    duration: LAYOUT_DURATION,
+    ease: LAYOUT_EASE
+  });
+
+  return (
+    <motion.div
+      style={{
+        position: "relative",
+        width: "100%",
+        height: "100%",
+        willChange: "transform"
+      }}
+    >
+      {/* Recipient */}
+      <motion.div
+        initial={false}
+        animate={{
+          y: targets.recipient,
+          opacity: showBody ? 0.9 : 1,
+          fontWeight: showBody ? 500 : 450,
+          letterSpacing: showBody ? "0.02em" : "0em",
+          scale: showBody ? 0.8 : 1
+        }}
+        transition={layoutTransition()}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          textAlign: "center",
+          willChange: "transform, opacity"
+        }}
+      >
+        <div ref={recipientRef} style={{ display: "inline-block" }}>
+          <span>Message </span>
+          <span
+            className={`${styles.recipientName}${
+              recipientFocused ? ` ${styles.focused}` : ""
+            }`}
+          >
+            {!settled ? (
+              recipientName
+            ) : (
+              <TextMorph style={{ willChange: "transform" }}>
+                {recipientName}
+              </TextMorph>
+            )}
+          </span>
+        </div>
+      </motion.div>
+
+      {/* Body slot */}
+      <motion.div
+        initial={false}
+        animate={{ y: targets.body }}
+        transition={layoutTransition()}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          willChange: "transform"
+        }}
+      >
+        <AnimatePresence initial={false}>
+          {showBody && phase && (
+            <motion.div
+              key="body"
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
+              transition={{ duration: 0.3 }}
+              ref={(el) => {
+                (bodyMirrorRef as { current: HTMLDivElement | null }).current = el as HTMLDivElement | null;
+              }}
+              style={{ willChange: "transform, opacity, filter" }}
+            >
+              {renderBody({
+                phase,
+                onAdvance: advance,
+                measureRef: (el) => {
+                  (bodyMirrorRef as { current: HTMLDivElement | null }).current = el as HTMLDivElement | null;
+                }
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Middle slot (warning copy etc.) */}
+      <motion.div
+        initial={false}
+        animate={{ y: targets.middle }}
+        transition={layoutTransition()}
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          display: "flex",
+          justifyContent: "center",
+          willChange: "transform"
+        }}
+      >
+        <AnimatePresence initial={false}>
+          {showMiddle && middleSlot && (
+            <motion.div
+              key="middle"
+              ref={middleRef}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
+              transition={{ duration: 0.25 }}
+            >
+              {middleSlot}
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
+
+      {/* Buttons */}
+      <motion.div
+        initial={false}
+        animate={{ y: targets.buttons }}
+        transition={layoutTransition()}
+        className={`${styles.buttonRow}${
+          showButtons ? ` ${styles.buttonRowVisible}` : ""
+        }`}
+      >
+        <ActionButton label="Cancel" variant="secondary" onClick={onCancel} />
+        {phase?.primary && (
+          <ActionButton
+            label={phase.primary.label}
+            variant={phase.primary.variant ?? "primary"}
+            onClick={phase.primary.onClick}
+          />
+        )}
+      </motion.div>
+    </motion.div>
+  );
+}
