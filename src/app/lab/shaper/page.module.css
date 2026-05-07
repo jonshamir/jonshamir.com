@@ -6,13 +6,13 @@
   justify-content: center;
   display: flex;
   flex-direction: column;
-  border-radius: 999px;
   margin: 100px auto;
   padding: 40px 0;
   box-sizing: border-box;
   position: relative;
   color: var(--main-color);
   --main-color: rgb(230, 230, 230);
+  border-radius: 999px;
   /* cursor: none; */
 }
 

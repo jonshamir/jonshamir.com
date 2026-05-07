@@ -241,7 +241,9 @@ export function MessageFlow({
           {showMessage && (
             <motion.div
               key="message"
-              className={styles.messageText}
+              className={`${styles.messageText}${
+                sub === "cyclingMessage" ? ` ${styles.focused}` : ""
+              }`}
               initial={{ height: 0, opacity: 0, filter: "blur(10px)" }}
               animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
