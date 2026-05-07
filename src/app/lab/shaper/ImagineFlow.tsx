@@ -60,12 +60,26 @@ export function ImagineFlow({
       onCancel={onCancel}
       renderBackground={({ phase, advance }) => {
         const visible = phase != null && phase.id !== "awaitingConfirm";
+        const scaled =
+          phase?.showButtons === true && phase?.compactRecipient === true;
         return (
           <motion.div
             initial={false}
-            animate={{ opacity: visible ? 1 : 0 }}
-            transition={{ duration: 0.4, delay: visible ? 0.3 : 0 }}
-            style={{ width: "100%", height: "100%" }}
+            animate={{
+              opacity: visible ? 1 : 0,
+              scale: scaled ? 0.8 : 1,
+              y: scaled ? -25 : 0
+            }}
+            transition={{
+              opacity: { duration: 0.4, delay: visible ? 0.3 : 0 },
+              scale: { duration: 0.4 },
+              y: { duration: 0.4 }
+            }}
+            style={{
+              width: "100%",
+              height: "100%",
+              transformOrigin: "center"
+            }}
           >
             <ImagineScene
               sceneAsset={sceneAsset}

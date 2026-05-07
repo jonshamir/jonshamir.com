@@ -183,6 +183,10 @@ export function ComposeShell({
     targets.recipient = 56;
   }
 
+  if (compactRecipient && !showBody && showButtons) {
+    targets.buttons = VIEWPORT_H - BUTTONS_H - 24;
+  }
+
   const layoutTransition = () => ({
     duration: LAYOUT_DURATION,
     ease: LAYOUT_EASE
