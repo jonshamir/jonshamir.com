@@ -4,7 +4,7 @@ import { TextMorph } from "torph/react";
 
 import { ActionButton } from "./ActionButton";
 import styles from "./page.module.css";
-import { useWrappedLines } from "./useWrappedLines";
+import { useMaxWrappedLineCount, useWrappedLines } from "./useWrappedLines";
 
 const MESSAGE_MAX_WIDTH = 320;
 
@@ -88,6 +88,11 @@ export function MessageFlow({
 
   const messageLines = useWrappedLines(
     phrasingOptions[messageIdx] ?? "",
+    MESSAGE_MAX_WIDTH,
+    messageFont
+  );
+  const maxLineCount = useMaxWrappedLineCount(
+    phrasingOptions,
     MESSAGE_MAX_WIDTH,
     messageFont
   );
@@ -201,8 +206,8 @@ export function MessageFlow({
           className={styles.messageText}
           style={{ maxWidth: MESSAGE_MAX_WIDTH }}
         >
-          {messageLines.map((line, i) => (
-            <div key={i}>{line}</div>
+          {Array.from({ length: maxLineCount }, (_, i) => (
+            <div key={i}>&nbsp;</div>
           ))}
         </div>
       </div>
