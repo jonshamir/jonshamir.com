@@ -68,7 +68,7 @@ export function ImagineFlow({
             animate={{
               opacity: visible ? 1 : 0,
               scale: scaled ? 0.8 : 1,
-              y: scaled ? -25 : 0
+              y: scaled ? -40 : 0
             }}
             transition={{
               opacity: { duration: 0.4, delay: visible ? 0.3 : 0 },

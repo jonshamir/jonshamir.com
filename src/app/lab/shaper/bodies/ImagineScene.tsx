@@ -17,14 +17,15 @@ const NOISE_SPEED = 0.01;
 const NOISE_RISE = 0.04;
 const MAX_SIZE = 0.8;
 
+const SHAPE_END_T = 7.0;
+const SHAPE_FINAL_V = 0.94;
+
 const SHAPE_KEYFRAMES: ReadonlyArray<{ t: number; v: number }> = [
   { t: 0, v: 0 },
   { t: 2.33, v: 0.6 },
   { t: 4.67, v: 0.3 },
-  { t: 7.0, v: 0.9 }
+  { t: SHAPE_END_T, v: SHAPE_FINAL_V }
 ];
-const SHAPE_END_T = 7.0;
-const SHAPE_FINAL_V = 0.94;
 
 function shapeAt(elapsed: number): number {
   if (elapsed <= 0) return SHAPE_KEYFRAMES[0].v;
@@ -111,7 +112,7 @@ function SceneInner({
       <SparkRendererMount />
       <SplatViewer
         url={url}
-        sizeScale={params.sizeScale}
+        sizeScale={params.sizeScale * 1.5}
         noiseAmp={params.noiseAmp}
         noiseFreq={NOISE_FREQ}
         noiseSpeed={NOISE_SPEED}
