@@ -81,7 +81,7 @@ export function ImagineFlow({
               filter: blurred ? "blur(10px)" : "blur(0px)"
             }}
             transition={{
-              opacity: { duration: 0.4, delay: visible ? 0.3 : 0 },
+              opacity: { duration: 0.4, delay: visible && !blurred ? 1 : 0 },
               scale: { duration: 0.4 },
               y: { duration: 0.4 },
               filter: { duration: 0.4 }

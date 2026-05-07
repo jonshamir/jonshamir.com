@@ -17,13 +17,15 @@ const NOISE_SPEED = 0.01;
 const NOISE_RISE = 0.04;
 const MAX_SIZE = 0.8;
 
-const SHAPE_END_T = 7.0;
+const SHAPE_END_T = 10.0;
 const SHAPE_FINAL_V = 0.94;
 
 const SHAPE_KEYFRAMES: ReadonlyArray<{ t: number; v: number }> = [
   { t: 0, v: 0 },
-  { t: 2.33, v: 0.6 },
-  { t: 4.67, v: 0.3 },
+  { t: 2.6, v: 0.35 },
+  { t: 4.1, v: 0.2 },
+  { t: 6.33, v: 0.6 },
+  { t: 7.9, v: 0.4 },
   { t: SHAPE_END_T, v: SHAPE_FINAL_V }
 ];
 
