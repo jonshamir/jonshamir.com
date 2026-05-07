@@ -27,6 +27,8 @@
 .time {
   text-align: center;
   margin: 0;
+  position: relative;
+  z-index: 1;
 
   span {
     vertical-align: 0.1em;

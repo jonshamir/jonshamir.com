@@ -180,7 +180,7 @@ export function ComposeShell({
   // Pin recipient near the top of the frame when compact and no body slot
   // (imagine flow). Compose flow keeps recipient grouped above the message.
   if (compactRecipient && !showBody) {
-    targets.recipient = 50;
+    targets.recipient = 56;
   }
 
   const layoutTransition = () => ({
