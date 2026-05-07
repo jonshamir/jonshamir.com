@@ -135,10 +135,28 @@
 }
 
 .messageText {
+  padding: 0.5rem 1rem;
+
+  /* background-color: rgb(59, 102, 209);
+  border-radius: 999px;
+  border-bottom-left-radius: 0; */
+}
+
+.messageText::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  filter: blur(8px);
+  z-index: -1;
+  transition: all 0.6s;
   background-color: rgb(59, 102, 209);
   padding: 0.5rem 1rem;
   border-radius: 999px;
   border-bottom-left-radius: 0;
+}
+
+.messageText.focused::before {
+  filter: blur(0px);
 }
 
 .buttonRow {

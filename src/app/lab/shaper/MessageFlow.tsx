@@ -251,7 +251,7 @@ export function MessageFlow({
                 filter: { duration: 0.25, delay: MESSAGE_TEXT_DELAY }
               }}
               style={{
-                overflow: "hidden",
+                overflow: "visible",
                 willChange: "transform, opacity, filter"
               }}
             >
