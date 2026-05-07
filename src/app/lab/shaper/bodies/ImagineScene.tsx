@@ -82,7 +82,7 @@ function FocusDriver({
         announcedDone.current = true;
         mode.current = "static";
         focus.current = SHAPE_FINAL_V;
-        onSolidifyDone();
+        setTimeout(onSolidifyDone, 1500);
       }
     }
     onValueChange(focus.current);
