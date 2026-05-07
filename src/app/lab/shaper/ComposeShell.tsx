@@ -180,7 +180,7 @@ export function ComposeShell({
   // Pin recipient near the top of the frame when compact and no body slot
   // (imagine flow). Compose flow keeps recipient grouped above the message.
   if (compactRecipient && !showBody) {
-    targets.recipient = 56;
+    targets.recipient = 48;
   }
 
   if (compactRecipient && !showBody && showButtons) {
@@ -331,23 +331,39 @@ export function ComposeShell({
       </motion.div>
 
       {/* Buttons */}
-      <motion.div
-        initial={false}
-        animate={{ y: targets.buttons }}
-        transition={layoutTransition()}
-        className={`${styles.buttonRow}${
-          showButtons ? ` ${styles.buttonRowVisible}` : ""
-        }`}
-      >
-        <ActionButton label="Cancel" variant="secondary" onClick={onCancel} />
-        {phase?.primary && (
-          <ActionButton
-            label={phase.primary.label}
-            variant={phase.primary.variant ?? "primary"}
-            onClick={phase.primary.onClick}
-          />
+      <AnimatePresence mode="wait" initial={false}>
+        {showButtons && phase && (
+          <motion.div
+            key={phase.id}
+            initial={{
+              opacity: 0,
+              filter: "blur(10px)",
+              y: targets.buttons
+            }}
+            animate={{
+              opacity: 1,
+              filter: "blur(0px)",
+              y: targets.buttons
+            }}
+            exit={{ opacity: 0, filter: "blur(10px)" }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className={styles.buttonRow}
+          >
+            <ActionButton
+              label="Cancel"
+              variant="secondary"
+              onClick={onCancel}
+            />
+            {phase.primary && (
+              <ActionButton
+                label={phase.primary.label}
+                variant={phase.primary.variant ?? "primary"}
+                onClick={phase.primary.onClick}
+              />
+            )}
+          </motion.div>
         )}
-      </motion.div>
+      </AnimatePresence>
     </motion.div>
   );
 }

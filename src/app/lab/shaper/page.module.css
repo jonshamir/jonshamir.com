@@ -169,19 +169,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  filter: blur(10px);
-  pointer-events: none;
-  transition:
-    opacity 0.2s ease-out,
-    filter 0.2s ease-out;
   will-change: opacity, filter, transform;
-}
-
-.buttonRowVisible {
-  opacity: 1;
-  filter: blur(0);
-  pointer-events: auto;
 }
 
 .headerStack {
@@ -209,6 +197,3 @@
   animation: preludePulse 2s ease-in-out infinite;
 }
 
-.container .preludeText:hover::after {
-  /* animation: none; */
-}
