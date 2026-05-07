@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from "motion/react";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import { TextMorph } from "torph/react";
 
 import { ActionButton } from "./ActionButton";
@@ -95,9 +95,7 @@ export function ComposeShell({
 
   const phasesRef = useRef<ShellPhase[]>([]);
   const advance = () => {
-    setPhaseIdx((i) =>
-      i < phasesRef.current.length - 1 ? i + 1 : i
-    );
+    setPhaseIdx((i) => (i < phasesRef.current.length - 1 ? i + 1 : i));
   };
   const resolvedPhases = phases(advance);
   phasesRef.current = resolvedPhases;
@@ -161,9 +159,7 @@ export function ComposeShell({
     recipient: visTargets.recipient ?? 0,
     body: showBody ? (visTargets.body ?? 0) : (allTargets.body ?? 0),
     middle: showMiddle ? (visTargets.middle ?? 0) : (allTargets.middle ?? 0),
-    buttons: showButtons
-      ? (visTargets.buttons ?? 0)
-      : (allTargets.buttons ?? 0)
+    buttons: showButtons ? (visTargets.buttons ?? 0) : (allTargets.buttons ?? 0)
   };
 
   const layoutTransition = () => ({
@@ -242,7 +238,8 @@ export function ComposeShell({
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.3 }}
               ref={(el) => {
-                (bodyMirrorRef as { current: HTMLDivElement | null }).current = el as HTMLDivElement | null;
+                (bodyMirrorRef as { current: HTMLDivElement | null }).current =
+                  el;
               }}
               style={{ willChange: "transform, opacity, filter" }}
             >
@@ -250,7 +247,9 @@ export function ComposeShell({
                 phase,
                 onAdvance: advance,
                 measureRef: (el) => {
-                  (bodyMirrorRef as { current: HTMLDivElement | null }).current = el as HTMLDivElement | null;
+                  (
+                    bodyMirrorRef as { current: HTMLDivElement | null }
+                  ).current = el as HTMLDivElement | null;
                 }
               })}
             </motion.div>

@@ -2,12 +2,9 @@ import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 import { TextMorph } from "torph/react";
 
-import styles from "../page.module.css";
-import {
-  useMaxWrappedLineCount,
-  useWrappedLines
-} from "../useWrappedLines";
 import type { ComposeBodyProps } from "../ComposeShell";
+import styles from "../page.module.css";
+import { useMaxWrappedLineCount, useWrappedLines } from "../useWrappedLines";
 
 const MESSAGE_MAX_WIDTH = 320;
 const MESSAGE_INTERVAL_MS = 1800;

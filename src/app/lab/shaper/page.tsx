@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useControls } from "../../../lib/tweakpane";
 import { FLOW_BY_ID, FLOWS, type StepId } from "./flows";
+import { ImagineFlow } from "./ImagineFlow";
 import { MessageFlow } from "./MessageFlow";
 import styles from "./page.module.css";
 import { Screen } from "./Screen";
@@ -107,10 +108,19 @@ export default function Page() {
               {(stepId === "idle" || stepId === "intentPrelude") && (
                 <IdleView />
               )}
-              {stepId === "compose" && (
+              {stepId === "compose" && flow.kind === "compose" && (
                 <MessageFlow
                   recipientCandidates={flow.recipientCandidates}
-                  phrasingOptions={flow.phrasingOptions}
+                  phrasingOptions={flow.phrasingOptions ?? []}
+                  onCancel={reset}
+                  onSend={() => goTo("sent")}
+                />
+              )}
+              {stepId === "compose" && flow.kind === "imagine" && (
+                <ImagineFlow
+                  recipientCandidates={flow.recipientCandidates}
+                  sceneAsset={flow.sceneAsset ?? ""}
+                  warningCopy={flow.warningCopy ?? ""}
                   onCancel={reset}
                   onSend={() => goTo("sent")}
                 />
