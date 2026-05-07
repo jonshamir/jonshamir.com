@@ -17,13 +17,31 @@ const NOISE_SPEED = 0.01;
 const NOISE_RISE = 0.04;
 const MAX_SIZE = 0.8;
 
-const FOCUS_BLURRY = 0.15;
-const FOCUS_CLEAR = 1.0;
-const DRIFT_AMP = 0.05;
-const DRIFT_PERIOD_S = 6;
-const SOLIDIFY_DURATION_S = 1.6;
+const SHAPE_KEYFRAMES: ReadonlyArray<{ t: number; v: number }> = [
+  { t: 0, v: 0 },
+  { t: 2.33, v: 0.6 },
+  { t: 4.67, v: 0.3 },
+  { t: 7.0, v: 0.9 }
+];
+const SHAPE_END_T = 7.0;
+const SHAPE_FINAL_V = 0.94;
 
-type Mode = "drift" | "solidify" | "static";
+function shapeAt(elapsed: number): number {
+  if (elapsed <= 0) return SHAPE_KEYFRAMES[0].v;
+  if (elapsed >= SHAPE_END_T) return SHAPE_FINAL_V;
+  for (let i = 1; i < SHAPE_KEYFRAMES.length; i++) {
+    const a = SHAPE_KEYFRAMES[i - 1];
+    const b = SHAPE_KEYFRAMES[i];
+    if (elapsed <= b.t) {
+      const p = (elapsed - a.t) / (b.t - a.t);
+      const eased = 0.5 - 0.5 * Math.cos(Math.PI * p); // smoothstep
+      return a.v + (b.v - a.v) * eased;
+    }
+  }
+  return SHAPE_FINAL_V;
+}
+
+type Mode = "static" | "shaping";
 
 function FocusDriver({
   phaseId,
@@ -34,44 +52,36 @@ function FocusDriver({
   onSolidifyDone: () => void;
   onValueChange: (v: number) => void;
 }) {
-  const focus = useRef(FOCUS_BLURRY);
-  const mode = useRef<Mode>("drift");
-  const solidifyStart = useRef(0);
-  const driftBase = useRef(FOCUS_BLURRY);
+  const focus = useRef(0);
+  const mode = useRef<Mode>("static");
+  const shapeStart = useRef(0);
   const tElapsed = useRef(0);
   const announcedDone = useRef(false);
 
   useEffect(() => {
     announcedDone.current = false;
-    if (phaseId === "awaitingConfirm" || phaseId === "imagining") {
-      mode.current = "drift";
-      driftBase.current = FOCUS_BLURRY;
-    } else if (phaseId === "solidifying") {
-      mode.current = "solidify";
-      solidifyStart.current = tElapsed.current;
+    if (phaseId === "solidifying") {
+      mode.current = "shaping";
+      shapeStart.current = tElapsed.current;
     } else if (phaseId === "awaitingSend" || phaseId === "warning") {
       mode.current = "static";
-      focus.current = FOCUS_CLEAR;
+      focus.current = SHAPE_FINAL_V;
+    } else {
+      // "awaitingConfirm" or anything else — scene is hidden, hold at 0
+      mode.current = "static";
+      focus.current = 0;
     }
   }, [phaseId]);
 
   useFrame((_, delta) => {
     tElapsed.current += delta;
-    if (mode.current === "drift") {
-      const t = tElapsed.current;
-      focus.current =
-        driftBase.current +
-        Math.sin((t / DRIFT_PERIOD_S) * Math.PI * 2) * DRIFT_AMP;
-    } else if (mode.current === "solidify") {
-      const elapsed = tElapsed.current - solidifyStart.current;
-      const p = Math.min(elapsed / SOLIDIFY_DURATION_S, 1);
-      const eased = 1 - Math.pow(1 - p, 3); // cubic ease-out
-      const start = FOCUS_BLURRY;
-      focus.current = start + (FOCUS_CLEAR - start) * eased;
-      if (p >= 1 && !announcedDone.current) {
+    if (mode.current === "shaping") {
+      const elapsed = tElapsed.current - shapeStart.current;
+      focus.current = shapeAt(elapsed);
+      if (elapsed >= SHAPE_END_T && !announcedDone.current) {
         announcedDone.current = true;
         mode.current = "static";
-        focus.current = FOCUS_CLEAR;
+        focus.current = SHAPE_FINAL_V;
         onSolidifyDone();
       }
     }
@@ -90,7 +100,7 @@ function SceneInner({
   phaseId: string;
   onSolidifyDone: () => void;
 }) {
-  const [params, setParams] = useState(() => mapFocus(FOCUS_BLURRY));
+  const [params, setParams] = useState(() => mapFocus(0));
   return (
     <>
       <FocusDriver

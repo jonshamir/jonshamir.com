@@ -30,14 +30,6 @@ export function ImagineFlow({
       primary: { label: "Confirm", variant: "primary", onClick: advance }
     },
     {
-      id: "imagining",
-      showBody: false,
-      showButtons: false,
-      primary: null,
-      compactRecipient: true,
-      autoAdvanceMs: 1500
-    },
-    {
       id: "solidifying",
       showBody: false,
       showButtons: false,
