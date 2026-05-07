@@ -1,5 +1,12 @@
-import { ImagineBody } from "./bodies/ImagineBody";
+"use client";
+
+import dynamic from "next/dynamic";
+
 import { ComposeShell, type ShellPhase } from "./ComposeShell";
+
+const ImagineScene = dynamic(() => import("./bodies/ImagineScene"), {
+  ssr: false
+});
 
 export function ImagineFlow({
   recipientCandidates,
@@ -17,27 +24,26 @@ export function ImagineFlow({
   const phases = (advance: () => void): ShellPhase[] => [
     {
       id: "awaitingConfirm",
-      showBody: true,
+      showBody: false,
       showButtons: true,
       primary: { label: "Confirm", variant: "primary", onClick: advance }
     },
     {
       id: "active",
-      showBody: true,
+      showBody: false,
       showButtons: false,
-      primary: null,
-      bodyFocused: true
+      primary: null
     },
     {
       id: "warning",
-      showBody: true,
+      showBody: false,
       showButtons: true,
       showMiddleSlot: true,
       primary: { label: "Confirm", variant: "warning", onClick: advance }
     },
     {
       id: "awaitingSend",
-      showBody: true,
+      showBody: false,
       showButtons: true,
       primary: { label: "Send", variant: "primary", onClick: onSend }
     }
@@ -48,7 +54,13 @@ export function ImagineFlow({
       recipientCandidates={recipientCandidates}
       phases={phases}
       onCancel={onCancel}
-      renderBody={(props) => <ImagineBody {...props} sceneAsset={sceneAsset} />}
+      renderBackground={({ phase, advance }) => (
+        <ImagineScene
+          sceneAsset={sceneAsset}
+          phaseId={phase?.id ?? "awaitingConfirm"}
+          onAdvance={advance}
+        />
+      )}
       middleSlot={
         <p style={{ margin: 0, textAlign: "center", opacity: 0.85 }}>
           {warningCopy}

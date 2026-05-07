@@ -77,12 +77,17 @@ export function ComposeShell({
   phases,
   onCancel,
   renderBody,
+  renderBackground,
   middleSlot
 }: {
   recipientCandidates: string[];
   phases: (advance: () => void) => ShellPhase[];
   onCancel: () => void;
-  renderBody: (props: ComposeBodyProps) => ReactNode;
+  renderBody?: (props: ComposeBodyProps) => ReactNode;
+  renderBackground?: (args: {
+    phase: ShellPhase | null;
+    advance: () => void;
+  }) => ReactNode;
   middleSlot?: ReactNode;
 }) {
   const [recipientIdx, setRecipientIdx] = useState(0);
@@ -176,6 +181,23 @@ export function ComposeShell({
         willChange: "transform"
       }}
     >
+      {renderBackground && (
+        <div
+          style={{
+            position: "absolute",
+            top: -40,
+            bottom: -40,
+            left: -32,
+            right: -32,
+            zIndex: -1,
+            borderRadius: 999,
+            overflow: "hidden",
+            pointerEvents: "none"
+          }}
+        >
+          {renderBackground({ phase, advance })}
+        </div>
+      )}
       {/* Recipient */}
       <motion.div
         initial={false}
@@ -230,7 +252,7 @@ export function ComposeShell({
         }}
       >
         <AnimatePresence initial={false}>
-          {showBody && phase && (
+          {showBody && phase && renderBody && (
             <motion.div
               key="body"
               initial={{ opacity: 0, filter: "blur(10px)" }}

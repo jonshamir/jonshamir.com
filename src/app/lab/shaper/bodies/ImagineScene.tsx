@@ -1,5 +1,6 @@
 "use client";
 
+import { OrbitControls } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useRef, useState } from "react";
 import { Color } from "three";
@@ -8,9 +9,9 @@ import { ThreeCanvas } from "../../../../components/ThreeCanvas/ThreeCanvas";
 import { mapFocus } from "../../point-cloud/focusMapping";
 import { SparkRendererMount } from "../../point-cloud/SparkRendererMount";
 import { SplatViewer } from "../../point-cloud/SplatViewer";
-import type { ShellPhase } from "../ComposeShell";
+import styles from "./ImagineScene.module.css";
 
-const BG = "#1e1e1e";
+const BG = "#000000";
 const NOISE_FREQ = 0.18;
 const NOISE_SPEED = 0.01;
 const NOISE_RISE = 0.04;
@@ -118,25 +119,34 @@ function SceneInner({
 
 export default function ImagineScene({
   sceneAsset,
-  phase,
+  phaseId,
   onAdvance
 }: {
   sceneAsset: string;
-  phase: ShellPhase;
+  phaseId: string;
   onAdvance: () => void;
 }) {
   const bg = new Color(BG);
   return (
-    <div style={{ width: 280, height: 220 }}>
+    <div style={{ width: "100%", height: "100%" }}>
       <ThreeCanvas
+        className={styles.scene}
         camera={{ fov: 50, position: [0, 0, 4], near: 0.01, far: 1000 }}
         isFullscreen={false}
         grabCursor={false}
       >
         <color attach="background" args={[bg.r, bg.g, bg.b]} />
+        <OrbitControls
+          makeDefault
+          autoRotate
+          autoRotateSpeed={0.6}
+          enableRotate={false}
+          enableZoom={false}
+          enablePan={false}
+        />
         <SceneInner
           url={sceneAsset}
-          phaseId={phase.id}
+          phaseId={phaseId}
           onSolidifyDone={onAdvance}
         />
       </ThreeCanvas>
