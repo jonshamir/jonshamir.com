@@ -196,10 +196,10 @@
 @keyframes preludePulse {
   0%,
   100% {
-    background-color: rgba(230, 230, 230, 0.1);
+    background-color: rgba(230, 230, 230, 0.15);
   }
   50% {
-    background-color: rgba(230, 230, 230, 0.2);
+    background-color: rgba(230, 230, 230, 0.3);
   }
 }
 
