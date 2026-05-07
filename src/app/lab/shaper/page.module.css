@@ -108,9 +108,8 @@
 .recipientName {
   position: relative;
   padding: 0;
-  font-weight: 500;
+  font-weight: inherit;
   transition: all 0.3s;
-  font-weight: normal;
 }
 
 .recipientName.focused {

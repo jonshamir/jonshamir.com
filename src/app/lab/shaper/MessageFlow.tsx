@@ -185,11 +185,16 @@ export function MessageFlow({
           <span>{phrasingOptions[messageIdx]}</span>
         </div>
       </div>
-
       {/* Recipient */}
       <motion.div
         initial={false}
-        animate={{ y: targets.recipient, opacity: showMessage ? 0.5 : 1 }}
+        animate={{
+          y: targets.recipient,
+          opacity: showMessage ? 0.9 : 1,
+          fontWeight: showMessage ? 500 : 450,
+          letterSpacing: showMessage ? "0.02em" : "0em",
+          scale: showMessage ? 0.8 : 1
+        }}
         transition={layoutTransition("recipient")}
         style={{
           position: "absolute",
@@ -217,7 +222,6 @@ export function MessageFlow({
           </span>
         </div>
       </motion.div>
-
       {/* Message */}
       <motion.div
         initial={false}
@@ -258,7 +262,6 @@ export function MessageFlow({
           )}
         </AnimatePresence>
       </motion.div>
-
       {/* Buttons */}
       <motion.div
         initial={false}
