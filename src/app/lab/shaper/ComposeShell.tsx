@@ -253,12 +253,13 @@ export function ComposeShell({
                 transition={{ duration: 0.3 }}
                 style={{
                   position: "relative",
-                  width: 96,
-                  height: 96,
+                  width: 110,
+                  height: 110,
                   margin: "0 auto 18px",
                   borderRadius: 999,
                   overflow: "hidden",
-                  willChange: "opacity, filter"
+                  willChange: "opacity, filter",
+                  backgroundColor: "#555"
                 }}
               >
                 <AnimatePresence initial={false}>
@@ -269,10 +270,29 @@ export function ComposeShell({
                         key={recipientName}
                         initial={{ opacity: 0, filter: "blur(12px)" }}
                         animate={{ opacity: 1, filter: "blur(0px)" }}
-                        exit={{ opacity: 0, filter: "blur(12px)" }}
+                        exit={{
+                          opacity: 0,
+                          filter: "blur(12px)",
+                          transition: {
+                            filter: { duration: 0.35, ease: LAYOUT_EASE },
+                            opacity: {
+                              duration: 0.2,
+                              delay: 0.2,
+                              ease: LAYOUT_EASE
+                            }
+                          }
+                        }}
                         transition={{
-                          duration: 0.4,
-                          ease: LAYOUT_EASE
+                          filter: {
+                            duration: 0.4,
+                            delay: 0.25,
+                            ease: LAYOUT_EASE
+                          },
+                          opacity: {
+                            duration: 0.25,
+                            delay: 0.3,
+                            ease: LAYOUT_EASE
+                          }
                         }}
                         style={{
                           position: "absolute",
@@ -285,8 +305,11 @@ export function ComposeShell({
                             src={img}
                             alt=""
                             fill
-                            sizes="96px"
-                            style={{ objectFit: "cover" }}
+                            sizes="110px"
+                            style={{
+                              objectFit: "cover",
+                              transform: "scale(1.15)"
+                            }}
                           />
                         )}
                       </motion.div>
