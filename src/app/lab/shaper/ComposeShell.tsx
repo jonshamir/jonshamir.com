@@ -255,18 +255,37 @@ export function ComposeShell({
             {!compactRecipient && (
               <motion.div
                 key="avatar"
-                initial={{ opacity: 0, filter: "blur(12px)" }}
-                animate={{ opacity: 1, filter: "blur(0px)" }}
-                exit={{ opacity: 0, filter: "blur(12px)" }}
-                transition={{ duration: 0.3 }}
+                initial={{
+                  opacity: 0,
+                  filter: "blur(12px)",
+                  height: 0,
+                  marginBottom: 0
+                }}
+                animate={{
+                  opacity: 1,
+                  filter: "blur(0px)",
+                  height: 110,
+                  marginBottom: 18
+                }}
+                exit={{
+                  opacity: 0,
+                  filter: "blur(12px)",
+                  height: 0,
+                  marginBottom: 0
+                }}
+                transition={{
+                  opacity: { duration: 0.3 },
+                  filter: { duration: 0.3 },
+                  height: { duration: LAYOUT_DURATION, ease: LAYOUT_EASE },
+                  marginBottom: { duration: LAYOUT_DURATION, ease: LAYOUT_EASE }
+                }}
                 style={{
                   position: "relative",
                   width: 110,
-                  height: 110,
-                  margin: "0 auto 18px",
+                  margin: "0 auto",
                   borderRadius: 999,
                   overflow: "hidden",
-                  willChange: "opacity, filter",
+                  willChange: "opacity, filter, height",
                   backgroundColor: "#555"
                 }}
               >
