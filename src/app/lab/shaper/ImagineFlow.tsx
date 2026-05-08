@@ -121,8 +121,8 @@ export function ImagineFlow({
               <div
                 style={{
                   position: "relative",
-                  width: 64,
-                  height: 64,
+                  width: 96,
+                  height: 96,
                   borderRadius: 999,
                   overflow: "hidden",
                   backgroundColor: "#555"
@@ -132,12 +132,19 @@ export function ImagineFlow({
                   src={img}
                   alt=""
                   fill
-                  sizes="64px"
+                  sizes="96px"
                   style={{ objectFit: "cover", transform: "scale(1.15)" }}
                 />
               </div>
             )}
-            <p style={{ margin: 0, textAlign: "center", opacity: 0.85 }}>
+            <p
+              style={{
+                margin: 0,
+                textAlign: "center",
+                opacity: 0.85,
+                whiteSpace: "pre-line"
+              }}
+            >
               {warningCopy}
             </p>
           </div>
