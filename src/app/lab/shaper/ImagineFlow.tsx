@@ -6,6 +6,7 @@ import Image from "next/image";
 
 import { ComposeShell, type ShellPhase } from "./ComposeShell";
 import { getContactImage } from "./contactImages";
+import styles from "./page.module.css";
 
 const ImagineScene = dynamic(() => import("./bodies/ImagineScene"), {
   ssr: false
@@ -119,6 +120,7 @@ export function ImagineFlow({
           >
             {img && (
               <div
+                className={styles.warning}
                 style={{
                   position: "relative",
                   width: 96,

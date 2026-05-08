@@ -197,3 +197,30 @@
   animation: preludePulse 2s ease-in-out infinite;
 }
 
+.warning {
+  filter: drop-shadow(0 0 36px rgba(255, 90, 30, 0.55))
+    drop-shadow(0 0 60px rgba(255, 140, 50, 0.4))
+    drop-shadow(0 0 90px rgba(220, 50, 20, 0.45));
+  animation: warningGlow 5s ease-in-out infinite;
+  will-change: filter;
+}
+
+@keyframes warningGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 -8px 36px rgba(255, 90, 30, 0.55))
+      drop-shadow(10px 6px 60px rgba(255, 140, 50, 0.4))
+      drop-shadow(-12px 4px 90px rgba(220, 50, 20, 0.45));
+  }
+  33% {
+    filter: drop-shadow(8px 4px 50px rgba(255, 90, 30, 0.65))
+      drop-shadow(-6px -10px 40px rgba(255, 140, 50, 0.35))
+      drop-shadow(0 12px 110px rgba(220, 50, 20, 0.55));
+  }
+  66% {
+    filter: drop-shadow(-10px 6px 28px rgba(255, 90, 30, 0.45))
+      drop-shadow(4px -8px 80px rgba(255, 140, 50, 0.55))
+      drop-shadow(8px 0 70px rgba(220, 50, 20, 0.35));
+  }
+}
+
