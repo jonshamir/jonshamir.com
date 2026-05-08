@@ -18,7 +18,12 @@ export const FLOWS: Flow[] = [
     id: "imagine-michael",
     label: "Imagine to Michael",
     kind: "imagine",
-    recipientCandidates: ["Samantha Gauss", "Leonard E.", "Michael Lambert"],
+    recipientCandidates: [
+      "Select contact...",
+      "Samantha Gauss",
+      "Leonard E.",
+      "Michael Lambert"
+    ],
     sceneAsset: "/lab/point-cloud/Bonsai Tree.sog",
     warningCopy: "Michael's capacity is low. send anyway?",
     steps: ["idle", "intentPrelude", "compose", "sent"]
@@ -27,7 +32,12 @@ export const FLOWS: Flow[] = [
     id: "message-michael",
     label: "Message Michael",
     kind: "compose",
-    recipientCandidates: ["Mom", "Mike M.", "Michael Lambert"],
+    recipientCandidates: [
+      "Select contact...",
+      "Mom",
+      "Mike M.",
+      "Michael Lambert"
+    ],
     phrasingOptions: [
       "Wanna meet today for coffee?",
       "Wanna meet later today in Marylebone?",

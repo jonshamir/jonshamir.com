@@ -49,6 +49,7 @@ export function ImagineFlow({
       showButtons: false,
       primary: null,
       compactRecipient: true,
+      hideRecipient: true,
       autoAdvanceMs: 1000
     },
     {
@@ -57,7 +58,8 @@ export function ImagineFlow({
       showButtons: true,
       showMiddleSlot: true,
       primary: { label: "Confirm", variant: "warning", onClick: onSend },
-      compactRecipient: true
+      compactRecipient: true,
+      hideRecipient: true
     }
   ];
 

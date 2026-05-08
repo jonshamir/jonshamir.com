@@ -17,6 +17,7 @@ export type ShellPhase = {
   bodyFocused?: boolean;
   showMiddleSlot?: boolean;
   compactRecipient?: boolean;
+  hideRecipient?: boolean;
   autoAdvanceMs?: number;
 };
 
@@ -223,10 +224,11 @@ export function ComposeShell({
         initial={false}
         animate={{
           y: targets.recipient,
-          opacity: compactRecipient ? 0.9 : 1,
+          opacity: phase?.hideRecipient ? 0 : compactRecipient ? 0.9 : 1,
           fontWeight: compactRecipient ? 500 : 450,
           letterSpacing: compactRecipient ? "0.02em" : "0em",
-          scale: compactRecipient ? 0.8 : 1
+          scale: compactRecipient ? 0.8 : 1,
+          filter: phase?.hideRecipient ? "blur(10px)" : "blur(0px)"
         }}
         transition={layoutTransition()}
         style={{
