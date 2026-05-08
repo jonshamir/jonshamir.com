@@ -25,7 +25,7 @@ export const FLOWS: Flow[] = [
       "Michael Lambert"
     ],
     sceneAsset: "/lab/point-cloud/Bonsai Tree.sog",
-    warningCopy: "Michael's capacity is low. send anyway?",
+    warningCopy: "Michael's capacity is low.\nSend anyway?",
     steps: ["idle", "intentPrelude", "compose", "sent"]
   },
   {

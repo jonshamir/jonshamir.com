@@ -1,6 +1,12 @@
 import { AnimatePresence, motion } from "motion/react";
 import Image from "next/image";
-import { type ReactNode, useEffect, useRef, useState } from "react";
+import {
+  type ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { TextMorph } from "torph/react";
 
 import { ActionButton } from "./ActionButton";
@@ -45,17 +51,21 @@ const REVEAL_DELAY_MS = 1200;
 type Key = "recipient" | "body" | "middle" | "buttons";
 
 function useMeasuredHeight() {
-  const ref = useRef<HTMLDivElement>(null);
   const [h, setH] = useState(0);
-  useEffect(() => {
-    const node = ref.current;
-    if (!node) return;
+  const observerRef = useRef<ResizeObserver | null>(null);
+  const ref = useCallback((node: HTMLDivElement | null) => {
+    observerRef.current?.disconnect();
+    if (!node) {
+      observerRef.current = null;
+      return;
+    }
     const ro = new ResizeObserver((entries) => {
       const entry = entries[0];
       if (entry) setH(entry.contentRect.height);
     });
     ro.observe(node);
-    return () => ro.disconnect();
+    observerRef.current = ro;
+    setH(node.getBoundingClientRect().height);
   }, []);
   return [ref, h] as const;
 }
@@ -286,7 +296,7 @@ export function ComposeShell({
                   borderRadius: 999,
                   overflow: "hidden",
                   willChange: "opacity, filter, height",
-                  backgroundColor: "#555"
+                  backgroundColor: "#3A3A3A"
                 }}
               >
                 <AnimatePresence initial={false}>
@@ -386,20 +396,13 @@ export function ComposeShell({
               animate={{ opacity: 1, filter: "blur(0px)" }}
               exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{ duration: 0.3 }}
-              ref={(el) => {
-                (bodyMirrorRef as { current: HTMLDivElement | null }).current =
-                  el;
-              }}
+              ref={bodyMirrorRef}
               style={{ willChange: "transform, opacity, filter" }}
             >
               {renderBody({
                 phase,
                 onAdvance: advance,
-                measureRef: (el) => {
-                  (
-                    bodyMirrorRef as { current: HTMLDivElement | null }
-                  ).current = el as HTMLDivElement | null;
-                }
+                measureRef: bodyMirrorRef
               })}
             </motion.div>
           )}

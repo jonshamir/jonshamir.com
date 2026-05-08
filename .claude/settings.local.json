@@ -34,7 +34,8 @@
       "Bash(bunx @playcanvas/splat-transform \"public/lab/point-cloud/Windmill.sog\" -m null)",
       "Bash(git -C /Users/jonshamir/Documents/Projects/jonshamir.com/jonshamir.com add src/app/lab/shaper/bodies/MessageBody.tsx)",
       "Bash(git -C /Users/jonshamir/Documents/Projects/jonshamir.com/jonshamir.com commit -m ' *)",
-      "Bash(bunx eslint *)"
+      "Bash(bunx eslint *)",
+      "Bash(bun tsc *)"
     ],
     "deny": []
   }

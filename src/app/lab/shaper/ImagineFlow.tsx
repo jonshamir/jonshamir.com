@@ -2,8 +2,10 @@
 
 import { motion } from "motion/react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 import { ComposeShell, type ShellPhase } from "./ComposeShell";
+import { getContactImage } from "./contactImages";
 
 const ImagineScene = dynamic(() => import("./bodies/ImagineScene"), {
   ssr: false
@@ -102,11 +104,45 @@ export function ImagineFlow({
           </motion.div>
         );
       }}
-      middleSlot={
-        <p style={{ margin: 0, textAlign: "center", opacity: 0.85 }}>
-          {warningCopy}
-        </p>
-      }
+      middleSlot={(() => {
+        const recipientName =
+          recipientCandidates[recipientCandidates.length - 1] ?? "";
+        const img = getContactImage(recipientName);
+        return (
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 12
+            }}
+          >
+            {img && (
+              <div
+                style={{
+                  position: "relative",
+                  width: 64,
+                  height: 64,
+                  borderRadius: 999,
+                  overflow: "hidden",
+                  backgroundColor: "#555"
+                }}
+              >
+                <Image
+                  src={img}
+                  alt=""
+                  fill
+                  sizes="64px"
+                  style={{ objectFit: "cover", transform: "scale(1.15)" }}
+                />
+              </div>
+            )}
+            <p style={{ margin: 0, textAlign: "center", opacity: 0.85 }}>
+              {warningCopy}
+            </p>
+          </div>
+        );
+      })()}
     />
   );
 }
