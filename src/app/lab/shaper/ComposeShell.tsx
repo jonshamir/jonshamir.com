@@ -133,6 +133,14 @@ export function ComposeShell({
   const recipientName = recipientCandidates[recipientIdx];
   const recipientFocused = phaseIdx < 0;
 
+  // Delay the text morph slightly so it lines up with the new image
+  // arriving during the avatar cross-fade.
+  const [displayName, setDisplayName] = useState(recipientName);
+  useEffect(() => {
+    const t = setTimeout(() => setDisplayName(recipientName), 100);
+    return () => clearTimeout(t);
+  }, [recipientName]);
+
   const showBody = phase?.showBody ?? false;
   const showButtons = phase?.showButtons ?? false;
   const showMiddle = phase?.showMiddleSlot ?? false;
@@ -285,12 +293,12 @@ export function ComposeShell({
                         transition={{
                           filter: {
                             duration: 0.4,
-                            delay: 0.25,
+                            delay: 0.12,
                             ease: LAYOUT_EASE
                           },
                           opacity: {
                             duration: 0.25,
-                            delay: 0.3,
+                            delay: 0.15,
                             ease: LAYOUT_EASE
                           }
                         }}
@@ -326,10 +334,10 @@ export function ComposeShell({
             }`}
           >
             {!settled ? (
-              recipientName
+              displayName
             ) : (
               <TextMorph style={{ willChange: "transform" }}>
-                {recipientName}
+                {displayName}
               </TextMorph>
             )}
           </span>
