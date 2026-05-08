@@ -413,7 +413,7 @@ export function ComposeShell({
       <motion.div
         initial={false}
         animate={{ y: targets.middle }}
-        transition={layoutTransition()}
+        transition={{ ...layoutTransition(), y: { duration: 0 } }}
         style={{
           position: "absolute",
           top: 0,
@@ -456,7 +456,11 @@ export function ComposeShell({
               y: targets.buttons
             }}
             exit={{ opacity: 0, filter: "blur(10px)" }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
+            transition={{
+              duration: 0.25,
+              ease: "easeOut",
+              ...(showMiddle ? { y: { duration: 0 } } : {})
+            }}
             className={styles.buttonRow}
           >
             <ActionButton
