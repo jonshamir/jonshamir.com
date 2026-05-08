@@ -8,6 +8,7 @@ export type Flow = {
   kind: FlowKind;
   recipientCandidates: string[];
   steps: StepId[];
+  preludeLabel: string;
   phrasingOptions?: string[];
   sceneAsset?: string;
   warningCopy?: string;
@@ -26,6 +27,7 @@ export const FLOWS: Flow[] = [
     ],
     sceneAsset: "/lab/point-cloud/Bonsai Tree.sog",
     warningCopy: "Michael's capacity is low.\nSend anyway?",
+    preludeLabel: "Send scene",
     steps: ["idle", "intentPrelude", "compose", "sent"]
   },
   {
@@ -45,6 +47,7 @@ export const FLOWS: Flow[] = [
       "Want to meet later today in Marylebone for coffee at special guests, 14:30?",
       "Want to meet later today in Marylebone for coffee at special guests at 15:00?"
     ],
+    preludeLabel: "Send message",
     steps: ["idle", "intentPrelude", "compose", "sent"]
   }
 ];

@@ -89,7 +89,7 @@ export default function Page() {
                 transition={{ duration: 0.3 }}
                 style={{ willChange: "opacity, filter" }}
               >
-                Send message
+                {flow.preludeLabel}
               </motion.button>
             )}
           </AnimatePresence>
