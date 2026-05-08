@@ -1,8 +1,10 @@
 import { AnimatePresence, motion } from "motion/react";
+import Image from "next/image";
 import { type ReactNode, useEffect, useRef, useState } from "react";
 import { TextMorph } from "torph/react";
 
 import { ActionButton } from "./ActionButton";
+import { getContactImage } from "./contactImages";
 import styles from "./page.module.css";
 
 export type ShellPhase = {
@@ -241,6 +243,59 @@ export function ComposeShell({
         }}
       >
         <div ref={recipientRef} style={{ display: "inline-block" }}>
+          <AnimatePresence initial={false}>
+            {!compactRecipient && (
+              <motion.div
+                key="avatar"
+                initial={{ opacity: 0, filter: "blur(12px)" }}
+                animate={{ opacity: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, filter: "blur(12px)" }}
+                transition={{ duration: 0.3 }}
+                style={{
+                  position: "relative",
+                  width: 96,
+                  height: 96,
+                  margin: "0 auto 18px",
+                  borderRadius: 999,
+                  overflow: "hidden",
+                  willChange: "opacity, filter"
+                }}
+              >
+                <AnimatePresence initial={false}>
+                  {(() => {
+                    const img = getContactImage(recipientName);
+                    return (
+                      <motion.div
+                        key={recipientName}
+                        initial={{ opacity: 0, filter: "blur(12px)" }}
+                        animate={{ opacity: 1, filter: "blur(0px)" }}
+                        exit={{ opacity: 0, filter: "blur(12px)" }}
+                        transition={{
+                          duration: 0.4,
+                          ease: LAYOUT_EASE
+                        }}
+                        style={{
+                          position: "absolute",
+                          inset: 0,
+                          willChange: "opacity, filter"
+                        }}
+                      >
+                        {img && (
+                          <Image
+                            src={img}
+                            alt=""
+                            fill
+                            sizes="96px"
+                            style={{ objectFit: "cover" }}
+                          />
+                        )}
+                      </motion.div>
+                    );
+                  })()}
+                </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
           <span>Message </span>
           <span
             className={`${styles.recipientName}${
