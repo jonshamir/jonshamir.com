@@ -34,7 +34,7 @@ export function useControls(
 
     const root: FolderApi = folderName
       ? pane.addFolder({ title: folderName, expanded: !folderOpts?.collapsed })
-      : (pane as unknown as FolderApi);
+      : pane;
 
     const disposers: Array<() => void> = [];
     bindSchema(

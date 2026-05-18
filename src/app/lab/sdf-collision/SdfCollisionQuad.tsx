@@ -117,11 +117,11 @@ export function SdfCollisionQuad({
       mouseRef.current.down = false;
     };
 
-    target.addEventListener("pointermove", onMove as EventListener);
+    target.addEventListener("pointermove", onMove);
     target.addEventListener("pointerdown", onDown);
     target.addEventListener("pointerup", onUp);
     return () => {
-      target.removeEventListener("pointermove", onMove as EventListener);
+      target.removeEventListener("pointermove", onMove);
       target.removeEventListener("pointerdown", onDown);
       target.removeEventListener("pointerup", onUp);
     };

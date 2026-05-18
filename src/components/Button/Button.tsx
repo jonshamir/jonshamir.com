@@ -23,8 +23,7 @@ export const Button = ({
     styles.button,
     styles[variant],
     round && styles.round,
-    className,
-    style
+    className
   ]
     .filter(Boolean)
     .join(" ");

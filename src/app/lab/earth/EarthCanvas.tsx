@@ -20,7 +20,7 @@ function MeshSelect({
       {Object.values(BaseMesh).map((key) => (
         <button
           key={key}
-          onClick={() => onChange(key as BaseMesh)}
+          onClick={() => onChange(key)}
           className={value === key ? styles.selected : ""}
         >
           <img alt={key} src={`/models/${key}.svg`} />
