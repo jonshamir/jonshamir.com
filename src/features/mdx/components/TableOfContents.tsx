@@ -29,7 +29,6 @@ export function TableOfContents() {
   const [tocItems, setTocItems] = useState<TocItem[]>([]);
   const [activeId, setActiveId] = useState<string>("");
   const tocItemsRef = useRef<TocItem[]>([]);
-  const tocRef = useRef<HTMLElement>(null);
 
   // Heading collection
   useEffect(() => {
@@ -98,59 +97,12 @@ export function TableOfContents() {
     return () => observer.disconnect();
   }, [tocItems]);
 
-  // Fade labels when wide/full grid items overlap the TOC
-  useEffect(() => {
-    const tocEl = tocRef.current;
-    if (!tocEl) return;
-
-    const overlapping = new Set<Element>();
-
-    const createObserver = () => {
-      const tocRect = tocEl.getBoundingClientRect();
-      const topClip = Math.floor(tocRect.top);
-      const bottomClip = Math.floor(window.innerHeight - tocRect.bottom);
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) overlapping.add(entry.target);
-            else overlapping.delete(entry.target);
-          }
-          tocEl.toggleAttribute("data-faded", overlapping.size > 0);
-        },
-        { rootMargin: `-${topClip}px 0px -${bottomClip}px 0px` }
-      );
-
-      document
-        .querySelectorAll(".grid-wide, .grid-full, .cover")
-        .forEach((el) => {
-          observer.observe(el);
-        });
-
-      return observer;
-    };
-
-    let observer = createObserver();
-
-    const onResize = () => {
-      observer.disconnect();
-      overlapping.clear();
-      observer = createObserver();
-    };
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener("resize", onResize);
-    };
-  }, [tocItems]);
-
   if (tocItems.length === 0) {
     return null;
   }
 
   return (
-    <nav ref={tocRef} className={styles.toc}>
+    <nav className={styles.toc}>
       {tocItems.map((item) => (
         <a
           key={item.id}

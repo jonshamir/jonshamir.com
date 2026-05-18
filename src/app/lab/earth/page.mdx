@@ -2,18 +2,13 @@ import Canvas from "./EarthCanvas";
 
 # Earth Projections
 
-<p className="description">
-  This is an experiment implementing a spherical projection mapping shader in
-  WebGL
-</p>
+Click the shapes to see the Earth projected onto them using spherical projection mapping:
+
+<Canvas />
 
 Usually, textures are mapped to 3D meshes using _explicit UV mapping_ - each vertex is assigned specific UV (texture-space) coordinates. However, UV coordinates can also be calculated procedurally from vertex positions.
 
 **Projection mapping** is a texture mapping technique that calculates UV coordinates dynamically by mapping between the texture and some intermediate surface, then projecting this surface onto a 3D object.
-
-Click the shapes to see the Earth projected onto them using spherical projection mapping:
-
-<Canvas />
 
 In the case of spherical projection mapping, we map each vertex to a point on a sphere, ignoring the radius. Given cartesian coordinates $$(x,y,z)$$ of a vertex we want to find its spherical coordinates $$(r,\theta,\phi)$$:
 

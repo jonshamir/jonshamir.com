@@ -74,26 +74,14 @@
   }
 }
 
-/* Compact mode: 72rem – 90rem (dots only by default) */
-@media (min-width: 72rem) and (max-width: 90rem) {
+/* Dots only by default; labels reveal on hover */
+@media (min-width: 72rem) {
   .label {
     opacity: 0;
   }
 }
 
-/* Full mode: > 90rem (labels always visible) */
-@media (min-width: 90rem) {
-  .label {
-    opacity: 1;
-  }
-}
-
-/* Faded: hide labels when wide/full grid items overlap */
-.toc[data-faded] .label {
-  opacity: 0;
-}
-
-/* Hover always wins (same specificity as faded, but later in cascade) */
+/* Hover reveals labels */
 .toc:has(.link:hover) .label {
   opacity: 1;
   transition-delay: 50ms;
