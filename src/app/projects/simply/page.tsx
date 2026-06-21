@@ -6,6 +6,7 @@ import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
 import heroImg from "./hero.jpg";
 import notesImg from "./notes.png";
+import virtualPianoVideo from "./virtual-piano.mp4";
 
 export default function Page() {
   return (
@@ -32,11 +33,8 @@ export default function Page() {
       </figure>
 
       <p>
-        I partnered with Simply to bring the popular piano learning app to
-        Android XR. The project included both design and implementation on the
-        newly released{" "}
-        <Outlink href="https://www.android.com/xr/">Android XR</Outlink>{" "}
-        operating system from Google.
+        The app is a unique use case for mixed reality technology, allowing
+        users to see virtual indications and hints on top of a real piano.
       </p>
 
       <p>Learn more about the project here:</p>
@@ -50,6 +48,16 @@ export default function Page() {
           Simply Piano XR <span className="arrow">↗</span>
         </ButtonLink>
       </p>
+
+      <figure className="grid-wide">
+        <video src={virtualPianoVideo} autoPlay muted loop playsInline />
+      </figure>
+      <h2>Virtual Piano</h2>
+      <p>
+        The app features a virtual piano that allow the user to learn without a
+        real piano.
+      </p>
+
       <h2>Note Rendering</h2>
       <p>
         In order to render musical notation that is crisp and clear from any
