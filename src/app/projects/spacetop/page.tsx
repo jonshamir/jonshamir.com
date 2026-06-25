@@ -3,6 +3,10 @@
 import Image from "next/image";
 
 import { ButtonLink } from "../../../components/Button";
+import AwardAweIcon from "./award-awe.svg";
+import awardCesImg from "./award-ces.png";
+import AwardFcIcon from "./award-fc.svg";
+import awardTimeImg from "./award-time.png";
 import bevelImg from "./bevel.gif";
 import compassImg from "./compass.gif";
 import cursorMoveImg from "./cursor-move.gif";
@@ -41,16 +45,30 @@ export default function Page() {
         <i>Top 10 Most Innovative CE Companies of 2024</i>.
       </p>
 
-      <p>
-        <ButtonLink
-          href="https://www.sightful.com/"
-          target="_blank"
-          variant="opaque"
-          rel="noreferrer"
+      <figure>
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "2rem"
+          }}
         >
-          Visit the official Spacetop site <span className="arrow">↗</span>
-        </ButtonLink>
-      </p>
+          <img
+            src={awardCesImg.src}
+            alt="CES 2024 Best of Show award"
+            style={{ width: "100px", height: "auto" }}
+          />
+          <AwardAweIcon style={{ width: "100px", height: "auto" }} />
+          <img
+            src={awardTimeImg.src}
+            alt="TIME Best Invention of 2023 award"
+            style={{ width: "100px", height: "90px", objectFit: "contain" }}
+          />
+          <AwardFcIcon style={{ width: "100px", height: "auto" }} />
+        </div>
+      </figure>
 
       <h2>From desktop to Spacetop</h2>
 
@@ -137,6 +155,17 @@ export default function Page() {
         fragment shader we can create special effects. In XR we know the
         position of the head. Using Parallax mapping and normal mapping a 3D
         illusion can be achieved.
+      </p>
+
+      <p>
+        <ButtonLink
+          href="https://www.sightful.com/"
+          target="_blank"
+          variant="opaque"
+          rel="noreferrer"
+        >
+          Visit the official Spacetop site <span className="arrow">↗</span>
+        </ButtonLink>
       </p>
     </>
   );
