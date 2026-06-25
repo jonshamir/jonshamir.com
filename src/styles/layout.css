@@ -34,6 +34,25 @@
   grid-column: narrow;
 }
 
+/* Stack: vertical rhythm as a relationship between adjacent siblings */
+/* https://every-layout.dev/layouts/stack/ */
+.grid > * {
+  margin-block: 0;
+}
+
+.grid > * + * {
+  margin-block-start: var(--space, 1rem);
+}
+
+/* Exceptions — spacing for specific relationships */
+.grid > :is(h2, h3, h4, h5, h6) {
+  --space: 2rem; /* breathing room above section headings */
+}
+
+.grid > .description {
+  --space: 0.25rem; /* sits tight under the h1 title */
+}
+
 .grid-narrow {
   grid-column: narrow;
 }
