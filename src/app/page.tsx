@@ -15,7 +15,7 @@ export default function Page() {
     <>
       <div className={styles.heroSection}>
         {/* <HeroBackground /> */}
-        <div className={styles.hero}>
+        <div className={clsx(styles.hero, "flow")}>
           <InlineLogoPlaceholder />
 
           <p className={clsx(styles.fadeIn, styles.introHeyWrapper)}>
@@ -38,8 +38,6 @@ export default function Page() {
 
       {/* <ProjectScroller /> */}
 
-      <p />
-
       <div className={styles.columns}>
         <div>
           <h3 className={styles.sectionTitle}>Selected Projects</h3>
@@ -51,14 +49,8 @@ export default function Page() {
         </div>
       </div>
 
-      <p />
-      <p />
-
       <h3 className={styles.sectionTitle}>Writing</h3>
       <PostList />
-
-      <p />
-      <p />
 
       <h3 className={styles.sectionTitle}>Mailing list</h3>
       <EmailFormWrapper />

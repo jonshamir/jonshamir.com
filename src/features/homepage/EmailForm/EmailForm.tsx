@@ -32,7 +32,7 @@ export function EmailForm() {
   };
 
   return (
-    <div className={styles.EmailForm}>
+    <div className={`${styles.EmailForm} flow`}>
       {(mutation.isIdle || mutation.isLoading) && (
         <form onSubmit={handleSubmit}>
           <input

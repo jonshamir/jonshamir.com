@@ -16,7 +16,6 @@
   /* padding-left: 5rem; */
 
   h2 {
-    margin-top: 0;
     font-weight: 400;
     text-wrap: balance;
     font-size: 2.2rem;
@@ -101,6 +100,7 @@
 }
 
 .columns {
+  --space: 3rem; /* section gap above the projects/social columns */
   display: flex;
   flex-direction: row;
   gap: 2rem;
