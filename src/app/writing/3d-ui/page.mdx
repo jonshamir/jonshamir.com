@@ -1,0 +1,64 @@
+export const metadata = {
+  draft: false,
+  date: "2026-06-10",
+  description: "Rendering UI in 3D"
+};
+
+# Rendering UI in 3D
+
+There are several scenarios where rendering UI in a 3D scene - games, interactive visualizations and XR.
+
+However, there are some pitfalls and opportunities that I have encountered when building spatial user interfaces, and I'd like to share them here.
+
+## Aliasing
+
+The modern user interface is mostly made of rectangles and typography, or as I like to call it "Rects & Text".
+It was developed mainly to be displayed on a 2D grid of pixels:
+
+PIXEL_GRID
+
+On an ordered grid, this is perfect - edges along the pixel grid are maximally sharp and legible.
+
+However, if under a 3D transformation, the shapes no longer perfectly align, causing issues such as _blurriness_ and _aliasing_.
+
+ALIASING_AND_BLURRINESS
+
+We can seperate this into 2 general cases - minification / magnification
+
+magnification causes _blurriness_ - this can be solved by re-rasterizing as needed.
+
+minification causes _aliasing_ - this can be solved by _antialiasing_ - for example multisampling, SDF-based antialiasing or analytic AA.
+
+## Rasterization
+
+Modern UI systems store the shapes of the UI (especially rects and text) as resolution-independant mathematical objects.
+To displayed them on a grid of pixels, _rasterization_ is performed.
+
+The way we rasterize the shapes of UI has a direct effect on the quality of the final experience.
+
+## Drawing UI in 3D
+
+The most straightforward way to render UI in 3D is to rasterize it to a 2D texture, and then transform it to match the 3D scene:
+
+This is perfectly valid and using a high resolution texture and correct filtering can result in good looking UI:
+
+However, the UI is "locked" inside a 2D plane, and doesn't take advantage of the spatial nature of the rendering environment!
+
+## Another way
+
+Alternatively, we can split the UI into separate shapes, usually 2D rectangles called "quads".
+This requires us to rasterize every shape and creates "overdraw", as well as a higher Polycount.
+However, in this method the UI is made of natively 3D objects, and this opens up many creative possiblities!
+
+Resolution independance
+Thin 1-2 px effects are common in traditional ui
+
+## special effects
+
+Shadows
+Lighting
+Parallax mapping
+More?
+
+Inspired by freya
+Link to UIRect
