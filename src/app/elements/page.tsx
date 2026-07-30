@@ -1,6 +1,6 @@
 export default function Elements() {
   return (
-    <main>
+    <main className="grid">
       <h1>HTML Elements</h1>
       <p>
         This is a sample page of common HTML elements. I use it to make sure
