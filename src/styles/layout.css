@@ -54,18 +54,18 @@
 }
 
 :where(.grid, .flow) > * + * {
-  margin-block-start: var(--space, var(--space-s));
+  margin-block-start: var(--space, var(--space-md));
 }
 
 /* Exceptions — spacing for specific relationships (tune freely).
    --space (no suffix) is the stack's per-relationship gap; --space-* are the
    scale defined in main.css. */
 .grid > :is(h2, h3, h4, h5, h6) {
-  --space: var(--space-l); /* breathing room above section headings */
+  --space: var(--space-xl); /* breathing room above section headings */
 }
 
 .grid > .description {
-  --space: var(--space-3xs); /* sits tight under the h1 title */
+  --space: var(--space-xs); /* sits tight under the h1 title */
 }
 
 .grid-narrow {
@@ -92,7 +92,7 @@
 
 /* Gap below the cover comes from the stack, not an additive margin */
 .cover + * {
-  --space: var(--space-l);
+  --space: var(--space-xl);
 }
 
 @media (max-width: 54rem) {

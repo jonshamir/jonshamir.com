@@ -94,10 +94,10 @@
 }
 
 .columns {
-  --space: var(--space-xl); /* section gap above the projects/social columns */
+  --space: var(--space-2xl); /* section gap above the projects/social columns */
   display: flex;
   flex-direction: row;
-  gap: var(--space-l);
+  gap: var(--space-xl);
 }
 
 .columns > div {

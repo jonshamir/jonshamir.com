@@ -3,7 +3,7 @@
    The entrance animation comes from the global .fade-in utility. */
 .contactButtonWrapper {
   position: relative;
-  gap: var(--space-2xs);
+  gap: var(--space-sm);
   /* Component-local, not a global token: the slide pattern is tuned to this
      value and shouldn't track the site-wide transition speed. */
   --slide-duration: 0.3s;
