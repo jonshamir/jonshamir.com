@@ -1,6 +1,6 @@
 export default function Elements() {
   return (
-    <main className="grid">
+    <>
       <h1>HTML Elements</h1>
       <p>
         This is a sample page of common HTML elements. I use it to make sure
@@ -566,24 +566,23 @@ export default function Elements() {
 
           <fieldset id="forms__action" className="flow">
             <legend>Action buttons</legend>
-            <input type="submit" defaultValue="<input type=submit>" />
-            <br />
-            <input type="button" defaultValue="<input type=button>" />
-            <br />
-            <input type="reset" defaultValue="<input type=reset>" />
-            <br />
-            <input type="submit" defaultValue="<input disabled>" disabled />
-            <br /> <button type="submit">&lt;button type=submit&gt;</button>
-            <br />
-            <button type="button">&lt;button type=button&gt;</button>
-            <br /> <button type="reset">&lt;button type=reset&gt;</button>
-            <br />{" "}
-            <button type="button" disabled>
-              &lt;button disabled&gt;
-            </button>
+            <p>
+              <input type="submit" defaultValue="<input type=submit>" />
+              <input type="button" defaultValue="<input type=button>" />
+              <input type="reset" defaultValue="<input type=reset>" />
+              <input type="submit" defaultValue="<input disabled>" disabled />
+            </p>
+            <p>
+              <button type="submit">&lt;button type=submit&gt;</button>
+              <button type="button">&lt;button type=button&gt;</button>
+              <button type="reset">&lt;button type=reset&gt;</button>
+              <button type="button" disabled>
+                &lt;button disabled&gt;
+              </button>
+            </p>
           </fieldset>
         </form>
       </section>
-    </main>
+    </>
   );
 }
