@@ -25,10 +25,11 @@
 }
 
 @media (max-width: 54rem) {
+  /* No margin here — .wrapper is a direct .grid child, so the stack zeroes
+     margin-block and the inline half was already 0. */
   .wrapper {
     grid-column: narrow;
     grid-template-columns: 1fr;
-    margin: 1rem 0;
   }
 
   .wrapper figure {

@@ -1,7 +1,8 @@
+/* No margin-block here: the canvas is usually a direct .grid child, where the
+   stack zeroes it. Spacing comes from the stack's --space. */
 .ThreeCanvas {
   width: 100%;
   overflow: hidden;
-  margin-bottom: 1rem;
 
   &.grabCursor {
     cursor: grab;

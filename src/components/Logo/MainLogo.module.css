@@ -21,15 +21,11 @@
   }
 }
 
+/* No margin-block: this is the first child of the .flow stack, which zeroes
+   margin-block and only spaces *subsequent* siblings. Use padding or the
+   parent's --space if this ever needs a top offset. */
 .InlineLogoPlaceholder {
-  margin-top: 1rem;
-  /* margin-left: 0.5rem; */
-  /* margin-bottom: 0.5rem; */
   display: inline-block;
   width: 1.5rem;
   height: 3rem;
-
-  @media (max-width: 40rem) {
-    margin-top: 0;
-  }
 }

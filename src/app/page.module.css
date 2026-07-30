@@ -81,6 +81,8 @@
   --fade-delay: 0.5s;
 }
 
+/* margin-bottom applies only to the nested uses inside .columns. The top-level
+   "Writing" heading is a direct .grid child, where the stack zeroes it. */
 .sectionTitle {
   font-family: var(--font-body);
   font-weight: 500;
