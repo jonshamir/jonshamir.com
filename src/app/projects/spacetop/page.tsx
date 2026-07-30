@@ -26,10 +26,11 @@ export default function Page() {
         paradigms.
       </p>
 
-      <figure className="grid-wide" style={{ "--media-max-height": "450px" }}>
+      <figure className="grid-wide">
         <Image
           src={heroImg}
           alt="Illustration of Spacetop being used on an airplane"
+          style={{ maxHeight: "450px" }}
         />
         <figcaption>
           Spacetop is like a huge virtual screen that you can take anywhere
@@ -109,10 +110,11 @@ export default function Page() {
         The canvas itself can be panned and manipulated using touchpad gestures
         or keyboard shortcuts.
       </p>
-      <figure className="grid-wide" style={{ "--media-max-height": "500px" }}>
+      <figure className="grid-wide">
         <Image
           src={navImg}
           alt="The canvas itself can be panned and zoomed by the user"
+          style={{ maxHeight: "500px" }}
         />
       </figure>
 
@@ -123,15 +125,11 @@ export default function Page() {
         that guides your attention when it is needed somewhere you can&apos;t
         see.
       </p>
-      <figure
-        style={{
-          "--media-max-height": "450px",
-          "--media-max-width": "1000px"
-        }}
-      >
+      <figure>
         <Image
           src={compassImg}
           alt="The compass points the user to a window outside the field of view"
+          style={{ maxHeight: "450px", maxWidth: "1000px" }}
         />
         <figcaption>
           The compass points to a window outside the field of view
@@ -145,15 +143,11 @@ export default function Page() {
         the illusion of depth. Soft shadows can indicate distance between
         objects.
       </p>
-      <figure
-        style={{
-          "--media-max-height": "450px",
-          "--media-max-width": "1000px"
-        }}
-      >
+      <figure>
         <Image
           src={bevelImg}
           alt="A special shader that created a 3D illusion"
+          style={{ maxHeight: "450px", maxWidth: "1000px" }}
         />
       </figure>
       <p>

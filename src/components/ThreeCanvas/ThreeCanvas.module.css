@@ -1,5 +1,6 @@
-/* No margin-block here: the canvas is usually a direct .grid child, where the
-   stack zeroes it. Spacing comes from the stack's --space. */
+/* No margin-block here by convention: the canvas is usually a direct .grid child,
+   so its spacing is the stack's job. Set --space on it rather than a margin — a
+   margin would apply *in addition* to the stack gap, not instead of it. */
 .ThreeCanvas {
   width: 100%;
   overflow: hidden;
@@ -18,12 +19,5 @@
 
   canvas {
     min-height: 30rem;
-  }
-}
-
-:global(.full-bleed).ThreeCanvas {
-  border-radius: 0;
-  canvas {
-    border-radius: 0;
   }
 }

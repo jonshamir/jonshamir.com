@@ -27,8 +27,15 @@ export default function Page() {
         history of music visualization. I researched, designed and built the
         project as part of my studies.
       </p>
-      <figure className="grid-wide" style={{ "--media-max-height": "300px" }}>
-        <video src={demoVideo} playsInline autoPlay muted loop />
+      <figure className="grid-wide">
+        <video
+          src={demoVideo}
+          style={{ maxHeight: "300px" }}
+          playsInline
+          autoPlay
+          muted
+          loop
+        />
       </figure>
       <p>
         A pre-trained neural network called{" "}

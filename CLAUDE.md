@@ -20,10 +20,16 @@ is shared by unrelated components.
 
 Rules of thumb:
 
-- Use tokens. Don't hardcode colours, radii, easings, durations, spacing, or z-index.
-  The scales live in `src/styles/main.css`; breakpoints are documented at the top of
-  `src/styles/layout.css` (they must be literals — custom properties don't work in
-  `@media` conditions).
+- Use tokens for colours, radii, easings, durations and z-index. The scales live in
+  `src/styles/main.css`; breakpoints are documented at the top of `src/styles/layout.css`
+  (they must be literals — custom properties don't work in `@media` conditions).
+- Spacing is tokenised where it lands on the `--space-*` scale — stack `--space`,
+  flex/grid gaps, and padding/margin at 0.25/0.5/1/1.5/2/3rem. Two kinds of value stay
+  literal on purpose, and should not be snapped to the nearest step: *optical* values
+  tuned to a specific font size or icon (0.2/0.3/0.35/0.4/0.6/0.8rem), and *positional*
+  offsets that align to another element (`LabMenu`'s `padding-left`, `SideScroller`'s
+  `padding-inline`). Snapping them would change the design, and adding steps for them
+  would turn the scale into a lookup table.
 - One module convention: `.module.css`. No `.scss` (nothing needed Sass), and no plain
   colocated `.css` except where documented below.
 - Write broadly-matching global rules with `:where()` so they sit at zero specificity
@@ -48,6 +54,11 @@ the `:where()` discipline above covers the cases that actually bite, without cha
 how KaTeX and Shiki's `!important` rules resolve.
 
 **Vertical rhythm** belongs to the stack (`:where(.grid, .flow) > * + *`). To change
-spacing around a stack child, set `--space` on it — don't add `margin-block`. Note that
-`.grid` is a *grid* container, so sibling margins do **not** collapse there; a margin
-plus the stack gap will add up.
+spacing around a stack child, set `--space` on it — don't add `margin-block`.
+
+This is a convention, and nothing enforces it. Because the stack is written with
+`:where()` it sits at zero specificity, so a `margin-block` in a module *will* apply —
+it just won't replace the stack gap, it will add to it (`.grid` is a *grid* container,
+so sibling margins do **not** collapse there). Two sources of rhythm on one element is
+exactly the bug this rule exists to prevent, so don't reach for a margin because it
+"seems to work".

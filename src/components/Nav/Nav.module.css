@@ -5,13 +5,13 @@
   width: 100%;
   z-index: var(--z-top);
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: var(--space-sm);
   pointer-events: none;
   font-size: 0.9rem;
   font-weight: 500;
 
   @media (min-width: 40rem) {
-    padding: 1rem;
+    padding: var(--space-md);
   }
 
   & > div {

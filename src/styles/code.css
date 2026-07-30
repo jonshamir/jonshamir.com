@@ -1,5 +1,5 @@
 pre[data-theme] {
-  padding: 0.5rem;
+  padding: var(--space-sm);
   border-radius: var(--rounding-medium);
   overflow-x: auto;
   width: 100%;

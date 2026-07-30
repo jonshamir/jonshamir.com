@@ -1,6 +1,6 @@
-/* Spacing above comes from the stack (.flow > * + *) — setting margin-block here
-   would be silently overridden. Use --space if this needs a different gap.
-   The entrance animation comes from the global .fade-in utility. */
+/* Spacing above comes from the stack (.flow > * + *). Use --space if this needs a
+   different gap — a margin-block here would add to the stack gap rather than
+   replace it. The entrance animation comes from the global .fade-in utility. */
 .contactButtonWrapper {
   position: relative;
   gap: var(--space-sm);

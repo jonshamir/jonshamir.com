@@ -25,8 +25,9 @@
 }
 
 @media (max-width: 54rem) {
-  /* No margin here — .wrapper is a direct .grid child, so the stack zeroes
-     margin-block and the inline half was already 0. */
+  /* No margin here — .wrapper is a direct .grid child, so the stack already
+     spaces it. A margin-block would add to that gap rather than replace it
+     (.grid is a grid container, so margins don't collapse); use --space. */
   .wrapper {
     grid-column: narrow;
     grid-template-columns: 1fr;

@@ -1,10 +1,11 @@
 .LabMenu {
   position: fixed;
-  top: 0;
-  left: 0.5rem;
+  /* Both offsets: these replace a `margin: 0.5rem` that used to supply them. */
+  top: var(--space-sm);
+  left: var(--space-sm);
   z-index: var(--z-controls);
-  padding: 0 1rem;
-  padding-left: 4.5rem;
+  padding: 0 var(--space-md);
+  padding-left: 4.5rem; /* clears the fixed logo — positional, not on the scale */
   border-radius: var(--rounding-medium);
   max-width: 18rem;
 }

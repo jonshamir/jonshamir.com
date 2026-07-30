@@ -21,8 +21,12 @@ export default function Page() {
         operating system from Google.
       </p>
 
-      <figure className="grid-wide" style={{ "--media-max-height": "450px" }}>
-        <Image src={heroImg} alt="Illustration of Simply Piano XR" />
+      <figure className="grid-wide">
+        <Image
+          src={heroImg}
+          alt="Illustration of Simply Piano XR"
+          style={{ maxHeight: "450px" }}
+        />
         <figcaption>
           Simply Piano lets you see virtual indications on top of the real piano
         </figcaption>

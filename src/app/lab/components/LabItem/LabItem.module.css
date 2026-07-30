@@ -2,7 +2,7 @@
   transition: opacity var(--transition-defaults);
   width: 50%;
   max-width: 500px;
-  padding: 0.5rem;
+  padding: var(--space-sm);
 
   a {
     text-decoration: none;
@@ -20,6 +20,6 @@
 
   span {
     display: inline-block;
-    padding: 0.5rem;
+    padding: var(--space-sm);
   }
 }

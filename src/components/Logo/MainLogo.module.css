@@ -21,9 +21,9 @@
   }
 }
 
-/* No margin-block: this is the first child of the .flow stack, which zeroes
-   margin-block and only spaces *subsequent* siblings. Use padding or the
-   parent's --space if this ever needs a top offset. */
+/* No margin-block by convention: this is the first child of the .flow stack, so
+   it gets no stack gap at all. If it ever needs a top offset use padding — a
+   margin here would work, but it puts vertical rhythm in two places at once. */
 .InlineLogoPlaceholder {
   display: inline-block;
   width: 1.5rem;

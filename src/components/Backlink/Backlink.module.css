@@ -2,7 +2,7 @@
   position: absolute;
   right: calc(100% + 2rem);
   top: 3.2rem;
-  padding-right: 0.5rem;
+  padding-right: var(--space-sm);
   white-space: nowrap;
   text-decoration: none;
   opacity: 0.3;

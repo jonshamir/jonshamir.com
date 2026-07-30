@@ -28,8 +28,12 @@ export default function Page() {
         species identification.
       </p>
 
-      <figure className="grid-wide" style={{ "--media-max-height": "300px" }}>
-        <img src={heroImg.src} alt="Leaves sorted by shape" />
+      <figure className="grid-wide">
+        <img
+          src={heroImg.src}
+          alt="Leaves sorted by shape"
+          style={{ maxHeight: "300px" }}
+        />
       </figure>
 
       <p>

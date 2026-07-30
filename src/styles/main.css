@@ -72,9 +72,6 @@
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
-  /* Backdrop for the WebGL lab canvases — deliberately theme-independent. */
-  --color-canvas-bg: #101010;
-
   --dark-mode: 0;
   --shiki-mix: 0%;
 

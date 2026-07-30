@@ -7,7 +7,7 @@
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: 0.6rem 1rem;
+  padding: 0.6rem var(--space-md);
   color: #eee;
   font-size: 0.8rem;
   pointer-events: auto;
@@ -23,7 +23,7 @@
 .slider {
   width: 18rem;
   accent-color: #fff;
-  padding: 1rem;
+  padding: var(--space-md);
   outline: none;
   -webkit-appearance: none;
   appearance: none;

@@ -9,7 +9,7 @@
     align-items: center;
     gap: var(--space-sm);
     text-decoration: none;
-    padding: 0.5rem 0;
+    padding: var(--space-sm) 0;
   }
 
   & svg {

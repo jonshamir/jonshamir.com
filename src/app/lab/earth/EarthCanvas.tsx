@@ -4,7 +4,10 @@ import { OrbitControls } from "@react-three/drei";
 import { EffectComposer, Noise } from "@react-three/postprocessing";
 import { useState } from "react";
 
-import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import {
+  CANVAS_BG,
+  ThreeCanvas
+} from "../../../components/ThreeCanvas/ThreeCanvas";
 import styles from "./EarthCanvas.module.css";
 import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
 
@@ -39,7 +42,7 @@ export default function EarthCanvas() {
       <ThreeCanvas
         className="grid-full"
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
-        style={{ backgroundColor: "var(--color-canvas-bg)" }}
+        style={{ backgroundColor: CANVAS_BG }}
       >
         <OrbitControls enablePan={false} enableZoom={false} />
         <ProjectionMapping baseMesh={baseMesh} />
