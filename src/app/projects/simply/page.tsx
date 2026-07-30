@@ -49,14 +49,16 @@ export default function Page() {
         </ButtonLink>
       </p>
 
-      <figure className="grid-wide">
-        <video src={virtualPianoVideo} autoPlay muted loop playsInline />
-      </figure>
       <h2>Virtual Piano</h2>
       <p>
         The app features a virtual piano that allow the user to learn without a
-        real piano.
+        real piano. Using hand tracking information from the device, we can
+        approximate the
       </p>
+
+      <figure className="grid-wide">
+        <video src={virtualPianoVideo} autoPlay muted loop playsInline />
+      </figure>
 
       <h2>Note Rendering</h2>
       <p>

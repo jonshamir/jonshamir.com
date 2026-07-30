@@ -34,6 +34,27 @@
   grid-column: narrow;
 }
 
+/* Stack: vertical rhythm as a relationship between adjacent siblings */
+/* https://every-layout.dev/layouts/stack/ */
+/* Declared before the margin-based utilities below so those (.cover,    */
+/* .cover-top) win by source order at equal specificity.                 */
+:is(.grid, .flow) > * {
+  margin-block: 0;
+}
+
+:is(.grid, .flow) > * + * {
+  margin-block-start: var(--space, 1rem);
+}
+
+/* Exceptions — spacing for specific relationships (tune freely) */
+.grid > :is(h2, h3, h4, h5, h6) {
+  --space: 2rem; /* breathing room above section headings */
+}
+
+.grid > .description {
+  --space: 0.25rem; /* sits tight under the h1 title */
+}
+
 .grid-narrow {
   grid-column: narrow;
 }
@@ -54,7 +75,11 @@
   grid-column: full;
   height: 20rem;
   object-fit: cover;
-  margin-bottom: 2rem;
+}
+
+/* Gap below the cover comes from the stack, not an additive margin */
+.cover + * {
+  --space: 2rem;
 }
 
 @media (max-width: 54rem) {
