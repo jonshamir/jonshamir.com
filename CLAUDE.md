@@ -6,77 +6,61 @@
 
 ## Styling
 
-The site deliberately uses a **global CSS + CSS Modules hybrid**. This is not an
-accident of history — most content (MDX posts, project pages) is authored as bare
-semantic HTML with no component to hang a scoped class on, so global element
-selectors are the only thing that can style it.
+**Global CSS + CSS Modules hybrid**, deliberately: most content (MDX posts, project
+pages) is bare semantic HTML with no component to hang a scoped class on, so global
+element selectors are the only thing that can style it.
 
-**Global** (`src/styles/`) — reset, design tokens, element-level prose typography,
-layout primitives (`.grid`, `.flow`, `.grid-wide`, `.cover`), code-block styling,
-shared keyframes and the `.fade-in` utility. Anything that must reach MDX output or
-is shared by unrelated components.
-
-**Module** (`*.module.css` beside the component) — everything else. This is the default.
+- **Global** (`src/styles/`) — reset, tokens, prose typography, layout primitives
+  (`.grid`, `.flow`, `.grid-wide`, `.cover`), code blocks, shared keyframes, `.fade-in`.
+  Anything that must reach MDX output or is shared by unrelated components.
+- **Module** (`*.module.css` beside the component) — everything else, and the default.
+  Only `.module.css`: no Sass, no plain colocated `.css` outside the two exceptions.
 
 Rules of thumb:
 
-- Use tokens for colours, radii, easings, durations and z-index. The scales live in
-  `src/styles/main.css`; breakpoints are documented at the top of `src/styles/layout.css`
-  (they must be literals — custom properties don't work in `@media` conditions).
-- Spacing is tokenised where it lands on the `--space-*` scale — stack `--space`,
-  flex/grid gaps, and padding/margin at 0.25/0.5/1/1.5/2/3rem. Two kinds of value stay
-  literal on purpose, and should not be snapped to the nearest step: *optical* values
-  tuned to a specific font size or icon (0.2/0.3/0.35/0.4/0.6/0.8rem), and *positional*
-  offsets that align to another element (`LabMenu`'s `padding-left`, `SideScroller`'s
-  `padding-inline`). Snapping them would change the design, and adding steps for them
-  would turn the scale into a lookup table.
-- One module convention: `.module.css`. No `.scss` (nothing needed Sass), and no plain
-  colocated `.css` except where documented below.
-- Write broadly-matching global rules with `:where()` so they sit at zero specificity
-  and a component can always override them with a plain class instead of `!important`.
-  The stack in `layout.css` and the form styles in `typography.css` both do this
-  deliberately — don't "fix" them back to `:is()` or bare selectors.
+- Use tokens for colours, radii, easings, durations and z-index (scales in `main.css`).
+  Breakpoints must be literals — custom properties don't work in `@media` — and are
+  listed at the top of `layout.css`.
+- Tokenise spacing that lands on `--space-*` (0.25/0.5/1/1.5/2/3rem). Leave *optical*
+  values (0.2/0.3/0.35/0.4/0.6/0.8rem) and *positional* offsets (`LabMenu`'s
+  `padding-left`) literal — snapping them would change the design.
+- Write broadly-matching global rules with `:where()`, so a component can override them
+  with a plain class instead of `!important`. The stack in `layout.css` and the form
+  styles in `typography.css` do this deliberately — don't "fix" them back to `:is()`.
 
-Two deliberate exceptions, both commented in place:
+Two exceptions to modules-by-default, both commented in place: `three-canvas.css`
+(module hashes desync from the injected stylesheet during Fast Refresh) and
+`TilePrototype.css` (`interactions.js` queries elements by literal class name).
 
-- `src/styles/three-canvas.css` is global because CSS-module hashes desync from the
-  injected stylesheet during Fast Refresh, dropping `position: fixed`.
-- `src/app/projects/spacetop/TilePrototype/TilePrototype.css` is not a module because
-  `interactions.js` creates elements imperatively and queries them by literal class name.
+**Cascade gotcha: ties aren't decided by anything visible in the source.** The global
+sheet is emitted after the module chunks in the SSR'd `<link>` set, so page-shipped
+modules *lose* ties. But client-only and lazily-loaded module CSS isn't in that set —
+React injects it at runtime, after the global sheet, so it *wins*. Which bucket a
+component lands in is a chunking artifact. Win by specificity, never by order: this is
+why dropping an `!important` can keep working locally and still be wrong (see
+`FocusControl`, scoped to `.FocusControl .slider` to beat the global form styles).
 
-**Cascade gotcha:** the global stylesheet is linked *after* the CSS-module chunks, so
-at equal specificity **global rules win over module rules** — the opposite of what most
-setups do, and not something import order can change (webpack decides it). Never rely
-on source order; win by specificity.
+Cascade layers would fix that structurally but aren't applied: `:where()` covers what
+actually bites, without changing how KaTeX's and Shiki's `!important` rules resolve.
 
-Cascade layers would make this structural rather than conventional, but aren't applied:
-the `:where()` discipline above covers the cases that actually bite, without changing
-how KaTeX and Shiki's `!important` rules resolve.
+**Vertical rhythm** belongs to the stack (`:where(.grid, .flow) > * + *`) — set
+`--space` on a child rather than a `margin-block`. The two stack rules are split by
+intent, explained in place in `layout.css`: bottom margins are an `!important`
+invariant, so a stray one is inert rather than doubling the gap; top margins are an
+overridable default, so a stray one works but sits outside the `--space` vocabulary.
 
-**Vertical rhythm** belongs to the stack (`:where(.grid, .flow) > * + *`). To change
-spacing around a stack child, set `--space` on it rather than a `margin-block`. The
-stack's two rules are split by intent, and `layout.css` explains why in place: bottom
-margins are an invariant (`!important`, so a stray one is inert instead of doubling the
-gap), top margins are an overridable default. So a hardcoded margin won't *break*
-anything — it just puts the rhythm outside the `--space` vocabulary.
-
-**The stack only reaches direct children.** This is the sharp edge worth knowing, and
-it fails silently. Wrapping content in a `<div>` stops rhythm dead for everything
-inside it:
+**The stack only reaches direct children**, and fails silently — a wrapper stops rhythm
+dead for everything inside it:
 
 ```jsx
 <div className="grid">
   <p>spaced</p>
   <div>                {/* ← rhythm stops here */}
     <p>not spaced</p>
-    <p>not spaced</p>
   </div>
 </div>
 ```
 
-The fix is to add `flow` to the wrapper (`.flow` is *only* the stack — it has no
-layout of its own, so it's safe to add anywhere). Any component that wraps its
-children needs it; see `elements/page.tsx`, where every nested `<section>`,
-`<article>` and `<fieldset>` opts back in. Prefer not introducing the wrapper at all —
-in a `.grid` the children are already placed by `grid-column`, so a wrapper is usually
-only there out of habit.
+Add `flow` to the wrapper (`.flow` is *only* the stack — no layout of its own, safe
+anywhere), as every nested `<section>`/`<article>` in `elements/page.tsx` does. Better,
+drop the wrapper: in a `.grid`, children are already placed by `grid-column`.
