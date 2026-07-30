@@ -7,7 +7,7 @@ export default function CratersCanvas() {
   return (
     <ThreeCanvas
       camera={{ position: [0, 0, 10], zoom: 6 }}
-      style={{ backgroundColor: "#101010" }}
+      style={{ backgroundColor: "var(--color-canvas-bg)" }}
     >
       <OrbitControls enablePan={false} enableZoom={false} />
       <MoonCraters />

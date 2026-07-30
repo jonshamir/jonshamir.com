@@ -4,6 +4,7 @@ import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
 import demoVideo from "./demo.mp4";
 import kandinskyImg from "./kandinsky.jpg";
+import styles from "./MuserTimeline.module.css";
 
 export default function Page() {
   return (
@@ -26,15 +27,11 @@ export default function Page() {
         history of music visualization. I researched, designed and built the
         project as part of my studies.
       </p>
-      <figure className="grid-wide">
-        <video
-          src={demoVideo}
-          style={{ maxHeight: "300px", height: "auto" }}
-          playsInline
-          autoPlay
-          muted
-          loop
-        />
+      <figure
+        className="grid-wide"
+        style={{ "--media-max-height": "300px" } as React.CSSProperties}
+      >
+        <video src={demoVideo} playsInline autoPlay muted loop />
       </figure>
       <p>
         A pre-trained neural network called{" "}
@@ -45,7 +42,7 @@ export default function Page() {
       </p>
       <p>
         We can use this to visualize how the style of a song changes over time:
-        <span className="muserTimeline" />
+        <span className={styles.muserTimeline} />
         <span>
           <strong>Love the Way You Lie</strong> / Eminem feat. Rihanna
         </span>

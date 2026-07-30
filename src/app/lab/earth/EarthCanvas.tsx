@@ -5,7 +5,7 @@ import { EffectComposer, Noise } from "@react-three/postprocessing";
 import { useState } from "react";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
-import styles from "./EarthCanvas.module.scss";
+import styles from "./EarthCanvas.module.css";
 import { BaseMesh, ProjectionMapping } from "./ProjectionMapping";
 
 function MeshSelect({
@@ -39,7 +39,7 @@ export default function EarthCanvas() {
       <ThreeCanvas
         className="grid-full"
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
-        style={{ backgroundColor: "#101010" }}
+        style={{ backgroundColor: "var(--color-canvas-bg)" }}
       >
         <OrbitControls enablePan={false} enableZoom={false} />
         <ProjectionMapping baseMesh={baseMesh} />

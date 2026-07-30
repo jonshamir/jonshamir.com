@@ -1,6 +1,14 @@
 /* Full-Bleed Layout with Named Grid Lines */
 /* Based on Josh Comeau's technique + Ryan Mulligan's named lines */
 
+/* Breakpoints — custom properties don't work inside @media conditions, so these
+   are literals by necessity. Keep the list here as the single reference, and
+   always write them as `@media (max-width: …)` without `screen and`.
+   36rem — matches --grid-width-narrow; the text column stops shrinking
+   40rem — small-screen type and padding adjustments
+   54rem — matches --grid-width-wide; wide/full grid columns collapse
+   72rem — enough room outside the grid for the floating table of contents */
+
 :root {
   --grid-width-narrow: 36rem;
   --grid-width-wide: 54rem;
@@ -43,16 +51,18 @@
 }
 
 :is(.grid, .flow) > * + * {
-  margin-block-start: var(--space, 1rem);
+  margin-block-start: var(--space, var(--space-s));
 }
 
-/* Exceptions — spacing for specific relationships (tune freely) */
+/* Exceptions — spacing for specific relationships (tune freely).
+   --space (no suffix) is the stack's per-relationship gap; --space-* are the
+   scale defined in main.css. */
 .grid > :is(h2, h3, h4, h5, h6) {
-  --space: 2rem; /* breathing room above section headings */
+  --space: var(--space-l); /* breathing room above section headings */
 }
 
 .grid > .description {
-  --space: 0.25rem; /* sits tight under the h1 title */
+  --space: var(--space-3xs); /* sits tight under the h1 title */
 }
 
 .grid-narrow {
@@ -79,7 +89,7 @@
 
 /* Gap below the cover comes from the stack, not an additive margin */
 .cover + * {
-  --space: 2rem;
+  --space: var(--space-l);
 }
 
 @media (max-width: 54rem) {

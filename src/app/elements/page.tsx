@@ -450,26 +450,12 @@ export default function Elements() {
               />
             </p>
             <p>
-              <label htmlFor="input__text3" className="error">
-                Error
-              </label>
-              <input
-                id="input__text3"
-                className="is-error"
-                type="text"
-                placeholder="Text Input"
-              />
+              <label htmlFor="input__text3">Error</label>
+              <input id="input__text3" type="text" placeholder="Text Input" />
             </p>
             <p>
-              <label htmlFor="input__text4" className="valid">
-                Valid
-              </label>
-              <input
-                id="input__text4"
-                className="is-valid"
-                type="text"
-                placeholder="Text Input"
-              />
+              <label htmlFor="input__text4">Valid</label>
+              <input id="input__text4" type="text" placeholder="Text Input" />
             </p>
           </fieldset>
 
@@ -489,7 +475,7 @@ export default function Elements() {
 
           <fieldset id="forms__checkbox">
             <legend>Checkboxes</legend>
-            <ul className="list list--bare">
+            <ul>
               <li>
                 <label htmlFor="checkbox1">
                   <input
@@ -518,14 +504,13 @@ export default function Elements() {
 
           <fieldset id="forms__radio">
             <legend>Radio buttons</legend>
-            <ul className="list list--bare">
+            <ul>
               <li>
                 <label htmlFor="radio1">
                   <input
                     id="radio1"
                     name="radio"
                     type="radio"
-                    className="radio"
                     defaultChecked={true}
                   />
                   Option 1
@@ -533,23 +518,13 @@ export default function Elements() {
               </li>
               <li>
                 <label htmlFor="radio2">
-                  <input
-                    id="radio2"
-                    name="radio"
-                    type="radio"
-                    className="radio"
-                  />
+                  <input id="radio2" name="radio" type="radio" />
                   Option 2
                 </label>
               </li>
               <li>
                 <label htmlFor="radio3">
-                  <input
-                    id="radio3"
-                    name="radio"
-                    type="radio"
-                    className="radio"
-                  />
+                  <input id="radio3" name="radio" type="radio" />
                   Option 3
                 </label>
               </li>

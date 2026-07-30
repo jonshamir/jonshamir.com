@@ -1,7 +1,7 @@
 import { Canvas } from "@react-three/fiber";
 import { clsx } from "clsx";
 
-import styles from "./ThreeCanvas.module.scss";
+import styles from "./ThreeCanvas.module.css";
 
 export type ThreeCanvasProps = React.ComponentProps<typeof Canvas> & {
   isFullscreen?: boolean;

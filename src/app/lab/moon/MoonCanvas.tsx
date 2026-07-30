@@ -14,8 +14,10 @@ export default function MoonCanvas() {
       <ThreeCanvas
         className="grid-full"
         camera={{ position: [0, 0, 200], zoom: 40 }}
-        style={{ backgroundColor: "#101010", height: "40rem" }}
+        style={{ backgroundColor: "var(--color-canvas-bg)", height: "40rem" }}
       >
+        {/* WebGL can't read CSS custom properties — keep in sync with
+            --color-canvas-bg in src/styles/main.css */}
         <color attach="background" args={["#101010"]} />
         <OrbitControls enablePan={false} enableZoom={true} />
         <MoonModel />

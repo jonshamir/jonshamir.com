@@ -1,4 +1,4 @@
-import styles from "./VideoEmbed.module.scss";
+import styles from "./VideoEmbed.module.css";
 
 export function VideoEmbed(props: { videoId: string }) {
   return (

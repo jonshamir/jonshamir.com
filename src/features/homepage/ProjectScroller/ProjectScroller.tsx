@@ -73,7 +73,7 @@ function ProjectItem({
       className={clsx(styles.item, dark && styles.dark)}
       draggable={false}
     >
-      <div className={clsx(styles.itemContent)}>
+      <div className={styles.itemContent}>
         <h2>{title}</h2>
         <p>{description}</p>
         <span className="arrow">→</span>

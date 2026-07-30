@@ -1,4 +1,4 @@
-import "./FeatherIcon.css";
+import styles from "./FeatherIcon.module.css";
 
 interface FeatherIconProps {
   iconName: string;
@@ -12,7 +12,11 @@ export const FeatherIcon = ({
   className = ""
 }: FeatherIconProps) => {
   return (
-    <svg width={size} height={size} className={`feather-icon ${className}`}>
+    <svg
+      width={size}
+      height={size}
+      className={`${styles.featherIcon} ${className}`.trim()}
+    >
       <use href={`#${iconName}`} />
     </svg>
   );

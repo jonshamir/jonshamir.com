@@ -1,8 +1,13 @@
 .ColorModeToggleContainer {
-  outline: none !important;
-
   --rounding-medium: 500px; /* Override default rounding */
   --duration: 0s;
+}
+
+/* :focus included so this outranks the global :where(button):focus outline
+   (0,1,0) on specificity rather than needing !important. */
+.ColorModeToggleContainer,
+.ColorModeToggleContainer:focus {
+  outline: none;
 }
 
 .loaded {

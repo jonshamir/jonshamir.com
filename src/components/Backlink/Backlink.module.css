@@ -6,7 +6,7 @@
   white-space: nowrap;
   text-decoration: none;
   opacity: 0.3;
-  transition: opacity 0.15s;
+  transition: opacity var(--duration-fast);
 }
 
 .link:hover {

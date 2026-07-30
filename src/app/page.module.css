@@ -38,7 +38,6 @@
 
 .introHey {
   cursor: help;
-  animation-delay: 0.2s !important;
   font-weight: 500;
 
   .name {
@@ -73,22 +72,13 @@
   }
 }
 
-.fadeIn {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-in 0.35s forwards;
+/* Pairs with the global .fade-in utility, which owns the keyframes. */
+.fadeInBase {
+  --fade-delay: 0.35s;
 }
 
 .fadeInDelay {
-  animation-delay: 0.5s;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  --fade-delay: 0.5s;
 }
 
 .sectionTitle {
@@ -100,10 +90,10 @@
 }
 
 .columns {
-  --space: 3rem; /* section gap above the projects/social columns */
+  --space: var(--space-xl); /* section gap above the projects/social columns */
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: var(--space-l);
 }
 
 .columns > div {

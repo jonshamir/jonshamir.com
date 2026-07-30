@@ -7,7 +7,7 @@
   font-weight: 400;
   font-synthesis: none;
 
-  @media screen and (max-width: 40rem) {
+  @media (max-width: 40rem) {
     font-size: 1rem;
   }
 }
@@ -112,28 +112,34 @@ table th {
   border: 1px solid var(--color-secondary);
 }
 
-/* Forms */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="date"],
-input[type="time"],
-input[type="color"],
-input[type="search"],
-input[type="tel"],
-input[type="url"],
-input[type="month"],
-input[type="week"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="range"],
-input[type="file"],
-input[type="image"],
-:where(button),
-:where(.button),
-textarea,
-select {
+/* Forms
+   The whole list is wrapped in :where() so it carries zero specificity.
+   Attribute selectors like input[type="range"] would otherwise be 0,1,1 and
+   beat a plain CSS-module class (0,1,0), forcing components to use !important
+   just to restyle their own inputs. */
+:where(
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  input[type="color"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="month"],
+  input[type="week"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="range"],
+  input[type="file"],
+  input[type="image"],
+  button,
+  .button,
+  textarea,
+  select
+) {
   background-color: rgba(var(--color-text-rgb), 0.1);
   padding: 0.3em 0.6em;
   border: 0;
@@ -172,6 +178,9 @@ fieldset {
   font-style: italic;
 }
 
+/* Media is forced to fill the figure by default. Pages that need to cap a
+   specific image set --media-max-height / --media-max-width on the <figure>
+   rather than fighting these rules with an inline width/height. */
 figure {
   max-width: 100%;
   display: flex;
@@ -184,6 +193,8 @@ figure {
     height: auto;
     object-fit: cover;
     border-radius: var(--rounding-small);
+    max-height: var(--media-max-height, none);
+    max-width: var(--media-max-width, 100%);
   }
 }
 

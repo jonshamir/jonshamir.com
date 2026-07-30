@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useMutation } from "react-query";
 
 import { Button } from "../../../components/Button";
-import styles from "./EmailForm.module.scss";
+import styles from "./EmailForm.module.css";
 
 interface FormData {
   email: string;
@@ -53,7 +53,7 @@ export function EmailForm() {
         </form>
       )}
       {mutation.isError && (
-        <div className="message">
+        <div className={styles.message}>
           Error:{" "}
           {mutation.error instanceof Error
             ? mutation.error.message
@@ -61,7 +61,7 @@ export function EmailForm() {
         </div>
       )}
       {mutation.isSuccess && (
-        <div className="message">~ Thanks for signing up! ~</div>
+        <div className={styles.message}>~ Thanks for signing up! ~</div>
       )}
       <p>Get updates about my projects & stuff</p>
     </div>

@@ -1,3 +1,8 @@
+/* Deliberately NOT a CSS module: interactions.js creates tiles imperatively and
+   queries them by literal class name (".tile", ".tile-content",
+   "show-drag-tile", "currently-dragging"), which hashed names would break.
+   Every rule below is nested under .TilePrototype, so the only globally
+   reachable name is that root class. */
 .TilePrototype {
   width: 100%;
   height: 500px;

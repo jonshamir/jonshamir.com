@@ -8,7 +8,7 @@
 .word {
   display: inline-block;
   transform: translateY(100%);
-  animation: slideUp 0.5s var(--ease-out-expo) forwards;
+  animation: slideUp var(--duration-slow) var(--ease-out-expo) forwards;
 }
 
 @keyframes slideUp {

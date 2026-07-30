@@ -11,9 +11,9 @@
     }
   }
 
-  // Fullscreen positioning lives in src/styles/three-canvas.css as a global
-  // class (.three-canvas-fullscreen) to avoid CSS-module hash desync during
-  // Fast Refresh.
+  /* Fullscreen positioning lives in src/styles/three-canvas.css as a global
+     class (.three-canvas-fullscreen) to avoid CSS-module hash desync during
+     Fast Refresh. */
 
   canvas {
     min-height: 30rem;

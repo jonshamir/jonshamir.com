@@ -3,14 +3,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: var(--z-top);
   box-sizing: border-box;
   padding: 0.5rem;
   pointer-events: none;
   font-size: 0.9rem;
   font-weight: 500;
 
-  @media screen and (min-width: 40rem) {
+  @media (min-width: 40rem) {
     padding: 1rem;
   }
 

@@ -3,10 +3,10 @@
   top: 5rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 20;
+  z-index: var(--z-controls);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-2xs);
   padding: 0.6rem 1rem;
   color: #eee;
   font-size: 0.8rem;
@@ -23,11 +23,11 @@
 .slider {
   width: 18rem;
   accent-color: #fff;
-  padding: 1rem !important;
-  outline: none !important;
+  padding: 1rem;
+  outline: none;
   -webkit-appearance: none;
   appearance: none;
-  background: transparent !important;
+  background: transparent;
   cursor: pointer;
   /* Let vertical scrolls pass through to the page while horizontal drags
      are absorbed by the slider — fixes the "have to grab exactly the thumb"

@@ -1,0 +1,21 @@
+.EmailForm {
+  form {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+
+    input {
+      width: 100%;
+    }
+    button {
+      flex-shrink: 0;
+    }
+  }
+}
+
+/* Matches the input/button treatment in typography.css */
+.message {
+  padding: 0.3em 0.6em;
+  border-radius: var(--rounding-small);
+  background-color: rgba(var(--color-text-rgb), 0.1);
+}

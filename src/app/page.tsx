@@ -18,7 +18,13 @@ export default function Page() {
         <div className={clsx(styles.hero, "flow")}>
           <InlineLogoPlaceholder />
 
-          <p className={clsx(styles.fadeIn, styles.introHeyWrapper)}>
+          <p
+            className={clsx(
+              "fade-in",
+              styles.fadeInBase,
+              styles.introHeyWrapper
+            )}
+          >
             <span className={styles.introHey}>
               Hey! I&rsquo;m
               <span className={styles.name}>
@@ -34,7 +40,7 @@ export default function Page() {
           <br />
         </div>
       </div>
-      <SelectedWork className={clsx(styles.fadeIn, styles.fadeInDelay)} />
+      <SelectedWork className={clsx("fade-in", styles.fadeInDelay)} />
 
       {/* <ProjectScroller /> */}
 
