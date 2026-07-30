@@ -42,18 +42,13 @@
   grid-column: narrow;
 }
 
-/* Stack: vertical rhythm as a relationship between adjacent siblings */
-/* https://every-layout.dev/layouts/stack/ */
-/*                                                                       */
-/* :where() rather than :is() is load-bearing. It drops these to zero    */
-/* specificity so that:                                                  */
-/*   - a component's own class can override the rhythm. With :is() these */
-/*     were (0,1,0) and tied with any module class, and the global sheet */
-/*     happens to be linked after the CSS-module chunks — so the stack   */
-/*     silently won and several module margins were dead code.           */
-/*   - .cover / .cover-top below win on specificity rather than on       */
-/*     source order, which was never actually guaranteed.                */
-/* Prefer setting --space over reintroducing margins on stack children.  */
+/* Stack: vertical rhythm as a relationship between adjacent siblings.
+   https://every-layout.dev/layouts/stack/
+
+   :where() (not :is()) is load-bearing — it keeps these at zero specificity so
+   a component class always wins, and so .cover/.cover-top below win on
+   specificity rather than source order. Prefer setting --space on a stack child
+   over giving it a margin-block. See CLAUDE.md § Styling. */
 :where(.grid, .flow) > * {
   margin-block: 0;
 }

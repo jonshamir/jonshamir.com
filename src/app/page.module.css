@@ -72,11 +72,8 @@
   }
 }
 
-/* Pairs with the global .fade-in utility, which owns the keyframes. */
-.fadeInBase {
-  --fade-delay: 0.35s;
-}
-
+/* Pairs with the global .fade-in utility, which owns the keyframes and the
+   default 0.35s delay. */
 .fadeInDelay {
   --fade-delay: 0.5s;
 }

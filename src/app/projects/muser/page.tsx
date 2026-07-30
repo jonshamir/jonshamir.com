@@ -27,10 +27,7 @@ export default function Page() {
         history of music visualization. I researched, designed and built the
         project as part of my studies.
       </p>
-      <figure
-        className="grid-wide"
-        style={{ "--media-max-height": "300px" } as React.CSSProperties}
-      >
+      <figure className="grid-wide" style={{ "--media-max-height": "300px" }}>
         <video src={demoVideo} playsInline autoPlay muted loop />
       </figure>
       <p>

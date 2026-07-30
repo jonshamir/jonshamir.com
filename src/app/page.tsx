@@ -18,13 +18,7 @@ export default function Page() {
         <div className={clsx(styles.hero, "flow")}>
           <InlineLogoPlaceholder />
 
-          <p
-            className={clsx(
-              "fade-in",
-              styles.fadeInBase,
-              styles.introHeyWrapper
-            )}
-          >
+          <p className={clsx("fade-in", styles.introHeyWrapper)}>
             <span className={styles.introHey}>
               Hey! I&rsquo;m
               <span className={styles.name}>

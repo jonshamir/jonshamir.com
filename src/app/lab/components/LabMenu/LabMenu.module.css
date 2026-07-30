@@ -1,14 +1,10 @@
 .LabMenu {
   position: fixed;
   top: 0;
-  left: 0;
+  left: 0.5rem;
   z-index: var(--z-controls);
   padding: 0 1rem;
   padding-left: 4.5rem;
-  /* margin-inline only: .LabMenu is a direct .grid child, so the stack zeroes
-     margin-block and the vertical half of a `margin: 0.5rem` shorthand never
-     applied. Use `top` for vertical offset instead. */
-  margin-inline: 0.5rem;
   border-radius: var(--rounding-medium);
   max-width: 18rem;
 }

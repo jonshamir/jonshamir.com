@@ -26,10 +26,7 @@ export default function Page() {
         paradigms.
       </p>
 
-      <figure
-        className="grid-wide"
-        style={{ "--media-max-height": "450px" } as React.CSSProperties}
-      >
+      <figure className="grid-wide" style={{ "--media-max-height": "450px" }}>
         <Image
           src={heroImg}
           alt="Illustration of Spacetop being used on an airplane"
@@ -112,10 +109,7 @@ export default function Page() {
         The canvas itself can be panned and manipulated using touchpad gestures
         or keyboard shortcuts.
       </p>
-      <figure
-        className="grid-wide"
-        style={{ "--media-max-height": "500px" } as React.CSSProperties}
-      >
+      <figure className="grid-wide" style={{ "--media-max-height": "500px" }}>
         <Image
           src={navImg}
           alt="The canvas itself can be panned and zoomed by the user"
@@ -130,12 +124,10 @@ export default function Page() {
         see.
       </p>
       <figure
-        style={
-          {
-            "--media-max-height": "450px",
-            "--media-max-width": "1000px"
-          } as React.CSSProperties
-        }
+        style={{
+          "--media-max-height": "450px",
+          "--media-max-width": "1000px"
+        }}
       >
         <Image
           src={compassImg}
@@ -154,12 +146,10 @@ export default function Page() {
         objects.
       </p>
       <figure
-        style={
-          {
-            "--media-max-height": "450px",
-            "--media-max-width": "1000px"
-          } as React.CSSProperties
-        }
+        style={{
+          "--media-max-height": "450px",
+          "--media-max-width": "1000px"
+        }}
       >
         <Image
           src={bevelImg}

@@ -26,8 +26,10 @@ Rules of thumb:
   `@media` conditions).
 - One module convention: `.module.css`. No `.scss` (nothing needed Sass), and no plain
   colocated `.css` except where documented below.
-- Keep global selectors at zero specificity with `:where()` when they target bare
-  elements, so modules can override them with a plain class instead of `!important`.
+- Write broadly-matching global rules with `:where()` so they sit at zero specificity
+  and a component can always override them with a plain class instead of `!important`.
+  The stack in `layout.css` and the form styles in `typography.css` both do this
+  deliberately — don't "fix" them back to `:is()` or bare selectors.
 
 Two deliberate exceptions, both commented in place:
 
@@ -38,17 +40,12 @@ Two deliberate exceptions, both commented in place:
 
 **Cascade gotcha:** the global stylesheet is linked *after* the CSS-module chunks, so
 at equal specificity **global rules win over module rules** — the opposite of what most
-setups do, and not something import order can change (webpack decides it). So:
-
-- Never rely on source order. Win by specificity.
-- Write implicit, broadly-matching global rules with `:where()` so they sit at zero
-  specificity and a component can always override them. The stack in `layout.css` and
-  the form styles in `typography.css` both do this deliberately — don't "fix" them
-  back to `:is()` or bare selectors.
+setups do, and not something import order can change (webpack decides it). Never rely
+on source order; win by specificity.
 
 Cascade layers would make this structural rather than conventional, but aren't applied:
-the `:where()` discipline covers the cases that actually bite, without changing how
-KaTeX and Shiki's `!important` rules resolve.
+the `:where()` discipline above covers the cases that actually bite, without changing
+how KaTeX and Shiki's `!important` rules resolve.
 
 **Vertical rhythm** belongs to the stack (`:where(.grid, .flow) > * + *`). To change
 spacing around a stack child, set `--space` on it — don't add `margin-block`. Note that
