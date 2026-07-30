@@ -44,13 +44,21 @@
 
 /* Stack: vertical rhythm as a relationship between adjacent siblings */
 /* https://every-layout.dev/layouts/stack/ */
-/* Declared before the margin-based utilities below so those (.cover,    */
-/* .cover-top) win by source order at equal specificity.                 */
-:is(.grid, .flow) > * {
+/*                                                                       */
+/* :where() rather than :is() is load-bearing. It drops these to zero    */
+/* specificity so that:                                                  */
+/*   - a component's own class can override the rhythm. With :is() these */
+/*     were (0,1,0) and tied with any module class, and the global sheet */
+/*     happens to be linked after the CSS-module chunks — so the stack   */
+/*     silently won and several module margins were dead code.           */
+/*   - .cover / .cover-top below win on specificity rather than on       */
+/*     source order, which was never actually guaranteed.                */
+/* Prefer setting --space over reintroducing margins on stack children.  */
+:where(.grid, .flow) > * {
   margin-block: 0;
 }
 
-:is(.grid, .flow) > * + * {
+:where(.grid, .flow) > * + * {
   margin-block-start: var(--space, var(--space-s));
 }
 

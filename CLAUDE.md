@@ -36,7 +36,21 @@ Two deliberate exceptions, both commented in place:
 - `src/app/projects/spacetop/TilePrototype/TilePrototype.css` is not a module because
   `interactions.js` creates elements imperatively and queries them by literal class name.
 
-**Cascade gotcha:** the global stylesheet is currently linked *after* the CSS-module
-chunks, so at equal specificity **global rules win over module rules**. Prefer winning
-by specificity rather than relying on source order. Cascade layers would invert this
-and are not currently applied.
+**Cascade gotcha:** the global stylesheet is linked *after* the CSS-module chunks, so
+at equal specificity **global rules win over module rules** — the opposite of what most
+setups do, and not something import order can change (webpack decides it). So:
+
+- Never rely on source order. Win by specificity.
+- Write implicit, broadly-matching global rules with `:where()` so they sit at zero
+  specificity and a component can always override them. The stack in `layout.css` and
+  the form styles in `typography.css` both do this deliberately — don't "fix" them
+  back to `:is()` or bare selectors.
+
+Cascade layers would make this structural rather than conventional, but aren't applied:
+the `:where()` discipline covers the cases that actually bite, without changing how
+KaTeX and Shiki's `!important` rules resolve.
+
+**Vertical rhythm** belongs to the stack (`:where(.grid, .flow) > * + *`). To change
+spacing around a stack child, set `--space` on it — don't add `margin-block`. Note that
+`.grid` is a *grid* container, so sibling margins do **not** collapse there; a margin
+plus the stack gap will add up.

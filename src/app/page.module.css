@@ -81,13 +81,18 @@
   --fade-delay: 0.5s;
 }
 
-/* margin-bottom applies only to the nested uses inside .columns. The top-level
-   "Writing" heading is a direct .grid child, where the stack zeroes it. */
 .sectionTitle {
   font-family: var(--font-body);
   font-weight: 500;
   font-size: 1rem;
   font-style: italic;
+}
+
+/* Only the .columns instances need a bottom margin — they sit in normal flow.
+   The top-level ones ("Writing", "Mailing list") are direct .grid children and
+   get their gap from the stack instead; .grid is a grid container, so margins
+   don't collapse there and adding one would double the spacing. */
+.columns .sectionTitle {
   margin-bottom: 0.8rem;
 }
 
