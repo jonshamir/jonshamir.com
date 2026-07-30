@@ -54,11 +54,29 @@ the `:where()` discipline above covers the cases that actually bite, without cha
 how KaTeX and Shiki's `!important` rules resolve.
 
 **Vertical rhythm** belongs to the stack (`:where(.grid, .flow) > * + *`). To change
-spacing around a stack child, set `--space` on it — don't add `margin-block`.
+spacing around a stack child, set `--space` on it rather than a `margin-block`. The
+stack's two rules are split by intent, and `layout.css` explains why in place: bottom
+margins are an invariant (`!important`, so a stray one is inert instead of doubling the
+gap), top margins are an overridable default. So a hardcoded margin won't *break*
+anything — it just puts the rhythm outside the `--space` vocabulary.
 
-This is a convention, and nothing enforces it. Because the stack is written with
-`:where()` it sits at zero specificity, so a `margin-block` in a module *will* apply —
-it just won't replace the stack gap, it will add to it (`.grid` is a *grid* container,
-so sibling margins do **not** collapse there). Two sources of rhythm on one element is
-exactly the bug this rule exists to prevent, so don't reach for a margin because it
-"seems to work".
+**The stack only reaches direct children.** This is the sharp edge worth knowing, and
+it fails silently. Wrapping content in a `<div>` stops rhythm dead for everything
+inside it:
+
+```jsx
+<div className="grid">
+  <p>spaced</p>
+  <div>                {/* ← rhythm stops here */}
+    <p>not spaced</p>
+    <p>not spaced</p>
+  </div>
+</div>
+```
+
+The fix is to add `flow` to the wrapper (`.flow` is *only* the stack — it has no
+layout of its own, so it's safe to add anywhere). Any component that wraps its
+children needs it; see `elements/page.tsx`, where every nested `<section>`,
+`<article>` and `<fieldset>` opts back in. Prefer not introducing the wrapper at all —
+in a `.grid` the children are already placed by `grid-column`, so a wrapper is usually
+only there out of habit.

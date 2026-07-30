@@ -48,11 +48,25 @@
    :where() (not :is()) is load-bearing — it keeps these at zero specificity so
    a component class always wins, and so .cover/.cover-top below win on
    specificity rather than source order. Prefer setting --space on a stack child
-   over giving it a margin-block. See CLAUDE.md § Styling. */
+   over giving it a margin-block. See CLAUDE.md § Styling.
+
+   The two halves below are deliberately *not* equally overridable — they encode
+   different things. See each comment. */
+
+/* Invariant, not a default. A child's own block-end margin would *add* to the
+   next sibling's stack gap rather than replace it (.grid is a grid container,
+   so sibling margins don't collapse), giving one element two sources of
+   rhythm. This is the one thing the stack must win outright — including
+   against third-party CSS we can't edit, e.g. KaTeX's
+   `.katex-display { margin: 1em 0 }` at (0,1,0). Hence !important: this is an
+   invariant, not a preference. Block-start stays overridable, below. */
 :where(.grid, .flow) > * {
-  margin-block: 0;
+  margin-block-end: 0 !important;
+  margin-block-start: 0;
 }
 
+/* Overridable default. At zero specificity so a component class beats it by
+   design — a `margin-block-start` in a module *replaces* this gap cleanly. */
 :where(.grid, .flow) > * + * {
   margin-block-start: var(--space, var(--space-md));
 }
