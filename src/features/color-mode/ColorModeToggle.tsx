@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 import { useEffect, useState } from "react";
 
 import { Button } from "../../components/Button";
-import styles from "./ColorModeToggle.module.scss";
+import styles from "./ColorModeToggle.module.css";
 import { useColorMode } from "./useColorMode";
 
 export function ColorModeToggle() {

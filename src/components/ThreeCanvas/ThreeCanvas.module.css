@@ -1,0 +1,23 @@
+/* No margin-block here by convention: the canvas is usually a direct .grid child,
+   so its spacing is the stack's job. Set --space on it rather than a margin — a
+   margin would apply *in addition* to the stack gap, not instead of it. */
+.ThreeCanvas {
+  width: 100%;
+  overflow: hidden;
+
+  &.grabCursor {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+
+  /* Fullscreen positioning lives in src/styles/three-canvas.css as a global
+     class (.three-canvas-fullscreen) to avoid CSS-module hash desync during
+     Fast Refresh. */
+
+  canvas {
+    min-height: 30rem;
+  }
+}

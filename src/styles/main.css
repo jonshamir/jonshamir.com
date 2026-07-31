@@ -1,7 +1,6 @@
 @import "reset.css";
 @import "typography.css";
 @import "layout.css";
-@import "muser.css";
 @import "satoshi.css";
 @import "supreme.css";
 @import "code.css";
@@ -33,13 +32,32 @@
 }
 
 :root {
+  --duration-fast: 150ms;
   --default-duration: 250ms;
+  --duration-slow: 500ms;
   --default-timing: ease-out;
   --transition-defaults: var(--default-duration) var(--default-timing);
 
   --rounding-small: 0.3rem;
   --rounding-medium: 0.6rem;
   --rounding-full: 999px;
+
+  /* Spacing scale. Note the distinction from --space (no suffix), which is the
+     every-layout stack's per-relationship gap in layout.css and consumes these. */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
+  --space-2xl: 3rem;
+
+  /* z-index ladder — cross-component layers only. Values local to a single
+     component's stacking context (0/1/2) stay as literals where they're used. */
+  --z-behind: -1;
+  --z-overlay: 10;
+  --z-controls: 20;
+  --z-header: 100;
+  --z-top: 1000;
 
   --mono-font: "Fira Code", monospace;
 
@@ -60,7 +78,7 @@
   transition-property:
     --color-text-rgb, --color-bg-rgb, --shiki-mix, --dark-mode;
   transition-duration: var(--default-duration);
-  transition-timing-function: var(--default-timing-function);
+  transition-timing-function: var(--default-timing);
 }
 
 :root.dark {
@@ -76,6 +94,32 @@
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
+}
+
+/* Shared fade-in. Global rather than per-module because three unrelated
+   components need it, and CSS modules cannot share @keyframes — css-loader
+   hashes every animation-name it sees, so a module referencing a global
+   keyframe silently animates nothing. Tune per use with the custom properties. */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.fade-in {
+  opacity: 0;
+  animation: fadeIn var(--fade-duration, 0.3s) var(--fade-timing, ease-in)
+    var(--fade-delay, 0.35s) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fade-in {
+    opacity: 1;
+    animation: none;
+  }
 }
 
 * {
@@ -128,62 +172,11 @@ body {
   }
 }
 
-.inlinePreview {
-  display: inline-block;
-  height: 1.4em;
-  line-height: 1.4em;
-  cursor: help;
-  color: rgba(var(--color-text-rgb));
-  transition: background-color var(--transition-defaults);
-  position: relative;
-  white-space: nowrap;
-  display: inline-block;
-  background-color: rgba(var(--color-text-rgb), 0.1);
-  padding: 0 0.6em;
-  margin: 0.1em 0;
-  border-radius: var(--rounding-full);
-}
-
-.inlinePreview:hover {
-  background-color: rgba(var(--color-text-rgb), 0.2);
-  text-decoration: none;
-}
-
-.inlinePreview video,
-.inlinePreview img {
-  display: block;
-  position: absolute;
-  bottom: -8em;
-  right: -8em;
-  width: 10rem;
-  height: 10rem;
-  border-radius: 1rem 5rem 5rem 5rem;
-  z-index: 10;
-  opacity: 0;
-  pointer-events: none;
-  transform-origin: 0 0;
-  transform: rotate(5deg) scale(0.9);
-  transition:
-    opacity var(--transition-defaults),
-    transform var(--transition-defaults);
-
-  @media (max-width: 40rem) {
-    right: -3em;
-    bottom: -8.5em;
-  }
-}
-
-.inlinePreview:hover video,
-.inlinePreview:hover img {
-  opacity: 1;
-  transform: translate(0, 0rem) rotate(0deg);
-}
-
 .stats-gl {
   position: absolute;
   top: 100vh;
   left: 0;
-  z-index: 1000;
+  z-index: var(--z-top);
   transform: translateY(-100%);
 }
 

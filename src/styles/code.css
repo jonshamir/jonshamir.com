@@ -1,5 +1,5 @@
 pre[data-theme] {
-  padding: 0.5rem;
+  padding: var(--space-sm);
   border-radius: var(--rounding-medium);
   overflow-x: auto;
   width: 100%;
@@ -12,7 +12,7 @@ code[data-theme] {
 }
 
 [data-line] {
-  padding: 0 0.2rem;
+  padding: 0 var(--space-xs);
 }
 
 .line--highlighted {
@@ -57,7 +57,7 @@ code[data-theme*=" "] span {
   border-radius: var(--rounding-small);
   color: var(--color-text);
   cursor: pointer;
-  padding: 0.3rem;
+  padding: var(--space-xs);
   width: 1.8rem;
   height: 1.8rem;
   display: flex;

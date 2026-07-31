@@ -32,7 +32,7 @@ export default function Page() {
         <img
           src={heroImg.src}
           alt="Leaves sorted by shape"
-          style={{ maxHeight: "300px", height: "auto" }}
+          style={{ maxHeight: "300px" }}
         />
       </figure>
 

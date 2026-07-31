@@ -3,15 +3,15 @@
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: var(--z-top);
   box-sizing: border-box;
-  padding: 0.5rem;
+  padding: var(--space-sm);
   pointer-events: none;
   font-size: 0.9rem;
   font-weight: 500;
 
-  @media screen and (min-width: 40rem) {
-    padding: 1rem;
+  @media (min-width: 40rem) {
+    padding: var(--space-md);
   }
 
   & > div {
@@ -29,7 +29,7 @@
   .Wrapper {
     background-color: var(--color-bg);
     border-radius: var(--rounding-full);
-    padding: 0.2rem;
+    padding: var(--space-xs);
     display: flex;
     flex-direction: row;
     align-items: center;

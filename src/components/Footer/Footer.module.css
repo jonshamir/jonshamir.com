@@ -1,6 +1,6 @@
 .Footer {
   box-sizing: border-box;
   width: 100%;
-  padding: 3rem 1rem;
-  margin-top: 3rem;
+  padding: var(--space-2xl) var(--space-md);
+  margin-top: var(--space-2xl);
 }

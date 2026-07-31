@@ -38,7 +38,6 @@
 
 .introHey {
   cursor: help;
-  animation-delay: 0.2s !important;
   font-weight: 500;
 
   .name {
@@ -73,22 +72,10 @@
   }
 }
 
-.fadeIn {
-  opacity: 0;
-  animation: fadeIn 0.3s ease-in 0.35s forwards;
-}
-
+/* Pairs with the global .fade-in utility, which owns the keyframes and the
+   default 0.35s delay. */
 .fadeInDelay {
-  animation-delay: 0.5s;
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  --fade-delay: 0.5s;
 }
 
 .sectionTitle {
@@ -96,14 +83,21 @@
   font-weight: 500;
   font-size: 1rem;
   font-style: italic;
-  margin-bottom: 0.8rem;
+}
+
+/* Only the .columns instances need a bottom margin — they sit in normal flow.
+   The top-level ones ("Writing", "Mailing list") are direct .grid children and
+   get their gap from the stack instead; .grid is a grid container, so margins
+   don't collapse there and adding one would double the spacing. */
+.columns .sectionTitle {
+  margin-bottom: var(--space-sm);
 }
 
 .columns {
-  --space: 3rem; /* section gap above the projects/social columns */
+  --space: var(--space-2xl); /* section gap above the projects/social columns */
   display: flex;
   flex-direction: row;
-  gap: 2rem;
+  gap: var(--space-xl);
 }
 
 .columns > div {

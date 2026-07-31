@@ -7,7 +7,7 @@
   font-weight: 400;
   font-synthesis: none;
 
-  @media screen and (max-width: 40rem) {
+  @media (max-width: 40rem) {
     font-size: 1rem;
   }
 }
@@ -27,11 +27,11 @@ i {
 
 ul,
 ol {
-  padding-inline-start: 1.5rem;
+  padding-inline-start: var(--space-lg);
 }
 
 li {
-  margin-top: 0.3rem;
+  margin-top: var(--space-xs);
 }
 
 li::marker {
@@ -60,7 +60,9 @@ h2 {
   font-size: 1.5em;
   font-weight: 600;
   letter-spacing: -0.01em;
-  scroll-margin-top: 80px;
+  /* Clears the fixed nav on anchor jumps, plus breathing room. Derived so it
+     stays correct if --nav-height changes. */
+  scroll-margin-top: calc(var(--nav-height) + var(--space-xl));
 }
 
 h3 {
@@ -85,7 +87,7 @@ h6 {
 }
 
 blockquote {
-  padding-left: 1rem;
+  padding-left: var(--space-md);
   border-left: 2px solid var(--color-secondary);
 }
 
@@ -108,32 +110,38 @@ table {
 }
 table td,
 table th {
-  padding: 0.5rem;
+  padding: var(--space-sm);
   border: 1px solid var(--color-secondary);
 }
 
-/* Forms */
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="number"],
-input[type="date"],
-input[type="time"],
-input[type="color"],
-input[type="search"],
-input[type="tel"],
-input[type="url"],
-input[type="month"],
-input[type="week"],
-input[type="datetime"],
-input[type="datetime-local"],
-input[type="range"],
-input[type="file"],
-input[type="image"],
-:where(button),
-:where(.button),
-textarea,
-select {
+/* Forms
+   The whole list is wrapped in :where() so it carries zero specificity.
+   Attribute selectors like input[type="range"] would otherwise be 0,1,1 and
+   beat a plain CSS-module class (0,1,0), forcing components to use !important
+   just to restyle their own inputs. */
+:where(
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  input[type="date"],
+  input[type="time"],
+  input[type="color"],
+  input[type="search"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="month"],
+  input[type="week"],
+  input[type="datetime"],
+  input[type="datetime-local"],
+  input[type="range"],
+  input[type="file"],
+  input[type="image"],
+  button,
+  .button,
+  textarea,
+  select
+) {
   background-color: rgba(var(--color-text-rgb), 0.1);
   padding: 0.3em 0.6em;
   border: 0;
@@ -162,7 +170,7 @@ label {
 }
 
 fieldset {
-  margin-top: 1.5rem;
+  margin-top: var(--space-lg);
   border: 1px solid var(--color-secondary);
   border-radius: var(--rounding-medium);
 }

@@ -11,7 +11,7 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
   cursor: grab;
-  gap: 1rem;
+  gap: var(--space-md);
   padding-inline: 4rem;
 }
 

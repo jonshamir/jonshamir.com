@@ -2,13 +2,13 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: -1;
+  z-index: var(--z-behind);
   width: 100vw;
   height: 80vh;
   box-sizing: border-box;
 
   canvas {
-    transition: opacity 500ms ease;
+    transition: opacity var(--duration-slow) ease;
     width: 100%;
   }
 

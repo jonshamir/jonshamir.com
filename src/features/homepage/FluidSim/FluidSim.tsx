@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import styles from "./FluidSim.module.scss";
+import styles from "./FluidSim.module.css";
 import FluidSimManager from "./modules/FluidSimManager";
 
 let fluidSimManager: FluidSimManager | null = null;

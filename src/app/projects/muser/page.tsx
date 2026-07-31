@@ -4,6 +4,7 @@ import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
 import demoVideo from "./demo.mp4";
 import kandinskyImg from "./kandinsky.jpg";
+import styles from "./MuserTimeline.module.css";
 
 export default function Page() {
   return (
@@ -29,7 +30,7 @@ export default function Page() {
       <figure className="grid-wide">
         <video
           src={demoVideo}
-          style={{ maxHeight: "300px", height: "auto" }}
+          style={{ maxHeight: "300px" }}
           playsInline
           autoPlay
           muted
@@ -45,7 +46,7 @@ export default function Page() {
       </p>
       <p>
         We can use this to visualize how the style of a song changes over time:
-        <span className="muserTimeline" />
+        <span className={styles.muserTimeline} />
         <span>
           <strong>Love the Way You Lie</strong> / Eminem feat. Rihanna
         </span>

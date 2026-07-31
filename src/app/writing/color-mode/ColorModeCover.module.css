@@ -1,5 +1,6 @@
 .ColorModeCover {
-  padding: calc(var(--nav-height) + 1rem) 1rem 2rem;
+  padding: calc(var(--nav-height) + var(--space-md)) var(--space-md)
+    var(--space-xl);
 
   --moon-bg-color: #3a4055;
 

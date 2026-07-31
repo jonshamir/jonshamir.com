@@ -24,7 +24,7 @@ export function HeroBackground() {
       isFullscreen={false}
       grabCursor={false}
       gl={{ alpha: true }}
-      className={styles.heroBackground}
+      className={`fade-in ${styles.heroBackground}`}
     >
       <SdfCollisionQuad
         gravity={0}

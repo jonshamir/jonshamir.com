@@ -11,12 +11,12 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--space-sm);
 }
 
 .colorBoxes {
   display: flex;
-  gap: 1rem;
+  gap: var(--space-md);
 }
 
 .box {
@@ -36,7 +36,7 @@
 
 .colorPicker {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-sm);
   align-items: center;
   justify-content: center;
 }

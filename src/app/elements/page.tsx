@@ -1,6 +1,6 @@
 export default function Elements() {
   return (
-    <main>
+    <>
       <h1>HTML Elements</h1>
       <p>
         This is a sample page of common HTML elements. I use it to make sure
@@ -67,127 +67,119 @@ export default function Elements() {
           </li>
         </ul>
       </nav>
-      <section id="text">
+      <section id="text" className="flow">
         <h2>Text</h2>
-        <article id="text__headings">
-          <div>
-            <h1>Heading 1</h1>
-            <h2>Heading 2</h2>
-            <h3>Heading 3</h3>
-            <h4>Heading 4</h4>
-            <h5>Heading 5</h5>
-            <h6>Heading 6</h6>
-          </div>
+        <article id="text__headings" className="flow">
+          <h1>Heading 1</h1>
+          <h2>Heading 2</h2>
+          <h3>Heading 3</h3>
+          <h4>Heading 4</h4>
+          <h5>Heading 5</h5>
+          <h6>Heading 6</h6>
         </article>
-        <article id="text__paragraphs">
+        <article id="text__paragraphs" className="flow">
           <h1>Paragraphs</h1>
-          <div>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-              viverra viverra nisl, vel maximus turpis ornare a. Ut scelerisque
-              lectus sed odio dictum scelerisque vitae quis nisi. Nulla
-              facilisi. Phasellus vehicula convallis nisl, id suscipit dui
-              semper at. In eu iaculis lorem. In vehicula sed mauris et
-              suscipit. Vivamus pellentesque non massa sit amet ornare. Integer
-              placerat est vitae nisl molestie, eget rhoncus erat vulputate.
-              Proin ornare massa eget bibendum faucibus.
-            </p>
-            <p>
-              Ut scelerisque lectus sed odio dictum scelerisque vitae quis nisi.
-              Nulla facilisi. Phasellus vehicula convallis nisl, id suscipit dui
-              semper at. In eu iaculis lorem. In vehicula sed mauris et
-              suscipit. Vivamus pellentesque non massa sit amet ornare. Integer
-              placerat est vitae nisl molestie.
-            </p>
-          </div>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
+            viverra viverra nisl, vel maximus turpis ornare a. Ut scelerisque
+            lectus sed odio dictum scelerisque vitae quis nisi. Nulla facilisi.
+            Phasellus vehicula convallis nisl, id suscipit dui semper at. In eu
+            iaculis lorem. In vehicula sed mauris et suscipit. Vivamus
+            pellentesque non massa sit amet ornare. Integer placerat est vitae
+            nisl molestie, eget rhoncus erat vulputate. Proin ornare massa eget
+            bibendum faucibus.
+          </p>
+          <p>
+            Ut scelerisque lectus sed odio dictum scelerisque vitae quis nisi.
+            Nulla facilisi. Phasellus vehicula convallis nisl, id suscipit dui
+            semper at. In eu iaculis lorem. In vehicula sed mauris et suscipit.
+            Vivamus pellentesque non massa sit amet ornare. Integer placerat est
+            vitae nisl molestie.
+          </p>
         </article>
-        <article id="text__blockquotes">
+        <article id="text__blockquotes" className="flow">
           <h2>Blockquotes</h2>
-          <div>
-            <blockquote>
-              <p>
-                Etiam porttitor egestas elit, at venenatis neque accumsan eu.
-                Nulla viverra odio nisi, quis commodo tellus tristique non.
-                Proin ac ante at orci euismod eleifend. Quisque nisi sapien,
-                dapibus in venenatis sit amet, posuere non purus. In sit amet
-                metus erat. Pellentesque nec neque eleifend, luctus ipsum at,
-                ullamcorper nunc. Pellentesque sagittis, dolor eu bibendum
-                lacinia, orci ex bibendum risus, at tincidunt augue lacus
-                eleifend diam. Nulla facilisis velit ut est auctor sollicitudin.
-                Morbi eget lectus a lacus maximus molestie in ut lorem.
-              </p>
-              <p>
-                Vestibulum ut erat sapien. Duis eros est, tempus a rutrum eu,
-                rhoncus at ante. Vestibulum congue vel nunc et dapibus. Ut
-                tristique facilisis orci ac pretium. Nunc et sodales turpis.
-                Nulla pretium augue vitae faucibus tempor. Aliquam convallis
-                mollis feugiat. Ut non pellentesque sem. Suspendisse interdum,
-                neque at hendrerit varius, enim neque imperdiet enim,
-                pellentesque efficitur leo orci non erat.
-              </p>
-              <cite>Said no one, ever.</cite>
-            </blockquote>
-          </div>
+          <blockquote>
+            <p>
+              Etiam porttitor egestas elit, at venenatis neque accumsan eu.
+              Nulla viverra odio nisi, quis commodo tellus tristique non. Proin
+              ac ante at orci euismod eleifend. Quisque nisi sapien, dapibus in
+              venenatis sit amet, posuere non purus. In sit amet metus erat.
+              Pellentesque nec neque eleifend, luctus ipsum at, ullamcorper
+              nunc. Pellentesque sagittis, dolor eu bibendum lacinia, orci ex
+              bibendum risus, at tincidunt augue lacus eleifend diam. Nulla
+              facilisis velit ut est auctor sollicitudin. Morbi eget lectus a
+              lacus maximus molestie in ut lorem.
+            </p>
+            <p>
+              Vestibulum ut erat sapien. Duis eros est, tempus a rutrum eu,
+              rhoncus at ante. Vestibulum congue vel nunc et dapibus. Ut
+              tristique facilisis orci ac pretium. Nunc et sodales turpis. Nulla
+              pretium augue vitae faucibus tempor. Aliquam convallis mollis
+              feugiat. Ut non pellentesque sem. Suspendisse interdum, neque at
+              hendrerit varius, enim neque imperdiet enim, pellentesque
+              efficitur leo orci non erat.
+            </p>
+            <cite>Said no one, ever.</cite>
+          </blockquote>
         </article>
-        <article id="text__lists">
+        <article id="text__lists" className="flow">
           <h2>Lists</h2>
-          <div>
-            <h3>Definition list</h3>
-            <dl>
-              <dt>Definition List Title</dt>
-              <dd>This is a definition list division.</dd>
-            </dl>
-            <h3>Ordered List</h3>
-            <ol>
-              <li>List Item 1</li>
-              <li>List Item 2</li>
-              <li>
-                List Item 3
-                <ol>
-                  <li>Nested Ordered List Item 3.1</li>
-                  <li>Nested Ordered List Item 3.2</li>
-                  <li>Nested Ordered List Item 3.3</li>
-                </ol>
-              </li>
-              <li>
-                List Item 4
-                <ul>
-                  <li>Nested Unordered List Item 4.1</li>
-                  <li>Nested Unordered List Item 4.2</li>
-                  <li>Nested Unordered List Item 4.3</li>
-                </ul>
-              </li>
-            </ol>
-            <h3>Unordered List</h3>
-            <ul>
-              <li>List Item 1</li>
-              <li>List Item 2</li>
-              <li>
-                List Item 3
-                <ol>
-                  <li>Nested Ordered List Item 3.1</li>
-                  <li>Nested Ordered List Item 3.2</li>
-                  <li>Nested Ordered List Item 3.3</li>
-                </ol>
-              </li>
-              <li>
-                List Item 4
-                <ul>
-                  <li>Nested Unordered List Item 4.1</li>
-                  <li>Nested Unordered List Item 4.2</li>
-                  <li>Nested Unordered List Item 4.3</li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+          <h3>Definition list</h3>
+          <dl>
+            <dt>Definition List Title</dt>
+            <dd>This is a definition list division.</dd>
+          </dl>
+          <h3>Ordered List</h3>
+          <ol>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+            <li>
+              List Item 3
+              <ol>
+                <li>Nested Ordered List Item 3.1</li>
+                <li>Nested Ordered List Item 3.2</li>
+                <li>Nested Ordered List Item 3.3</li>
+              </ol>
+            </li>
+            <li>
+              List Item 4
+              <ul>
+                <li>Nested Unordered List Item 4.1</li>
+                <li>Nested Unordered List Item 4.2</li>
+                <li>Nested Unordered List Item 4.3</li>
+              </ul>
+            </li>
+          </ol>
+          <h3>Unordered List</h3>
+          <ul>
+            <li>List Item 1</li>
+            <li>List Item 2</li>
+            <li>
+              List Item 3
+              <ol>
+                <li>Nested Ordered List Item 3.1</li>
+                <li>Nested Ordered List Item 3.2</li>
+                <li>Nested Ordered List Item 3.3</li>
+              </ol>
+            </li>
+            <li>
+              List Item 4
+              <ul>
+                <li>Nested Unordered List Item 4.1</li>
+                <li>Nested Unordered List Item 4.2</li>
+                <li>Nested Unordered List Item 4.3</li>
+              </ul>
+            </li>
+          </ul>
         </article>
-        <article id="text__hr">
+        <article id="text__hr" className="flow">
           <h2>Horizontal rules</h2>
           <div>
             <hr />
           </div>
         </article>
-        <article id="text__tables">
+        <article id="text__tables" className="flow">
           <h2>Tabular data</h2>
           <table>
             <caption>Table Caption</caption>
@@ -241,160 +233,144 @@ export default function Elements() {
             </tbody>
           </table>
         </article>
-        <article id="text__code">
+        <article id="text__code" className="flow">
           <h2>Code</h2>
-          <div>
-            <p>
-              <strong>Keyboard input:</strong> <kbd>Cmd</kbd>
-            </p>
-            <p>
-              <strong>Inline code:</strong>
-              <code>&lt;div&gt;code&lt;/div&gt;</code>
-            </p>
-            <p>
-              <strong>Sample output:</strong>
-              <samp>This is sample output from a computer program.</samp>
-            </p>
-          </div>
+          <p>
+            <strong>Keyboard input:</strong> <kbd>Cmd</kbd>
+          </p>
+          <p>
+            <strong>Inline code:</strong>
+            <code>&lt;div&gt;code&lt;/div&gt;</code>
+          </p>
+          <p>
+            <strong>Sample output:</strong>
+            <samp>This is sample output from a computer program.</samp>
+          </p>
         </article>
-        <article id="text__inline">
+        <article id="text__inline" className="flow">
           <h2>Inline elements</h2>
-          <div>
-            <a href="#!">This is a text link</a>.<br />
-            <strong>Strong is used to indicate strong importance.</strong>
-            <br />
-            <em>This text has added emphasis.</em>
-            <br />
-            The <b>b element</b> is stylistically different text from normal
-            text, without any special importance.
-            <br />
-            The <i>i element</i> is text that is offset from the normal text.
-            <br />
-            The <u>u element</u> is text with an unarticulated, though
-            explicitly rendered, non-textual annotation.
-            <br />
-            <del>This text is deleted</del> and
-            <ins>This text is inserted</ins>.<br />
-            <s>This text has a strikethrough</s>.<br />
-            Superscript<sup>®</sup>.<br />
-            Subscript for things like H<sub>2</sub>O.
-            <br />
-            <small>This small text is small for for fine print, etc.</small>
-            <br />
-            Abbreviation: <abbr title="HyperText Markup Language">HTML</abbr>
-            <br />
-            <q cite="https://developer.mozilla.org/en-US/docs/HTML/Element/q">
-              This text is a short inline quotation.
-            </q>
-            <br />
-            <cite>This is a citation.</cite>
-            <br />
-            The <dfn>dfn element</dfn> indicates a definition.
-            <br />
-            The <mark>mark element</mark> indicates a highlight.
-            <br />
-            The <var>variable element</var>, such as <var>x</var> =<var>y</var>.
-            <br />
-            The time element:
-            <time dateTime="2013-04-06T12:32+00:00">2 weeks ago</time>
-            <br />
-          </div>
+          <a href="#!">This is a text link</a>.<br />
+          <strong>Strong is used to indicate strong importance.</strong>
+          <br />
+          <em>This text has added emphasis.</em>
+          <br />
+          The <b>b element</b> is stylistically different text from normal text,
+          without any special importance.
+          <br />
+          The <i>i element</i> is text that is offset from the normal text.
+          <br />
+          The <u>u element</u> is text with an unarticulated, though explicitly
+          rendered, non-textual annotation.
+          <br />
+          <del>This text is deleted</del> and
+          <ins>This text is inserted</ins>.<br />
+          <s>This text has a strikethrough</s>.<br />
+          Superscript<sup>®</sup>.<br />
+          Subscript for things like H<sub>2</sub>O.
+          <br />
+          <small>This small text is small for for fine print, etc.</small>
+          <br />
+          Abbreviation: <abbr title="HyperText Markup Language">HTML</abbr>
+          <br />
+          <q cite="https://developer.mozilla.org/en-US/docs/HTML/Element/q">
+            This text is a short inline quotation.
+          </q>
+          <br />
+          <cite>This is a citation.</cite>
+          <br />
+          The <dfn>dfn element</dfn> indicates a definition.
+          <br />
+          The <mark>mark element</mark> indicates a highlight.
+          <br />
+          The <var>variable element</var>, such as <var>x</var> =<var>y</var>.
+          <br />
+          The time element:
+          <time dateTime="2013-04-06T12:32+00:00">2 weeks ago</time>
+          <br />
         </article>
       </section>
 
-      <section id="embedded">
+      <section id="embedded" className="flow">
         <h2>Embedded content</h2>
-        <article id="embedded__images">
+        <article id="embedded__images" className="flow">
           <h3>Images</h3>
-          <div>
-            <h3>
-              No <code>&lt;figure&gt;</code> element
-            </h3>
-            <p>
-              <a href="https://commons.wikimedia.org/wiki/File:Colouring_pencils.jpg">
-                <img
-                  src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Colouring_pencils.jpg"
-                  alt="Colouring pencils by MichaelMaggs"
-                />
-              </a>
-            </p>
-            <h3>
-              Wrapped in a <code>&lt;figure&gt;</code> element, no
-              <code>&lt;figcaption&gt;</code>
-            </h3>
-            <figure>
-              <a href="https://commons.wikimedia.org/wiki/File:Coloured,_textured_craft_card_edit.jpg">
-                <img
-                  src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Coloured%2C_textured_craft_card_edit.jpg"
-                  alt="Coloured, textured craft card by MichaelMaggs"
-                />
-              </a>
-            </figure>
-            <h3>
-              Wrapped in a <code>&lt;figure&gt;</code> element, with a
-              <code>&lt;figcaption&gt;</code>
-            </h3>
-            <figure>
-              <a href="https://commons.wikimedia.org/wiki/File:Opening_chess_position_from_black_side.jpg">
-                <img
-                  src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Opening_chess_position_from_black_side.jpg"
-                  alt="Opening chess position from black side by MichaelMaggs"
-                />
-              </a>
-              <figcaption>Here is a caption for this image.</figcaption>
-            </figure>
-          </div>
+          <h3>
+            No <code>&lt;figure&gt;</code> element
+          </h3>
+          <p>
+            <a href="https://commons.wikimedia.org/wiki/File:Colouring_pencils.jpg">
+              <img
+                src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Colouring_pencils.jpg"
+                alt="Colouring pencils by MichaelMaggs"
+              />
+            </a>
+          </p>
+          <h3>
+            Wrapped in a <code>&lt;figure&gt;</code> element, no
+            <code>&lt;figcaption&gt;</code>
+          </h3>
+          <figure>
+            <a href="https://commons.wikimedia.org/wiki/File:Coloured,_textured_craft_card_edit.jpg">
+              <img
+                src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Coloured%2C_textured_craft_card_edit.jpg"
+                alt="Coloured, textured craft card by MichaelMaggs"
+              />
+            </a>
+          </figure>
+          <h3>
+            Wrapped in a <code>&lt;figure&gt;</code> element, with a
+            <code>&lt;figcaption&gt;</code>
+          </h3>
+          <figure>
+            <a href="https://commons.wikimedia.org/wiki/File:Opening_chess_position_from_black_side.jpg">
+              <img
+                src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Opening_chess_position_from_black_side.jpg"
+                alt="Opening chess position from black side by MichaelMaggs"
+              />
+            </a>
+            <figcaption>Here is a caption for this image.</figcaption>
+          </figure>
         </article>
-        <article id="embedded__audio">
+        <article id="embedded__audio" className="flow">
           <h2>Audio</h2>
-          <div>
-            <audio controls>
-              <source src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Broke For Free - Night Owl.mp3" />
-            </audio>
-          </div>
+          <audio controls>
+            <source src="https://raw.githubusercontent.com/dohliam/html5-sample-media/master/Broke For Free - Night Owl.mp3" />
+          </audio>
         </article>
-        <article id="embedded__video">
+        <article id="embedded__video" className="flow">
           <h2>Video</h2>
-          <div>
-            <video controls>
-              <source
-                src="https://github.com/benhosmer/HTML5-Test-Videos/blob/master/big_buck_bunny.mp4?raw=true"
-                type="video/mp4"
-              />
-              <source
-                src="https://github.com/benhosmer/HTML5-Test-Videos/blob/master/big_buck_bunny.ogv?raw=true"
-                type="video/ogg"
-              />
-            </video>
-          </div>
+          <video controls>
+            <source
+              src="https://github.com/benhosmer/HTML5-Test-Videos/blob/master/big_buck_bunny.mp4?raw=true"
+              type="video/mp4"
+            />
+            <source
+              src="https://github.com/benhosmer/HTML5-Test-Videos/blob/master/big_buck_bunny.ogv?raw=true"
+              type="video/ogg"
+            />
+          </video>
         </article>
-        <article id="embedded__meter">
+        <article id="embedded__meter" className="flow">
           <h2>Meter</h2>
-          <div>
-            <meter value="2" min="0" max="10">
-              2 out of 10
-            </meter>
-          </div>
+          <meter value="2" min="0" max="10">
+            2 out of 10
+          </meter>
         </article>
-        <article id="embedded__progress">
+        <article id="embedded__progress" className="flow">
           <h2>Progress</h2>
-          <div>
-            <progress>progress</progress>
-          </div>
+          <progress>progress</progress>
         </article>
-        <article id="embedded__svg">
+        <article id="embedded__svg" className="flow">
           <h2>Inline SVG</h2>
-          <div>
-            <svg width="100px" height="100px">
-              <circle cx="100" cy="100" r="100" fill="#1fa3ec"></circle>
-            </svg>
-          </div>
+          <svg width="100px" height="100px">
+            <circle cx="100" cy="100" r="100" fill="#1fa3ec"></circle>
+          </svg>
         </article>
       </section>
-      <section id="forms">
+      <section id="forms" className="flow">
         <h2>Form elements</h2>
         <form>
-          <fieldset id="forms__input">
+          <fieldset id="forms__input" className="flow">
             <legend>Input fields</legend>
             <p>
               <label htmlFor="input__text">Text Input</label>
@@ -450,30 +426,16 @@ export default function Elements() {
               />
             </p>
             <p>
-              <label htmlFor="input__text3" className="error">
-                Error
-              </label>
-              <input
-                id="input__text3"
-                className="is-error"
-                type="text"
-                placeholder="Text Input"
-              />
+              <label htmlFor="input__text3">Error</label>
+              <input id="input__text3" type="text" placeholder="Text Input" />
             </p>
             <p>
-              <label htmlFor="input__text4" className="valid">
-                Valid
-              </label>
-              <input
-                id="input__text4"
-                className="is-valid"
-                type="text"
-                placeholder="Text Input"
-              />
+              <label htmlFor="input__text4">Valid</label>
+              <input id="input__text4" type="text" placeholder="Text Input" />
             </p>
           </fieldset>
 
-          <fieldset id="forms__select">
+          <fieldset id="forms__select" className="flow">
             <legend>Select menus</legend>
             <p>
               <label htmlFor="select">Select</label>
@@ -489,7 +451,7 @@ export default function Elements() {
 
           <fieldset id="forms__checkbox">
             <legend>Checkboxes</legend>
-            <ul className="list list--bare">
+            <ul>
               <li>
                 <label htmlFor="checkbox1">
                   <input
@@ -518,14 +480,13 @@ export default function Elements() {
 
           <fieldset id="forms__radio">
             <legend>Radio buttons</legend>
-            <ul className="list list--bare">
+            <ul>
               <li>
                 <label htmlFor="radio1">
                   <input
                     id="radio1"
                     name="radio"
                     type="radio"
-                    className="radio"
                     defaultChecked={true}
                   />
                   Option 1
@@ -533,23 +494,13 @@ export default function Elements() {
               </li>
               <li>
                 <label htmlFor="radio2">
-                  <input
-                    id="radio2"
-                    name="radio"
-                    type="radio"
-                    className="radio"
-                  />
+                  <input id="radio2" name="radio" type="radio" />
                   Option 2
                 </label>
               </li>
               <li>
                 <label htmlFor="radio3">
-                  <input
-                    id="radio3"
-                    name="radio"
-                    type="radio"
-                    className="radio"
-                  />
+                  <input id="radio3" name="radio" type="radio" />
                   Option 3
                 </label>
               </li>
@@ -569,7 +520,7 @@ export default function Elements() {
             </p>
           </fieldset>
 
-          <fieldset id="forms__html5">
+          <fieldset id="forms__html5" className="flow">
             <legend>HTML5 inputs</legend>
             <p>
               <label htmlFor="ic">Color input</label>
@@ -613,7 +564,7 @@ export default function Elements() {
             </p>
           </fieldset>
 
-          <fieldset id="forms__action">
+          <fieldset id="forms__action" className="flow">
             <legend>Action buttons</legend>
             <p>
               <input type="submit" defaultValue="<input type=submit>" />
@@ -632,6 +583,6 @@ export default function Elements() {
           </fieldset>
         </form>
       </section>
-    </main>
+    </>
   );
 }

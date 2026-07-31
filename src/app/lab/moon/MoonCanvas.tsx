@@ -4,7 +4,10 @@ import { OrbitControls } from "@react-three/drei";
 import { Bloom, EffectComposer, Noise } from "@react-three/postprocessing";
 import { KernelSize } from "postprocessing";
 
-import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import {
+  CANVAS_BG,
+  ThreeCanvas
+} from "../../../components/ThreeCanvas/ThreeCanvas";
 import { MoonModel } from "./MoonModel";
 
 export default function MoonCanvas() {
@@ -14,9 +17,9 @@ export default function MoonCanvas() {
       <ThreeCanvas
         className="grid-full"
         camera={{ position: [0, 0, 200], zoom: 40 }}
-        style={{ backgroundColor: "#101010", height: "40rem" }}
+        style={{ backgroundColor: CANVAS_BG, height: "40rem" }}
       >
-        <color attach="background" args={["#101010"]} />
+        <color attach="background" args={[CANVAS_BG]} />
         <OrbitControls enablePan={false} enableZoom={true} />
         <MoonModel />
         <EffectComposer>

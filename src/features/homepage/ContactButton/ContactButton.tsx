@@ -42,7 +42,7 @@ export function ContactButton() {
   return (
     <div
       ref={wrapperRef}
-      className={`${styles.contactButtonWrapper}${isOpen ? ` ${styles.expanded}` : ""}`}
+      className={`fade-in ${styles.contactButtonWrapper}${isOpen ? ` ${styles.expanded}` : ""}`}
       style={{ filter: "url(#meta)" }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

@@ -3,11 +3,11 @@
   top: 5rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 20;
+  z-index: var(--z-controls);
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 1rem;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
   color: #eee;
   font-size: 0.8rem;
   pointer-events: auto;
@@ -20,14 +20,14 @@
   text-transform: uppercase;
 }
 
-.slider {
+.FocusControl .slider {
   width: 18rem;
   accent-color: #fff;
-  padding: 1rem !important;
-  outline: none !important;
+  padding: var(--space-md);
+  outline: none;
   -webkit-appearance: none;
   appearance: none;
-  background: transparent !important;
+  background: transparent;
   cursor: pointer;
   /* Let vertical scrolls pass through to the page while horizontal drags
      are absorbed by the slider — fixes the "have to grab exactly the thumb"
@@ -38,7 +38,7 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.slider::-webkit-slider-runnable-track {
+.FocusControl .slider::-webkit-slider-runnable-track {
   height: 2px;
   background: linear-gradient(
     to right,
@@ -48,18 +48,18 @@
   border: none;
 }
 
-.slider::-moz-range-track {
+.FocusControl .slider::-moz-range-track {
   height: 2px;
   background: rgba(255, 255, 255, 0.3);
   border: none;
 }
 
-.slider::-moz-range-progress {
+.FocusControl .slider::-moz-range-progress {
   height: 2px;
   background: #eee;
 }
 
-.slider::-webkit-slider-thumb {
+.FocusControl .slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   width: 12px;
@@ -70,7 +70,7 @@
   margin-top: -5px;
 }
 
-.slider::-moz-range-thumb {
+.FocusControl .slider::-moz-range-thumb {
   width: 12px;
   height: 12px;
   background: #fff;
@@ -82,22 +82,22 @@
    so it's easy to see and aim at. The 1rem of padding already gives a
    ~44px hit area; this makes the *visual* target match. */
 @media (pointer: coarse) {
-  .slider::-webkit-slider-runnable-track {
+  .FocusControl .slider::-webkit-slider-runnable-track {
     height: 4px;
   }
-  .slider::-moz-range-track {
+  .FocusControl .slider::-moz-range-track {
     height: 4px;
   }
-  .slider::-moz-range-progress {
+  .FocusControl .slider::-moz-range-progress {
     height: 4px;
   }
-  .slider::-webkit-slider-thumb {
+  .FocusControl .slider::-webkit-slider-thumb {
     width: 24px;
     height: 24px;
     border-radius: 4px;
     margin-top: -10px;
   }
-  .slider::-moz-range-thumb {
+  .FocusControl .slider::-moz-range-thumb {
     width: 24px;
     height: 24px;
     border-radius: 4px;

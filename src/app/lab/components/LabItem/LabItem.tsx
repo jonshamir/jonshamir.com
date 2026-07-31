@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-import styles from "./LabItem.module.scss";
+import styles from "./LabItem.module.css";
 
 type Props = { image: string; title: string; link: string };
 
