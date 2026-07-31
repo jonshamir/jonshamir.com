@@ -31,7 +31,7 @@ ol {
 }
 
 li {
-  margin-top: 0.3rem;
+  margin-top: var(--space-xs);
 }
 
 li::marker {

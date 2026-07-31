@@ -29,7 +29,7 @@
   .Wrapper {
     background-color: var(--color-bg);
     border-radius: var(--rounding-full);
-    padding: 0.2rem;
+    padding: var(--space-xs);
     display: flex;
     flex-direction: row;
     align-items: center;

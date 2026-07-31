@@ -90,7 +90,7 @@
    get their gap from the stack instead; .grid is a grid container, so margins
    don't collapse there and adding one would double the spacing. */
 .columns .sectionTitle {
-  margin-bottom: 0.8rem;
+  margin-bottom: var(--space-sm);
 }
 
 .columns {

@@ -19,7 +19,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: var(--space-sm);
-  padding: 0.35rem var(--space-lg);
+  padding: var(--space-xs) var(--space-lg);
   width: 100%;
   text-decoration: none;
   color: var(--color-secondary);
@@ -62,7 +62,7 @@
   pointer-events: none;
   transition: opacity 200ms var(--ease-out-cubic);
   /* background-color: rgba(var(--color-bg-rgb), 0.8); */
-  padding: 0.3rem 0.6rem;
+  padding: var(--space-xs) var(--space-sm);
   /* border-radius: var(--rounding-full); */
   /* backdrop-filter: blur(8px); */
 }
