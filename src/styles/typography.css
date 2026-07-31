@@ -60,7 +60,9 @@ h2 {
   font-size: 1.5em;
   font-weight: 600;
   letter-spacing: -0.01em;
-  scroll-margin-top: 80px;
+  /* Clears the fixed nav on anchor jumps, plus breathing room. Derived so it
+     stays correct if --nav-height changes. */
+  scroll-margin-top: calc(var(--nav-height) + var(--space-xl));
 }
 
 h3 {
