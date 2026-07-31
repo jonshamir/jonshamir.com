@@ -179,7 +179,7 @@ export default function Elements() {
             <hr />
           </div>
         </article>
-        <article id="text__tables">
+        <article id="text__tables" className="flow">
           <h2>Tabular data</h2>
           <table>
             <caption>Table Caption</caption>
@@ -233,7 +233,7 @@ export default function Elements() {
             </tbody>
           </table>
         </article>
-        <article id="text__code">
+        <article id="text__code" className="flow">
           <h2>Code</h2>
           <p>
             <strong>Keyboard input:</strong> <kbd>Cmd</kbd>
@@ -367,7 +367,7 @@ export default function Elements() {
           </svg>
         </article>
       </section>
-      <section id="forms">
+      <section id="forms" className="flow">
         <h2>Form elements</h2>
         <form>
           <fieldset id="forms__input" className="flow">

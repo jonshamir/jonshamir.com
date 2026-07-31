@@ -21,9 +21,16 @@ Rules of thumb:
 - Use tokens for colours, radii, easings, durations and z-index (scales in `main.css`).
   Breakpoints must be literals — custom properties don't work in `@media` — and are
   listed at the top of `layout.css`.
-- Tokenise spacing that lands on `--space-*` (0.25/0.5/1/1.5/2/3rem). Leave *optical*
-  values (0.2/0.3/0.35/0.4/0.6/0.8rem) and *positional* offsets (`LabMenu`'s
-  `padding-left`) literal — snapping them would change the design.
+- Tokenise spacing on the `--space-*` scale (0.25/0.5/1/1.5/2/3rem). Every `rem`
+  spacing value in `src/` is on it, bar *positional* offsets that align to another
+  element (`LabMenu`'s `padding-left`, `SideScroller`'s `padding-inline`). `em` is a
+  separate category, never on the scale: it's font-relative on purpose (`Button`'s
+  padding, `PostList`'s gap) and snapping it to `rem` would break that. A few `px`
+  literals survive in demo/prototype components — tolerated, not exemplary.
+- Derive from a token instead of hardcoding its current equivalent: `h2`'s
+  `scroll-margin-top` is `calc(var(--nav-height) + var(--space-xl))` so it can't drift
+  if the nav resizes. Beware that `:root` sets `font-size: 1.1rem`, so `1rem` is 17.6px
+  on desktop and 16px below 40rem — never convert px to rem assuming a 16px root.
 - Write broadly-matching global rules with `:where()`, so a component can override them
   with a plain class instead of `!important`. The stack in `layout.css` and the form
   styles in `typography.css` do this deliberately — don't "fix" them back to `:is()`.
