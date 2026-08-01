@@ -25,7 +25,7 @@ export default function Page() {
           <h2>
             <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
           </h2>
-          <div style={{ flexGrow: 1 }} />
+          <div className={styles.heroSpacer} />
           <ContactButton />
         </div>
 

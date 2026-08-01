@@ -4,6 +4,24 @@
 
 - Use `bun` instead of `npm` for package installation and management
 
+## Dev server
+
+`next dev` and `next build` share the same `.next` directory, and a build replaces it.
+Running `bun run build` while `next dev` is up wipes the dev server's compiled output:
+it keeps serving HTML that points at dev-only URLs
+(`_next/static/chunks/main-app.js`, `_next/static/css/app/layout.css`, all with a `?v=`
+cache-buster) which no longer exist, so **every** asset 404s — JS as well as CSS. It
+presents as "the CSS broke after my change"; it isn't related to the change at all.
+
+Verify against the running dev server instead. `tsc` and `eslint` catch what a build
+would surface locally, neither writes to `.next`, and CI builds on push:
+
+    bunx tsc --noEmit && bun run lint      # types + lint
+    # then check the change at localhost:3000
+
+If it has already happened: stop the dev server, `rm -rf .next`, start it again, and
+hard-reload the browser so it drops the stale HTML.
+
 ## Styling
 
 **Global CSS + CSS Modules hybrid**, deliberately: MDX posts and project pages are bare

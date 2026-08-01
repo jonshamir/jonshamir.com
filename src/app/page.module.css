@@ -21,6 +21,11 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
+  /* The row is as tall as the video (the taller item). Without this the hero is
+     only as tall as its own text, so .heroSpacer would have no free space to
+     grow into — the container's `align-items: center` otherwise leaves grid
+     items at content height. */
+  align-self: stretch;
 
   h2 {
     font-weight: 400;
@@ -28,6 +33,15 @@
     font-size: 2.2rem;
     line-height: 1.4;
   }
+}
+
+/* Pushes the contact button to the bottom of the hero, level with the video.
+   --space: 0 because the spacer is also a .flow child — without it the stack
+   would add a gap above the spacer *and* above the button, doubling the space
+   below the h2. Collapses to nothing when the text is the taller column. */
+.heroSpacer {
+  flex-grow: 1;
+  --space: 0;
 }
 
 .heroMedia {
