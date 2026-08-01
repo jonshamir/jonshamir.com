@@ -50,6 +50,7 @@
       overflow: visible;
       pointer-events: none;
       z-index: 1;
+      padding-inline: var(--space-md);
 
       img {
         object-fit: cover;
