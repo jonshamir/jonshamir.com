@@ -125,8 +125,10 @@ export function PostList({ wide = false }: { wide?: boolean }) {
         });
         return (
           <li key={post.slug} className={styles.item}>
-            <span className={styles.date}>{formattedDate}</span>
-            <Link href={`/writing/${post.slug}`}>{post.title}</Link>
+            <Link href={`/writing/${post.slug}`} className={styles.postLink}>
+              <span className={styles.date}>{formattedDate}</span>
+              <span className={styles.title}>{post.title}</span>
+            </Link>
           </li>
         );
       })}
