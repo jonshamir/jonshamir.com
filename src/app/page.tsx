@@ -2,7 +2,7 @@ import { clsx } from "clsx";
 
 import { ContactButton } from "../components/ContactButton/ContactButton";
 import { PostList } from "../components/PostList/PostList";
-import { ProjectList } from "../components/ProjectList/ProjectList";
+import ProjectList from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
 import styles from "./page.module.css";
