@@ -14,11 +14,8 @@ export function ProjectList() {
             className={styles.projectLink}
           >
             {createElement(project.icon)}
-            <span>
-              <strong>{project.name}</strong>
-              <br />
-              <span>{project.subtitle}</span>
-            </span>
+            <strong className={styles.name}>{project.name}</strong>
+            <span className={styles.subtitle}>{project.subtitle}</span>
           </Link>
         </li>
       ))}

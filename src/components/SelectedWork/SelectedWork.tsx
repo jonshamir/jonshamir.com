@@ -38,11 +38,8 @@ export function SelectedWork({ className }: { className?: string }) {
   };
 
   return (
-    <figure
-      className={clsx("grid-wide", className)}
-      style={{ height: "500px" }}
-    >
-      <div style={{ position: "relative", width: "100%", height: "100%" }}>
+    <figure className={clsx(styles.figure, className)}>
+      <div className={styles.frame}>
         {refs.map((ref, slot) => (
           <video
             key={slot}

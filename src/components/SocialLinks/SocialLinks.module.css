@@ -45,3 +45,14 @@
     }
   }
 }
+
+/* Wide variant — see SocialLinks.tsx. Both selectors are doubled up on
+   .SocialLinks so they out-specify the nested rules above ((0,2,0)) rather
+   than relying on coming later in the file. */
+.SocialLinks.wide a {
+  width: 100%;
+}
+
+.SocialLinks.wide :global(.arrow) {
+  margin-inline-start: auto;
+}

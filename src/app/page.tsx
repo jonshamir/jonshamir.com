@@ -1,6 +1,5 @@
 import { clsx } from "clsx";
 
-import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
@@ -12,12 +11,9 @@ import styles from "./page.module.css";
 
 export default function Page() {
   return (
-    <>
-      <div className={styles.heroSection}>
-        {/* <HeroBackground /> */}
+    <div className={clsx(styles.canvas, "flow")}>
+      <section className={styles.heroSection}>
         <div className={clsx(styles.hero, "flow")}>
-          <InlineLogoPlaceholder />
-
           <p className={clsx("fade-in", styles.introHeyWrapper)}>
             <span className={styles.introHey}>
               Hey! I&rsquo;m
@@ -31,29 +27,32 @@ export default function Page() {
             <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
           </h2>
           <ContactButton />
-          <br />
         </div>
-      </div>
-      <SelectedWork className={clsx("fade-in", styles.fadeInDelay)} />
 
-      {/* <ProjectScroller /> */}
+        <SelectedWork
+          className={clsx("fade-in", styles.fadeInDelay, styles.heroMedia)}
+        />
+      </section>
 
-      <div className={styles.columns}>
-        <div>
-          <h3 className={styles.sectionTitle}>Selected Projects</h3>
-          <ProjectList />
-        </div>
-        <div className={styles.smallColumn}>
-          <h3 className={styles.sectionTitle}>Social</h3>
-          <SocialLinks />
-        </div>
-      </div>
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Selected Projects</h3>
+        <ProjectList />
+      </section>
 
-      <h3 className={styles.sectionTitle}>Writing</h3>
-      <PostList />
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Writing</h3>
+        <PostList wide />
+      </section>
 
-      <h3 className={styles.sectionTitle}>Mailing list</h3>
-      <EmailFormWrapper />
-    </>
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Social</h3>
+        <SocialLinks wide />
+      </section>
+
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Mailing list</h3>
+        <EmailFormWrapper />
+      </section>
+    </div>
   );
 }

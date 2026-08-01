@@ -14,3 +14,17 @@
   white-space: nowrap;
   min-width: 3.5em;
 }
+
+/* Wide variant — see PostList.tsx. Title leads, date moves to the trailing
+   edge via `order` so the markup stays date-first for the default layout.
+   (0,2,0) beats the base rules above on specificity, not source order. */
+.wide .item {
+  padding: var(--space-sm) 0;
+}
+
+.wide .date {
+  order: 1;
+  margin-inline-start: auto;
+  text-align: end;
+  color: rgba(var(--color-text-rgb), 0.6);
+}

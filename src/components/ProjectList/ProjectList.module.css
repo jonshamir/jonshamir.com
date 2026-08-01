@@ -8,9 +8,10 @@
 
   .projectLink {
     width: 100%;
-    align-items: flex-start;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
     text-decoration: none;
     gap: var(--space-sm);
     padding: var(--space-sm) 0;
@@ -21,13 +22,34 @@
       flex-shrink: 0;
     }
 
-    strong {
+    .name {
       text-decoration: underline;
       text-decoration-color: rgba(var(--color-text-rgb), 0.4);
     }
 
-    &:hover strong {
+    /* The row spans the whole canvas now, so the subtitle reads as a trailing
+       meta column rather than a wrapped second line. */
+    .subtitle {
+      margin-inline-start: auto;
+      text-align: end;
+      color: rgba(var(--color-text-rgb), 0.6);
+    }
+
+    &:hover .name {
       text-decoration: underline;
     }
+  }
+}
+
+/* Too narrow for two things in one row — the subtitle drops to its own line,
+   indented past the icon, and aligns left again.
+   Specificity must beat the nested .ProjectList .projectLink .subtitle above
+   (0,3,0); a media query adds none of its own. */
+@media (max-width: 40rem) {
+  .ProjectList .projectLink .subtitle {
+    flex-basis: 100%;
+    margin-inline-start: 0;
+    padding-inline-start: calc(30px + var(--space-sm));
+    text-align: start;
   }
 }
