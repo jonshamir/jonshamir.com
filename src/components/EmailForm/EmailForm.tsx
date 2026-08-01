@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 
-import { Button } from "../../../components/Button";
+import { Button } from "../Button";
 import styles from "./EmailForm.module.css";
 
 interface FormData {

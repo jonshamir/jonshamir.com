@@ -3,8 +3,8 @@
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-import { Button, ButtonLink } from "../../../components/Button";
-import { copyToClipboard } from "../../../utils/copyToClipboard";
+import { copyToClipboard } from "../../utils/copyToClipboard";
+import { Button, ButtonLink } from "../Button";
 import styles from "./ContactButton.module.css";
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.19, 1, 0.22, 1];

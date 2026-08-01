@@ -8,9 +8,26 @@
   margin-top: var(--space-2xl);
 }
 
+/* Sign-up column leads, social icons trail. They sit on the same bottom edge
+   while they fit side by side and stack once the column hits its flex-basis. */
 .inner {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  min-height: 10rem;
+}
+
+/* The email input grows to fill its container, so this column needs a cap —
+   otherwise the form stretches the full width of the canvas. */
+.signup {
+  --space: var(--space-sm);
+  flex: 1 1 22rem;
+  max-width: 30rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }

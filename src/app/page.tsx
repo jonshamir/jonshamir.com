@@ -1,11 +1,10 @@
 import { clsx } from "clsx";
 
+import { ContactButton } from "../components/ContactButton/ContactButton";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
-import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
-import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
 export default function Page() {
@@ -45,11 +44,6 @@ export default function Page() {
       <section className={clsx(styles.section, "flow")}>
         <h3 className={styles.sectionTitle}>Writing</h3>
         <PostList wide />
-      </section>
-
-      <section className={clsx(styles.section, "flow")}>
-        <h3 className={styles.sectionTitle}>Mailing list</h3>
-        <EmailFormWrapper />
       </section>
     </div>
   );
