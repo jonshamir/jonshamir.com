@@ -38,7 +38,7 @@ export function ColorModeToggle() {
         <path className={styles.LeftSide} d="M 12 5 A 7 7 0 0 1 12 19" />
         <path className={styles.RightSide} d="M 12 5 A 7 7 0 0 1 12 19" />
 
-        <circle cx="12" cy="12" r="8" strokeWidth="1.5" fill="none" />
+        <circle cx="12" cy="12" r="7.75" strokeWidth="1.5" fill="none" />
       </svg>
     </Button>
   );

@@ -105,7 +105,11 @@
   width: 100%;
   max-width: var(--canvas-width);
   margin-inline: auto;
-  padding-inline: var(--grid-gap);
+  padding-inline: var(--space-lg);
+
+  @media (max-width: 40rem) {
+    padding-inline: var(--space-md);
+  }
 }
 
 .cover-top {
