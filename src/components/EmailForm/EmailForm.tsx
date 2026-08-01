@@ -39,7 +39,7 @@ export function EmailForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Mailing list"
             required={true}
           />
           <Button type="submit" variant="opaque" disabled={mutation.isLoading}>
@@ -58,7 +58,6 @@ export function EmailForm() {
       {mutation.isSuccess && (
         <div className={styles.message}>~ Thanks for signing up! ~</div>
       )}
-      <p>Get updates about my projects & stuff</p>
     </div>
   );
 }

@@ -45,6 +45,11 @@ export default function Page() {
         <h3 className={styles.sectionTitle}>Writing</h3>
         <PostList wide />
       </section>
+
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Projects & Experiments</h3>
+        <PostList wide />
+      </section>
     </div>
   );
 }
