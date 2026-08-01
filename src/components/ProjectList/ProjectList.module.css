@@ -43,7 +43,8 @@
     }
 
     .preview {
-      flex-grow: 1;
+      flex: 1 1 0;
+      min-width: 0;
       height: 1em;
       display: none;
       overflow: visible;
@@ -51,9 +52,9 @@
       z-index: 1;
 
       img {
-        object-fit: contain;
+        object-fit: cover;
         width: 100%;
-        max-height: 450px;
+        max-height: 300px;
         border-radius: var(--rounding-small);
       }
     }
