@@ -3,10 +3,27 @@
   padding: 0;
 }
 
+/* Each row draws the line above it: the first opens the list, the last leaves no
+   trailing rule, so the list looks the same in any container. margin-top: 0
+   overrides the global `li` margin in typography.css, which would sit above the
+   border and push it off-centre. */
 .item {
   display: flex;
   align-items: baseline;
   gap: 0.75em;
+  padding: var(--space-md) 0;
+  margin-top: 0;
+  border-block-start: var(--rule);
+}
+
+.item a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.item a:hover {
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--color-text-rgb), 0.4);
 }
 
 .date {
@@ -15,16 +32,10 @@
   min-width: 3.5em;
 }
 
-/* Wide variant — see PostList.tsx. Title leads, date moves to the trailing
-   edge via `order` so the markup stays date-first for the default layout.
-   (0,2,0) beats the base rules above on specificity, not source order. */
-.wide .item {
-  padding: var(--space-sm) 0;
-}
-
+/* Wide variant — see PostList.tsx. Moves the date to the trailing edge via
+   `order`, so the markup stays date-first for the default layout. */
 .wide .date {
   order: 1;
   margin-inline-start: auto;
   text-align: end;
-  color: rgba(var(--color-text-rgb), 0.6);
 }

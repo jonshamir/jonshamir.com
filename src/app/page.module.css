@@ -78,7 +78,6 @@
 
 .introHey {
   cursor: help;
-  font-weight: 500;
 
   .name {
     position: relative;
@@ -132,12 +131,6 @@
 }
 
 .sectionTitle {
-  /* font-family: var(--font-body);
-  font-weight: 500;
-  font-size: 1rem;
-  font-style: italic;
-  padding-bottom: var(--space-xs);*/
   font-weight: 450;
   font-size: 1.8rem;
-  border-bottom: 1px solid rgba(var(--color-text-rgb), 0.15);
 }

@@ -15,12 +15,14 @@ export function Footer() {
 
   return (
     <footer className={clsx(styles.Footer, "grid")}>
-      <div className={clsx("canvas", styles.inner)}>
-        <div className={clsx(styles.signup, "flow")}>
-          <EmailFormWrapper />
-          <ContactButton />
+      <div className="canvas">
+        <div className={styles.inner}>
+          <div className={clsx(styles.signup, "flow")}>
+            <EmailFormWrapper />
+            <ContactButton />
+          </div>
+          <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
         </div>
-        <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
       </div>
     </footer>
   );

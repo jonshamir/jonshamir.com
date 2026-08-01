@@ -72,6 +72,10 @@
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
 
+  /* Hairline rule — list separators, hr, the line above the footer. Resolves
+     through --color-text-rgb, so it inherits the @property theme transition. */
+  --rule: 1px solid rgba(var(--color-text-rgb), 0.15);
+
   --dark-mode: 0;
   --shiki-mix: 0%;
 

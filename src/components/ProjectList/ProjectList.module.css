@@ -1,10 +1,19 @@
+/* No `margin: 0` — reset.css already zeroes it, and a plain class here would beat
+   the stack's zero-specificity rule and ignore whatever --space its container sets. */
 .ProjectList {
   list-style: none;
   padding: 0;
-  margin: 0;
 
   display: flex;
   flex-direction: column;
+
+  /* Each row draws the line above it: the first opens the list, the last leaves
+     no trailing rule. margin-top: 0 overrides the global `li` margin in
+     typography.css, which would sit above the border and push it off-centre. */
+  li {
+    margin-top: 0;
+    border-block-start: var(--rule);
+  }
 
   .projectLink {
     width: 100%;
@@ -14,7 +23,7 @@
     flex-wrap: wrap;
     text-decoration: none;
     gap: var(--space-sm);
-    padding: var(--space-sm) 0;
+    padding: var(--space-md) 0;
 
     & svg {
       width: 30px;
@@ -23,20 +32,16 @@
     }
 
     .name {
-      text-decoration: underline;
-      text-decoration-color: rgba(var(--color-text-rgb), 0.4);
+      width: 16rem;
     }
 
-    /* The row spans the whole canvas now, so the subtitle reads as a trailing
-       meta column rather than a wrapped second line. */
     .subtitle {
-      margin-inline-start: auto;
       text-align: end;
-      color: rgba(var(--color-text-rgb), 0.6);
     }
 
     &:hover .name {
       text-decoration: underline;
+      text-decoration-color: rgba(var(--color-text-rgb), 0.4);
     }
   }
 }

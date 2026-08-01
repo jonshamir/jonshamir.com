@@ -127,6 +127,13 @@
   --space: var(--space-xl);
 }
 
+/* --space only ever sets the gap *above* an element, so a break that wants air
+   on both sides needs both selectors. The line itself is in typography.css. */
+hr,
+hr + * {
+  --space: var(--space-xl);
+}
+
 @media (max-width: 54rem) {
   .grid {
     gap: 0;
