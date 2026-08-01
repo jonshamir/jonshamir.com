@@ -12,8 +12,9 @@
 :root {
   --grid-width-narrow: 36rem;
   --grid-width-wide: 54rem;
+  --canvas-width: 120rem;
   --grid-gap: 1rem;
-  --nav-height: 3rem;
+  --nav-height: 4.5rem;
 }
 
 .grid {
@@ -92,6 +93,19 @@
 
 .grid-full {
   grid-column: full;
+}
+
+/* Wide full-bleed canvas — the landing page's layout, and the footer's on every
+   page, so the two align edge to edge. Global rather than a module because it is
+   shared by unrelated components; see CLAUDE.md § Styling.
+   Owns its own horizontal gutter: don't set padding-inline on the consumer too,
+   or its content edge lands twice as far in as the canvas it should line up with. */
+.canvas {
+  grid-column: full;
+  width: 100%;
+  max-width: var(--canvas-width);
+  margin-inline: auto;
+  padding-inline: var(--grid-gap);
 }
 
 .cover-top {

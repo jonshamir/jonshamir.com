@@ -1,27 +1,18 @@
-import { clsx } from "clsx";
 import Link from "next/link";
 import { createElement } from "react";
 
 import { SOCIAL_LINKS } from "./social";
 import styles from "./SocialLinks.module.css";
 
-/** `wide` stretches each row to the full width of its container with the
- *  trailing arrow at the far edge — for the landing page's full-width
- *  sections. Off elsewhere (nav-adjacent and footer uses stay compact). */
 export function SocialLinks({
   iconsOnly = false,
-  wide = false,
   style
 }: {
   iconsOnly?: boolean;
-  wide?: boolean;
   style?: React.CSSProperties;
 }) {
   return (
-    <div
-      className={clsx(styles.SocialLinks, wide && styles.wide)}
-      style={style}
-    >
+    <div className={styles.SocialLinks} style={style}>
       {SOCIAL_LINKS.map((link) => (
         <Link
           key={link.label}

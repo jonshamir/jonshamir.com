@@ -3,7 +3,6 @@ import { clsx } from "clsx";
 import { PostList } from "../components/PostList/PostList";
 import { ProjectList } from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
-import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
 import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
 import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
@@ -11,7 +10,7 @@ import styles from "./page.module.css";
 
 export default function Page() {
   return (
-    <div className={clsx(styles.canvas, "flow")}>
+    <div className={clsx("canvas", "flow")}>
       <section className={styles.heroSection}>
         <div className={clsx(styles.hero, "flow")}>
           <p className={clsx("fade-in", styles.introHeyWrapper)}>
@@ -35,18 +34,13 @@ export default function Page() {
       </section>
 
       <section className={clsx(styles.section, "flow")}>
-        <h3 className={styles.sectionTitle}>Selected Projects</h3>
+        <h3 className={styles.sectionTitle}>Selected Work</h3>
         <ProjectList />
       </section>
 
       <section className={clsx(styles.section, "flow")}>
         <h3 className={styles.sectionTitle}>Writing</h3>
         <PostList wide />
-      </section>
-
-      <section className={clsx(styles.section, "flow")}>
-        <h3 className={styles.sectionTitle}>Social</h3>
-        <SocialLinks wide />
       </section>
 
       <section className={clsx(styles.section, "flow")}>

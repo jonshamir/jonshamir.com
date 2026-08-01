@@ -1,13 +1,7 @@
-/* The landing page opts out of the shared narrow text column. It is the only
-   child of main.grid, takes the full-bleed track, and re-establishes its own
-   wider canvas inside. Module rather than global: no other page wants this. */
-.canvas {
-  grid-column: full;
-  width: 100%;
-  max-width: 72rem;
-  margin-inline: auto;
-  padding-inline: var(--grid-gap);
-}
+/* The landing page opts out of the shared narrow text column via the global
+   .canvas primitive in layout.css — it is the only child of main.grid, takes
+   the full-bleed track, and re-establishes a wider canvas inside. The footer
+   uses the same primitive so the two line up. */
 
 /* Hero — video leads on the left, text follows on the right. The text keeps
    its DOM position *first* (it's the page's actual content) and is placed into
@@ -17,7 +11,7 @@
   display: grid;
   grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   align-items: center;
-  gap: var(--space-lg);
+  gap: var(--space-md);
 }
 
 .hero {
