@@ -11,18 +11,16 @@ import styles from "./Footer.module.css";
 export function Footer() {
   const path = usePathname();
   if (path.startsWith("/lab"))
-    return <footer className={clsx(styles.Footer, "grid")} />;
+    return <footer className={clsx(styles.Footer, "canvas")} />;
 
   return (
-    <footer className={clsx(styles.Footer, "grid")}>
-      <div className="canvas">
-        <div className={styles.inner}>
-          <div className={clsx(styles.signup, "flow")}>
-            <EmailFormWrapper />
-            <ContactButton />
-          </div>
-          <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
+    <footer className={clsx(styles.Footer, "canvas")}>
+      <div className={styles.inner}>
+        <div className={clsx(styles.signup, "flow")}>
+          <EmailFormWrapper />
+          <ContactButton />
         </div>
+        <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
       </div>
     </footer>
   );

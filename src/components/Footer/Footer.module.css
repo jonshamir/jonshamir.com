@@ -1,11 +1,11 @@
-/* No padding-inline here — the .canvas wrapping .inner owns the gutter, and
-   supplying it in both places would inset the footer twice as far as the page. */
+/* The <footer> is itself the .canvas, which owns the gutter — don't add
+   padding-inline here too, or the content insets twice as far as the page. */
 .Footer {
-  width: 100%;
+  padding-block-start: var(--space-2xl);
 }
 
 /* Sign-up column leads, social icons trail.
-   The rule sits here rather than on that .canvas parent, whose border would draw
+   The rule sits here rather than on the .canvas footer, whose border would draw
    outside its padding-inline and overhang the content edge by --space-lg.
    /lab renders <footer /> with no children — no .inner, so no stray line. */
 .inner {
@@ -13,7 +13,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  min-height: 10rem;
+  min-height: 12rem;
 }
 
 .signup {
