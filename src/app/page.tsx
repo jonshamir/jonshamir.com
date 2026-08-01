@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <div className={clsx("canvas", "flow")}>
       <section className={styles.heroSection}>
-        <div className={clsx(styles.hero, "flow")}>
+        <div className={clsx(styles.hero)}>
           <p className={clsx("fade-in", styles.introHeyWrapper)}>
             <span className={styles.introHey}>
               Hey! I&rsquo;m
