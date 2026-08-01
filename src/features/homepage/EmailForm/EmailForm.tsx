@@ -42,12 +42,7 @@ export function EmailForm() {
             placeholder="Enter your email"
             required={true}
           />
-          <Button
-            type="submit"
-            round
-            variant="primary"
-            disabled={mutation.isLoading}
-          >
+          <Button type="submit" variant="opaque" disabled={mutation.isLoading}>
             {mutation.isLoading ? "Joining..." : "Sign Up"}
           </Button>
         </form>

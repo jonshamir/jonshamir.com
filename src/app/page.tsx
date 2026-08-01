@@ -23,7 +23,10 @@ export default function Page() {
             </span>
           </p>
           <h2>
-            <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
+            <StaggeredText
+              text="I design and build interactive experiences – 3D websites, spatial apps and thoughtful product interfaces.
+"
+            />
           </h2>
           <div className={styles.heroSpacer} />
           <ContactButton />
