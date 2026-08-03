@@ -1,11 +1,13 @@
 "use client";
 
 import { clsx } from "clsx";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { ContactButton } from "../ContactButton/ContactButton";
 import { EmailFormWrapper } from "../EmailFormWrapper/EmailFormWrapper";
-import { SocialLinks } from "../SocialLinks/SocialLinks";
+import { SITE_LINKS } from "../Nav/navItems";
+import { SOCIAL_LINKS } from "../SocialLinks/social";
 import styles from "./Footer.module.css";
 
 export function Footer() {
@@ -20,7 +22,33 @@ export function Footer() {
           <EmailFormWrapper />
           <ContactButton />
         </div>
-        <SocialLinks iconsOnly style={{ flexDirection: "row" }} />
+
+        <nav className={styles.linkColumns} aria-label="Footer">
+          <div className={styles.column}>
+            <span className={styles.columnHeading}>Pages</span>
+            <ul>
+              {SITE_LINKS.map((item) => (
+                <li key={item.href}>
+                  <Link href={item.href}>{item.title}</Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div className={styles.column}>
+            <span className={styles.columnHeading}>Social</span>
+            <ul>
+              {SOCIAL_LINKS.map((link) => (
+                <li key={link.label}>
+                  <Link href={link.href} target="_blank" rel="noreferrer">
+                    {link.label}
+                    <span className="arrow">↗</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </nav>
       </div>
     </footer>
   );

@@ -9,12 +9,7 @@ import { ColorModeToggle } from "../../features/color-mode/ColorModeToggle";
 import { ButtonLink } from "../Button";
 import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
-
-const NAV_ITEMS = [
-  { title: "Home", href: "/" },
-  { title: "Writing", href: "/writing" },
-  { title: "Lab", href: "/lab" }
-];
+import { NAV_ITEMS } from "./navItems";
 
 export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);

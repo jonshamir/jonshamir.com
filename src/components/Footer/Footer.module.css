@@ -4,7 +4,7 @@
   padding-block-start: var(--space-2xl);
 }
 
-/* Sign-up column leads, social icons trail.
+/* Sign-up column leads, link columns trail.
    The rule sits here rather than on the .canvas footer, whose border would draw
    outside its padding-inline and overhang the content edge by --space-lg.
    /lab renders <footer /> with no children — no .inner, so no stray line. */
@@ -12,8 +12,11 @@
   border-block-start: var(--rule);
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
+  gap: var(--space-xl);
   min-height: 12rem;
+  padding-inline-end: var(--space-xl);
 }
 
 .signup {
@@ -24,4 +27,64 @@
   flex-direction: column;
   justify-content: space-between;
   padding-block: var(--space-md);
+}
+
+.linkColumns {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2xl);
+  padding-block: var(--space-md);
+
+  @media (max-width: 40rem) {
+    gap: var(--space-xl);
+  }
+}
+
+/* Not a .grid/.flow child, so the stack's --space rhythm never reaches these —
+   spacing is the flex gap. The ul reset undoes the global list styles in
+   typography.css (indent, marker, li margin-top). */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  & ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  & li {
+    margin-top: 0;
+  }
+
+  /* Beats the bare `a` selector in typography.css on specificity — no
+     !important needed to drop its underline. */
+  & a {
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  & :global(.arrow) {
+    margin-inline-start: 0.3em;
+    opacity: 0;
+    transition: opacity var(--transition-defaults);
+    transition-duration: 100ms;
+  }
+
+  & a:hover :global(.arrow) {
+    opacity: 0.5;
+  }
+}
+
+.columnHeading {
+  font-size: 0.85em;
+  color: rgba(var(--color-text-rgb), 0.5);
+  display: none;
 }
