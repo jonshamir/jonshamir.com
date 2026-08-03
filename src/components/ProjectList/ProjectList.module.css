@@ -1,19 +1,28 @@
+/* No `margin: 0` — reset.css already zeroes it, and a plain class here would beat
+   the stack's zero-specificity rule and ignore whatever --space its container sets. */
 .ProjectList {
   list-style: none;
   padding: 0;
-  margin: 0;
 
   display: flex;
   flex-direction: column;
 
+  li {
+    margin-top: 0;
+    border-block-start: var(--rule);
+  }
+
   .projectLink {
     width: 100%;
-    align-items: flex-start;
     display: flex;
     flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
     text-decoration: none;
     gap: var(--space-sm);
-    padding: var(--space-sm) 0;
+    padding: var(--space-md) 0;
+    position: relative;
+    z-index: 1; /* above every row rule; the hovered row lifts to 2 below */
 
     & svg {
       width: 30px;
@@ -21,13 +30,70 @@
       flex-shrink: 0;
     }
 
-    strong {
+    .name {
+      width: 16rem;
+    }
+
+    .subtitle {
+      text-align: end;
+      width: 16rem;
+    }
+
+    /* Lifts the whole row so its preview overlaps the rows below, not the
+       reverse. Only the hovered row is raised, so the stack stays flat. */
+    &:hover {
+      z-index: 2;
+    }
+
+    &:hover .name {
       text-decoration: underline;
       text-decoration-color: rgba(var(--color-text-rgb), 0.4);
     }
 
-    &:hover strong {
-      text-decoration: underline;
+    .preview {
+      flex: 1 1 0;
+      min-width: 0;
+      height: 1em;
+      overflow: visible;
+      pointer-events: none;
+      padding-inline: var(--space-md);
+
+      img {
+        object-fit: cover;
+        width: 100%;
+        max-height: 300px;
+        border-radius: var(--rounding-small);
+        clip-path: inset(0 0 100% 0);
+        transform: translateY(1rem);
+        transition:
+          clip-path 240ms var(--ease-out-expo),
+          transform 240ms var(--ease-out-expo);
+      }
     }
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .projectLink:hover .preview img {
+    clip-path: inset(0);
+    transform: none;
+    transition-duration: 300ms; /* the rule above is the exit, ~20% quicker */
+  }
+}
+
+/* Too narrow for two things in one row — the subtitle drops to its own line,
+   indented past the icon, and aligns left again.
+   Specificity must beat the nested .ProjectList .projectLink .subtitle above
+   (0,3,0); a media query adds none of its own. */
+@media (max-width: 40rem) {
+  .ProjectList .projectLink .subtitle {
+    flex-basis: 100%;
+    margin-inline-start: 0;
+    padding-inline-start: calc(30px + var(--space-sm));
+    text-align: start;
+  }
+
+  .ProjectList .projectLink .preview {
+    display: none;
   }
 }

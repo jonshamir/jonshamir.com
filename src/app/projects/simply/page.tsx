@@ -14,9 +14,9 @@ export default function Page() {
       <h1>Simply Piano XR</h1>
       <p className="description">Spatial piano learning app for Android XR</p>
       <p>
-        I partnered with Simply to bring the popular piano learning app to
-        Android XR. The project included both design and implementation on the
-        newly released{" "}
+        I partnered with Simply to bring the popular piano learning app to new
+        spatial platforms. The project included both design and implementation
+        on the newly released{" "}
         <Outlink href="https://www.android.com/xr/">Android XR</Outlink>{" "}
         operating system from Google.
       </p>
@@ -53,7 +53,12 @@ export default function Page() {
       <p>
         The app features a virtual piano that allow the user to learn without a
         real piano. Using hand tracking information from the device, we can
-        approximate the
+        simulate a piano that allows users to practice in any environment.
+      </p>
+
+      <p>
+        Building a keyboard that feels responsive and spatially grounded
+        required close attention to placement, scale, and interaction feedback.
       </p>
 
       <figure className="grid-wide">
@@ -78,13 +83,6 @@ export default function Page() {
           Musical notation is rendered using SDFs for optimal readability in XR
         </figcaption>
       </figure>
-      <p>
-        Virtual Keyboard For moments away from a real piano, the app includes a
-        fully interactive virtual keyboard. Building a keyboard that feels
-        responsive and spatially grounded required close attention to placement,
-        scale, and interaction feedback.
-      </p>
-      <p>We took advantage of the spatial format to add spatial UI effects.</p>
     </>
   );
 }

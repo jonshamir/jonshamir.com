@@ -3,8 +3,8 @@
 import { motion } from "motion/react";
 import { useEffect, useRef, useState } from "react";
 
-import { Button, ButtonLink } from "../../../components/Button";
-import { copyToClipboard } from "../../../utils/copyToClipboard";
+import { copyToClipboard } from "../../utils/copyToClipboard";
+import { Button, ButtonLink } from "../Button";
 import styles from "./ContactButton.module.css";
 
 const EASE_OUT_EXPO: [number, number, number, number] = [0.19, 1, 0.22, 1];
@@ -47,7 +47,7 @@ export function ContactButton() {
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <svg xmlns="http://www.w3.org/2000/svg" className={styles.hidden}>
+      {/* <svg xmlns="http://www.w3.org/2000/svg" className={styles.hidden}>
         <defs>
           <filter id="meta">
             <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
@@ -60,9 +60,8 @@ export function ContactButton() {
             <feBlend in="SourceGraphic" in2="meta" />
           </filter>
         </defs>
-      </svg>
+      </svg> */}
       <ButtonLink
-        round
         variant="primary"
         className={styles.emailMeButton}
         href="mailto:hi@jonshamir.com"
@@ -92,7 +91,6 @@ export function ContactButton() {
         }}
       >
         <Button
-          round
           variant="primary"
           onClick={() => {
             copyToClipboard("hi@jonshamir.com");

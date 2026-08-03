@@ -33,7 +33,7 @@
 
 .LeftSide,
 .RightSide {
-  fill: rgb(232, 227, 225);
+  fill: #ddd;
 
   transform-origin: center;
   animation-fill-mode: forwards;

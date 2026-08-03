@@ -1,6 +1,86 @@
+/* The <footer> is itself the .canvas, which owns the gutter — don't add
+   padding-inline here too, or the content insets twice as far as the page. */
 .Footer {
-  box-sizing: border-box;
-  width: 100%;
-  padding: var(--space-2xl) var(--space-md);
-  margin-top: var(--space-2xl);
+  padding-block-start: var(--space-2xl);
+  padding-block-end: var(--space-md);
+}
+
+/* Sign-up column leads, link columns trail.
+   The rule sits here rather than on the .canvas footer, whose border would draw
+   outside its padding-inline and overhang the content edge by --space-lg.
+   /lab renders <footer /> with no children — no .inner, so no stray line. */
+.inner {
+  border-block-start: var(--rule);
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-xl);
+  min-height: 12rem;
+}
+
+.signup {
+  --space: var(--space-sm);
+  flex: 1 1 22rem;
+  max-width: 30rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-block: var(--space-md);
+}
+
+.linkColumns {
+  display: flex;
+  flex-direction: row;
+  gap: var(--space-2xl);
+  padding-block: var(--space-md);
+  padding-inline-end: var(--space-xl);
+
+  @media (max-width: 40rem) {
+    gap: var(--space-xl);
+    padding-inline-end: 0;
+  }
+}
+
+/* Not a .grid/.flow child, so the stack's --space rhythm never reaches these —
+   spacing is the flex gap. The ul reset undoes the global list styles in
+   typography.css (indent, marker, li margin-top). */
+.column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+
+  & ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+  }
+
+  & li {
+    margin-top: 0;
+  }
+
+  /* Beats the bare `a` selector in typography.css on specificity — no
+     !important needed to drop its underline. */
+  & a {
+    text-decoration: none;
+    white-space: nowrap;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  & :global(.arrow) {
+    margin-inline-start: 0.3em;
+    opacity: 0;
+    transition: opacity var(--transition-defaults);
+    transition-duration: 100ms;
+  }
+
+  & a:hover :global(.arrow) {
+    opacity: 0.5;
+  }
 }

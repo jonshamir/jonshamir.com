@@ -91,6 +91,13 @@ blockquote {
   border-left: 2px solid var(--color-secondary);
 }
 
+/* Thematic break — global so a body-level `---` in MDX picks it up. `border: 0`
+   drops the UA groove; spacing comes from the stack in layout.css. */
+hr {
+  border: 0;
+  border-block-start: var(--rule);
+}
+
 /* Links */
 a {
   color: var(--color-text);

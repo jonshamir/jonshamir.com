@@ -1,3 +1,4 @@
+import { clsx } from "clsx";
 import fs from "fs";
 import Link from "next/link";
 import path from "path";
@@ -18,7 +19,9 @@ interface Post {
   draft?: boolean;
 }
 
-export function PostList() {
+/** `wide` lays each row out edge to edge with the date pushed to the trailing
+ *  edge — for the landing page's full-width sections. Off elsewhere. */
+export function PostList({ wide = false }: { wide?: boolean }) {
   // Get all directories in the writing folder
   const postsDirectory = path.join(process.cwd(), "src/app/writing");
   const items = fs.readdirSync(postsDirectory, { withFileTypes: true });
@@ -113,7 +116,7 @@ export function PostList() {
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()); // Sort by date, newest first
 
   return (
-    <ul className={styles.list}>
+    <ul className={clsx(styles.list, wide && styles.wide)}>
       {posts.map((post) => {
         const date = new Date(post.date);
         const formattedDate = date.toLocaleDateString("en-US", {
@@ -122,8 +125,10 @@ export function PostList() {
         });
         return (
           <li key={post.slug} className={styles.item}>
-            <span className={styles.date}>{formattedDate}</span>
-            <Link href={`/writing/${post.slug}`}>{post.title}</Link>
+            <Link href={`/writing/${post.slug}`} className={styles.postLink}>
+              <span className={styles.date}>{formattedDate}</span>
+              <span className={styles.title}>{post.title}</span>
+            </Link>
           </li>
         );
       })}

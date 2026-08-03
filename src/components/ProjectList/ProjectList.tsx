@@ -1,10 +1,11 @@
+import Image from "next/image";
 import Link from "next/link";
 import { createElement } from "react";
 
 import styles from "./ProjectList.module.css";
 import projectData from "./projects";
 
-export function ProjectList() {
+export default function ProjectList() {
   return (
     <ul className={styles.ProjectList}>
       {projectData.map((project) => (
@@ -14,11 +15,16 @@ export function ProjectList() {
             className={styles.projectLink}
           >
             {createElement(project.icon)}
-            <span>
-              <strong>{project.name}</strong>
-              <br />
-              <span>{project.subtitle}</span>
-            </span>
+            <strong className={styles.name}>{project.name}</strong>
+            <span className={styles.subtitle}>{project.subtitle}</span>
+            <div className={styles.preview}>
+              <Image
+                src={project.preview}
+                alt=""
+                loading="eager"
+                fetchPriority="low"
+              />
+            </div>
           </Link>
         </li>
       ))}

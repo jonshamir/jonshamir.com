@@ -1,14 +1,24 @@
+/* Sized by its container, not by a fixed height — the hero decides how wide the
+   column is and the aspect ratio does the rest. Clips vary in ratio (16:9 up to
+   1.93:1, plus one square), so they letterbox against the page background
+   inside this box, as they always have. */
+.figure {
+  width: 100%;
+  height: 100%;
+}
+
+.frame {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+}
+
 .video {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  border-radius: var(--rounding-medium);
-}
-
-@media (max-width: 54rem) {
-  .video {
-    border-radius: 0;
-  }
+  border-radius: var(--rounding-small);
 }

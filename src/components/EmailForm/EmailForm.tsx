@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "react-query";
 
-import { Button } from "../../../components/Button";
+import { Button } from "../Button";
 import styles from "./EmailForm.module.css";
 
 interface FormData {
@@ -39,15 +39,10 @@ export function EmailForm() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter your email"
+            placeholder="Mailing list"
             required={true}
           />
-          <Button
-            type="submit"
-            round
-            variant="primary"
-            disabled={mutation.isLoading}
-          >
+          <Button type="submit" variant="opaque" disabled={mutation.isLoading}>
             {mutation.isLoading ? "Joining..." : "Sign Up"}
           </Button>
         </form>
@@ -63,7 +58,6 @@ export function EmailForm() {
       {mutation.isSuccess && (
         <div className={styles.message}>~ Thanks for signing up! ~</div>
       )}
-      <p>Get updates about my projects & stuff</p>
     </div>
   );
 }

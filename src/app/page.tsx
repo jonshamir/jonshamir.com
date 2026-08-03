@@ -1,23 +1,17 @@
 import { clsx } from "clsx";
 
-import { InlineLogoPlaceholder } from "../components/Logo/InlineLogoPlaceholder";
+import { ContactButton } from "../components/ContactButton/ContactButton";
 import { PostList } from "../components/PostList/PostList";
-import { ProjectList } from "../components/ProjectList/ProjectList";
+import ProjectList from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
-import { SocialLinks } from "../components/SocialLinks/SocialLinks";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
-import { ContactButton } from "../features/homepage/ContactButton/ContactButton";
-import { EmailFormWrapper } from "../features/homepage/EmailFormWrapper/EmailFormWrapper";
 import styles from "./page.module.css";
 
 export default function Page() {
   return (
-    <>
-      <div className={styles.heroSection}>
-        {/* <HeroBackground /> */}
-        <div className={clsx(styles.hero, "flow")}>
-          <InlineLogoPlaceholder />
-
+    <div className={clsx("canvas", "flow")}>
+      <section className={styles.heroSection}>
+        <div className={clsx(styles.hero)}>
           <p className={clsx("fade-in", styles.introHeyWrapper)}>
             <span className={styles.introHey}>
               Hey! I&rsquo;m
@@ -28,32 +22,34 @@ export default function Page() {
             </span>
           </p>
           <h2>
-            <StaggeredText text="I build interactive experiences – from 3D web and spatial apps to thoughtful product interfaces." />
+            <StaggeredText
+              text="I design and build interactive experiences – 3D websites, spatial apps and thoughtful product interfaces.
+"
+            />
           </h2>
+          <div className={styles.heroSpacer} />
           <ContactButton />
-          <br />
         </div>
-      </div>
-      <SelectedWork className={clsx("fade-in", styles.fadeInDelay)} />
 
-      {/* <ProjectScroller /> */}
+        <SelectedWork
+          className={clsx("fade-in", styles.fadeInDelay, styles.heroMedia)}
+        />
+      </section>
 
-      <div className={styles.columns}>
-        <div>
-          <h3 className={styles.sectionTitle}>Selected Projects</h3>
-          <ProjectList />
-        </div>
-        <div className={styles.smallColumn}>
-          <h3 className={styles.sectionTitle}>Social</h3>
-          <SocialLinks />
-        </div>
-      </div>
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Selected Work</h3>
+        <ProjectList />
+      </section>
 
-      <h3 className={styles.sectionTitle}>Writing</h3>
-      <PostList />
+      <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Writing</h3>
+        <PostList wide />
+      </section>
 
-      <h3 className={styles.sectionTitle}>Mailing list</h3>
-      <EmailFormWrapper />
-    </>
+      {/* <section className={clsx(styles.section, "flow")}>
+        <h3 className={styles.sectionTitle}>Projects & Experiments</h3>
+        <PostList wide />
+      </section> */}
+    </div>
   );
 }
