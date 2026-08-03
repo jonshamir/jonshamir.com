@@ -53,7 +53,12 @@ export default function Page() {
       <p>
         The app features a virtual piano that allow the user to learn without a
         real piano. Using hand tracking information from the device, we can
-        approximate the
+        simulate a piano that allows users to practice in any environment.
+      </p>
+
+      <p>
+        Building a keyboard that feels responsive and spatially grounded
+        required close attention to placement, scale, and interaction feedback.
       </p>
 
       <figure className="grid-wide">
@@ -78,13 +83,6 @@ export default function Page() {
           Musical notation is rendered using SDFs for optimal readability in XR
         </figcaption>
       </figure>
-      <p>
-        Virtual Keyboard For moments away from a real piano, the app includes a
-        fully interactive virtual keyboard. Building a keyboard that feels
-        responsive and spatially grounded required close attention to placement,
-        scale, and interaction feedback.
-      </p>
-      <p>We took advantage of the spatial format to add spatial UI effects.</p>
     </>
   );
 }
