@@ -2,6 +2,7 @@
    padding-inline here too, or the content insets twice as far as the page. */
 .Footer {
   padding-block-start: var(--space-2xl);
+  padding-block-end: var(--space-md);
 }
 
 /* Sign-up column leads, link columns trail.
