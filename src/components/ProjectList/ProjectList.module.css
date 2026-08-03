@@ -85,7 +85,7 @@
    indented past the icon, and aligns left again.
    Specificity must beat the nested .ProjectList .projectLink .subtitle above
    (0,3,0); a media query adds none of its own. */
-@media (max-width: 40rem) {
+@media (max-width: 50rem) {
   .ProjectList .projectLink .subtitle {
     flex-basis: 100%;
     margin-inline-start: 0;
