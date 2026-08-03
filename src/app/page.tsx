@@ -36,7 +36,7 @@ export default function Page() {
         />
       </section>
 
-      <section className={clsx(styles.section, "flow")}>
+      <section className={clsx(styles.section, "flow", "fade-in")}>
         <h3 className={styles.sectionTitle}>Selected Work</h3>
         <ProjectList />
       </section>
