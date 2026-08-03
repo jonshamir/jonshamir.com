@@ -22,7 +22,7 @@
     gap: var(--space-sm);
     padding: var(--space-md) 0;
     position: relative;
-    z-index: 1; /* above every row rule; the hovered row goes to 2 from the TSX */
+    z-index: 1; /* above every row rule; the hovered row lifts to 2 below */
 
     & svg {
       width: 30px;
@@ -37,6 +37,12 @@
     .subtitle {
       text-align: end;
       width: 16rem;
+    }
+
+    /* Lifts the whole row so its preview overlaps the rows below, not the
+       reverse. Only the hovered row is raised, so the stack stays flat. */
+    &:hover {
+      z-index: 2;
     }
 
     &:hover .name {

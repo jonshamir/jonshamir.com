@@ -84,9 +84,3 @@
     opacity: 0.5;
   }
 }
-
-.columnHeading {
-  font-size: 0.85em;
-  color: rgba(var(--color-text-rgb), 0.5);
-  display: none;
-}

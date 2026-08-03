@@ -25,7 +25,6 @@ export function Footer() {
 
         <nav className={styles.linkColumns} aria-label="Footer">
           <div className={styles.column}>
-            <span className={styles.columnHeading}>Pages</span>
             <ul>
               {SITE_LINKS.map((item) => (
                 <li key={item.href}>
@@ -36,7 +35,6 @@ export function Footer() {
           </div>
 
           <div className={styles.column}>
-            <span className={styles.columnHeading}>Social</span>
             <ul>
               {SOCIAL_LINKS.map((link) => (
                 <li key={link.label}>

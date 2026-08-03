@@ -14,9 +14,9 @@ export default function Page() {
       <h1>Simply Piano XR</h1>
       <p className="description">Spatial piano learning app for Android XR</p>
       <p>
-        I partnered with Simply to bring the popular piano learning app to
-        Android XR. The project included both design and implementation on the
-        newly released{" "}
+        I partnered with Simply to bring the popular piano learning app to new
+        spatial platforms. The project included both design and implementation
+        on the newly released{" "}
         <Outlink href="https://www.android.com/xr/">Android XR</Outlink>{" "}
         operating system from Google.
       </p>
