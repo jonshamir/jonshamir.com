@@ -16,7 +16,6 @@
   justify-content: space-between;
   gap: var(--space-xl);
   min-height: 12rem;
-  padding-inline-end: var(--space-xl);
 }
 
 .signup {
@@ -34,9 +33,11 @@
   flex-direction: row;
   gap: var(--space-2xl);
   padding-block: var(--space-md);
+  padding-inline-end: var(--space-xl);
 
   @media (max-width: 40rem) {
     gap: var(--space-xl);
+    padding-inline-end: 0;
   }
 }
 
