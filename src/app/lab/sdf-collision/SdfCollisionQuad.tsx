@@ -98,17 +98,11 @@ export function SdfCollisionQuad({
     const target: EventTarget = useWindowEvents ? window : canvas;
     const onMove = (e: PointerEvent) => {
       const aspect = size.width / size.height;
-      if (useWindowEvents) {
-        const rect = canvas.getBoundingClientRect();
-        const nx = (e.clientX - rect.left) / rect.width;
-        const ny = (e.clientY - rect.top) / rect.height;
-        mouseRef.current.x = (nx - 0.5) * aspect * WORLD_SCALE;
-        mouseRef.current.y = -(ny - 0.5) * WORLD_SCALE;
-      } else {
-        mouseRef.current.x =
-          (e.clientX / size.width - 0.5) * aspect * WORLD_SCALE;
-        mouseRef.current.y = -(e.clientY / size.height - 0.5) * WORLD_SCALE;
-      }
+      const rect = canvas.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width;
+      const ny = (e.clientY - rect.top) / rect.height;
+      mouseRef.current.x = (nx - 0.5) * aspect * WORLD_SCALE;
+      mouseRef.current.y = -(ny - 0.5) * WORLD_SCALE;
     };
     const onDown = () => {
       mouseRef.current.down = true;

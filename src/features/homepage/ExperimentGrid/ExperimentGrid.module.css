@@ -1,0 +1,79 @@
+.experimentGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-md);
+  /* Rows size to their tallest item; shorter items keep natural height, top-aligned */
+  align-items: start;
+}
+
+.span1 {
+  grid-column: span 1;
+}
+
+.span2 {
+  grid-column: span 2;
+}
+
+.span3 {
+  grid-column: span 3;
+}
+
+@media (max-width: 54rem) {
+  .experimentGrid {
+    grid-template-columns: repeat(2, 1fr);
+    /* Odd counts of half-width items leave holes; let the grid backfill them */
+    grid-auto-flow: dense;
+  }
+
+  .span1,
+  .span2 {
+    grid-column: span 1;
+  }
+
+  .span3 {
+    grid-column: span 2;
+  }
+}
+
+.tile {
+  display: block;
+  text-decoration: none;
+}
+
+.tile figure {
+  width: 100%;
+}
+
+.media {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Radius 0: gapless adjacent tiles with the global figure radius look broken */
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.canvasHolder {
+  width: 100%;
+  height: 100%;
+}
+
+/* Beats .ThreeCanvas canvas { min-height: 30rem } by specificity, not order */
+.experimentGrid .media canvas {
+  min-height: unset;
+  height: 100%;
+}
+
+.canvasFill {
+  height: 100%;
+}
+
+.tile figcaption {
+  max-width: 100%;
+  margin: 0.5em 0.75em;
+}
