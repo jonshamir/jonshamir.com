@@ -31,7 +31,7 @@
     }
 
     .name {
-      width: 16rem;
+      width: 14rem;
     }
 
     .subtitle {
@@ -57,17 +57,34 @@
       overflow: visible;
       pointer-events: none;
       padding-inline: var(--space-md);
+      display: flex;
+      align-items: flex-start;
+      gap: var(--space-sm);
 
       img {
         object-fit: cover;
-        width: 100%;
+        object-position: left center;
+        /* both auto so the width/height attrs next/image emits don't fix the size */
+        width: auto;
+        height: auto;
+        min-width: 0;
         max-height: 300px;
-        border-radius: var(--rounding-small);
-        clip-path: inset(0 0 100% 0);
+        clip-path: inset(0 0 100% 0 round var(--rounding-small));
         transform: translateY(1rem);
         transition:
           clip-path 240ms var(--ease-out-expo),
           transform 240ms var(--ease-out-expo);
+        margin-top: calc(-1 * var(--space-sm));
+      }
+
+      .previewSmall {
+        flex: 0 1 auto;
+        max-width: 16rem;
+      }
+
+      .previewLarge {
+        flex: 1 1 0;
+        min-height: 200px;
       }
     }
   }
@@ -75,9 +92,24 @@
 
 @media (hover: hover) and (pointer: fine) {
   .projectLink:hover .preview img {
-    clip-path: inset(0);
+    clip-path: inset(0 round var(--rounding-small));
     transform: none;
     transition-duration: 300ms; /* the rule above is the exit, ~20% quicker */
+  }
+
+  .projectLink:hover .preview .previewLarge {
+    transition-delay: 60ms;
+  }
+}
+
+@media (max-width: 72rem) {
+  .ProjectList .projectLink .preview .previewLarge {
+    display: none;
+  }
+
+  .ProjectList .projectLink .preview .previewSmall {
+    flex: 1 1 0;
+    max-width: none;
   }
 }
 
@@ -85,12 +117,13 @@
    indented past the icon, and aligns left again.
    Specificity must beat the nested .ProjectList .projectLink .subtitle above
    (0,3,0); a media query adds none of its own. */
-@media (max-width: 50rem) {
+@media (max-width: 54rem) {
   .ProjectList .projectLink .subtitle {
     flex-basis: 100%;
     margin-inline-start: 0;
     padding-inline-start: calc(30px + var(--space-sm));
     text-align: start;
+    margin-top: calc(-1 * var(--space-sm));
   }
 
   .ProjectList .projectLink .preview {
