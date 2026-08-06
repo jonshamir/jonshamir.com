@@ -7,8 +7,16 @@
   /* Component-local, not a global token: the slide pattern is tuned to this
      value and shouldn't track the site-wide transition speed. */
   --slide-duration: 0.3s;
-  min-height: 2.2em;
+  --button-height: 2.2em;
+  min-height: var(--button-height);
   width: 15em;
+}
+
+/* Equal explicit heights: the buttons' natural heights differ by 1px because
+   the Satoshi arrow's baseline stretches the main button's line box. */
+.emailMeButton,
+.copyAddressButton button {
+  height: var(--button-height);
 }
 
 /* Descendant selectors (0,2,1) deliberately outrank Button's .primary:hover
