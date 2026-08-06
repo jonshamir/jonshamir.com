@@ -15,14 +15,6 @@ export type ExperimentItem =
 
 export const experiments: ExperimentItem[] = [
   {
-    id: "sdf-collision",
-    kind: "canvas",
-    scene: "sdf-collision",
-    caption: "Soft-body SDF collisions",
-    span: 3,
-    aspectRatio: "4 / 3"
-  },
-  {
     id: "cavorite",
     kind: "video",
     src: "/homepage/cavorite.mp4",

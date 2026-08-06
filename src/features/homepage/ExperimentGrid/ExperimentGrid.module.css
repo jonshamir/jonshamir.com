@@ -47,9 +47,11 @@
 .media {
   width: 100%;
   overflow: hidden;
+  border-radius: var(--rounding-small);
 }
 
-/* Radius 0: gapless adjacent tiles with the global figure radius look broken */
+/* The .media clip does the rounding; a radius on the img itself (the global
+   figure rule) would double-round inside it */
 .media img,
 .media video {
   width: 100%;
