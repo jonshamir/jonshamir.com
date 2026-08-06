@@ -68,12 +68,12 @@
         height: auto;
         min-width: 0;
         max-height: 300px;
-        border-radius: var(--rounding-small);
-        clip-path: inset(0 0 100% 0);
+        clip-path: inset(0 0 100% 0 round var(--rounding-small));
         transform: translateY(1rem);
         transition:
           clip-path 240ms var(--ease-out-expo),
           transform 240ms var(--ease-out-expo);
+        margin-top: calc(-1 * var(--space-sm));
       }
 
       .previewSmall {
@@ -90,7 +90,7 @@
 
 @media (hover: hover) and (pointer: fine) {
   .projectLink:hover .preview img {
-    clip-path: inset(0);
+    clip-path: inset(0 round var(--rounding-small));
     transform: none;
     transition-duration: 300ms; /* the rule above is the exit, ~20% quicker */
   }
