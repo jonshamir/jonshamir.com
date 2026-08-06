@@ -19,8 +19,16 @@ export default function ProjectList() {
             <span className={styles.subtitle}>{project.subtitle}</span>
             <div className={styles.preview}>
               <Image
+                src={project.previewSmall}
+                alt=""
+                className={styles.previewSmall}
+                loading="eager"
+                fetchPriority="low"
+              />
+              <Image
                 src={project.preview}
                 alt=""
+                className={styles.previewLarge}
                 loading="eager"
                 fetchPriority="low"
               />

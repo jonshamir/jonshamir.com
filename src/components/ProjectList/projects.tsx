@@ -2,9 +2,14 @@ import type { StaticImageData } from "next/image";
 import { FC } from "react";
 
 import leafMapPreview from "../../app/projects/leaf-map/hero.png";
-import muserPreview from "../../app/projects/muser/hero.png";
+import leafMapPreviewSmall from "../../app/projects/leaf-map/preview-small.png";
+import muserPreview from "../../app/projects/muser/preview.png";
+import muserPreviewSmall from "../../app/projects/muser/preview-small.png";
 import simplyPreview from "../../app/projects/simply/hero.jpg";
+import simplyPreviewSmall from "../../app/projects/simply/preview-small.png";
 import spacetopPreview from "../../app/projects/spacetop/hero.jpg";
+import spacetopPreviewSmall from "../../app/projects/spacetop/preview-small.png";
+import widgetsPreviewSmall from "../../app/projects/widgets/preview-small.png";
 import widgetsPreview from "../../app/projects/widgets/screenshot.png";
 import LeafMapIcon from "./icons/leaf-map.svg";
 import MuserIcon from "./icons/muser.svg";
@@ -18,6 +23,7 @@ type ProjectItem = {
   subtitle: string;
   icon: FC;
   preview: StaticImageData;
+  previewSmall: StaticImageData;
   link?: string;
   year: number;
 };
@@ -29,6 +35,7 @@ const projects: ProjectItem[] = [
     subtitle: "Augmented reality laptop OS",
     icon: SpacetopIcon as FC,
     preview: spacetopPreview,
+    previewSmall: spacetopPreviewSmall,
     year: 2025
   },
   {
@@ -37,6 +44,7 @@ const projects: ProjectItem[] = [
     subtitle: "Spatial piano learning app",
     icon: SimplyIcon as FC,
     preview: simplyPreview,
+    previewSmall: simplyPreviewSmall,
     year: 2025
   },
   {
@@ -45,6 +53,7 @@ const projects: ProjectItem[] = [
     subtitle: "Smart music visualizer",
     icon: MuserIcon as FC,
     preview: muserPreview,
+    previewSmall: muserPreviewSmall,
     link: "https://jonshamir.github.io/muser/",
     year: 2021
   },
@@ -54,6 +63,7 @@ const projects: ProjectItem[] = [
     subtitle: "Extension toolbar for Apple Safari",
     icon: WidgetsIcon as FC,
     preview: widgetsPreview,
+    previewSmall: widgetsPreviewSmall,
     year: 2016
   },
   {
@@ -62,6 +72,7 @@ const projects: ProjectItem[] = [
     subtitle: "Interactive map of leaf shapes",
     icon: LeafMapIcon as FC,
     preview: leafMapPreview,
+    previewSmall: leafMapPreviewSmall,
     link: "https://jonshamir.github.io/leaf-map/",
     year: 2018
   }

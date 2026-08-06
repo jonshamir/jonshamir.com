@@ -61,7 +61,6 @@
 @media (max-width: 54rem) {
   .heroSection {
     grid-template-columns: minmax(0, 1fr);
-    gap: var(--space-xl);
   }
 
   /* Collapsed, both fall back to DOM order: text, then video. */
