@@ -63,6 +63,7 @@
 
       img {
         object-fit: cover;
+        object-position: left center;
         /* both auto so the width/height attrs next/image emits don't fix the size */
         width: auto;
         height: auto;
@@ -83,6 +84,7 @@
 
       .previewLarge {
         flex: 1 1 0;
+        min-height: 200px;
       }
     }
   }
