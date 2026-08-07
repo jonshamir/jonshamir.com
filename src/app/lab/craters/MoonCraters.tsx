@@ -1,5 +1,6 @@
 import { Billboard, Sphere } from "@react-three/drei";
-import { ThreeElements } from "@react-three/fiber";
+import { ThreeElements, useFrame } from "@react-three/fiber";
+import { useRef } from "react";
 import * as THREE from "three";
 import { Vector3 } from "three";
 import { DEG2RAD } from "three/src/math/MathUtils";
@@ -10,6 +11,7 @@ import craters from "./craters.json";
 const RADIUS = 1;
 const MOON_RADIUS = 1737;
 const SCALE_RATIO = RADIUS / MOON_RADIUS;
+const ROTATION_SPEED = 0.1;
 
 type QuadProps = ThreeElements["mesh"] & {
   color?: THREE.Color;
@@ -38,6 +40,14 @@ function Quad(props: QuadProps) {
 }
 
 export function MoonCraters() {
+  const groupRef = useRef<THREE.Group>(null);
+
+  useFrame((_, delta) => {
+    if (groupRef.current) {
+      groupRef.current.rotation.y += ROTATION_SPEED * Math.min(delta, 0.05);
+    }
+  });
+
   return (
     <>
       <Billboard>
@@ -49,32 +59,34 @@ export function MoonCraters() {
           depthTest={false}
         />
       </Billboard>
-      <Sphere args={[RADIUS * 0.99, 32, 32]}>
-        <meshBasicMaterial color={new THREE.Color(0x222222)} />
-      </Sphere>
-      <directionalLight position={[0, 0, 1]} intensity={0.5} />
-      {craters.map((crater, i) => {
-        const craterRadius = (crater.diam / 2) * SCALE_RATIO;
-        const rotation = new THREE.Euler(
-          -crater.lon * DEG2RAD,
-          crater.lat * DEG2RAD,
-          0
-        );
-        const zOffset = Math.sqrt(
-          RADIUS * RADIUS - craterRadius * craterRadius
-        );
-        const position = new Vector3(0, 0, zOffset).applyEuler(rotation);
+      <group ref={groupRef}>
+        <Sphere args={[RADIUS * 0.99, 32, 32]}>
+          <meshBasicMaterial color={new THREE.Color(0x222222)} />
+        </Sphere>
+        {craters.map((crater, i) => {
+          const craterRadius = (crater.diam / 2) * SCALE_RATIO;
+          const rotation = new THREE.Euler(
+            -crater.lon * DEG2RAD,
+            crater.lat * DEG2RAD,
+            0
+          );
+          const zOffset = Math.sqrt(
+            RADIUS * RADIUS - craterRadius * craterRadius
+          );
+          const position = new Vector3(0, 0, zOffset).applyEuler(rotation);
 
-        return (
-          <Quad
-            key={i}
-            scale={craterRadius}
-            rotation={rotation}
-            position={position}
-            color={new THREE.Color(0xbbbbbb)}
-          />
-        );
-      })}
+          return (
+            <Quad
+              key={i}
+              scale={craterRadius}
+              rotation={rotation}
+              position={position}
+              color={new THREE.Color(0xbbbbbb)}
+            />
+          );
+        })}
+      </group>
+      <directionalLight position={[0, 0, 1]} intensity={0.5} />
     </>
   );
 }
