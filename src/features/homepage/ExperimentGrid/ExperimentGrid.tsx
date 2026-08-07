@@ -28,7 +28,12 @@ export function ExperimentGrid() {
           <figure>
             <div
               className={styles.media}
-              style={{ aspectRatio: item.aspectRatio }}
+              style={{
+                aspectRatio: item.aspectRatio,
+                ...(item.kind === "canvas" && item.canvasBg
+                  ? { "--canvas-bg": item.canvasBg }
+                  : {})
+              }}
             >
               <Media item={item} />
             </div>

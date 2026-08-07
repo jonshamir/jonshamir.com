@@ -63,15 +63,18 @@
 .canvasHolder {
   width: 100%;
   height: 100%;
+  background-color: var(--canvas-bg, transparent);
+}
+
+/* Sizes the ThreeCanvas wrapper, which the lab *Canvas components render as
+   the holder's only child div (they take no className to target directly) */
+.canvasHolder > div {
+  height: 100%;
 }
 
 /* Beats .ThreeCanvas canvas { min-height: 30rem } by specificity, not order */
 .experimentGrid .media canvas {
   min-height: unset;
-  height: 100%;
-}
-
-.canvasFill {
   height: 100%;
 }
 

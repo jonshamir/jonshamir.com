@@ -1,3 +1,5 @@
+import { CANVAS_BG } from "../../../components/ThreeCanvas/canvasBg";
+
 export type CanvasSceneId = "sdf-collision" | "craters";
 
 type BaseItem = {
@@ -11,7 +13,12 @@ type BaseItem = {
 export type ExperimentItem =
   | (BaseItem & { kind: "image"; src: string; alt: string })
   | (BaseItem & { kind: "video"; src: string })
-  | (BaseItem & { kind: "canvas"; scene: CanvasSceneId; href?: never });
+  | (BaseItem & {
+      kind: "canvas";
+      scene: CanvasSceneId;
+      canvasBg?: string;
+      href?: never;
+    });
 
 export const experiments: ExperimentItem[] = [
   {
@@ -36,6 +43,7 @@ export const experiments: ExperimentItem[] = [
     id: "craters",
     kind: "canvas",
     scene: "craters",
+    canvasBg: CANVAS_BG,
     caption: "Moon crater mapping",
     span: 2,
     aspectRatio: "1 / 1"

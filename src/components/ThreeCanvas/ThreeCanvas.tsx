@@ -3,11 +3,7 @@ import { clsx } from "clsx";
 
 import styles from "./ThreeCanvas.module.css";
 
-/* Backdrop for the WebGL lab canvases — deliberately theme-independent.
-   A TS constant rather than a CSS custom property because WebGL can't read CSS:
-   the same value has to reach both the wrapper's background and, on canvases
-   that clear to it, the r3f `<color attach="background">`. */
-export const CANVAS_BG = "#101010";
+export { CANVAS_BG } from "./canvasBg";
 
 export type ThreeCanvasProps = React.ComponentProps<typeof Canvas> & {
   isFullscreen?: boolean;
