@@ -85,5 +85,23 @@ export const experiments: ExperimentItem[] = [
     span: 1,
     aspectRatio: "1 / 1",
     href: "/lab/window"
+  },
+  {
+    id: "uirect",
+    kind: "image",
+    src: "/homepage/uirect.png",
+    alt: "UIRect poster of rounded rectangles morphing into circles",
+    caption: "UIRect poster",
+    span: 2,
+    aspectRatio: "2480 / 3508"
+  },
+  {
+    id: "hex",
+    kind: "image",
+    src: "/homepage/hex.webp",
+    alt: "Risograph print of interlocking knotted lines",
+    caption: "Riso print",
+    span: 2,
+    aspectRatio: "1440 / 1594"
   }
 ];

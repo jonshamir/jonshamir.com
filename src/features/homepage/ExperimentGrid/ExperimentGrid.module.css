@@ -42,6 +42,8 @@
 
 .tile figure {
   width: 100%;
+  /* The global figure rule centers children; grid captions read left-aligned */
+  align-items: flex-start;
 }
 
 .media {
