@@ -234,12 +234,16 @@ export default function PlantCanvas({
     <>
       {controls && <TweakpanePanel />}
       <ThreeCanvas
-        camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
+        camera={{
+          fov: 45,
+          position: isFullscreen ? [0, 0, -5] : [0, -0.3, -4.3],
+          near: 0.01
+        }}
         isFullscreen={isFullscreen}
         shadows={{ type: PCFShadowMap }}
       >
         {/* <StatsGl className="stats-gl" /> */}
-        <OrbitControls />
+        <OrbitControls target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]} />
         <directionalLight
           position={lightPosition}
           intensity={1.5}
