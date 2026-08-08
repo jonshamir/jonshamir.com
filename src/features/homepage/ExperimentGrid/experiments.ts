@@ -76,16 +76,6 @@ export const experiments: ExperimentItem[] = [
     href: "/lab/point-cloud"
   },
   {
-    id: "window",
-    kind: "image",
-    src: "/lab/window.jpg",
-    alt: "Desktop window picker prototype",
-    caption: "Window picker",
-    span: 1,
-    aspectRatio: "1 / 1",
-    href: "/lab/window"
-  },
-  {
     id: "uirect",
     kind: "image",
     src: "/homepage/uirect.png",
@@ -100,7 +90,7 @@ export const experiments: ExperimentItem[] = [
     src: "/homepage/hex.webp",
     alt: "Risograph print of interlocking knotted lines",
     caption: "Riso print",
-    span: 2,
+    span: 1,
     aspectRatio: "1440 / 1594"
   }
 ];
