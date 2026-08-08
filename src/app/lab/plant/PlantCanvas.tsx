@@ -37,7 +37,7 @@ export default function PlantCanvas({
       groundColor: { value: "#7c4b2c", label: "Ground Color" },
       groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
       shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
-      shadowPlaneColor: { value: "#010007", label: "Shadow Plane Color" },
+      shadowPlaneColor: { value: "#10163d", label: "Shadow Plane Color" },
       lightPitch: {
         value: 60,
         min: 0,
