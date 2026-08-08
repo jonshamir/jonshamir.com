@@ -4,6 +4,7 @@ import { OrbitControls } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
 import { Color, PCFShadowMap } from "three";
 
+import { ParallaxRig } from "../../../components/ThreeCanvas/ParallaxRig";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useLinearColors } from "../../../lib/hooks/useLinearColor";
@@ -240,92 +241,100 @@ export default function PlantCanvas({
           near: 0.01
         }}
         isFullscreen={isFullscreen}
+        grabCursor={isFullscreen}
         shadows={{ type: PCFShadowMap }}
       >
         {/* <StatsGl className="stats-gl" /> */}
-        <OrbitControls target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]} />
-        <directionalLight
-          position={lightPosition}
-          intensity={1.5}
-          castShadow
-          shadow-mapSize-width={shadowMapSize}
-          shadow-mapSize-height={shadowMapSize}
-          shadow-camera-far={50}
-          shadow-camera-left={-3}
-          shadow-camera-right={3}
-          shadow-camera-top={3}
-          shadow-camera-bottom={-3}
-          shadow-normalBias={shadowNormalBias}
-          shadow-radius={5}
+        <OrbitControls
+          target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
+          enableZoom={isFullscreen}
+          enableRotate={isFullscreen}
+          enablePan={isFullscreen}
         />
         <ambientLight intensity={0.4} />
-        <Pot
-          position={[0, -0.8, 0]}
-          baseColor={colors.potBase}
-          shadowColor={colors.potShadow}
-          height={potHeight}
-          bottomRadius={potBottomRadius}
-          topRadius={potTopRadius}
-          rimHeight={potRimHeight}
-          rimThickness={potRimThickness}
-          potThickness={potThickness}
-        />
-        <Plant
-          age={currAge}
-          position={[0, -1, 0]}
-          baseColor={colors.leafBase}
-          shadowColor={colors.leafShadow}
-          subsurfaceColor={colors.leafSubsurface}
-        />
-        <FlowerStem
-          growingStage={1}
-          position={[0, -1, 0]}
-          baseColor={colors.leafBase}
-          shadowColor={colors.leafShadow}
-          subsurfaceColor={colors.leafSubsurface}
-          renderFlower={(tipPosition, flowerScale, curve) => (
-            <group>
-              <PhyllotaxisSpawner
-                count={fCount}
-                matureAge={fMatureAge}
-                baseYaw={fBaseYaw}
-                basePitch={fBasePitch}
-                layerHeight={-fLayerHeight}
-                curve={curve}
-                baseColor={colors.flowerBase}
-                shadowColor={colors.flowerShadow}
-                subsurfaceColor={colors.flowerSubsurface}
-                renderElement={(spawnProps) => (
-                  <SimpleFlower
-                    key={spawnProps.index}
-                    {...spawnProps}
-                    growingStage={spawnProps.growingStage * flowerScale}
-                  />
-                )}
-              />
-            </group>
-          )}
-        />
-        <mesh
-          rotation={[-Math.PI / 2, 0, 0]}
-          position={[0, -0.88, 0]}
-          receiveShadow
-          castShadow
-        >
-          <circleGeometry args={[potTopRadius, 64]} />
-          <primitive object={groundMaterial} attach="material" />
-        </mesh>
-        {/* Transparent ground plane for catching shadows */}
-        {shadowPlaneEnabled && (
+        <ParallaxRig enabled={!isFullscreen}>
+          <directionalLight
+            position={lightPosition}
+            intensity={1.5}
+            castShadow
+            shadow-mapSize-width={shadowMapSize}
+            shadow-mapSize-height={shadowMapSize}
+            shadow-camera-far={50}
+            shadow-camera-left={-3}
+            shadow-camera-right={3}
+            shadow-camera-top={3}
+            shadow-camera-bottom={-3}
+            shadow-normalBias={shadowNormalBias}
+            shadow-radius={5}
+          />
+          <Pot
+            position={[0, -0.8, 0]}
+            baseColor={colors.potBase}
+            shadowColor={colors.potShadow}
+            height={potHeight}
+            bottomRadius={potBottomRadius}
+            topRadius={potTopRadius}
+            rimHeight={potRimHeight}
+            rimThickness={potRimThickness}
+            potThickness={potThickness}
+          />
+          <Plant
+            age={currAge}
+            position={[0, -1, 0]}
+            baseColor={colors.leafBase}
+            shadowColor={colors.leafShadow}
+            subsurfaceColor={colors.leafSubsurface}
+          />
+          <FlowerStem
+            growingStage={1}
+            position={[0, -1, 0]}
+            baseColor={colors.leafBase}
+            shadowColor={colors.leafShadow}
+            subsurfaceColor={colors.leafSubsurface}
+            renderFlower={(tipPosition, flowerScale, curve) => (
+              <group>
+                <PhyllotaxisSpawner
+                  count={fCount}
+                  matureAge={fMatureAge}
+                  baseYaw={fBaseYaw}
+                  basePitch={fBasePitch}
+                  layerHeight={-fLayerHeight}
+                  curve={curve}
+                  baseColor={colors.flowerBase}
+                  shadowColor={colors.flowerShadow}
+                  subsurfaceColor={colors.flowerSubsurface}
+                  renderElement={(spawnProps) => (
+                    <SimpleFlower
+                      key={spawnProps.index}
+                      {...spawnProps}
+                      growingStage={spawnProps.growingStage * flowerScale}
+                    />
+                  )}
+                />
+              </group>
+            )}
+          />
           <mesh
             rotation={[-Math.PI / 2, 0, 0]}
-            position={[0, -1.2, 0]}
+            position={[0, -0.88, 0]}
             receiveShadow
+            castShadow
           >
-            <planeGeometry args={[10, 10]} />
-            <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
+            <circleGeometry args={[potTopRadius, 64]} />
+            <primitive object={groundMaterial} attach="material" />
           </mesh>
-        )}
+          {/* Transparent ground plane for catching shadows */}
+          {shadowPlaneEnabled && (
+            <mesh
+              rotation={[-Math.PI / 2, 0, 0]}
+              position={[0, -1.2, 0]}
+              receiveShadow
+            >
+              <planeGeometry args={[10, 10]} />
+              <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
+            </mesh>
+          )}
+        </ParallaxRig>
       </ThreeCanvas>
     </>
   );
