@@ -2,7 +2,7 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
-import { Color, PCFSoftShadowMap } from "three";
+import { Color, PCFShadowMap } from "three";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
@@ -200,6 +200,10 @@ export default function PlantCanvas({
     return [x, y, z];
   }, [lightPitch, lightYaw]);
 
+  const shadowMapSize = isFullscreen ? 4096 : 2048;
+  // normalBias is in world units and must grow with shadow texel size
+  const shadowNormalBias = 0.02 * (4096 / shadowMapSize);
+
   const groundMaterial = useMemo(() => new GroundMaterial(), []);
 
   useEffect(() => {
@@ -232,7 +236,7 @@ export default function PlantCanvas({
       <ThreeCanvas
         camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
         isFullscreen={isFullscreen}
-        shadows={{ type: PCFSoftShadowMap }}
+        shadows={{ type: PCFShadowMap }}
       >
         {/* <StatsGl className="stats-gl" /> */}
         <OrbitControls />
@@ -240,14 +244,14 @@ export default function PlantCanvas({
           position={lightPosition}
           intensity={1.5}
           castShadow
-          shadow-mapSize-width={isFullscreen ? 4096 : 1024}
-          shadow-mapSize-height={isFullscreen ? 4096 : 1024}
+          shadow-mapSize-width={shadowMapSize}
+          shadow-mapSize-height={shadowMapSize}
           shadow-camera-far={50}
           shadow-camera-left={-3}
           shadow-camera-right={3}
           shadow-camera-top={3}
           shadow-camera-bottom={-3}
-          shadow-normalBias={0.02}
+          shadow-normalBias={shadowNormalBias}
         />
         <ambientLight intensity={0.4} />
         <Pot
