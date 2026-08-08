@@ -66,7 +66,7 @@ function collectDefaults(schema: Schema, out: Values = {}): Values {
   for (const [key, node] of Object.entries(schema)) {
     if (isFolder(node)) {
       collectDefaults(node.schema, out);
-    } else {
+    } else if (!("button" in node)) {
       out[key] = node.value;
     }
   }
@@ -103,6 +103,13 @@ function addBinding(
   onChange: () => void,
   disposers: Array<() => void>
 ): void {
+  if ("button" in field) {
+    const btn = parent.addButton({ title: field.label ?? key });
+    btn.on("click", () => field.button());
+    disposers.push(() => btn.dispose());
+    return;
+  }
+
   const opts: Record<string, unknown> = {};
   if (field.label !== undefined) opts.label = field.label;
 

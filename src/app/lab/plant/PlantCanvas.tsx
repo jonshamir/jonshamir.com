@@ -1,7 +1,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { Color, PCFShadowMap } from "three";
 
 import { ParallaxRig } from "../../../components/ThreeCanvas/ParallaxRig";
@@ -11,11 +11,19 @@ import { useLinearColors } from "../../../lib/hooks/useLinearColor";
 import { useControls } from "../../../lib/tweakpane";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
+import {
+  computeGrowthValues,
+  GROWTH_DEFAULTS,
+  GrowthParams,
+  GrowthValues
+} from "./growth";
+import { GrowthDriver } from "./GrowthDriver";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
 import { PLANT_BG } from "./plantBg";
 import { Pot } from "./Pot";
 import { SimpleFlower } from "./SimpleFlower";
+import { saturate } from "./utils";
 
 const GOLDEN_ANGLE = 2.39996;
 
@@ -71,6 +79,115 @@ export default function PlantCanvas({
   const { currAge } = useControls({
     currAge: { value: 19, min: 0, max: 200 }
   }) as { currAge: number };
+
+  // Growth animation: refs hold the timeline (mutated by GrowthDriver inside
+  // the Canvas), state holds the derived per-frame values fed to the scene.
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const progressRef = useRef(reducedMotion ? 1 : 0);
+  const playingRef = useRef(!reducedMotion);
+  const [anim, setAnim] = useState<GrowthValues>(() =>
+    computeGrowthValues(reducedMotion ? 1 : 0, GROWTH_DEFAULTS)
+  );
+
+  const replay = useCallback(() => {
+    progressRef.current = 0;
+    playingRef.current = true;
+  }, []);
+
+  const {
+    durLeaves,
+    durStalk,
+    durFlowers,
+    overlapStalk,
+    overlapFlowers,
+    startScale,
+    matureAgeMult,
+    flowerStagger,
+    progress
+  } = useControls(
+    "Animation",
+    {
+      durLeaves: {
+        value: GROWTH_DEFAULTS.durLeaves,
+        min: 0.2,
+        max: 6,
+        label: "Leaves Duration (s)"
+      },
+      durStalk: {
+        value: GROWTH_DEFAULTS.durStalk,
+        min: 0.2,
+        max: 6,
+        label: "Stalk Duration (s)"
+      },
+      durFlowers: {
+        value: GROWTH_DEFAULTS.durFlowers,
+        min: 0.2,
+        max: 6,
+        label: "Flowers Duration (s)"
+      },
+      overlapStalk: {
+        value: GROWTH_DEFAULTS.overlapStalk,
+        min: 0,
+        max: 10,
+        label: "Stalk Overlap (s)"
+      },
+      overlapFlowers: {
+        value: GROWTH_DEFAULTS.overlapFlowers,
+        min: 0,
+        max: 2,
+        label: "Flowers Overlap (s)"
+      },
+      startScale: {
+        value: GROWTH_DEFAULTS.startScale,
+        min: 0.01,
+        max: 1,
+        label: "Start Scale"
+      },
+      matureAgeMult: {
+        value: GROWTH_DEFAULTS.matureAgeMult,
+        min: 1,
+        max: 500,
+        step: 1,
+        label: "Mature Age Mult"
+      },
+      flowerStagger: {
+        value: GROWTH_DEFAULTS.flowerStagger,
+        min: 0,
+        max: 1,
+        label: "Flower Stagger"
+      },
+      progress: { value: 0, min: 0, max: 1, step: 0.001, label: "Progress" },
+      replay: { button: replay, label: "Replay" }
+    },
+    { collapsed: true }
+  ) as unknown as GrowthParams & { progress: number };
+
+  const animParams: GrowthParams = {
+    durLeaves,
+    durStalk,
+    durFlowers,
+    overlapStalk,
+    overlapFlowers,
+    startScale,
+    matureAgeMult,
+    flowerStagger
+  };
+  const paramsRef = useRef(animParams);
+  paramsRef.current = animParams;
+
+  // Scrubbing the progress slider pauses playback and jumps the plant there.
+  // Guard on the value changing, not on "first run": effects can re-run with
+  // refs intact (dev double-invoke, hidden remounts), which would kill autoplay.
+  const lastScrub = useRef(progress);
+  useEffect(() => {
+    if (progress === lastScrub.current) return;
+    lastScrub.current = progress;
+    playingRef.current = false;
+    progressRef.current = progress;
+    setAnim(computeGrowthValues(progress, paramsRef.current));
+  }, [progress]);
 
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
@@ -251,6 +368,12 @@ export default function PlantCanvas({
         style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
       >
         {/* <StatsGl className="stats-gl" /> */}
+        <GrowthDriver
+          progressRef={progressRef}
+          playingRef={playingRef}
+          paramsRef={paramsRef}
+          onFrame={setAnim}
+        />
         <OrbitControls
           target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
           enableZoom={isFullscreen}
@@ -284,42 +407,53 @@ export default function PlantCanvas({
             rimThickness={potRimThickness}
             potThickness={potThickness}
           />
-          <Plant
-            age={currAge}
-            position={[0, -1, 0]}
-            baseColor={colors.leafBase}
-            shadowColor={colors.leafShadow}
-            subsurfaceColor={colors.leafSubsurface}
-          />
-          <FlowerStem
-            growingStage={1}
-            position={[0, -1, 0]}
-            baseColor={colors.leafBase}
-            shadowColor={colors.leafShadow}
-            subsurfaceColor={colors.leafSubsurface}
-            renderFlower={(tipPosition, flowerScale, curve) => (
-              <group>
-                <PhyllotaxisSpawner
-                  count={fCount}
-                  matureAge={fMatureAge}
-                  baseYaw={fBaseYaw}
-                  basePitch={fBasePitch}
-                  layerHeight={-fLayerHeight}
-                  curve={curve}
-                  baseColor={colors.flowerBase}
-                  shadowColor={colors.flowerShadow}
-                  subsurfaceColor={colors.flowerSubsurface}
-                  renderElement={(spawnProps) => (
-                    <SimpleFlower
-                      key={spawnProps.index}
-                      {...spawnProps}
-                      growingStage={spawnProps.growingStage * flowerScale}
-                    />
-                  )}
-                />
-              </group>
-            )}
-          />
+          {/* Scale group carries the plant's base position so growth scales
+              from the pot rim, not the world origin. */}
+          <group position={[0, -1, 0]} scale={anim.scale}>
+            <Plant
+              age={currAge}
+              maturity={anim.leaves}
+              matureAgeStartMult={matureAgeMult}
+              baseColor={colors.leafBase}
+              shadowColor={colors.leafShadow}
+              subsurfaceColor={colors.leafSubsurface}
+            />
+            <FlowerStem
+              growingStage={anim.stalk}
+              flowerStage={anim.flowers}
+              baseColor={colors.leafBase}
+              shadowColor={colors.leafShadow}
+              subsurfaceColor={colors.leafSubsurface}
+              renderFlower={(tipPosition, flowerScale, curve) => (
+                <group>
+                  <PhyllotaxisSpawner
+                    count={fCount}
+                    matureAge={fMatureAge}
+                    baseYaw={fBaseYaw}
+                    basePitch={fBasePitch}
+                    layerHeight={-fLayerHeight}
+                    curve={curve}
+                    baseColor={colors.flowerBase}
+                    shadowColor={colors.flowerShadow}
+                    subsurfaceColor={colors.flowerSubsurface}
+                    renderElement={(spawnProps) => (
+                      <SimpleFlower
+                        key={spawnProps.index}
+                        {...spawnProps}
+                        growingStage={
+                          spawnProps.growingStage *
+                          saturate(
+                            flowerScale * (1 + flowerStagger) -
+                              (spawnProps.index / fCount) * flowerStagger
+                          )
+                        }
+                      />
+                    )}
+                  />
+                </group>
+              )}
+            />
+          </group>
           <mesh
             rotation={[-Math.PI / 2, 0, 0]}
             position={[0, -0.88, 0]}

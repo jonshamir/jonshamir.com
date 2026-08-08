@@ -33,11 +33,17 @@ export type ListField = {
   label?: string;
 };
 
+export type ButtonField = {
+  button: () => void;
+  label?: string;
+};
+
 export type Field =
   | NumberField
   | BooleanField
   | ColorField
   | Point2DField
-  | ListField;
+  | ListField
+  | ButtonField;
 
 export type Schema = Record<string, Field | FolderNode>;

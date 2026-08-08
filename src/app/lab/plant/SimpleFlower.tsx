@@ -102,7 +102,14 @@ export function SimpleFlower({
       "vertexSubsurfaceColor",
       new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
     );
-  }, [geometry, growingStage, baseColor, shadowColor, subsurfaceColor]);
+  }, [geometry, baseColor, shadowColor, subsurfaceColor]);
+
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+      material.dispose();
+    };
+  }, [geometry, material]);
 
   // Scale the flower based on growing stage
   const scale = growingStage * 0.8;

@@ -17,6 +17,7 @@ import { getStemVertices } from "./utils";
 interface FlowerStemProps {
   position?: [number, number, number];
   growingStage: number; // 0 = new, 1 = fully grown
+  flowerStage?: number; // overrides the flower scale derived from growingStage
   rotation?: Euler;
   baseColor?: Color;
   shadowColor?: Color;
@@ -34,6 +35,7 @@ const curveSamples = 16;
 
 export function FlowerStem({
   growingStage,
+  flowerStage,
   baseColor = new Color(0.2, 0.4, 0.24),
   shadowColor = new Color(0.06, 0.1, 0.15),
   subsurfaceColor = new Color(0.8, 1.0, 0.3),
@@ -59,6 +61,14 @@ export function FlowerStem({
 
   // Create material once for the stem
   const stemMaterial = useMemo(() => new PlantMaterial(), []);
+
+  useEffect(() => {
+    const mesh = stemMeshRef.current;
+    return () => {
+      mesh?.geometry.dispose();
+      stemMaterial.dispose();
+    };
+  }, [stemMaterial]);
 
   // Update material age when growingStage changes
   useEffect(() => {
@@ -133,7 +143,9 @@ export function FlowerStem({
         new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
       );
 
+      const old = stemMeshRef.current.geometry;
       stemMeshRef.current.geometry = geometry;
+      old.dispose();
     }
 
     // Update tip position, curve, and flower scale for custom rendering
@@ -141,10 +153,14 @@ export function FlowerStem({
     setTipPosition(tipPoint);
     setStemCurve(curve);
 
-    const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
+    const newFlowerScale =
+      flowerStage !== undefined
+        ? flowerStage
+        : Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
     setFlowerScale(newFlowerScale);
   }, [
     growingStage,
+    flowerStage,
     baseRadius,
     tipRadius,
     baseColor,
