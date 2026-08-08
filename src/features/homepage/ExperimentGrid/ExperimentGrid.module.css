@@ -52,6 +52,45 @@
   border-radius: var(--rounding-small);
 }
 
+.captionRow {
+  display: flex;
+  align-self: stretch;
+  max-width: none;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.exploreLink {
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--color-text);
+  font-style: normal;
+}
+
+.exploreLink:hover :global(.arrow) {
+  transform: translateX(0.15em);
+}
+
+/* Hidden-until-hover only where hover exists; touch devices keep it visible */
+@media (hover: hover) and (pointer: fine) {
+  .exploreLink {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .tile:hover .exploreLink,
+  .exploreLink:focus-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .exploreLink {
+      transition: none;
+    }
+  }
+}
+
 /* The .media clip does the rounding; a radius on the img itself (the global
    figure rule) would double-round inside it */
 .media img,

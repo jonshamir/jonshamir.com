@@ -17,7 +17,6 @@ export type ExperimentItem =
       kind: "canvas";
       scene: CanvasSceneId;
       canvasBg?: string;
-      href?: never;
     });
 
 export const experiments: ExperimentItem[] = [
@@ -46,7 +45,8 @@ export const experiments: ExperimentItem[] = [
     canvasBg: CANVAS_BG,
     caption: "Moon crater mapping",
     span: 2,
-    aspectRatio: "1 / 1"
+    aspectRatio: "1 / 1",
+    href: "/lab/craters"
   },
   {
     id: "plant",
@@ -55,7 +55,8 @@ export const experiments: ExperimentItem[] = [
     canvasBg: "#CFBD9F",
     caption: "Procedural plant",
     span: 2,
-    aspectRatio: "3 / 4"
+    aspectRatio: "3 / 4",
+    href: "/lab/plant"
   },
   {
     id: "herbs",

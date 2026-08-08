@@ -37,10 +37,19 @@ export function ExperimentGrid() {
             >
               <Media item={item} />
             </div>
-            <figcaption>{item.caption}</figcaption>
+            {item.kind === "canvas" && item.href ? (
+              <figcaption className={styles.captionRow}>
+                {item.caption}
+                <Link href={item.href} className={styles.exploreLink}>
+                  Explore <span className="arrow">→</span>
+                </Link>
+              </figcaption>
+            ) : (
+              <figcaption>{item.caption}</figcaption>
+            )}
           </figure>
         );
-        return item.href ? (
+        return item.href && item.kind !== "canvas" ? (
           <Link key={item.id} href={item.href} className={className}>
             {content}
           </Link>
