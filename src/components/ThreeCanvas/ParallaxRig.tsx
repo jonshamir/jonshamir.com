@@ -27,6 +27,7 @@ export function ParallaxRig({
   const group = useRef<THREE.Group>(null);
   const pointer = useRef({ x: 0, y: 0, hovered: false });
   const gl = useThree((state) => state.gl);
+  const invalidate = useThree((state) => state.invalidate);
 
   useEffect(() => {
     if (!enabled) return;
@@ -38,9 +39,11 @@ export function ParallaxRig({
       state.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
       state.y = ((e.clientY - rect.top) / rect.height) * 2 - 1;
       state.hovered = true;
+      invalidate();
     };
     const onLeave = () => {
       state.hovered = false;
+      invalidate();
     };
     el.addEventListener("pointermove", onMove);
     el.addEventListener("pointerleave", onLeave);
@@ -49,13 +52,13 @@ export function ParallaxRig({
       el.removeEventListener("pointerleave", onLeave);
       state.hovered = false;
     };
-  }, [gl, enabled]);
+  }, [gl, enabled, invalidate]);
 
   useFrame((_, delta) => {
     if (!group.current) return;
     const { x, y, hovered } = pointer.current;
     const active = enabled && hovered;
-    dampE(
+    const moving = dampE(
       group.current.rotation,
       [
         active ? -y * maxPitch * intensity : 0,
@@ -65,6 +68,8 @@ export function ParallaxRig({
       SMOOTH_TIME,
       Math.min(delta, 0.05)
     );
+    // Keep frameloop="demand" canvases rendering until the damp settles.
+    if (moving) invalidate();
   });
 
   return <group ref={group}>{children}</group>;

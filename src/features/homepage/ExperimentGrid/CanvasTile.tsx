@@ -32,7 +32,7 @@ const SCENES: Record<CanvasSceneId, ComponentType> = {
 
 export function CanvasTile({ scene }: { scene: CanvasSceneId }) {
   const { isIntersecting, ref } = useIntersectionObserver({
-    rootMargin: "150% 0% 150% 0%",
+    rootMargin: "25% 0% 25% 0%",
     threshold: 0
   });
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)", {

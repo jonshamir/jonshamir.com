@@ -243,6 +243,7 @@ export default function PlantCanvas({
         isFullscreen={isFullscreen}
         grabCursor={isFullscreen}
         shadows={{ type: PCFShadowMap }}
+        frameloop={isFullscreen ? "always" : "demand"}
       >
         {/* <StatsGl className="stats-gl" /> */}
         <OrbitControls

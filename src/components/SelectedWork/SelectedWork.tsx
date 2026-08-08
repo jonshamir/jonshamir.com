@@ -1,7 +1,8 @@
 "use client";
 
 import { clsx } from "clsx";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useIntersectionObserver } from "usehooks-ts";
 
 import styles from "./SelectedWork.module.css";
 
@@ -22,6 +23,23 @@ export function SelectedWork({ className }: { className?: string }) {
     const i = Math.floor(Math.random() * videos.length);
     return [videos[i], videos[(i + 1) % videos.length]];
   });
+  const { isIntersecting, ref: intersectionRef } = useIntersectionObserver({
+    rootMargin: "25% 0% 25% 0%",
+    threshold: 0
+  });
+
+  useEffect(() => {
+    const video = (activeSlot === 0 ? videoRefA : videoRefB).current;
+    if (!video) return;
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (isIntersecting && !reducedMotion) {
+      void video.play();
+    } else {
+      video.pause();
+    }
+  }, [isIntersecting, activeSlot, videoRefA, videoRefB]);
 
   const handleVideoEnd = () => {
     const nextSlot = 1 - activeSlot;
@@ -38,7 +56,7 @@ export function SelectedWork({ className }: { className?: string }) {
   };
 
   return (
-    <figure className={clsx(styles.figure, className)}>
+    <figure ref={intersectionRef} className={clsx(styles.figure, className)}>
       <div className={styles.frame}>
         {refs.map((ref, slot) => (
           <video

@@ -79,7 +79,7 @@ export const experiments: ExperimentItem[] = [
   {
     id: "uirect",
     kind: "image",
-    src: "/homepage/uirect.png",
+    src: "/homepage/uirect.webp",
     alt: "UIRect poster of rounded rectangles morphing into circles",
     caption: "UIRect poster",
     span: 2,
