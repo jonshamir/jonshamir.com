@@ -13,6 +13,7 @@ import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
+import { PLANT_BG } from "./plantBg";
 import { Pot } from "./Pot";
 import { SimpleFlower } from "./SimpleFlower";
 
@@ -26,6 +27,7 @@ export default function PlantCanvas({
   isFullscreen?: boolean;
 }) {
   const {
+    bgColor,
     groundColor,
     groundShadowColor,
     shadowPlaneEnabled,
@@ -35,6 +37,7 @@ export default function PlantCanvas({
   } = useControls(
     "Environment",
     {
+      bgColor: { value: PLANT_BG, label: "Background", alpha: true },
       groundColor: { value: "#7c4b2c", label: "Ground Color" },
       groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
       shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
@@ -56,6 +59,7 @@ export default function PlantCanvas({
     },
     { collapsed: true }
   ) as {
+    bgColor: string;
     groundColor: string;
     groundShadowColor: string;
     shadowPlaneEnabled: boolean;
@@ -244,6 +248,7 @@ export default function PlantCanvas({
         grabCursor={isFullscreen}
         shadows={{ type: PCFShadowMap }}
         frameloop={isFullscreen ? "always" : "demand"}
+        style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
       >
         {/* <StatsGl className="stats-gl" /> */}
         <OrbitControls

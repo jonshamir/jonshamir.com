@@ -15,7 +15,8 @@ export type BooleanField = {
 };
 
 export type ColorField = {
-  value: string; // "#rrggbb"
+  value: string; // "#rrggbb" (or "#rrggbbaa" with alpha)
+  alpha?: boolean;
   label?: string;
 };
 

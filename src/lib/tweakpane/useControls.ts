@@ -129,7 +129,16 @@ function addBinding(
     if (f.y) opts.y = f.y;
   }
 
-  store[key] = field.value;
+  // Tweakpane infers alpha support for string colors from the initial value's
+  // format (`color: {alpha}` only applies to number values), so extend
+  // #rrggbb to #rrggbbff when alpha is requested.
+  store[key] =
+    "alpha" in field &&
+    field.alpha &&
+    typeof field.value === "string" &&
+    /^#[0-9a-fA-F]{6}$/.test(field.value)
+      ? field.value + "ff"
+      : field.value;
   const binding = parent.addBinding(store, key, opts);
   binding.on("change", onChange);
   disposers.push(() => binding.dispose());
