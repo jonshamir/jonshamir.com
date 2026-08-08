@@ -1,6 +1,6 @@
 import { CANVAS_BG } from "../../../components/ThreeCanvas/canvasBg";
 
-export type CanvasSceneId = "sdf-collision" | "craters";
+export type CanvasSceneId = "sdf-collision" | "craters" | "plant";
 
 type BaseItem = {
   id: string;
@@ -50,13 +50,12 @@ export const experiments: ExperimentItem[] = [
   },
   {
     id: "plant",
-    kind: "image",
-    src: "/lab/plant.png",
-    alt: "Procedurally grown plant in a pot",
+    kind: "canvas",
+    scene: "plant",
+    canvasBg: "#CFBD9F",
     caption: "Procedural plant",
     span: 2,
-    aspectRatio: "1 / 1",
-    href: "/lab/plant"
+    aspectRatio: "1 / 1"
   },
   {
     id: "herbs",

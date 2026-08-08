@@ -17,7 +17,13 @@ import { SimpleFlower } from "./SimpleFlower";
 
 const GOLDEN_ANGLE = 2.39996;
 
-export default function PlantCanvas() {
+export default function PlantCanvas({
+  controls = true,
+  isFullscreen = true
+}: {
+  controls?: boolean;
+  isFullscreen?: boolean;
+}) {
   const {
     groundColor,
     groundShadowColor,
@@ -222,10 +228,10 @@ export default function PlantCanvas() {
 
   return (
     <>
-      <TweakpanePanel />
+      {controls && <TweakpanePanel />}
       <ThreeCanvas
         camera={{ fov: 45, position: [0, 0, -5], near: 0.01 }}
-        isFullscreen={true}
+        isFullscreen={isFullscreen}
         shadows={{ type: PCFSoftShadowMap }}
       >
         {/* <StatsGl className="stats-gl" /> */}
@@ -234,8 +240,8 @@ export default function PlantCanvas() {
           position={lightPosition}
           intensity={1.5}
           castShadow
-          shadow-mapSize-width={4096}
-          shadow-mapSize-height={4096}
+          shadow-mapSize-width={isFullscreen ? 4096 : 1024}
+          shadow-mapSize-height={isFullscreen ? 4096 : 1024}
           shadow-camera-far={50}
           shadow-camera-left={-3}
           shadow-camera-right={3}

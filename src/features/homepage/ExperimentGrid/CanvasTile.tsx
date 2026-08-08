@@ -15,12 +15,19 @@ const CratersCanvas = dynamic(
   () => import("../../../app/lab/craters/CratersCanvas"),
   { ssr: false }
 );
+const PlantCanvas = dynamic(
+  () => import("../../../app/lab/plant/PlantCanvas"),
+  { ssr: false }
+);
 
 const SCENES: Record<CanvasSceneId, ComponentType> = {
   "sdf-collision": function SdfCollisionTile() {
     return <SdfCollisionCanvas controls={false} isFullscreen={false} />;
   },
-  craters: CratersCanvas
+  craters: CratersCanvas,
+  plant: function PlantTile() {
+    return <PlantCanvas controls={false} isFullscreen={false} />;
+  }
 };
 
 export function CanvasTile({ scene }: { scene: CanvasSceneId }) {
