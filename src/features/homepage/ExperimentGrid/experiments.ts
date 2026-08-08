@@ -55,7 +55,7 @@ export const experiments: ExperimentItem[] = [
     canvasBg: "#CFBD9F",
     caption: "Procedural plant",
     span: 2,
-    aspectRatio: "1 / 1"
+    aspectRatio: "3 / 4"
   },
   {
     id: "herbs",
