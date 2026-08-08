@@ -252,6 +252,7 @@ export default function PlantCanvas({
           shadow-camera-top={3}
           shadow-camera-bottom={-3}
           shadow-normalBias={shadowNormalBias}
+          shadow-radius={5}
         />
         <ambientLight intensity={0.4} />
         <Pot
