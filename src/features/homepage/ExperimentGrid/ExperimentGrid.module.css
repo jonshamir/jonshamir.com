@@ -4,6 +4,8 @@
   gap: var(--space-md);
   /* Rows size to their tallest item; shorter items keep natural height, top-aligned */
   align-items: start;
+  /* Backfill holes left by mixed spans, at the cost of source order */
+  grid-auto-flow: dense;
 }
 
 .span1 {
@@ -21,8 +23,6 @@
 @media (max-width: 54rem) {
   .experimentGrid {
     grid-template-columns: repeat(2, 1fr);
-    /* Odd counts of half-width items leave holes; let the grid backfill them */
-    grid-auto-flow: dense;
   }
 
   .span1,
