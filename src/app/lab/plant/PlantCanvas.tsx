@@ -224,7 +224,7 @@ export default function PlantCanvas({
                     matureAge={fMatureAge}
                     baseYaw={fBaseYaw}
                     basePitch={fBasePitch}
-                    layerHeight={-fLayerHeight}
+                    layerHeight={-fLayerHeight * anim.flowers}
                     curve={curve}
                     baseColor={colors.flowerBase}
                     shadowColor={colors.flowerShadow}

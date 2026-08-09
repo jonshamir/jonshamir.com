@@ -1,6 +1,5 @@
 import {
   easeInOutCubic,
-  easeOutBack,
   easeOutCubic,
   lerp,
   saturate
@@ -19,7 +18,7 @@ export const growthSchema = {
   durStalk: { value: 2.5, min: 0.2, max: 6, label: "Stalk Duration (s)" },
   durFlowers: { value: 1.2, min: 0.2, max: 6, label: "Flowers Duration (s)" },
   overlapStalk: { value: 10, min: 0, max: 10, label: "Stalk Overlap (s)" },
-  overlapFlowers: { value: 0.8, min: 0, max: 2, label: "Flowers Overlap (s)" },
+  overlapFlowers: { value: 1.1, min: 0, max: 2, label: "Flowers Overlap (s)" },
   startScale: { value: 0.25, min: 0.01, max: 1, label: "Start Scale" },
   matureAgeMult: {
     value: 120,
@@ -53,7 +52,7 @@ function growthTimeline(params: GrowthParams) {
     {
       duration: params.durFlowers,
       overlap: params.overlapFlowers,
-      ease: easeOutBack
+      ease: easeOutCubic
     }
   ]);
 }
