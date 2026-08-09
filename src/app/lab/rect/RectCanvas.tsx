@@ -33,7 +33,7 @@ function ShadowRect(props: {
 }
 
 export default function RectCanvas() {
-  const raw = useControls({
+  const controls = useControls({
     color: { value: "#5772ad", label: "Color" },
     radius: { value: 1, min: 0, max: 1, label: "Radius" },
     size: {
@@ -44,12 +44,6 @@ export default function RectCanvas() {
     },
     blur: { value: 0.3, min: 0, max: 1, label: "Blur" }
   });
-  const controls = raw as {
-    color: string;
-    radius: number;
-    size: { x: number; y: number };
-    blur: number;
-  };
 
   return (
     <>

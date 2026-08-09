@@ -35,12 +35,7 @@ export function Plant({
       layerHeight: { value: 0.01, min: 0, max: 0.2 }
     },
     { collapsed: true }
-  ) as {
-    matureAge: number;
-    basePitch: number;
-    baseYaw: number;
-    layerHeight: number;
-  };
+  );
 
   // growingStage = pow(2*age, 0.3) is steep near 0, so matureAge must sweep
   // into the thousands for leaves to read young — interpolate in log space.

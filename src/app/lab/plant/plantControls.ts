@@ -1,0 +1,78 @@
+import { type Schema } from "../../../lib/tweakpane";
+import { PLANT_BG } from "./plantBg";
+
+const GOLDEN_ANGLE = 2.39996;
+
+export const environmentSchema = {
+  bgColor: { value: PLANT_BG, label: "Background", alpha: true },
+  groundColor: { value: "#7c4b2c", label: "Ground Color" },
+  groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
+  shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
+  shadowPlaneColor: { value: "#10163d", label: "Shadow Plane Color" },
+  lightPitch: { value: 60, min: 0, max: 90, step: 1, label: "Light Pitch (°)" },
+  lightYaw: { value: 130, min: 0, max: 360, step: 1, label: "Light Yaw (°)" }
+} satisfies Schema;
+
+export const leafColorsSchema = {
+  leafBaseColor: { value: "#458052", label: "Base Color" },
+  leafShadowColor: { value: "#1f3438", label: "Shadow Color" },
+  leafSubsurfaceColor: { value: "#b7ff00", label: "Subsurface Color" }
+} satisfies Schema;
+
+export const flowerColorsSchema = {
+  flowerBaseColor: { value: "#a8b2f8", label: "Base Color" },
+  flowerShadowColor: { value: "#5258ba", label: "Shadow Color" },
+  flowerSubsurfaceColor: { value: "#6300ff", label: "Subsurface Color" }
+} satisfies Schema;
+
+export const flowersSchema = {
+  fCount: { value: 28, min: 0, max: 50, step: 1 },
+  fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
+  fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
+  fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
+  fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
+} satisfies Schema;
+
+export const potColorsSchema = {
+  potBaseColor: { value: "#ad826c", label: "Base Color" },
+  potShadowColor: { value: "#201d2e", label: "Shadow Color" }
+} satisfies Schema;
+
+export const potDimensionsSchema = {
+  potHeight: { value: 0.4, min: 0.1, max: 2.0, step: 0.05, label: "Height" },
+  potBottomRadius: {
+    value: 0.15,
+    min: 0.1,
+    max: 1.0,
+    step: 0.05,
+    label: "Bottom Radius"
+  },
+  potTopRadius: {
+    value: 0.25,
+    min: 0.1,
+    max: 1.0,
+    step: 0.05,
+    label: "Top Radius"
+  },
+  potRimHeight: {
+    value: 0.11,
+    min: 0.01,
+    max: 0.5,
+    step: 0.01,
+    label: "Rim Height"
+  },
+  potRimThickness: {
+    value: 0.025,
+    min: 0.01,
+    max: 0.2,
+    step: 0.01,
+    label: "Rim Thickness"
+  },
+  potThickness: {
+    value: 0.01,
+    min: 0.01,
+    max: 0.1,
+    step: 0.01,
+    label: "Wall Thickness"
+  }
+} satisfies Schema;

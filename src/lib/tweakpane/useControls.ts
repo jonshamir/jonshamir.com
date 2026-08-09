@@ -4,18 +4,18 @@ import { useEffect, useState } from "react";
 
 import { type FolderNode, isFolder } from "./folder";
 import { getPane } from "./pane";
-import type { Field, Schema } from "./types";
+import type { Field, InferValues, Schema } from "./types";
 
 type Values = Record<string, unknown>;
 type FolderOpts = { collapsed?: boolean };
 
-// Overloads mirror Leva's API.
-export function useControls(schema: Schema): Values;
-export function useControls(
+// Overloads mirror Leva's API. Values are inferred from the schema literal.
+export function useControls<S extends Schema>(schema: S): InferValues<S>;
+export function useControls<S extends Schema>(
   folderName: string,
-  schema: Schema,
+  schema: S,
   opts?: FolderOpts
-): Values;
+): InferValues<S>;
 export function useControls(
   arg1: Schema | string,
   arg2?: Schema,
@@ -60,6 +60,11 @@ export function useControls(
   }, []);
 
   return values;
+}
+
+// Derive the default-values object from a schema (buttons excluded).
+export function schemaDefaults<S extends Schema>(schema: S): InferValues<S> {
+  return collectDefaults(schema) as InferValues<S>;
 }
 
 function collectDefaults(schema: Schema, out: Values = {}): Values {

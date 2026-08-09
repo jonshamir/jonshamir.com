@@ -1,31 +1,34 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Color, PCFShadowMap } from "three";
 
 import { ParallaxRig } from "../../../components/ThreeCanvas/ParallaxRig";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import {
+  TimelineDriver,
+  useTimelinePlayer
+} from "../../../components/ThreeCanvas/TimelinePlayer";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useLinearColors } from "../../../lib/hooks/useLinearColor";
 import { useControls } from "../../../lib/tweakpane";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
-import {
-  computeGrowthValues,
-  GROWTH_DEFAULTS,
-  GrowthParams,
-  GrowthValues
-} from "./growth";
-import { GrowthDriver } from "./GrowthDriver";
+import { computeGrowthValues, growthSchema, totalDuration } from "./growth";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
-import { PLANT_BG } from "./plantBg";
+import {
+  environmentSchema,
+  flowerColorsSchema,
+  flowersSchema,
+  leafColorsSchema,
+  potColorsSchema,
+  potDimensionsSchema
+} from "./plantControls";
 import { Pot } from "./Pot";
 import { SimpleFlower } from "./SimpleFlower";
 import { saturate } from "./utils";
-
-const GOLDEN_ANGLE = 2.39996;
 
 export default function PlantCanvas({
   controls = true,
@@ -42,209 +45,58 @@ export default function PlantCanvas({
     shadowPlaneColor,
     lightPitch,
     lightYaw
-  } = useControls(
-    "Environment",
-    {
-      bgColor: { value: PLANT_BG, label: "Background", alpha: true },
-      groundColor: { value: "#7c4b2c", label: "Ground Color" },
-      groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
-      shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
-      shadowPlaneColor: { value: "#10163d", label: "Shadow Plane Color" },
-      lightPitch: {
-        value: 60,
-        min: 0,
-        max: 90,
-        step: 1,
-        label: "Light Pitch (°)"
-      },
-      lightYaw: {
-        value: 130,
-        min: 0,
-        max: 360,
-        step: 1,
-        label: "Light Yaw (°)"
-      }
-    },
-    { collapsed: true }
-  ) as {
-    bgColor: string;
-    groundColor: string;
-    groundShadowColor: string;
-    shadowPlaneEnabled: boolean;
-    shadowPlaneColor: string;
-    lightPitch: number;
-    lightYaw: number;
-  };
+  } = useControls("Environment", environmentSchema, { collapsed: true });
 
   const { currAge } = useControls({
     currAge: { value: 19, min: 0, max: 200 }
-  }) as { currAge: number };
+  });
 
-  // Growth animation: refs hold the timeline (mutated by GrowthDriver inside
-  // the Canvas), state holds the derived per-frame values fed to the scene.
-  const reducedMotion =
-    typeof window !== "undefined" &&
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  const progressRef = useRef(reducedMotion ? 1 : 0);
-  const playingRef = useRef(!reducedMotion);
-  const [anim, setAnim] = useState<GrowthValues>(() =>
-    computeGrowthValues(reducedMotion ? 1 : 0, GROWTH_DEFAULTS)
-  );
+  const player = useTimelinePlayer();
 
-  const replay = useCallback(() => {
-    progressRef.current = 0;
-    playingRef.current = true;
-  }, []);
-
-  const {
-    durLeaves,
-    durStalk,
-    durFlowers,
-    overlapStalk,
-    overlapFlowers,
-    startScale,
-    matureAgeMult,
-    flowerStagger,
-    progress
-  } = useControls(
+  const { progress, ...animParams } = useControls(
     "Animation",
     {
-      durLeaves: {
-        value: GROWTH_DEFAULTS.durLeaves,
-        min: 0.2,
-        max: 6,
-        label: "Leaves Duration (s)"
-      },
-      durStalk: {
-        value: GROWTH_DEFAULTS.durStalk,
-        min: 0.2,
-        max: 6,
-        label: "Stalk Duration (s)"
-      },
-      durFlowers: {
-        value: GROWTH_DEFAULTS.durFlowers,
-        min: 0.2,
-        max: 6,
-        label: "Flowers Duration (s)"
-      },
-      overlapStalk: {
-        value: GROWTH_DEFAULTS.overlapStalk,
-        min: 0,
-        max: 10,
-        label: "Stalk Overlap (s)"
-      },
-      overlapFlowers: {
-        value: GROWTH_DEFAULTS.overlapFlowers,
-        min: 0,
-        max: 2,
-        label: "Flowers Overlap (s)"
-      },
-      startScale: {
-        value: GROWTH_DEFAULTS.startScale,
-        min: 0.01,
-        max: 1,
-        label: "Start Scale"
-      },
-      matureAgeMult: {
-        value: GROWTH_DEFAULTS.matureAgeMult,
-        min: 1,
-        max: 500,
-        step: 1,
-        label: "Mature Age Mult"
-      },
-      flowerStagger: {
-        value: GROWTH_DEFAULTS.flowerStagger,
-        min: 0,
-        max: 1,
-        label: "Flower Stagger"
-      },
+      ...growthSchema,
       progress: { value: 0, min: 0, max: 1, step: 0.001, label: "Progress" },
-      replay: { button: replay, label: "Replay" }
+      replay: { button: player.replay, label: "Replay" }
     },
     { collapsed: true }
-  ) as unknown as GrowthParams & { progress: number };
+  );
 
-  const animParams: GrowthParams = {
-    durLeaves,
-    durStalk,
-    durFlowers,
-    overlapStalk,
-    overlapFlowers,
-    startScale,
-    matureAgeMult,
-    flowerStagger
-  };
   const paramsRef = useRef(animParams);
   paramsRef.current = animParams;
+  const getDuration = useCallback(() => totalDuration(paramsRef.current), []);
 
   // Scrubbing the progress slider pauses playback and jumps the plant there.
   // Guard on the value changing, not on "first run": effects can re-run with
   // refs intact (dev double-invoke, hidden remounts), which would kill autoplay.
+  const { scrubTo } = player;
   const lastScrub = useRef(progress);
   useEffect(() => {
     if (progress === lastScrub.current) return;
     lastScrub.current = progress;
-    playingRef.current = false;
-    progressRef.current = progress;
-    setAnim(computeGrowthValues(progress, paramsRef.current));
-  }, [progress]);
+    scrubTo(progress);
+  }, [progress, scrubTo]);
+
+  const anim = computeGrowthValues(player.progress, animParams);
 
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
-    {
-      leafBaseColor: { value: "#458052", label: "Base Color" },
-      leafShadowColor: { value: "#1f3438", label: "Shadow Color" },
-      leafSubsurfaceColor: { value: "#b7ff00", label: "Subsurface Color" }
-    },
+    leafColorsSchema,
     { collapsed: true }
-  ) as {
-    leafBaseColor: string;
-    leafShadowColor: string;
-    leafSubsurfaceColor: string;
-  };
+  );
 
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
-    useControls(
-      "Flower Colors",
-      {
-        flowerBaseColor: { value: "#a8b2f8", label: "Base Color" },
-        flowerShadowColor: { value: "#5258ba", label: "Shadow Color" },
-        flowerSubsurfaceColor: { value: "#6300ff", label: "Subsurface Color" }
-      },
-      { collapsed: true }
-    ) as {
-      flowerBaseColor: string;
-      flowerShadowColor: string;
-      flowerSubsurfaceColor: string;
-    };
+    useControls("Flower Colors", flowerColorsSchema, { collapsed: true });
 
   const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
-    useControls(
-      "Flowers",
-      {
-        fCount: { value: 28, min: 0, max: 50, step: 1 },
-        fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
-        fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
-        fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-        fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
-      },
-      { collapsed: true }
-    ) as {
-      fCount: number;
-      fMatureAge: number;
-      fBasePitch: number;
-      fBaseYaw: number;
-      fLayerHeight: number;
-    };
+    useControls("Flowers", flowersSchema, { collapsed: true });
 
   const { potBaseColor, potShadowColor } = useControls(
     "Pot Colors",
-    {
-      potBaseColor: { value: "#ad826c", label: "Base Color" },
-      potShadowColor: { value: "#201d2e", label: "Shadow Color" }
-    },
+    potColorsSchema,
     { collapsed: true }
-  ) as { potBaseColor: string; potShadowColor: string };
+  );
 
   const {
     potHeight,
@@ -253,61 +105,7 @@ export default function PlantCanvas({
     potRimHeight,
     potRimThickness,
     potThickness
-  } = useControls(
-    "Pot Dimensions",
-    {
-      potHeight: {
-        value: 0.4,
-        min: 0.1,
-        max: 2.0,
-        step: 0.05,
-        label: "Height"
-      },
-      potBottomRadius: {
-        value: 0.15,
-        min: 0.1,
-        max: 1.0,
-        step: 0.05,
-        label: "Bottom Radius"
-      },
-      potTopRadius: {
-        value: 0.25,
-        min: 0.1,
-        max: 1.0,
-        step: 0.05,
-        label: "Top Radius"
-      },
-      potRimHeight: {
-        value: 0.11,
-        min: 0.01,
-        max: 0.5,
-        step: 0.01,
-        label: "Rim Height"
-      },
-      potRimThickness: {
-        value: 0.025,
-        min: 0.01,
-        max: 0.2,
-        step: 0.01,
-        label: "Rim Thickness"
-      },
-      potThickness: {
-        value: 0.01,
-        min: 0.01,
-        max: 0.1,
-        step: 0.01,
-        label: "Wall Thickness"
-      }
-    },
-    { collapsed: true }
-  ) as {
-    potHeight: number;
-    potBottomRadius: number;
-    potTopRadius: number;
-    potRimHeight: number;
-    potRimThickness: number;
-    potThickness: number;
-  };
+  } = useControls("Pot Dimensions", potDimensionsSchema, { collapsed: true });
 
   // Convert pitch/yaw to cartesian coordinates
   const lightPosition: [number, number, number] = useMemo(() => {
@@ -368,12 +166,7 @@ export default function PlantCanvas({
         style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
       >
         {/* <StatsGl className="stats-gl" /> */}
-        <GrowthDriver
-          progressRef={progressRef}
-          playingRef={playingRef}
-          paramsRef={paramsRef}
-          onFrame={setAnim}
-        />
+        <TimelineDriver player={player} getDuration={getDuration} />
         <OrbitControls
           target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
           enableZoom={isFullscreen}
@@ -413,7 +206,7 @@ export default function PlantCanvas({
             <Plant
               age={currAge}
               maturity={anim.leaves}
-              matureAgeStartMult={matureAgeMult}
+              matureAgeStartMult={animParams.matureAgeMult}
               baseColor={colors.leafBase}
               shadowColor={colors.leafShadow}
               subsurfaceColor={colors.leafSubsurface}
@@ -443,8 +236,9 @@ export default function PlantCanvas({
                         growingStage={
                           spawnProps.growingStage *
                           saturate(
-                            flowerScale * (1 + flowerStagger) -
-                              (spawnProps.index / fCount) * flowerStagger
+                            flowerScale * (1 + animParams.flowerStagger) -
+                              (spawnProps.index / fCount) *
+                                animParams.flowerStagger
                           )
                         }
                       />

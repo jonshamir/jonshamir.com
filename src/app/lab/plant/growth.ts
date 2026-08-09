@@ -4,29 +4,36 @@ import {
   easeOutCubic,
   lerp,
   saturate
-} from "./utils";
+} from "../../../lib/math";
+import { sequencePhases } from "../../../lib/timeline";
+import {
+  type InferValues,
+  type Schema,
+  schemaDefaults
+} from "../../../lib/tweakpane";
 
-export interface GrowthParams {
-  durLeaves: number;
-  durStalk: number;
-  durFlowers: number;
-  overlapStalk: number;
-  overlapFlowers: number;
-  startScale: number;
-  matureAgeMult: number;
-  flowerStagger: number;
-}
+// Single source of truth for the growth animation parameters: the tweakpane
+// schema also defines GrowthParams and GROWTH_DEFAULTS.
+export const growthSchema = {
+  durLeaves: { value: 2.2, min: 0.2, max: 6, label: "Leaves Duration (s)" },
+  durStalk: { value: 2.5, min: 0.2, max: 6, label: "Stalk Duration (s)" },
+  durFlowers: { value: 1.2, min: 0.2, max: 6, label: "Flowers Duration (s)" },
+  overlapStalk: { value: 10, min: 0, max: 10, label: "Stalk Overlap (s)" },
+  overlapFlowers: { value: 0.8, min: 0, max: 2, label: "Flowers Overlap (s)" },
+  startScale: { value: 0.25, min: 0.01, max: 1, label: "Start Scale" },
+  matureAgeMult: {
+    value: 120,
+    min: 1,
+    max: 500,
+    step: 1,
+    label: "Mature Age Mult"
+  },
+  flowerStagger: { value: 2, min: 0, max: 1, label: "Flower Stagger" }
+} satisfies Schema;
 
-export const GROWTH_DEFAULTS: GrowthParams = {
-  durLeaves: 2.2,
-  durStalk: 2.5,
-  durFlowers: 1.2,
-  overlapStalk: 10,
-  overlapFlowers: 0.8,
-  startScale: 0.25,
-  matureAgeMult: 120,
-  flowerStagger: 2
-};
+export type GrowthParams = InferValues<typeof growthSchema>;
+
+export const GROWTH_DEFAULTS: GrowthParams = schemaDefaults(growthSchema);
 
 export interface GrowthValues {
   leaves: number; // eased maturity 0-1
@@ -35,42 +42,33 @@ export interface GrowthValues {
   flowers: number; // flower open stage 0-1 (may overshoot slightly)
 }
 
-interface PhaseWindows {
-  leavesStart: number;
-  stalkStart: number;
-  flowersStart: number;
-}
-
-function phaseWindows(params: GrowthParams): PhaseWindows {
-  const stalkStart =
-    params.durLeaves - Math.min(params.overlapStalk, params.durLeaves);
-  const flowersStart =
-    stalkStart +
-    params.durStalk -
-    Math.min(params.overlapFlowers, params.durStalk);
-  return { leavesStart: 0, stalkStart, flowersStart };
+function growthTimeline(params: GrowthParams) {
+  return sequencePhases([
+    { duration: params.durLeaves, ease: easeOutCubic },
+    {
+      duration: params.durStalk,
+      overlap: params.overlapStalk,
+      ease: easeInOutCubic
+    },
+    {
+      duration: params.durFlowers,
+      overlap: params.overlapFlowers,
+      ease: easeOutBack
+    }
+  ]);
 }
 
 export function totalDuration(params: GrowthParams): number {
-  const { flowersStart } = phaseWindows(params);
-  return flowersStart + params.durFlowers;
-}
-
-function phase(t: number, start: number, duration: number): number {
-  return saturate((t - start) / duration);
+  return growthTimeline(params).total;
 }
 
 export function computeGrowthValues(
   progress: number,
   params: GrowthParams
 ): GrowthValues {
-  const t = saturate(progress) * totalDuration(params);
-  const windows = phaseWindows(params);
-
-  const leaves = easeOutCubic(phase(t, windows.leavesStart, params.durLeaves));
-  const stalk = easeInOutCubic(phase(t, windows.stalkStart, params.durStalk));
-  const flowers = easeOutBack(
-    phase(t, windows.flowersStart, params.durFlowers)
+  const timeline = growthTimeline(params);
+  const [leaves, stalk, flowers] = timeline.at(
+    saturate(progress) * timeline.total
   );
 
   return {
