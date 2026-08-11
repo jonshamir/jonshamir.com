@@ -74,7 +74,8 @@ export function SimpleFlower({
       localZ,
       vertexBaseColors,
       vertexShadowColors,
-      vertexSubsurfaceColors
+      vertexSubsurfaceColors,
+      petalNormals
     } = getFlowerVertices(
       height,
       baseRadius,
@@ -92,6 +93,19 @@ export function SimpleFlower({
     );
     geometry.setIndex(indices);
     geometry.computeVertexNormals();
+    if (petalNormals) {
+      const normals = geometry.getAttribute("normal");
+      const petalStart = normals.count - petalNormals.length / 3;
+      for (let i = 0; i < petalNormals.length / 3; i++) {
+        normals.setXYZ(
+          petalStart + i,
+          petalNormals[i * 3],
+          petalNormals[i * 3 + 1],
+          petalNormals[i * 3 + 2]
+        );
+      }
+      normals.needsUpdate = true;
+    }
     geometry.computeBoundingSphere();
 
     // Add custom attributes for shader

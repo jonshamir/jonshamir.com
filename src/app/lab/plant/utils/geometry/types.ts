@@ -28,6 +28,11 @@ export interface PlantGeometryResult {
   vertexShadowColors: number[];
   /** Subsurface scattering color RGB values for each vertex */
   vertexSubsurfaceColors: number[];
+  /**
+   * Optional smooth normals [nx, ny, nz, ...] for the trailing petal
+   * vertices, overriding computed flat normals
+   */
+  petalNormals?: number[];
 }
 
 /**

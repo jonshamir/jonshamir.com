@@ -92,6 +92,19 @@ export function getFlowerVertices(
   const petalLength = tipRadius * 3; // How far petals extend from cylinder
   const tipY = height;
 
+  // Closed petals form a cone; analytic cone normals (matching at shared
+  // edge positions) shade the bud smoothly despite unshared vertices
+  const petalNormals: number[] | undefined = open ? undefined : [];
+  const coneHeight = petalLength * 0.2;
+  const pushConeNormal = (theta: number) => {
+    if (!petalNormals) return;
+    const nx = coneHeight * Math.cos(theta);
+    const ny = lerp(baseRadius, tipRadius, 1.0);
+    const nz = coneHeight * Math.sin(theta);
+    const len = Math.sqrt(nx * nx + ny * ny + nz * nz);
+    petalNormals.push(nx / len, ny / len, nz / len);
+  };
+
   for (let j = 0; j < sides; j++) {
     // Get the positions of the two edge vertices from the cylinder
     const theta1 = (j / sides) * Math.PI * 2;
@@ -109,7 +122,11 @@ export function getFlowerVertices(
     const petalTipRadius = open ? petalLength : 0;
     const petalTipX = petalTipRadius * Math.cos(thetaMid);
     const petalTipZ = petalTipRadius * Math.sin(thetaMid);
-    const petalTipY = open ? tipY : tipY + petalLength * 0.2;
+    const petalTipY = open ? tipY : tipY + coneHeight;
+
+    pushConeNormal(theta1);
+    pushConeNormal(theta2);
+    pushConeNormal(thetaMid);
 
     // Add 3 separate vertices for this petal triangle
     // Vertex 1: First edge
@@ -164,6 +181,7 @@ export function getFlowerVertices(
     localZ,
     vertexBaseColors,
     vertexShadowColors,
-    vertexSubsurfaceColors
+    vertexSubsurfaceColors,
+    petalNormals
   };
 }
