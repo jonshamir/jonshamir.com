@@ -1,9 +1,12 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
+import { clsx } from "clsx";
 import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Color, PCFShadowMap } from "three";
 
+import { Button } from "../../../components/Button/Button";
+import { FeatherIcon } from "../../../components/FeatherIcon/FeatherIcon";
 import { ParallaxRig } from "../../../components/ThreeCanvas/ParallaxRig";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import {
@@ -18,6 +21,7 @@ import { GroundMaterial } from "./groundMaterial";
 import { computeGrowthValues, growthSchema, totalDuration } from "./growth";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
+import styles from "./PlantCanvas.module.css";
 import {
   environmentSchema,
   flowerColorsSchema,
@@ -169,140 +173,165 @@ export default function PlantCanvas({
     shadowPlane: shadowPlaneColor
   });
 
-  return (
-    <>
-      {controls && <TweakpanePanel />}
-      <ThreeCanvas
-        camera={{
-          fov: 45,
-          position: isFullscreen ? [0, 0, -5] : [0, -0.3, -4.3],
-          near: 0.01
-        }}
-        isFullscreen={isFullscreen}
-        grabCursor={isFullscreen}
-        shadows={{ type: PCFShadowMap }}
-        frameloop={isFullscreen ? "always" : "demand"}
-        style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
-      >
-        {/* <StatsGl className="stats-gl" /> */}
-        <TimelineDriver player={player} getDuration={getDuration} />
-        <OrbitControls
-          target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
-          enableZoom={isFullscreen}
-          enableRotate={isFullscreen}
-          enablePan={isFullscreen}
+  const replayButton = (
+    <Button
+      round
+      variant="opaque"
+      aria-label="Replay growth animation"
+      className={clsx(
+        styles.replayButton,
+        isFullscreen ? styles.fixedButton : styles.tileButton
+      )}
+      onClick={player.replay}
+    >
+      <FeatherIcon iconName="rotate-ccw" />
+    </Button>
+  );
+
+  const scene = (
+    <ThreeCanvas
+      camera={{
+        fov: 45,
+        position: isFullscreen ? [0, 0, -5] : [0, -0.3, -4.3],
+        near: 0.01
+      }}
+      isFullscreen={isFullscreen}
+      grabCursor={isFullscreen}
+      shadows={{ type: PCFShadowMap }}
+      frameloop={isFullscreen ? "always" : "demand"}
+      style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
+    >
+      {/* <StatsGl className="stats-gl" /> */}
+      <TimelineDriver player={player} getDuration={getDuration} />
+      <OrbitControls
+        target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
+        enableZoom={isFullscreen}
+        enableRotate={isFullscreen}
+        enablePan={isFullscreen}
+      />
+      <ambientLight intensity={0.4} />
+      <ParallaxRig enabled={!isFullscreen}>
+        <directionalLight
+          position={lightPosition}
+          intensity={1.5}
+          castShadow
+          shadow-mapSize-width={shadowMapSize}
+          shadow-mapSize-height={shadowMapSize}
+          shadow-camera-far={50}
+          shadow-camera-left={-3}
+          shadow-camera-right={3}
+          shadow-camera-top={3}
+          shadow-camera-bottom={-3}
+          shadow-normalBias={shadowNormalBias}
+          shadow-radius={5}
         />
-        <ambientLight intensity={0.4} />
-        <ParallaxRig enabled={!isFullscreen}>
-          <directionalLight
-            position={lightPosition}
-            intensity={1.5}
-            castShadow
-            shadow-mapSize-width={shadowMapSize}
-            shadow-mapSize-height={shadowMapSize}
-            shadow-camera-far={50}
-            shadow-camera-left={-3}
-            shadow-camera-right={3}
-            shadow-camera-top={3}
-            shadow-camera-bottom={-3}
-            shadow-normalBias={shadowNormalBias}
-            shadow-radius={5}
-          />
-          <Pot
-            position={[0, -0.8, 0]}
-            baseColor={colors.potBase}
-            shadowColor={colors.potShadow}
-            height={potHeight}
-            bottomRadius={potBottomRadius}
-            topRadius={potTopRadius}
-            rimHeight={potRimHeight}
-            rimThickness={potRimThickness}
-            potThickness={potThickness}
-          />
-          {/* Scale group carries the plant's base position so growth scales
+        <Pot
+          position={[0, -0.8, 0]}
+          baseColor={colors.potBase}
+          shadowColor={colors.potShadow}
+          height={potHeight}
+          bottomRadius={potBottomRadius}
+          topRadius={potTopRadius}
+          rimHeight={potRimHeight}
+          rimThickness={potRimThickness}
+          potThickness={potThickness}
+        />
+        {/* Scale group carries the plant's base position so growth scales
               from the pot rim, not the world origin. */}
-          <group position={[0, -1, 0]} scale={anim.scale}>
-            <Plant
-              age={currAge}
-              maturity={anim.leaves}
-              matureAgeStartMult={animParams.matureAgeMult}
-              baseColor={colors.leafBase}
-              shadowColor={colors.leafShadow}
-              subsurfaceColor={colors.leafSubsurface}
-            />
-            <FlowerStem
-              growingStage={anim.stalk}
-              flowerStage={anim.flowers}
-              curveAmount={stemCurveAmount}
-              curvePower={stemCurvePower}
-              minThickness={stemMinThickness}
-              baseColor={colors.leafBase}
-              shadowColor={colors.leafShadow}
-              subsurfaceColor={colors.leafSubsurface}
-              renderFlower={(tipPosition, flowerScale, curve) => (
-                <group>
-                  <PhyllotaxisSpawner
-                    count={fCount}
-                    matureAge={fMatureAge}
-                    baseYaw={fBaseYaw}
-                    basePitch={fBasePitch}
-                    invertAge
-                    agePitch={fAgePitch}
-                    dyingPitch={fDyingPitch}
-                    spacingPower={fSpacingPower}
-                    layerHeight={fLayerHeight * anim.flowers}
-                    curve={curve}
-                    baseColor={colors.flowerBase}
-                    shadowColor={colors.flowerShadow}
-                    subsurfaceColor={colors.flowerSubsurface}
-                    renderElement={(spawnProps) => (
-                      <SimpleFlower
-                        key={spawnProps.index}
-                        {...spawnProps}
-                        minScale={fMinScale}
-                        minThickness={fMinThickness}
-                        colorMixPower={fColorPower}
-                        openStage={fOpenStage}
-                        stemColor={colors.leafBase}
-                        stemShadowColor={colors.leafShadow}
-                        stemSubsurfaceColor={colors.leafSubsurface}
-                        growingStage={
-                          spawnProps.growingStage *
-                          saturate(
-                            flowerScale * (1 + animParams.flowerStagger) -
-                              (1 - spawnProps.index / fCount) *
-                                animParams.flowerStagger
-                          )
-                        }
-                      />
-                    )}
-                  />
-                </group>
-              )}
-            />
-          </group>
+        <group position={[0, -1, 0]} scale={anim.scale}>
+          <Plant
+            age={currAge}
+            maturity={anim.leaves}
+            matureAgeStartMult={animParams.matureAgeMult}
+            baseColor={colors.leafBase}
+            shadowColor={colors.leafShadow}
+            subsurfaceColor={colors.leafSubsurface}
+          />
+          <FlowerStem
+            growingStage={anim.stalk}
+            flowerStage={anim.flowers}
+            curveAmount={stemCurveAmount}
+            curvePower={stemCurvePower}
+            minThickness={stemMinThickness}
+            baseColor={colors.leafBase}
+            shadowColor={colors.leafShadow}
+            subsurfaceColor={colors.leafSubsurface}
+            renderFlower={(tipPosition, flowerScale, curve) => (
+              <group>
+                <PhyllotaxisSpawner
+                  count={fCount}
+                  matureAge={fMatureAge}
+                  baseYaw={fBaseYaw}
+                  basePitch={fBasePitch}
+                  invertAge
+                  agePitch={fAgePitch}
+                  dyingPitch={fDyingPitch}
+                  spacingPower={fSpacingPower}
+                  layerHeight={fLayerHeight * anim.flowers}
+                  curve={curve}
+                  baseColor={colors.flowerBase}
+                  shadowColor={colors.flowerShadow}
+                  subsurfaceColor={colors.flowerSubsurface}
+                  renderElement={(spawnProps) => (
+                    <SimpleFlower
+                      key={spawnProps.index}
+                      {...spawnProps}
+                      minScale={fMinScale}
+                      minThickness={fMinThickness}
+                      colorMixPower={fColorPower}
+                      openStage={fOpenStage}
+                      stemColor={colors.leafBase}
+                      stemShadowColor={colors.leafShadow}
+                      stemSubsurfaceColor={colors.leafSubsurface}
+                      growingStage={
+                        spawnProps.growingStage *
+                        saturate(
+                          flowerScale * (1 + animParams.flowerStagger) -
+                            (1 - spawnProps.index / fCount) *
+                              animParams.flowerStagger
+                        )
+                      }
+                    />
+                  )}
+                />
+              </group>
+            )}
+          />
+        </group>
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, -0.88, 0]}
+          receiveShadow
+          castShadow
+        >
+          <circleGeometry args={[potTopRadius, 64]} />
+          <primitive object={groundMaterial} attach="material" />
+        </mesh>
+        {/* Transparent ground plane for catching shadows */}
+        {shadowPlaneEnabled && (
           <mesh
             rotation={[-Math.PI / 2, 0, 0]}
-            position={[0, -0.88, 0]}
+            position={[0, -1.2, 0]}
             receiveShadow
-            castShadow
           >
-            <circleGeometry args={[potTopRadius, 64]} />
-            <primitive object={groundMaterial} attach="material" />
+            <planeGeometry args={[10, 10]} />
+            <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
           </mesh>
-          {/* Transparent ground plane for catching shadows */}
-          {shadowPlaneEnabled && (
-            <mesh
-              rotation={[-Math.PI / 2, 0, 0]}
-              position={[0, -1.2, 0]}
-              receiveShadow
-            >
-              <planeGeometry args={[10, 10]} />
-              <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
-            </mesh>
-          )}
-        </ParallaxRig>
-      </ThreeCanvas>
+        )}
+      </ParallaxRig>
+    </ThreeCanvas>
+  );
+
+  return isFullscreen ? (
+    <>
+      {controls && <TweakpanePanel />}
+      {replayButton}
+      {scene}
     </>
+  ) : (
+    <div className={styles.tileFrame}>
+      {scene}
+      {replayButton}
+    </div>
   );
 }

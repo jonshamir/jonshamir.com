@@ -26,6 +26,9 @@ export function useTimelinePlayer(): TimelinePlayerHandle {
   const replay = useCallback(() => {
     progressRef.current = 0;
     playingRef.current = true;
+    // The state commit re-renders consumers, which re-invalidates canvases
+    // running frameloop="demand" — a ref-only reset would never wake them.
+    setProgress(0);
   }, []);
 
   const scrubTo = useCallback((p: number) => {

@@ -1,0 +1,60 @@
+/* Icon-only circle. The button. prefix beats .button/.round padding and
+   .button:focus's transparent outline by specificity, not order */
+button.replayButton {
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0 !important;
+  justify-content: center;
+}
+
+button.replayButton:focus-visible {
+  outline: 2px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+/* Fullscreen lab page: bottom-left, above the fullscreen canvas (--z-overlay);
+   Nav owns top-left and tweakpane bottom-right */
+.fixedButton {
+  position: fixed;
+  bottom: var(--space-md);
+  left: var(--space-md);
+  z-index: var(--z-controls);
+}
+
+/* Homepage tile: the frame is .canvasHolder's only child div, so
+   ExperimentGrid's `.canvasHolder > div` sizes it; pass the height on to the
+   ThreeCanvas div inside. It doubles as positioning context and hover scope
+   (CSS modules can't reach ExperimentGrid's .tile for the reveal) */
+.tileFrame {
+  position: relative;
+  height: 100%;
+}
+
+.tileFrame > div {
+  height: 100%;
+}
+
+.tileButton {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+}
+
+/* Hidden-until-hover only where hover exists; touch devices keep it visible */
+@media (hover: hover) and (pointer: fine) {
+  .tileButton {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .tileFrame:hover .tileButton,
+  .tileButton:focus-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tileButton {
+      transition: none;
+    }
+  }
+}
