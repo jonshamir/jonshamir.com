@@ -24,7 +24,8 @@ import {
   flowersSchema,
   leafColorsSchema,
   potColorsSchema,
-  potDimensionsSchema
+  potDimensionsSchema,
+  stemSchema
 } from "./plantControls";
 import { Pot } from "./Pot";
 import { SimpleFlower } from "./SimpleFlower";
@@ -102,6 +103,12 @@ export default function PlantCanvas({
     fMinThickness,
     fColorPower
   } = useControls("Flowers", flowersSchema, { collapsed: true });
+
+  const { stemCurveAmount, stemCurvePower, stemMinThickness } = useControls(
+    "Stem",
+    stemSchema,
+    { collapsed: true }
+  );
 
   const { potBaseColor, potShadowColor } = useControls(
     "Pot Colors",
@@ -225,6 +232,9 @@ export default function PlantCanvas({
             <FlowerStem
               growingStage={anim.stalk}
               flowerStage={anim.flowers}
+              curveAmount={stemCurveAmount}
+              curvePower={stemCurvePower}
+              minThickness={stemMinThickness}
               baseColor={colors.leafBase}
               shadowColor={colors.leafShadow}
               subsurfaceColor={colors.leafSubsurface}

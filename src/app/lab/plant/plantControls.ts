@@ -39,6 +39,12 @@ export const flowersSchema = {
   fColorPower: { value: 2, min: 0.25, max: 6 }
 } satisfies Schema;
 
+export const stemSchema = {
+  stemCurveAmount: { value: 1, min: 0, max: 3, label: "Curve Amount" },
+  stemCurvePower: { value: 2, min: 0.5, max: 5, label: "Curve Ramp Power" },
+  stemMinThickness: { value: 0.8, min: 0, max: 1, label: "Min Thickness" }
+} satisfies Schema;
+
 export const potColorsSchema = {
   potBaseColor: { value: "#ad826c", label: "Base Color" },
   potShadowColor: { value: "#201d2e", label: "Shadow Color" }
