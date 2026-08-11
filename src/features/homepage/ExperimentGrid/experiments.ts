@@ -68,16 +68,6 @@ export const experiments: ExperimentItem[] = [
     aspectRatio: "1596 / 828"
   },
   {
-    id: "point-cloud",
-    kind: "image",
-    src: "/lab/point-cloud.png",
-    alt: "Gaussian splat point cloud scan",
-    caption: "Gaussian splats",
-    span: 2,
-    aspectRatio: "1 / 1",
-    href: "/lab/point-cloud"
-  },
-  {
     id: "uirect",
     kind: "image",
     src: "/homepage/uirect.webp",
