@@ -41,7 +41,7 @@ export function ExperimentGrid() {
               <figcaption className={styles.captionRow}>
                 {item.caption}
                 <Link href={item.href} className={styles.exploreLink}>
-                  Explore <span className="arrow">→</span>
+                  Explore<span className="arrow"> →</span>
                 </Link>
               </figcaption>
             ) : (
