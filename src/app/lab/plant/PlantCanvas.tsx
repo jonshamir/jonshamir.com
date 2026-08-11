@@ -101,7 +101,8 @@ export default function PlantCanvas({
     fSpacingPower,
     fMinScale,
     fMinThickness,
-    fColorPower
+    fColorPower,
+    fOpenStage
   } = useControls("Flowers", flowersSchema, { collapsed: true });
 
   const { stemCurveAmount, stemCurvePower, stemMinThickness } = useControls(
@@ -261,6 +262,7 @@ export default function PlantCanvas({
                         minScale={fMinScale}
                         minThickness={fMinThickness}
                         colorMixPower={fColorPower}
+                        openStage={fOpenStage}
                         stemColor={colors.leafBase}
                         stemShadowColor={colors.leafShadow}
                         stemSubsurfaceColor={colors.leafSubsurface}

@@ -17,6 +17,7 @@ interface SimpleFlowerProps {
   minScale?: number;
   minThickness?: number;
   colorMixPower?: number;
+  openStage?: number;
   position?: [number, number, number];
   rotation?: Euler;
   baseColor?: Color;
@@ -34,6 +35,7 @@ export function SimpleFlower({
   minScale = 0,
   minThickness = 1,
   colorMixPower = 1,
+  openStage = 0.5,
   position = [0, 0, 0],
   rotation,
   baseColor = new Color("#ff69b4"),
@@ -53,7 +55,11 @@ export function SimpleFlower({
     return mat;
   }, []);
 
-  // Update geometry when growingStage or colors change
+  // Petals snap open once growth passes the threshold; the geometry
+  // rebuild fires only when the boolean flips
+  const open = growingStage >= openStage;
+
+  // Update geometry when open state or colors change
   useEffect(() => {
     const height = 0.15;
     const baseRadius = 0.005;
@@ -76,7 +82,8 @@ export function SimpleFlower({
       segments,
       [baseColor.r, baseColor.g, baseColor.b],
       [shadowColor.r, shadowColor.g, shadowColor.b],
-      [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b]
+      [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b],
+      open
     );
 
     geometry.setAttribute(
@@ -114,7 +121,7 @@ export function SimpleFlower({
       "vertexSubsurfaceColor",
       new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
     );
-  }, [geometry, baseColor, shadowColor, subsurfaceColor]);
+  }, [geometry, baseColor, shadowColor, subsurfaceColor, open]);
 
   useEffect(() => {
     return () => {

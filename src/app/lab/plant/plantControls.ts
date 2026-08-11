@@ -36,7 +36,8 @@ export const flowersSchema = {
   fSpacingPower: { value: 1.5, min: 0.1, max: 5 },
   fMinScale: { value: 0.3, min: 0, max: 1 },
   fMinThickness: { value: 0.9, min: 0, max: 1 },
-  fColorPower: { value: 2, min: 0.25, max: 6 }
+  fColorPower: { value: 2, min: 0.25, max: 6 },
+  fOpenStage: { value: 0.7, min: 0, max: 1 }
 } satisfies Schema;
 
 export const stemSchema = {
