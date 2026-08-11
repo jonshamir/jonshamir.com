@@ -4,7 +4,13 @@ import { useControls } from "../../../lib/tweakpane";
 import { MAX_SHAPES } from "./constants";
 import { SdfCollisionQuad } from "./SdfCollisionQuad";
 
-export default function SdfCollisionCanvas() {
+export default function SdfCollisionCanvas({
+  controls = true,
+  isFullscreen = true
+}: {
+  controls?: boolean;
+  isFullscreen?: boolean;
+}) {
   const raw = useControls({
     gravity: { value: 0, min: 0, max: 10, label: "Gravity" },
     blendFactor: { value: 0.12, min: 0, max: 2, step: 0.05, label: "Blend" },
@@ -20,7 +26,7 @@ export default function SdfCollisionCanvas() {
     centerGravity: { value: true, label: "Center Gravity" },
     noiseAmount: { value: 0.05, min: 0, max: 0.3, step: 0.005, label: "Noise" }
   });
-  const controls = raw as {
+  const params = raw as {
     gravity: number;
     blendFactor: number;
     restitution: number;
@@ -32,16 +38,20 @@ export default function SdfCollisionCanvas() {
 
   return (
     <>
-      <TweakpanePanel />
-      <ThreeCanvas isFullscreen={true} grabCursor={false} gl={{ alpha: true }}>
+      {controls && <TweakpanePanel />}
+      <ThreeCanvas
+        isFullscreen={isFullscreen}
+        grabCursor={false}
+        gl={{ alpha: true }}
+      >
         <SdfCollisionQuad
-          gravity={controls.gravity}
-          blendFactor={controls.blendFactor}
-          restitution={controls.restitution}
-          damping={controls.damping}
-          shapeCount={controls.shapeCount}
-          centerGravity={controls.centerGravity}
-          noiseAmount={controls.noiseAmount}
+          gravity={params.gravity}
+          blendFactor={params.blendFactor}
+          restitution={params.restitution}
+          damping={params.damping}
+          shapeCount={params.shapeCount}
+          centerGravity={params.centerGravity}
+          noiseAmount={params.noiseAmount}
         />
       </ThreeCanvas>
     </>

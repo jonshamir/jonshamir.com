@@ -37,7 +37,7 @@ export default function Page() {
       </section>
 
       <section className={clsx(styles.section, "flow", "fade-in")}>
-        <h3 className={styles.sectionTitle}>Selected Work</h3>
+        <h3 className={styles.sectionTitle}>Selected Projects</h3>
         <ProjectList />
       </section>
 
@@ -48,7 +48,7 @@ export default function Page() {
 
       {/* <section className={clsx(styles.section, "flow")}>
         <h3 className={styles.sectionTitle}>Projects & Experiments</h3>
-        <PostList wide />
+        <ExperimentGrid />
       </section> */}
     </div>
   );

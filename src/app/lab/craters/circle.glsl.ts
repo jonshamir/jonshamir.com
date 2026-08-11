@@ -4,8 +4,14 @@ export const circleVertexShader = /* glsl */ `
 
     void main() {
     vUv = uv;
-    vNormal = normalize(vec3(viewMatrix * modelMatrix * vec4(normal, 0.0)));
-    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+    vec4 localPosition = vec4(position, 1.0);
+    vec4 localNormal = vec4(normal, 0.0);
+    #ifdef USE_INSTANCING
+    localPosition = instanceMatrix * localPosition;
+    localNormal = instanceMatrix * localNormal;
+    #endif
+    vNormal = normalize(vec3(viewMatrix * modelMatrix * localNormal));
+    gl_Position = projectionMatrix * modelViewMatrix * localPosition;
     }
 `;
 

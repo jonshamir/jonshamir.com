@@ -1,0 +1,125 @@
+.experimentGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: var(--space-md);
+  /* Rows size to their tallest item; shorter items keep natural height, top-aligned */
+  align-items: start;
+  /* Backfill holes left by mixed spans, at the cost of source order */
+  grid-auto-flow: dense;
+}
+
+.span1 {
+  grid-column: span 1;
+}
+
+.span2 {
+  grid-column: span 2;
+}
+
+.span3 {
+  grid-column: span 3;
+}
+
+@media (max-width: 54rem) {
+  .experimentGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .span1,
+  .span2 {
+    grid-column: span 1;
+  }
+
+  .span3 {
+    grid-column: span 2;
+  }
+}
+
+.tile {
+  display: block;
+  text-decoration: none;
+}
+
+.tile figure {
+  width: 100%;
+  /* The global figure rule centers children; grid captions read left-aligned */
+  align-items: flex-start;
+}
+
+.media {
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--rounding-small);
+}
+
+.captionRow {
+  display: flex;
+  align-self: stretch;
+  max-width: none;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.exploreLink {
+  flex-shrink: 0;
+  text-decoration: none;
+  color: var(--color-text);
+  font-style: normal;
+}
+
+.exploreLink:hover :global(.arrow) {
+  transform: translateX(0.15em);
+}
+
+/* Hidden-until-hover only where hover exists; touch devices keep it visible */
+@media (hover: hover) and (pointer: fine) {
+  .exploreLink {
+    opacity: 0;
+    transition: opacity 200ms ease;
+  }
+
+  .tile:hover .exploreLink,
+  .exploreLink:focus-visible {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .exploreLink {
+      transition: none;
+    }
+  }
+}
+
+/* The .media clip does the rounding; a radius on the img itself (the global
+   figure rule) would double-round inside it */
+.media img,
+.media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+}
+
+.canvasHolder {
+  width: 100%;
+  height: 100%;
+  background-color: var(--canvas-bg, transparent);
+}
+
+/* Sizes the ThreeCanvas wrapper, which the lab *Canvas components render as
+   the holder's only child div (they take no className to target directly) */
+.canvasHolder > div {
+  height: 100%;
+}
+
+/* Beats .ThreeCanvas canvas { min-height: 30rem } by specificity, not order */
+.experimentGrid .media canvas {
+  min-height: unset;
+  height: 100%;
+}
+
+.tile figcaption {
+  max-width: 100%;
+  margin: 0.5em 0.75em;
+}
