@@ -28,9 +28,13 @@ export const flowerColorsSchema = {
 export const flowersSchema = {
   fCount: { value: 28, min: 0, max: 50, step: 1 },
   fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
-  fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
+  fBasePitch: { value: -0.2, min: -Math.PI, max: Math.PI },
+  fAgePitch: { value: 1.6, min: 0, max: Math.PI },
+  fDyingPitch: { value: 1, min: 0, max: Math.PI },
   fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-  fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
+  fLayerHeight: { value: 0.04, min: 0, max: 0.1 },
+  fSpacingPower: { value: 1.5, min: 0.1, max: 5 },
+  fMinScale: { value: 0.3, min: 0, max: 1 }
 } satisfies Schema;
 
 export const potColorsSchema = {

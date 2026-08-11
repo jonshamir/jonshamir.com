@@ -89,8 +89,17 @@ export default function PlantCanvas({
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
     useControls("Flower Colors", flowerColorsSchema, { collapsed: true });
 
-  const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
-    useControls("Flowers", flowersSchema, { collapsed: true });
+  const {
+    fCount,
+    fMatureAge,
+    fBasePitch,
+    fAgePitch,
+    fDyingPitch,
+    fBaseYaw,
+    fLayerHeight,
+    fSpacingPower,
+    fMinScale
+  } = useControls("Flowers", flowersSchema, { collapsed: true });
 
   const { potBaseColor, potShadowColor } = useControls(
     "Pot Colors",
@@ -224,7 +233,11 @@ export default function PlantCanvas({
                     matureAge={fMatureAge}
                     baseYaw={fBaseYaw}
                     basePitch={fBasePitch}
-                    layerHeight={-fLayerHeight * anim.flowers}
+                    invertAge
+                    agePitch={fAgePitch}
+                    dyingPitch={fDyingPitch}
+                    spacingPower={fSpacingPower}
+                    layerHeight={fLayerHeight * anim.flowers}
                     curve={curve}
                     baseColor={colors.flowerBase}
                     shadowColor={colors.flowerShadow}
@@ -233,11 +246,12 @@ export default function PlantCanvas({
                       <SimpleFlower
                         key={spawnProps.index}
                         {...spawnProps}
+                        minScale={fMinScale}
                         growingStage={
                           spawnProps.growingStage *
                           saturate(
                             flowerScale * (1 + animParams.flowerStagger) -
-                              (spawnProps.index / fCount) *
+                              (1 - spawnProps.index / fCount) *
                                 animParams.flowerStagger
                           )
                         }

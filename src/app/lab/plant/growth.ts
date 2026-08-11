@@ -27,7 +27,7 @@ export const growthSchema = {
     step: 1,
     label: "Mature Age Mult"
   },
-  flowerStagger: { value: 2, min: 0, max: 1, label: "Flower Stagger" }
+  flowerStagger: { value: 2, min: 0, max: 3, label: "Flower Stagger" }
 } satisfies Schema;
 
 export type GrowthParams = InferValues<typeof growthSchema>;

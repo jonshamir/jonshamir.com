@@ -9,11 +9,12 @@ import {
 } from "three";
 
 import { PlantMaterial } from "./plantMaterial";
-import { getFlowerVertices } from "./utils";
+import { getFlowerVertices, lerp } from "./utils";
 
 interface SimpleFlowerProps {
   growingStage: number;
   dyingStage: number;
+  minScale?: number;
   position?: [number, number, number];
   rotation?: Euler;
   baseColor?: Color;
@@ -25,6 +26,7 @@ export function SimpleFlower({
   growingStage,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dyingStage,
+  minScale = 0,
   position = [0, 0, 0],
   rotation,
   baseColor = new Color("#ff69b4"),
@@ -112,7 +114,7 @@ export function SimpleFlower({
   }, [geometry, material]);
 
   // Scale the flower based on growing stage
-  const scale = growingStage * 0.8;
+  const scale = lerp(minScale, 1, growingStage) * 0.8;
 
   // Fade out when dying
 
