@@ -98,7 +98,9 @@ export default function PlantCanvas({
     fBaseYaw,
     fLayerHeight,
     fSpacingPower,
-    fMinScale
+    fMinScale,
+    fMinThickness,
+    fColorPower
   } = useControls("Flowers", flowersSchema, { collapsed: true });
 
   const { potBaseColor, potShadowColor } = useControls(
@@ -247,6 +249,11 @@ export default function PlantCanvas({
                         key={spawnProps.index}
                         {...spawnProps}
                         minScale={fMinScale}
+                        minThickness={fMinThickness}
+                        colorMixPower={fColorPower}
+                        stemColor={colors.leafBase}
+                        stemShadowColor={colors.leafShadow}
+                        stemSubsurfaceColor={colors.leafSubsurface}
                         growingStage={
                           spawnProps.growingStage *
                           saturate(

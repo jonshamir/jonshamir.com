@@ -34,7 +34,9 @@ export const flowersSchema = {
   fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
   fLayerHeight: { value: 0.04, min: 0, max: 0.1 },
   fSpacingPower: { value: 1.5, min: 0.1, max: 5 },
-  fMinScale: { value: 0.3, min: 0, max: 1 }
+  fMinScale: { value: 0.3, min: 0, max: 1 },
+  fMinThickness: { value: 0.9, min: 0, max: 1 },
+  fColorPower: { value: 2, min: 0.25, max: 6 }
 } satisfies Schema;
 
 export const potColorsSchema = {

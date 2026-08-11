@@ -9,17 +9,22 @@ import {
 } from "three";
 
 import { PlantMaterial } from "./plantMaterial";
-import { getFlowerVertices, lerp } from "./utils";
+import { getFlowerVertices, lerp, saturate } from "./utils";
 
 interface SimpleFlowerProps {
   growingStage: number;
   dyingStage: number;
   minScale?: number;
+  minThickness?: number;
+  colorMixPower?: number;
   position?: [number, number, number];
   rotation?: Euler;
   baseColor?: Color;
   shadowColor?: Color;
   subsurfaceColor?: Color;
+  stemColor?: Color;
+  stemShadowColor?: Color;
+  stemSubsurfaceColor?: Color;
 }
 
 export function SimpleFlower({
@@ -27,11 +32,16 @@ export function SimpleFlower({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   dyingStage,
   minScale = 0,
+  minThickness = 1,
+  colorMixPower = 1,
   position = [0, 0, 0],
   rotation,
   baseColor = new Color("#ff69b4"),
   shadowColor = new Color("#801a4d"),
-  subsurfaceColor = new Color("#ffb3e6")
+  subsurfaceColor = new Color("#ffb3e6"),
+  stemColor,
+  stemShadowColor,
+  stemSubsurfaceColor
 }: SimpleFlowerProps) {
   const meshRef = useRef<Mesh>(null);
 
@@ -113,8 +123,20 @@ export function SimpleFlower({
     };
   }, [geometry, material]);
 
-  // Scale the flower based on growing stage
-  const scale = lerp(minScale, 1, growingStage) * 0.8;
+  // Young flowers blend toward the stem palette, recoloring as they grow
+  const colorMix = stemColor
+    ? Math.pow(saturate(growingStage), colorMixPower)
+    : 1;
+  useEffect(() => {
+    material.colorMix = colorMix;
+    if (stemColor) material.stemColor = stemColor;
+    if (stemShadowColor) material.stemShadowColor = stemShadowColor;
+    if (stemSubsurfaceColor) material.stemSubsurfaceColor = stemSubsurfaceColor;
+  }, [material, colorMix, stemColor, stemShadowColor, stemSubsurfaceColor]);
+
+  // Growth mostly elongates the flower; thickness stays near constant
+  const length = lerp(minScale, 1, growingStage) * 0.8;
+  const thickness = lerp(minThickness, 1, growingStage) * 0.8;
 
   // Fade out when dying
 
@@ -123,7 +145,7 @@ export function SimpleFlower({
       ref={meshRef}
       position={position}
       rotation={rotation}
-      scale={[scale, scale, scale]}
+      scale={[thickness, length, thickness]}
       geometry={geometry}
       material={material}
       castShadow
