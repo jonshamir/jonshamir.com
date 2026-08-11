@@ -5,7 +5,6 @@ import { PostList } from "../components/PostList/PostList";
 import ProjectList from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
-import { ExperimentGrid } from "../features/homepage/ExperimentGrid/ExperimentGrid";
 import styles from "./page.module.css";
 
 export default function Page() {
