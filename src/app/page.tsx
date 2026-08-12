@@ -48,7 +48,7 @@ export default function Page() {
       </section>
 
       <section className={clsx(styles.section, "flow")}>
-        <h3 className={styles.sectionTitle}>Projects & Experiments</h3>
+        <h3 className={styles.sectionTitle}>Experiments</h3>
         <ExperimentGrid />
       </section>
     </div>
