@@ -60,6 +60,15 @@ export const experiments: ExperimentItem[] = [
     href: "/lab/plant"
   },
   {
+    id: "sdf-collision",
+    kind: "video",
+    src: "/homepage/sdf-collision.mp4",
+    caption: "SDF shape collisions",
+    span: 2,
+    aspectRatio: "3 / 4",
+    href: "/lab/sdf-collision"
+  },
+  {
     id: "herbs",
     kind: "video",
     src: "/homepage/herbs.mp4",
