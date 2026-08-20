@@ -5,6 +5,9 @@ button.replayButton {
   height: 2.2rem;
   padding: 0 !important;
   justify-content: center;
+
+  --color-text-rgb: 0, 0, 0;
+  --color-text: black;
 }
 
 button.replayButton:focus-visible {

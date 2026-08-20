@@ -11,7 +11,7 @@ import { MainLogo } from "../Logo/MainLogo";
 import styles from "./Nav.module.css";
 import { NAV_ITEMS } from "./navItems";
 
-export function Nav({ showNavItems = false }: { showNavItems?: boolean }) {
+export function Nav({ showNavItems = true }: { showNavItems?: boolean }) {
   const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     setIsMounted(true);
