@@ -93,12 +93,18 @@
 @media (hover: hover) and (pointer: fine) {
   .projectLink:hover .preview img {
     clip-path: inset(0 round var(--rounding-small));
-    transform: none;
+    /* --preview-overflow (set from JS on hover) is how far the image's bottom
+       would poke past the viewport; pull it up to keep a --space-md gap. Must
+       stay a pure translateY — the measurement assumes the hover baseline
+       reduces to identity. */
+    transform: translateY(
+      calc(-1 * max(0px, var(--preview-overflow, -100vh) + var(--space-md)))
+    );
     transition-duration: 300ms; /* the rule above is the exit, ~20% quicker */
   }
 
   .projectLink:hover .preview .previewLarge {
-    transition-delay: 60ms;
+    transition-delay: 30ms;
   }
 }
 

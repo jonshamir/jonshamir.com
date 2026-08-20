@@ -17,7 +17,7 @@ import SimplyIcon from "./icons/simply.svg";
 import SpacetopIcon from "./icons/spacetop.svg";
 import WidgetsIcon from "./icons/widgets.svg";
 
-type ProjectItem = {
+export type ProjectItem = {
   slug: string;
   name: string;
   subtitle: string;
