@@ -101,10 +101,9 @@ export default function Page() {
         />
         The canvas is a huge virtual &quot;screen&quot; that curves around the
         user. Instead of being limited by the edges of a physical screen, the
-        virtual canvas can expand to fit the content. To allow the users to
-        understand the 3D shape of the canvas surface without being
-        claustrophobic, a dot grid is revealed only around the cursor and
-        content.
+        virtual canvas can expand to fit many windows. To allow the users to
+        understand the 3D shape and position of the canvas surface, we used a
+        gentle grid of dots that is revealed around the cursor and content.
       </p>
       <p>
         The canvas itself can be panned and manipulated using touchpad gestures
@@ -118,12 +117,50 @@ export default function Page() {
         />
       </figure>
 
+      <h2>UI Spaces</h2>
+
       <p>
-        What does it mean for a dialog or notification to exist in a 3D space?
-        The spatial nature of the platform, along with the limited field of
-        view, required some creative solutions, such a the compass component
-        that guides your attention when it is needed somewhere you can&apos;t
-        see.
+        Spacetop allows UI to live in a new dimention - this opens up a lot of
+        creative opportunities but comes with a unique set of challanges. UIs
+        can obscure important content, overlap or intersect in ways that are
+        simply not possible on a 2D screen.
+      </p>
+
+      <p>
+        As part of my work on UI architecture in, I wanted to find a solution
+        for this that would be intuitive, easy to use and reason about, an give
+        the user the best experience
+      </p>
+
+      <p>
+        To solve this, I came up with a concept of <strong>UI Spaces</strong> -
+        coordinate systems that surround the user, each one with a set of
+        behaviours, animations and limitations.
+      </p>
+
+      <p>
+        For spacetop, I proposed a heirarchy of spaces nested within each other,
+        where spaces closer to the user indicate urgency or importance:
+      </p>
+
+      <ul>
+        <li> World Space</li>
+        <li>Work Space</li>
+        <li>Canvas Space</li>
+        <li>User Space / Modal Space </li>
+        <li>Head Space</li>
+      </ul>
+
+      <p>
+        This structure gave Spacetop UI a predictable structure and allowed
+        designers and developers to think where each UI belongs according to its
+        use and context.
+      </p>
+
+      <p>
+        In some cases, the limited field of view still required some creative
+        solutions - such a the compass component that guides your attention when
+        it is needed somewhere you can&apos;t see.
       </p>
       <figure>
         <Image
