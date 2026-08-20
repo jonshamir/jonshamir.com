@@ -7,7 +7,9 @@ import projectData from "./projects";
 
 export default function ProjectList() {
   return (
-    <ul className={styles.ProjectList}>
+    // data-project-list is the hook for the global page-dim rules in main.css —
+    // they can't reference this module's hashed classes
+    <ul className={styles.ProjectList} data-project-list="">
       {projectData.map((project) => (
         <li key={project.slug}>
           <Link

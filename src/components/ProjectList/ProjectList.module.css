@@ -10,6 +10,7 @@
   li {
     margin-top: 0;
     border-block-start: var(--rule);
+    margin-top: -1px;
   }
 
   .projectLink {
@@ -39,15 +40,14 @@
       width: 16rem;
     }
 
-    /* Lifts the whole row so its preview overlaps the rows below, not the
-       reverse. Only the hovered row is raised, so the stack stays flat. */
+    /* Lifts the row's content and preview over the rows below AND the page-dim
+       scrim (which sits above the fixed Nav — see main.css). The li and its
+       hairline stay in normal flow under the scrim, so they dim with the page.
+       Relies on no ancestor (section, .canvas, .grid) creating a stacking
+       context — a transform/filter/opacity there would trap the row below the
+       scrim. */
     &:hover {
-      z-index: 2;
-    }
-
-    &:hover .name {
-      text-decoration: underline;
-      text-decoration-color: rgba(var(--color-text-rgb), 0.4);
+      z-index: var(--z-dim-focus);
     }
 
     .preview {
@@ -99,6 +99,12 @@
 
   .projectLink:hover .preview .previewLarge {
     transition-delay: 60ms;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ProjectList .projectLink .preview img {
+    transition: none;
   }
 }
 

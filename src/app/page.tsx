@@ -51,6 +51,8 @@ export default function Page() {
         <h3 className={styles.sectionTitle}>Experiments</h3>
         <ExperimentGrid />
       </section>
+
+      <div data-page-dim="" />
     </div>
   );
 }
