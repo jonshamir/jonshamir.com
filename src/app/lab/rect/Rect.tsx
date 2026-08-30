@@ -10,12 +10,14 @@ export type RectProps = ThreeElements["mesh"] & {
   depthTest?: boolean;
   radius?: number;
   shadow?: boolean;
+  strokeWidth?: number;
 };
 
 type RectUniforms = {
   uColor: { value: THREE.Color };
   uRadius: { value: THREE.Vector4 };
   uSize: { value: THREE.Vector2 };
+  uStrokeWidth: { value: number };
 };
 
 export function Rect(props: RectProps) {
@@ -24,13 +26,15 @@ export function Rect(props: RectProps) {
     radius = 0,
     depthTest = true,
     size = { x: 1, y: 1 },
+    strokeWidth = 0,
     ...rest
   } = props;
 
   const uniformsRef = useRef<RectUniforms>({
     uColor: { value: new THREE.Color(color) },
     uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
-    uSize: { value: new THREE.Vector2(size.x, size.y) }
+    uSize: { value: new THREE.Vector2(size.x, size.y) },
+    uStrokeWidth: { value: strokeWidth }
   });
 
   useEffect(() => {
@@ -40,7 +44,8 @@ export function Rect(props: RectProps) {
     const r = Math.min(radius, Math.min(size.x, size.y));
     uniformsRef.current.uRadius.value.set(r, r, r, r);
     uniformsRef.current.uSize.value.set(size.x, size.y);
-  }, [color, radius, size]);
+    uniformsRef.current.uStrokeWidth.value = strokeWidth;
+  }, [color, radius, size, strokeWidth]);
 
   return (
     <mesh {...rest}>

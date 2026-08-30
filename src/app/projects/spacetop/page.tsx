@@ -1,6 +1,8 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import Image from "next/image";
+import { useIntersectionObserver, useMediaQuery } from "usehooks-ts";
 
 import { ButtonLink } from "../../../components/Button";
 import AwardAweIcon from "./award-awe.svg";
@@ -13,7 +15,17 @@ import cursorMoveImg from "./cursor-move.gif";
 import heroImg from "./hero.jpg";
 import navImg from "./nav.gif";
 
+const SpacesCanvas = dynamic(() => import("./SpacesCanvas"), { ssr: false });
+
 export default function Page() {
+  const { isIntersecting, ref } = useIntersectionObserver({
+    rootMargin: "25% 0% 25% 0%",
+    threshold: 0
+  });
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)", {
+    initializeWithValue: false
+  });
+
   return (
     <>
       <h1>Spacetop</h1>
@@ -150,6 +162,11 @@ export default function Page() {
         <li>User Space / Modal Space </li>
         <li>Head Space</li>
       </ul>
+
+      <figure className="grid-full" ref={ref} style={{ minHeight: "30rem" }}>
+        {isIntersecting && !reducedMotion && <SpacesCanvas />}
+        <figcaption>The nested UI Spaces that surround the user</figcaption>
+      </figure>
 
       <p>
         This structure gave Spacetop UI a predictable structure and allowed
