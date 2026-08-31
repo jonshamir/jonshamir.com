@@ -1,16 +1,22 @@
 import { ThreeElements } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import * as THREE from "three";
 
+import { createCurvedPlaneGeometry } from "./curvedPlaneGeometry";
 import { fragmentShader, vertexShader } from "./rect.glsl";
+
+// Remounts the material when the shader source changes (hot reload).
+const materialKey = vertexShader + fragmentShader;
 
 export type RectProps = ThreeElements["mesh"] & {
   size?: { x: number; y: number };
   color?: THREE.ColorRepresentation;
   depthTest?: boolean;
+  depthWrite?: boolean;
   radius?: number;
-  shadow?: boolean;
   strokeWidth?: number;
+  segments?: number;
+  curveRadius?: number;
 };
 
 type RectUniforms = {
@@ -25,8 +31,11 @@ export function Rect(props: RectProps) {
     color = "",
     radius = 0,
     depthTest = true,
+    depthWrite = false,
     size = { x: 1, y: 1 },
     strokeWidth = 0,
+    segments = 1,
+    curveRadius = 0,
     ...rest
   } = props;
 
@@ -38,24 +47,30 @@ export function Rect(props: RectProps) {
   });
 
   useEffect(() => {
-    if (uniformsRef.current === undefined) return;
-    // Update uniforms when props change
     uniformsRef.current.uColor.value.set(color);
     const r = Math.min(radius, Math.min(size.x, size.y));
     uniformsRef.current.uRadius.value.set(r, r, r, r);
     uniformsRef.current.uSize.value.set(size.x, size.y);
     uniformsRef.current.uStrokeWidth.value = strokeWidth;
-  }, [color, radius, size, strokeWidth]);
+  }, [color, radius, size.x, size.y, strokeWidth]);
+
+  const geometry = useMemo(
+    () => createCurvedPlaneGeometry(size.x, size.y, segments, curveRadius),
+    [size.x, size.y, segments, curveRadius]
+  );
+  useEffect(() => () => geometry.dispose(), [geometry]);
 
   return (
-    <mesh {...rest}>
-      <planeGeometry args={[size.x, size.y]} />
+    <mesh {...rest} geometry={geometry}>
       <shaderMaterial
-        key={vertexShader + fragmentShader}
+        key={materialKey}
         vertexShader={vertexShader}
         fragmentShader={fragmentShader}
         depthTest={depthTest}
-        depthWrite={false}
+        depthWrite={depthWrite}
+        polygonOffset={depthWrite}
+        polygonOffsetFactor={1}
+        polygonOffsetUnits={1}
         transparent={true}
         side={THREE.DoubleSide}
         uniforms={uniformsRef.current}

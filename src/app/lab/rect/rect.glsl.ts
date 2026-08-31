@@ -39,6 +39,8 @@ void main() {
         alpha = outer - inner;
     }
 
+    if (alpha < 0.001) discard;
+
     vec3 normal = vNormal.xyz * 0.5 + 0.5;
     // gl_FragColor = vec4(normal, alpha);
     vec3 gammaCorrectedColor = pow(uColor.rgb, vec3(1.0/2.2));
