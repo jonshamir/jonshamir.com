@@ -52,7 +52,7 @@ export function RectOutline({
       position={position}
       renderOrder={renderOrder}
       polygonOffset={depthBias !== 0}
-      polygonOffsetFactor={depthBias}
+      polygonOffsetFactor={0}
       polygonOffsetUnits={depthBias}
       transparent
     />

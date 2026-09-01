@@ -69,7 +69,11 @@ export function Rect(props: RectProps) {
         depthTest={depthTest}
         depthWrite={depthWrite}
         polygonOffset={depthWrite}
-        polygonOffsetFactor={1}
+        // Must exceed half the overlaid outline's width in *device* pixels
+        // (line width × DPR / 2, plus its round join caps): a Line2 ribbon
+        // carries its centerline depth, so at grazing angles the fill surface
+        // gets closer than the ribbon within the ribbon's own width.
+        polygonOffsetFactor={8}
         polygonOffsetUnits={1}
         transparent={true}
         side={THREE.DoubleSide}
