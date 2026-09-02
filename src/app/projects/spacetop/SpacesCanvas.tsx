@@ -1,7 +1,7 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { ThreeElements } from "@react-three/fiber";
+import { ThreeElements, useThree } from "@react-three/fiber";
 
 import {
   CANVAS_BG,
@@ -14,6 +14,7 @@ type SpaceRectProps = {
   size: { x: number; y: number };
   radius: number;
   color: string;
+  lineWidth?: number;
   segments?: number;
   curveRadius?: number;
   gridCols?: number;
@@ -28,6 +29,7 @@ function SpaceRect({
   size,
   radius,
   color,
+  lineWidth = 5,
   segments = 32,
   curveRadius = 0,
   gridCols = 0,
@@ -37,6 +39,11 @@ function SpaceRect({
   position,
   rotation
 }: SpaceRectProps) {
+  const dpr = useThree((state) => state.viewport.dpr);
+  // Push the fill's depth behind the outline ribbon across the ribbon's full
+  // width: half the line width in device pixels, plus margin for join caps.
+  const fillOffsetFactor = (lineWidth * dpr) / 2 + 2;
+
   return (
     <group position={position} rotation={rotation}>
       <Rect
@@ -49,13 +56,14 @@ function SpaceRect({
         gridRows={gridRows}
         gridColor={gridColor}
         gridWidth={gridWidth}
+        polygonOffsetFactor={fillOffsetFactor}
         depthWrite
       />
       <RectOutline
         size={size}
         radius={radius}
         color={color}
-        lineWidth={5}
+        lineWidth={lineWidth}
         segments={segments}
         curveRadius={curveRadius}
         depthBias={-10}
@@ -79,10 +87,11 @@ export default function SpacesCanvas() {
         color="#5772ad"
         curveRadius={4}
         position={[0, 0, -2]}
-        gridCols={8}
-        gridRows={3}
+        gridCols={16}
+        gridRows={6}
         gridWidth={2}
       />
+
       {/* User Space */}
       <SpaceRect
         size={{ x: 3, y: 1 }}
@@ -102,14 +111,28 @@ export default function SpacesCanvas() {
         rotation={[-0.4, 0, 0]}
       />
 
-      {/* Keyboard */}
+      {/* Spacetop */}
       <SpaceRect
         size={{ x: 0.6, y: 0.6 }}
         radius={0.2}
         color="#5772ad"
         curveRadius={0}
-        position={[0, -0.5, 0]}
+        position={[0, -0.65, 0]}
         rotation={[-1.2, 0, 0]}
+      />
+
+      {/* Keyboard */}
+      <SpaceRect
+        lineWidth={2}
+        size={{ x: 0.4, y: 0.3 }}
+        radius={0.05}
+        color="#5772ad"
+        curveRadius={0}
+        position={[0, -0.65, 0.05]}
+        rotation={[-1.2, 0, 0]}
+        gridCols={8}
+        gridRows={5}
+        gridWidth={2}
       />
     </ThreeCanvas>
   );

@@ -17,6 +17,7 @@ export type RectProps = ThreeElements["mesh"] & {
   strokeWidth?: number;
   segments?: number;
   curveRadius?: number;
+  polygonOffsetFactor?: number;
   gridCols?: number;
   gridRows?: number;
   gridColor?: THREE.ColorRepresentation;
@@ -43,6 +44,7 @@ export function Rect(props: RectProps) {
     strokeWidth = 0,
     segments = 1,
     curveRadius = 0,
+    polygonOffsetFactor = 1,
     gridCols = 0,
     gridRows = 0,
     gridColor = color,
@@ -96,11 +98,9 @@ export function Rect(props: RectProps) {
         depthTest={depthTest}
         depthWrite={depthWrite}
         polygonOffset={depthWrite}
-        // Must exceed half the overlaid outline's width in *device* pixels
-        // (line width × DPR / 2, plus its round join caps): a Line2 ribbon
-        // carries its centerline depth, so at grazing angles the fill surface
-        // gets closer than the ribbon within the ribbon's own width.
-        polygonOffsetFactor={8}
+        // When a screen-space line is overlaid on this surface, the factor
+        // must exceed half the line's width in device pixels — see SpaceRect.
+        polygonOffsetFactor={polygonOffsetFactor}
         polygonOffsetUnits={1}
         transparent={true}
         side={THREE.DoubleSide}
