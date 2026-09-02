@@ -94,7 +94,7 @@ export default function SpacesCanvas() {
         color="#5772ad"
         curveRadius={0}
         position={[0, -0.5, 0]}
-        rotation={[-Math.PI / 2, 0, 0]}
+        rotation={[-1.2, 0, 0]}
       />
     </ThreeCanvas>
   );
