@@ -29,7 +29,7 @@ function SpaceRect({
   size,
   radius,
   color,
-  lineWidth = 5,
+  lineWidth = 4,
   segments = 32,
   curveRadius = 0,
   gridCols = 0,
@@ -98,7 +98,10 @@ export default function SpacesCanvas() {
         radius={0.2}
         color="#5772ad"
         curveRadius={3.5}
-        position={[0, 0, -1.5]}
+        position={[0, 0.1, -1.5]}
+        gridCols={6}
+        gridRows={2}
+        gridWidth={2}
       />
 
       {/* Homebar */}
