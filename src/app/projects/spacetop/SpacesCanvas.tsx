@@ -16,6 +16,10 @@ type SpaceRectProps = {
   color: string;
   segments?: number;
   curveRadius?: number;
+  gridCols?: number;
+  gridRows?: number;
+  gridColor?: string;
+  gridWidth?: number;
   position?: ThreeElements["group"]["position"];
   rotation?: ThreeElements["group"]["rotation"];
 };
@@ -26,6 +30,10 @@ function SpaceRect({
   color,
   segments = 32,
   curveRadius = 0,
+  gridCols = 0,
+  gridRows = 0,
+  gridColor = "#2c3a57",
+  gridWidth = 1,
   position,
   rotation
 }: SpaceRectProps) {
@@ -37,6 +45,10 @@ function SpaceRect({
         color={CANVAS_BG}
         segments={segments}
         curveRadius={curveRadius}
+        gridCols={gridCols}
+        gridRows={gridRows}
+        gridColor={gridColor}
+        gridWidth={gridWidth}
         depthWrite
       />
       <RectOutline
@@ -67,6 +79,9 @@ export default function SpacesCanvas() {
         color="#5772ad"
         curveRadius={4}
         position={[0, 0, -2]}
+        gridCols={8}
+        gridRows={3}
+        gridWidth={2}
       />
       {/* User Space */}
       <SpaceRect

@@ -17,6 +17,10 @@ export type RectProps = ThreeElements["mesh"] & {
   strokeWidth?: number;
   segments?: number;
   curveRadius?: number;
+  gridCols?: number;
+  gridRows?: number;
+  gridColor?: THREE.ColorRepresentation;
+  gridWidth?: number;
 };
 
 type RectUniforms = {
@@ -24,6 +28,9 @@ type RectUniforms = {
   uRadius: { value: THREE.Vector4 };
   uSize: { value: THREE.Vector2 };
   uStrokeWidth: { value: number };
+  uGridCells: { value: THREE.Vector2 };
+  uGridColor: { value: THREE.Color };
+  uGridWidth: { value: number };
 };
 
 export function Rect(props: RectProps) {
@@ -36,6 +43,10 @@ export function Rect(props: RectProps) {
     strokeWidth = 0,
     segments = 1,
     curveRadius = 0,
+    gridCols = 0,
+    gridRows = 0,
+    gridColor = color,
+    gridWidth = 0,
     ...rest
   } = props;
 
@@ -43,7 +54,10 @@ export function Rect(props: RectProps) {
     uColor: { value: new THREE.Color(color) },
     uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
     uSize: { value: new THREE.Vector2(size.x, size.y) },
-    uStrokeWidth: { value: strokeWidth }
+    uStrokeWidth: { value: strokeWidth },
+    uGridCells: { value: new THREE.Vector2(gridCols, gridRows) },
+    uGridColor: { value: new THREE.Color(gridColor) },
+    uGridWidth: { value: gridWidth }
   });
 
   useEffect(() => {
@@ -52,7 +66,20 @@ export function Rect(props: RectProps) {
     uniformsRef.current.uRadius.value.set(r, r, r, r);
     uniformsRef.current.uSize.value.set(size.x, size.y);
     uniformsRef.current.uStrokeWidth.value = strokeWidth;
-  }, [color, radius, size.x, size.y, strokeWidth]);
+    uniformsRef.current.uGridCells.value.set(gridCols, gridRows);
+    uniformsRef.current.uGridColor.value.set(gridColor);
+    uniformsRef.current.uGridWidth.value = gridWidth;
+  }, [
+    color,
+    radius,
+    size.x,
+    size.y,
+    strokeWidth,
+    gridCols,
+    gridRows,
+    gridColor,
+    gridWidth
+  ]);
 
   const geometry = useMemo(
     () => createCurvedPlaneGeometry(size.x, size.y, segments, curveRadius),
