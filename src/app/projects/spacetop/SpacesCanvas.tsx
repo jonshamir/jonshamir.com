@@ -10,6 +10,8 @@ import {
 import { Rect } from "../../lab/rect/Rect";
 import { RectOutline } from "../../lab/rect/RectOutline";
 
+const CANVAS_R = 4;
+
 type SpaceRectProps = {
   size: { x: number; y: number };
   radius: number;
@@ -73,6 +75,33 @@ function SpaceRect({
   );
 }
 
+type CanvasWindowProps = {
+  angle: number;
+  height: number;
+  size: { x: number; y: number };
+  depth?: number;
+};
+
+function CanvasWindow({ angle, height, size, depth = 0.1 }: CanvasWindowProps) {
+  const CANVAS_R = 4;
+  const WIN_ANGLE = angle;
+
+  return (
+    <SpaceRect
+      size={size}
+      radius={0}
+      color="#5772ad"
+      curveRadius={CANVAS_R - depth}
+      position={[
+        Math.sin(WIN_ANGLE) * (CANVAS_R - depth),
+        height,
+        2 - Math.cos(WIN_ANGLE) * (CANVAS_R - depth)
+      ]}
+      rotation={[0, -WIN_ANGLE, 0]}
+    />
+  );
+}
+
 export default function SpacesCanvas() {
   return (
     <ThreeCanvas
@@ -85,12 +114,16 @@ export default function SpacesCanvas() {
         size={{ x: 8, y: 3 }}
         radius={0.2}
         color="#5772ad"
-        curveRadius={4}
+        curveRadius={CANVAS_R}
         position={[0, 0, -2]}
         gridCols={16}
         gridRows={6}
         gridWidth={2}
       />
+
+      {/* Windows */}
+      <CanvasWindow angle={0.1} height={0.5} size={{ x: 1.2, y: 1 }} />
+      <CanvasWindow angle={-0.3} height={0.8} size={{ x: 1.4, y: 1 }} />
 
       {/* User Space */}
       <SpaceRect
@@ -98,7 +131,7 @@ export default function SpacesCanvas() {
         radius={0.2}
         color="#5772ad"
         curveRadius={3.5}
-        position={[0, 0.1, -1.5]}
+        position={[0, -0.2, -1.5]}
         gridCols={6}
         gridRows={2}
         gridWidth={2}
