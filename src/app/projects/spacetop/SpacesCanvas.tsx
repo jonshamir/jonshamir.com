@@ -16,6 +16,7 @@ type SpaceRectProps = {
   size: { x: number; y: number };
   radius: number;
   color: string;
+  fillColor?: string;
   lineWidth?: number;
   segments?: number;
   curveRadius?: number;
@@ -31,6 +32,7 @@ function SpaceRect({
   size,
   radius,
   color,
+  fillColor = CANVAS_BG,
   lineWidth = 4,
   segments = 32,
   curveRadius = 0,
@@ -51,7 +53,7 @@ function SpaceRect({
       <Rect
         size={size}
         radius={radius}
-        color={CANVAS_BG}
+        color={fillColor}
         segments={segments}
         curveRadius={curveRadius}
         gridCols={gridCols}
@@ -114,6 +116,7 @@ export default function SpacesCanvas() {
         size={{ x: 8, y: 3 }}
         radius={0.2}
         color="#5772ad"
+        fillColor={"#000000"}
         curveRadius={CANVAS_R}
         position={[0, 0, -2]}
         gridCols={16}
