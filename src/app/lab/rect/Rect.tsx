@@ -11,6 +11,7 @@ const materialKey = vertexShader + fragmentShader;
 export type RectProps = ThreeElements["mesh"] & {
   size?: { x: number; y: number };
   color?: THREE.ColorRepresentation;
+  opacity?: number;
   depthTest?: boolean;
   depthWrite?: boolean;
   radius?: number;
@@ -28,6 +29,7 @@ type RectUniforms = {
   uColor: { value: THREE.Color };
   uRadius: { value: THREE.Vector4 };
   uSize: { value: THREE.Vector2 };
+  uOpacity: { value: number };
   uStrokeWidth: { value: number };
   uGridCells: { value: THREE.Vector2 };
   uGridColor: { value: THREE.Color };
@@ -37,6 +39,7 @@ type RectUniforms = {
 export function Rect(props: RectProps) {
   const {
     color = "",
+    opacity = 1,
     radius = 0,
     depthTest = true,
     depthWrite = false,
@@ -56,6 +59,7 @@ export function Rect(props: RectProps) {
     uColor: { value: new THREE.Color(color) },
     uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
     uSize: { value: new THREE.Vector2(size.x, size.y) },
+    uOpacity: { value: opacity },
     uStrokeWidth: { value: strokeWidth },
     uGridCells: { value: new THREE.Vector2(gridCols, gridRows) },
     uGridColor: { value: new THREE.Color(gridColor) },
@@ -67,12 +71,14 @@ export function Rect(props: RectProps) {
     const r = Math.min(radius, Math.min(size.x, size.y));
     uniformsRef.current.uRadius.value.set(r, r, r, r);
     uniformsRef.current.uSize.value.set(size.x, size.y);
+    uniformsRef.current.uOpacity.value = opacity;
     uniformsRef.current.uStrokeWidth.value = strokeWidth;
     uniformsRef.current.uGridCells.value.set(gridCols, gridRows);
     uniformsRef.current.uGridColor.value.set(gridColor);
     uniformsRef.current.uGridWidth.value = gridWidth;
   }, [
     color,
+    opacity,
     radius,
     size.x,
     size.y,

@@ -17,6 +17,7 @@ type SpaceRectProps = {
   radius: number;
   color: string;
   fillColor?: string;
+  fillOpacity?: number;
   lineWidth?: number;
   segments?: number;
   curveRadius?: number;
@@ -24,6 +25,7 @@ type SpaceRectProps = {
   gridRows?: number;
   gridColor?: string;
   gridWidth?: number;
+  depthWrite?: boolean;
   position?: ThreeElements["group"]["position"];
   rotation?: ThreeElements["group"]["rotation"];
 };
@@ -33,6 +35,7 @@ function SpaceRect({
   radius,
   color,
   fillColor = CANVAS_BG,
+  fillOpacity = 1,
   lineWidth = 4,
   segments = 32,
   curveRadius = 0,
@@ -40,6 +43,7 @@ function SpaceRect({
   gridRows = 0,
   gridColor = "#2c3a57",
   gridWidth = 1,
+  depthWrite = true,
   position,
   rotation
 }: SpaceRectProps) {
@@ -54,6 +58,7 @@ function SpaceRect({
         size={size}
         radius={radius}
         color={fillColor}
+        opacity={fillOpacity}
         segments={segments}
         curveRadius={curveRadius}
         gridCols={gridCols}
@@ -61,7 +66,7 @@ function SpaceRect({
         gridColor={gridColor}
         gridWidth={gridWidth}
         polygonOffsetFactor={fillOffsetFactor}
-        depthWrite
+        depthWrite={depthWrite}
       />
       <RectOutline
         size={size}
@@ -116,12 +121,14 @@ export default function SpacesCanvas() {
         size={{ x: 8, y: 3 }}
         radius={0.2}
         color="#5772ad"
-        fillColor={"#000000"}
+        fillColor={"#2c3a57"}
+        fillOpacity={0.2}
         curveRadius={CANVAS_R}
         position={[0, 0, -2]}
         gridCols={16}
         gridRows={6}
         gridWidth={2}
+        depthWrite={false}
       />
 
       {/* Windows */}
@@ -153,8 +160,9 @@ export default function SpacesCanvas() {
       {/* Spacetop */}
       <SpaceRect
         size={{ x: 0.6, y: 0.6 }}
-        radius={0.2}
-        color="#5772ad"
+        radius={0.16}
+        color="#444444"
+        fillColor={"#232323"}
         curveRadius={0}
         position={[0, -0.65, 0]}
         rotation={[-1.2, 0, 0]}
@@ -163,15 +171,31 @@ export default function SpacesCanvas() {
       {/* Keyboard */}
       <SpaceRect
         lineWidth={2}
-        size={{ x: 0.4, y: 0.3 }}
+        size={{ x: 0.44, y: 0.26 }}
         radius={0.05}
-        color="#5772ad"
+        color="#4f4f51"
+        fillOpacity={0}
         curveRadius={0}
-        position={[0, -0.65, 0.05]}
+        position={[0, -0.6, -0.08]}
         rotation={[-1.2, 0, 0]}
         gridCols={8}
         gridRows={5}
         gridWidth={2}
+        gridColor={"#4f4f51"}
+      />
+
+      {/* Trackpad */}
+      <SpaceRect
+        lineWidth={2}
+        size={{ x: 0.24, y: 0.16 }}
+        radius={0.05}
+        color="#4f4f51"
+        fillColor={"#4f4f51"}
+        fillOpacity={0.3}
+        curveRadius={0}
+        position={[0, -0.7, 0.15]}
+        rotation={[-1.2, 0, 0]}
+        gridColor={"#4f4f51"}
       />
     </ThreeCanvas>
   );

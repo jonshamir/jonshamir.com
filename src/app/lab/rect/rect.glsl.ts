@@ -18,6 +18,7 @@ varying vec3 vNormal;
 uniform vec3 uColor;
 uniform vec4 uRadius;
 uniform vec2 uSize;
+uniform float uOpacity;
 uniform float uStrokeWidth;
 uniform vec2 uGridCells;
 uniform vec3 uGridColor;
@@ -55,6 +56,8 @@ void main() {
         float inner = 1.0 - smoothstep(-aa, 0.0, d + uStrokeWidth * pixelSize);
         alpha = outer - inner;
     }
+
+    alpha *= uOpacity;
 
     vec3 color = pow(uColor.rgb, vec3(1.0/2.2));
 
