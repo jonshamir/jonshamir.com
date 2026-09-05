@@ -5,6 +5,7 @@
   border-radius: var(--rounding-small);
   outline: 2px solid transparent;
   outline-offset: 2px;
+  font-weight: 500;
 }
 
 /* Set by pointer hover and by keyboard focus alike — both drive the same
@@ -17,4 +18,66 @@
    focusable-but-non-interactive items need their own ring. */
 .spaceList li:focus-visible {
   outline-color: var(--color-link);
+}
+
+/* Subgrid wrapper: the figure and list used to be direct .grid children, which
+   is what gave them their columns and rhythm. Spanning `full` with a subgrid
+   template inherits the page grid's tracks *and its named lines*, so
+   `grid-column: narrow` / `wide` below still mean what they mean everywhere
+   else — and the two can share a row to overlap on wide screens. */
+.spaces {
+  grid-column: full;
+  display: grid;
+  grid-template-columns: subgrid;
+  /* Stands in for the stack gap the wrapper swallowed. */
+  row-gap: var(--space-md);
+}
+
+.figure {
+  grid-column: full;
+}
+
+.spaceList {
+  grid-column: narrow;
+}
+
+/* .overlay is only set when the canvas is actually rendered — without it a
+   reduced-motion reader would get a list floating at the right of an empty row. */
+@media (min-width: 72rem) {
+  .overlay .figure,
+  .overlay .spaceList {
+    grid-row: 1;
+  }
+
+  .overlay .spaceList {
+    grid-column: wide;
+    justify-self: end;
+    align-self: center;
+    list-style: none;
+    padding-inline-start: 0;
+    /* R3F sets position: relative inline on its container, which paints it in
+       the positioned layer — above a later, non-positioned sibling. The list
+       has to join that layer to sit over the scene. Local to this stacking
+       context, so a literal rather than a --z-* token. */
+    position: relative;
+    z-index: 1;
+    /* Let drags pass through to the canvas underneath; the items themselves
+       stay hoverable and focusable because they drive the scene. */
+    pointer-events: none;
+  }
+
+  .overlay .spaceList li {
+    pointer-events: auto;
+  }
+}
+
+/* Revealed once the section scrolls into view; the orbit intro follows a beat
+   later (ORBIT_DELAY_MS in SpacesCanvas). */
+.canvasFade {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--default-timing);
+}
+
+.canvasFade.visible {
+  opacity: 1;
 }

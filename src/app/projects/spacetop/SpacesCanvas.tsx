@@ -2,6 +2,7 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { ThreeElements, useFrame, useThree } from "@react-three/fiber";
+import { clsx } from "clsx";
 import {
   ComponentRef,
   Ref,
@@ -19,6 +20,7 @@ import { easeOutCubic, lerp, saturate } from "../../../lib/math";
 import { Rect } from "../../lab/rect/Rect";
 import { RectOutline, type RectOutlineRef } from "../../lab/rect/RectOutline";
 import { SPACE_IDS, type SpaceId } from "./spaces";
+import styles from "./spaces.module.css";
 
 type OrbitControlsRef = ComponentRef<typeof OrbitControls>;
 
@@ -27,6 +29,9 @@ type OrbitControlsRef = ComponentRef<typeof OrbitControls>;
 const HEAD_ON = { azimuth: 0, polar: Math.PI / 2 };
 const SIDE_ABOVE = { azimuth: -0.6, polar: 1.3 };
 const INTRO_DURATION = 1.5; // seconds
+// The scene fades up first (--duration-slow in spaces.module.css), then holds a
+// beat before the camera moves, so the framing registers before it changes.
+const ORBIT_DELAY_MS = 750;
 
 // Drives the OrbitControls angles directly (rather than rotating a group) so the
 // controls' internal state stays consistent and dragging continues smoothly from
@@ -422,13 +427,20 @@ export default function SpacesCanvas({
   const theme = useMemo(() => lerpTheme(t), [t]);
 
   const controls = useRef<OrbitControlsRef>(null);
+  // Frozen once visible: `isIntersecting` latches true, so the effect below runs
+  // exactly once and scrolling back out can't restart the intro.
   const { isIntersecting, ref } = useIntersectionObserver({
     rootMargin: "25% 0% 25% 0%",
-    threshold: 0
+    threshold: 0,
+    freezeOnceVisible: true
   });
+  const [visible, setVisible] = useState(false);
   const [play, setPlay] = useState(false);
   useEffect(() => {
-    if (isIntersecting) setPlay(true);
+    if (!isIntersecting) return;
+    setVisible(true);
+    const id = setTimeout(() => setPlay(true), ORBIT_DELAY_MS);
+    return () => clearTimeout(id);
   }, [isIntersecting]);
 
   // Animations reach their target by space id, so adding a behaviour never
@@ -441,7 +453,10 @@ export default function SpacesCanvas({
   });
 
   return (
-    <div ref={ref}>
+    <div
+      ref={ref}
+      className={clsx(styles.canvasFade, visible && styles.visible)}
+    >
       <ThreeCanvas
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
         gl={{ alpha: true }}
