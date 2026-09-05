@@ -52,6 +52,10 @@ function OrbitIntro({
 const CANVAS_R = 4;
 // Canvas Space sits at this Z; its centre of curvature is CANVAS_Z + CANVAS_R.
 const CANVAS_Z = -2;
+// Canvas and User Space share this centre of curvature — effectively the user's
+// head. Rotating about it slides a panel along the canvas instead of off it.
+const HEAD_Z = CANVAS_Z + CANVAS_R;
+const USER_R = 3.5;
 
 // WebGL can't read CSS vars, so the palette is mirrored here per color mode.
 // `bg` matches --color-bg and doubles as an opaque mask behind panels.
@@ -180,6 +184,8 @@ type SceneRefs = {
   sceneGroup: RefObject<THREE.Group | null>;
   // Only the spaces whose behaviour lights up a rect have an outline here.
   outlines: Partial<Record<SpaceId, RefObject<RectOutlineRef | null>>>;
+  // Spaces whose behaviour moves their own rect rather than the whole scene.
+  groups: Partial<Record<SpaceId, RefObject<THREE.Group | null>>>;
 };
 
 // The two palette tones the highlight ramps between, pre-parsed once per theme
@@ -207,33 +213,51 @@ function highlightOwnOutline({ id, p, refs, colors }: AnimContext) {
   line.material.color.lerpColors(colors.grid, colors.line, easeOutCubic(p));
 }
 
-const WORK_SWING = Math.PI / 4; // 45° peak of the Work Space sway
+// Sway 0 -> peak -> 0 around Y. The phase only ever runs forward; hover
+// progress scales the amplitude, so releasing fades the sway out where it
+// stands instead of reversing the phase to chase a zero-crossing. Both terms
+// are continuous, so there is no direction flip to feel — and letting go
+// early can't buy a full excursion, because the envelope is already closing.
+function swayY(
+  target: THREE.Group | null,
+  { p, dt, hovered, state }: AnimContext,
+  swing: number,
+  speed: number
+) {
+  if (!target) return;
+  if (!hovered && p < REST_EPSILON) {
+    // Settled. Park the phase so the next hover starts from rest, then leave
+    // the group alone so another behaviour could claim it.
+    if (state.phase !== 0) {
+      state.phase = 0;
+      target.rotation.y = 0;
+    }
+    return;
+  }
+  state.phase = (state.phase + dt * speed) % TWO_PI;
+  target.rotation.y = swing * p * (0.5 - 0.5 * Math.cos(state.phase));
+}
+
+// Sign is direction: negative swings toward -Y rotation, i.e. the scene turns
+// the other way than a bare positive amplitude would.
+const WORK_SWING = -Math.PI / 4; // 45° peak of the Work Space sway
 const WORK_SPEED = 2; // rad/s of the back-and-forth oscillation
+// User Space subtends 3/USER_R ≈ 0.86 rad of the canvas's 2 rad, so a swing under
+// ~0.57 rad keeps it on the surface. Slower than Work's: a follow, not a swing.
+const USER_SWING = -0.3;
+const USER_SPEED = 1.6;
 
 const ANIMATIONS: Record<SpaceId, (ctx: AnimContext) => void> = {
   world: () => {}, // stub — describe the animation to fill this in
-  // Sway 0 -> 45° -> 0 around Y. The phase only ever runs forward; hover
-  // progress scales the amplitude, so releasing fades the sway out where it
-  // stands instead of reversing the phase to chase a zero-crossing. Both terms
-  // are continuous, so there is no direction flip to feel — and letting go
-  // early can't buy a full excursion, because the envelope is already closing.
-  work: ({ p, dt, hovered, refs, state }) => {
-    const g = refs.sceneGroup.current;
-    if (!g) return;
-    if (!hovered && p < REST_EPSILON) {
-      // Settled. Park the phase so the next hover starts from rest, then leave
-      // the group alone so another behaviour could claim it.
-      if (state.phase !== 0) {
-        state.phase = 0;
-        g.rotation.y = 0;
-      }
-      return;
-    }
-    state.phase = (state.phase + dt * WORK_SPEED) % TWO_PI;
-    g.rotation.y = WORK_SWING * p * (0.5 - 0.5 * Math.cos(state.phase));
-  },
+  work: (ctx) =>
+    swayY(ctx.refs.sceneGroup.current, ctx, WORK_SWING, WORK_SPEED),
   canvas: highlightOwnOutline,
-  user: highlightOwnOutline,
+  // The two compose because they write disjoint objects: the outline's material
+  // colour and the pivot group's rotation.
+  user: (ctx) => {
+    highlightOwnOutline(ctx);
+    swayY(ctx.refs.groups.user?.current ?? null, ctx, USER_SWING, USER_SPEED);
+  },
   head: () => {} // stub — describe the animation to fill this in
 };
 
@@ -422,7 +446,8 @@ export default function SpacesCanvas({
   const sceneRefsRef = useRef<SceneRefs | null>(null);
   const sceneRefs = (sceneRefsRef.current ??= {
     sceneGroup: { current: null },
-    outlines: { canvas: { current: null }, user: { current: null } }
+    outlines: { canvas: { current: null }, user: { current: null } },
+    groups: { user: { current: null } }
   });
 
   return (
@@ -440,7 +465,7 @@ export default function SpacesCanvas({
         <SpaceRect
           outlineRef={sceneRefs.outlines.canvas}
           size={{ x: 8, y: 3 }}
-          radius={0.2}
+          radius={0.1}
           // Resting tone only: the hover animation owns this material's
           // colour from the first frame on.
           color={theme.grid}
@@ -469,21 +494,24 @@ export default function SpacesCanvas({
           theme={theme}
         />
 
-        {/* User Space */}
-        <SpaceRect
-          outlineRef={sceneRefs.outlines.user}
-          size={{ x: 3, y: 1 }}
-          radius={0.2}
-          // Resting tone only — see Canvas Space above.
-          color={theme.grid}
-          fillColor={theme.bg}
-          curveRadius={3.5}
-          position={[0, -0.2, -1.5]}
-          gridCols={6}
-          gridRows={2}
-          gridColor={theme.grid}
-          gridWidth={2}
-        />
+        {/* User Space. The pivot group sits at the centre of curvature, so
+            the hover sway slides the rect along the canvas surface. */}
+        <group ref={sceneRefs.groups.user} position={[0, 0, HEAD_Z]}>
+          <SpaceRect
+            outlineRef={sceneRefs.outlines.user}
+            size={{ x: 3, y: 1 }}
+            radius={0.1}
+            // Resting tone only — see Canvas Space above.
+            color={theme.grid}
+            fillColor={theme.bg}
+            curveRadius={USER_R}
+            position={[0, -0.2, -USER_R]}
+            gridCols={6}
+            gridRows={2}
+            gridColor={theme.grid}
+            gridWidth={2}
+          />
+        </group>
 
         {/* Homebar */}
         <SpaceRect
