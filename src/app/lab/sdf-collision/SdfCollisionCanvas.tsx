@@ -11,7 +11,7 @@ export default function SdfCollisionCanvas({
   controls?: boolean;
   isFullscreen?: boolean;
 }) {
-  const raw = useControls({
+  const params = useControls({
     gravity: { value: 0, min: 0, max: 10, label: "Gravity" },
     blendFactor: { value: 0.12, min: 0, max: 2, step: 0.05, label: "Blend" },
     restitution: { value: 0.6, min: 0, max: 1, step: 0.05, label: "Bounce" },
@@ -26,15 +26,6 @@ export default function SdfCollisionCanvas({
     centerGravity: { value: true, label: "Center Gravity" },
     noiseAmount: { value: 0.05, min: 0, max: 0.3, step: 0.005, label: "Noise" }
   });
-  const params = raw as {
-    gravity: number;
-    blendFactor: number;
-    restitution: number;
-    damping: number;
-    shapeCount: number;
-    centerGravity: boolean;
-    noiseAmount: number;
-  };
 
   return (
     <>

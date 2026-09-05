@@ -26,14 +26,15 @@
 .linkColumns {
   display: flex;
   flex-direction: row;
-  gap: var(--space-2xl);
+  flex: 1 1 auto;
+  justify-content: flex-end;
+  gap: var(--space-lg);
   padding-block: var(--space-md);
-  margin-inline-start: auto;
-  padding-inline-end: var(--space-2xl);
 
   @media (max-width: 40rem) {
     gap: var(--space-xl);
     padding-inline-end: var(--space-xl);
+    justify-content: flex-start;
   }
 }
 
@@ -43,14 +44,14 @@
 .column {
   display: flex;
   flex-direction: column;
-  gap: var(--space-sm);
+  flex: 1 1 10em;
+  max-width: 10em;
 
   & ul {
     list-style: none;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-sm);
   }
 
   & li {
@@ -62,6 +63,9 @@
   & a {
     text-decoration: none;
     white-space: nowrap;
+    display: inline-block;
+    padding: var(--space-xs);
+    width: 100%;
 
     &:hover {
       text-decoration: underline;

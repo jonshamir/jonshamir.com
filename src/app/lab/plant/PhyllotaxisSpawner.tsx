@@ -23,6 +23,10 @@ interface PhyllotaxisSpawnerProps {
   baseYaw: number;
   basePitch: number;
   layerHeight: number;
+  invertAge?: boolean; // true = index 0 (tip) is youngest
+  agePitch?: number;
+  dyingPitch?: number;
+  spacingPower?: number; // age→spacing curve; undefined = uniform legacy spacing
   curve?: Curve<Vector3>; // Optional curve to position elements along
   baseColor?: Color;
   shadowColor?: Color;
@@ -38,6 +42,10 @@ export function PhyllotaxisSpawner({
   baseYaw,
   basePitch,
   layerHeight,
+  invertAge = false,
+  agePitch = 2.3,
+  dyingPitch = 1,
+  spacingPower,
   curve,
   baseColor,
   shadowColor,
@@ -47,48 +55,58 @@ export function PhyllotaxisSpawner({
 }: PhyllotaxisSpawnerProps) {
   return (
     <group {...groupProps}>
-      {range(0, n).map((i) => {
-        const age = saturate((n - i) / matureAge); // 0 = new, 1 = mature
-        const dyingStage = pow(saturate((age - 0.5) * 2), 3); // 0 = not dying, 1 = dead
-        const growingStage = pow(saturate(age * 2), 0.3); // 0 = new, 1 = fully grown
+      {(() => {
+        let cumulative = 0;
+        return range(0, n).map((i) => {
+          const age = invertAge
+            ? saturate(i / matureAge) // 0 = new (tip), 1 = mature (base)
+            : saturate((n - i) / matureAge); // 0 = new, 1 = mature
+          const dyingStage = pow(saturate((age - 0.5) * 2), 3); // 0 = not dying, 1 = dead
+          const growingStage = pow(saturate(age * 2), 0.3); // 0 = new, 1 = fully grown
 
-        // rotation
-        const rand = pseudoRandom(i);
-        const yaw = baseYaw * i + 0.02 * n + rand * 0.1;
-        const pitch = basePitch - 2.3 * age - 1 * dyingStage;
-        const rotation = new Euler(pitch, yaw, 0);
-        rotation.order = "YXZ";
+          // rotation
+          const rand = pseudoRandom(i);
+          const yaw = baseYaw * i + 0.02 * n + rand * 0.1;
+          const pitch = basePitch - agePitch * age - dyingPitch * dyingStage;
+          const rotation = new Euler(pitch, yaw, 0);
+          rotation.order = "YXZ";
 
-        // position
-        let position: [number, number, number];
-        if (curve) {
-          // Position along the curve based on arc length (distance along curve)
-          // Start from the end of the curve (t=1) and go backwards
+          // Age-based spacing accumulates gaps from the tip; legacy is uniform
           const distance =
-            Math.pow(growingStage, 0.3) * i * Math.abs(layerHeight);
-          const curveLength = curve.getLength() || 1; // Fallback to 1 if getLength fails
-          const tFromStart = Math.min(Math.max(distance / curveLength, 0), 1);
-          const t = 1 - tFromStart; // Reverse direction: start from tip (t=1)
-          const point = curve.getPointAt(t);
-          position = [point.x, point.y, point.z];
-        } else {
-          // Default linear positioning
-          const y = Math.pow(growingStage, 0.3) * i * layerHeight;
-          position = [0, y, 0];
-        }
+            spacingPower !== undefined
+              ? cumulative
+              : pow(growingStage, 0.3) * i * Math.abs(layerHeight);
+          cumulative += Math.abs(layerHeight) * pow(age, spacingPower ?? 1);
 
-        return renderElement({
-          index: i,
-          age,
-          growingStage,
-          dyingStage,
-          position,
-          rotation,
-          baseColor,
-          shadowColor,
-          subsurfaceColor
+          // position
+          let position: [number, number, number];
+          if (curve) {
+            // Position along the curve based on arc length (distance along curve)
+            // Start from the end of the curve (t=1) and go backwards
+            const curveLength = curve.getLength() || 1; // Fallback to 1 if getLength fails
+            const tFromStart = Math.min(Math.max(distance / curveLength, 0), 1);
+            const t = 1 - tFromStart; // Reverse direction: start from tip (t=1)
+            const point = curve.getPointAt(t);
+            position = [point.x, point.y, point.z];
+          } else {
+            // Default linear positioning
+            const y = Math.sign(layerHeight) * distance;
+            position = [0, y, 0];
+          }
+
+          return renderElement({
+            index: i,
+            age,
+            growingStage,
+            dyingStage,
+            position,
+            rotation,
+            baseColor,
+            shadowColor,
+            subsurfaceColor
+          });
         });
-      })}
+      })()}
     </group>
   );
 }

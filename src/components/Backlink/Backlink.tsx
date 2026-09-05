@@ -12,8 +12,8 @@ export default function Backlink() {
   if (!isWritingSubPage) return null;
 
   return (
-    <Link href="/writing" className={styles.link}>
-      <span className="arrow">↖</span> Writing
+    <Link href="/" className={styles.link}>
+      <span className="arrow">↖</span> Index
     </Link>
   );
 }

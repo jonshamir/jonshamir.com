@@ -128,6 +128,9 @@ export function PostList({ wide = false }: { wide?: boolean }) {
             <Link href={`/writing/${post.slug}`} className={styles.postLink}>
               <span className={styles.date}>{formattedDate}</span>
               <span className={styles.title}>{post.title}</span>
+              <span className={styles.arrowClip} aria-hidden>
+                <span className="arrow">→</span>
+              </span>
             </Link>
           </li>
         );

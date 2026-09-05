@@ -1,0 +1,5 @@
+/* The intro keeps the narrow text column's measure while the list spans the
+   full canvas — the page is a .canvas child, so nothing else constrains it. */
+.intro {
+  max-width: var(--grid-width-narrow);
+}

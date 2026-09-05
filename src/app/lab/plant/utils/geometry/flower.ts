@@ -15,6 +15,7 @@ import type { ColorTuple, PlantGeometryResult } from "./types";
  * @param baseColor - RGB color for the base (default: pink)
  * @param shadowColor - RGB color for shadows (default: dark pink)
  * @param subsurfaceColor - RGB color for subsurface scattering (default: light pink)
+ * @param open - Open petals splay flat; closed petals rise into a bud
  * @returns Object containing vertices, indices, and local coordinates
  */
 export function getFlowerVertices(
@@ -24,7 +25,8 @@ export function getFlowerVertices(
   segments: number = 2,
   baseColor: ColorTuple = [1.0, 0.41, 0.71],
   shadowColor: ColorTuple = [0.5, 0.1, 0.3],
-  subsurfaceColor: ColorTuple = [1.0, 0.7, 0.9]
+  subsurfaceColor: ColorTuple = [1.0, 0.7, 0.9],
+  open: boolean = true
 ): PlantGeometryResult {
   const sides = 6; // 6-sided cylinder
   const n = segments + 1; // Number of layers
@@ -90,6 +92,19 @@ export function getFlowerVertices(
   const petalLength = tipRadius * 3; // How far petals extend from cylinder
   const tipY = height;
 
+  // Closed petals form a cone; analytic cone normals (matching at shared
+  // edge positions) shade the bud smoothly despite unshared vertices
+  const petalNormals: number[] | undefined = open ? undefined : [];
+  const coneHeight = petalLength * 0.2;
+  const pushConeNormal = (theta: number) => {
+    if (!petalNormals) return;
+    const nx = coneHeight * Math.cos(theta);
+    const ny = lerp(baseRadius, tipRadius, 1.0);
+    const nz = coneHeight * Math.sin(theta);
+    const len = Math.sqrt(nx * nx + ny * ny + nz * nz);
+    petalNormals.push(nx / len, ny / len, nz / len);
+  };
+
   for (let j = 0; j < sides; j++) {
     // Get the positions of the two edge vertices from the cylinder
     const theta1 = (j / sides) * Math.PI * 2;
@@ -102,8 +117,16 @@ export function getFlowerVertices(
     const edge2X = edgeRadius * Math.cos(theta2);
     const edge2Z = edgeRadius * Math.sin(theta2);
 
-    const petalTipX = petalLength * Math.cos(thetaMid);
-    const petalTipZ = petalLength * Math.sin(thetaMid);
+    // Closed petals all meet at a single point above the cylinder tip;
+    // the wider tip edge below gives the bud its convex silhouette
+    const petalTipRadius = open ? petalLength : 0;
+    const petalTipX = petalTipRadius * Math.cos(thetaMid);
+    const petalTipZ = petalTipRadius * Math.sin(thetaMid);
+    const petalTipY = open ? tipY : tipY + coneHeight;
+
+    pushConeNormal(theta1);
+    pushConeNormal(theta2);
+    pushConeNormal(thetaMid);
 
     // Add 3 separate vertices for this petal triangle
     // Vertex 1: First edge
@@ -133,7 +156,7 @@ export function getFlowerVertices(
     );
 
     // Vertex 3: Petal tip
-    allVertices.push(petalTipX, tipY, petalTipZ);
+    allVertices.push(petalTipX, petalTipY, petalTipZ);
     localZ.push(1.0);
     localX.push(Math.cos(thetaMid));
     localY.push(Math.sin(thetaMid));
@@ -158,6 +181,7 @@ export function getFlowerVertices(
     localZ,
     vertexBaseColors,
     vertexShadowColors,
-    vertexSubsurfaceColors
+    vertexSubsurfaceColors,
+    petalNormals
   };
 }

@@ -12,6 +12,7 @@ import compassImg from "./compass.gif";
 import cursorMoveImg from "./cursor-move.gif";
 import heroImg from "./hero.jpg";
 import navImg from "./nav.gif";
+import { SpacesSection } from "./SpacesSection";
 
 export default function Page() {
   return (
@@ -20,8 +21,8 @@ export default function Page() {
       <p className="description">Augmented reality laptop OS</p>
       <p>
         Spacetop is a spatial operating system, designed to work with a
-        keyboard, mouse and augmented reality glasses as a display. Unlike other
-        XR products, Spacetop has a minimal learning curve and is intuitive to
+        keyboard, mouse and augmented reality glasses instead of a physical
+        display. Spacetop has a minimal learning curve and is intuitive to
         first-time users because it builds upon traditional desktop interaction
         paradigms.
       </p>
@@ -39,12 +40,11 @@ export default function Page() {
 
       <p>
         Spacetop&apos;s unique approach to spatial computing resonated beyond
-        just the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
+        the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
         <i>TIME Best Invention of 2023</i>, and recognition from{" "}
         <i>Fast Company</i> as one of the{" "}
         <i>Top 10 Most Innovative CE Companies of 2024</i>.
       </p>
-
       <figure>
         <div
           style={{
@@ -69,9 +69,6 @@ export default function Page() {
           <AwardFcIcon style={{ width: "100px", height: "auto" }} />
         </div>
       </figure>
-
-      <h2>From desktop to Spacetop</h2>
-
       <p>
         Translating the traditional desktop user interface to a 3D environment
         provided many challenges, both in design and implementation. My work
@@ -79,14 +76,41 @@ export default function Page() {
         frameworks to manage UI in 3D space, creating special shader effects and
         more.
       </p>
+      <p>
+        I spent five years at Sightful building Spacetop — first as a UX
+        engineer, then as UI architect. The role spanned design and engineering:
+        prototyping novel spatial interactions, building the app frameworks and
+        internal libraries the team shipped on. I continue to work with the team
+        as a consultant.
+      </p>
 
-      {/* <figure className="grid-full">
-        <TilePrototype />
-        <figcaption>
-          Interactive prototype: drag and resize tiles with snapping
-        </figcaption>
-      </figure> */}
-
+      <h2>UI Spaces</h2>
+      <p>
+        Giving the desktop a third dimension opens up exciting opportunities,
+        but also a class of problems that don't exist in 2D: panels can obscure
+        content, overlap and intersect, causing legibility issues and user
+        confusion.
+      </p>
+      <p>
+        To deal with this, I came up with the concept of <i>UI Spaces</i>: a set
+        of 3D surfaces upon which UI can be placed. Each space has a set of
+        properties - distance from the user, curvature, and following behavior -
+        that is designed to convey the importance of its content to the user.
+      </p>
+      <p>
+        The spaces are nested, and the closer a space sits to the user, the more
+        insistent it is allowed to be.
+      </p>
+      <SpacesSection />
+      <p>
+        This system gave Spacetop UI a predictable structure and allowed
+        designers and developers to reason about the 3D space surrounding the
+        user, placing interface components according to their importance and
+        context.
+      </p>
+      <p>
+        <br />
+      </p>
       <h2>The Canvas</h2>
       <p>
         <img
@@ -99,12 +123,11 @@ export default function Page() {
             borderRadius: "var(--rounding-small)"
           }}
         />
-        The canvas is a huge virtual &quot;screen&quot; that curves around the
+        The Canvas is a huge virtual &quot;screen&quot; that curves around the
         user. Instead of being limited by the edges of a physical screen, the
-        virtual canvas can expand to fit the content. To allow the users to
-        understand the 3D shape of the canvas surface without being
-        claustrophobic, a dot grid is revealed only around the cursor and
-        content.
+        virtual canvas can expand to fit many windows. To allow the users to
+        understand the 3D shape and position of the canvas surface, we used a
+        gentle grid of dots that is revealed around the cursor and content.
       </p>
       <p>
         The canvas itself can be panned and manipulated using touchpad gestures
@@ -119,11 +142,9 @@ export default function Page() {
       </figure>
 
       <p>
-        What does it mean for a dialog or notification to exist in a 3D space?
-        The spatial nature of the platform, along with the limited field of
-        view, required some creative solutions, such a the compass component
-        that guides your attention when it is needed somewhere you can&apos;t
-        see.
+        In some cases, the limited field of view still required some creative
+        solutions - such a the compass component that guides your attention when
+        it is needed somewhere you can&apos;t see.
       </p>
       <figure>
         <Image
@@ -136,6 +157,22 @@ export default function Page() {
         </figcaption>
       </figure>
 
+      <h2>Cross-platform design system</h2>
+
+      <p>
+        Spacetop's interface is a mix of Unity UI, native UI and embedded
+        web-based apps, and they needed to look and behave coherently. I created
+        a react-based design system that spans both "platforms" and provides a
+        shared set of components, styles and behaviors.
+      </p>
+      <p>
+        a shared token and spec layer defining color, type, spacing, and motion
+        a React component library for the web-based apps an experimental
+        React-to-Unity renderer, built on open-source work, that drives Unity UI
+        from React components a custom CSS-compatible shader for Unity that
+        renders the same rounded rects, borders, and shadows the web components
+        use — later extracted as UIRect
+      </p>
       <h2>Materials & Rendering</h2>
       <p>
         Rendering spatial interfaces opens up interesting possibilities and
@@ -156,7 +193,6 @@ export default function Page() {
         position of the head. Using Parallax mapping and normal mapping a 3D
         illusion can be achieved.
       </p>
-
       <p>
         <ButtonLink
           href="https://www.sightful.com/"

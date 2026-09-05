@@ -17,12 +17,16 @@ import { getStemVertices } from "./utils";
 interface FlowerStemProps {
   position?: [number, number, number];
   growingStage: number; // 0 = new, 1 = fully grown
+  flowerStage?: number; // overrides the flower scale derived from growingStage
   rotation?: Euler;
   baseColor?: Color;
   shadowColor?: Color;
   subsurfaceColor?: Color;
   baseRadius?: number;
   tipRadius?: number;
+  curveAmount?: number;
+  curvePower?: number;
+  minThickness?: number;
   renderFlower?: (
     tipPosition: Vector3,
     flowerScale: number,
@@ -34,11 +38,15 @@ const curveSamples = 16;
 
 export function FlowerStem({
   growingStage,
+  flowerStage,
   baseColor = new Color(0.2, 0.4, 0.24),
   shadowColor = new Color(0.06, 0.1, 0.15),
   subsurfaceColor = new Color(0.8, 1.0, 0.3),
   baseRadius = 0.015,
   tipRadius = 0.008,
+  curveAmount = 1,
+  curvePower = 2,
+  minThickness = 0.8,
   renderFlower,
   ...props
 }: FlowerStemProps) {
@@ -60,6 +68,14 @@ export function FlowerStem({
   // Create material once for the stem
   const stemMaterial = useMemo(() => new PlantMaterial(), []);
 
+  useEffect(() => {
+    const mesh = stemMeshRef.current;
+    return () => {
+      mesh?.geometry.dispose();
+      stemMaterial.dispose();
+    };
+  }, [stemMaterial]);
+
   // Update material age when growingStage changes
   useEffect(() => {
     if (materialRef.current) {
@@ -70,10 +86,12 @@ export function FlowerStem({
   // Update stem geometry and flower position
   useEffect(() => {
     const length = 1.7 * growingStage;
+    // Lateral offsets ramp with age so the young stem grows straight up
+    const bend = Math.pow(growingStage, curvePower) * curveAmount;
     const curve = new QuadraticBezierCurve3(
       new Vector3(0, 0, 0), // Start point
-      new Vector3(-0.05, 0.6 * length, 0.1), // Control point (slight curve)
-      new Vector3(-0.1, length, 0) // End point
+      new Vector3(-0.05 * bend, 0.6 * length, 0.1 * bend), // Control point
+      new Vector3(-0.1 * bend, length, 0) // End point
     );
 
     const {
@@ -91,6 +109,7 @@ export function FlowerStem({
       growingStage,
       baseRadius,
       tipRadius,
+      minThickness,
       [baseColor.r, baseColor.g, baseColor.b],
       [shadowColor.r, shadowColor.g, shadowColor.b],
       [subsurfaceColor.r, subsurfaceColor.g, subsurfaceColor.b]
@@ -133,7 +152,9 @@ export function FlowerStem({
         new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
       );
 
+      const old = stemMeshRef.current.geometry;
       stemMeshRef.current.geometry = geometry;
+      old.dispose();
     }
 
     // Update tip position, curve, and flower scale for custom rendering
@@ -141,12 +162,19 @@ export function FlowerStem({
     setTipPosition(tipPoint);
     setStemCurve(curve);
 
-    const newFlowerScale = Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
+    const newFlowerScale =
+      flowerStage !== undefined
+        ? flowerStage
+        : Math.max(0, growingStage - 0.5) * 2; // Flower appears at 50% growth
     setFlowerScale(newFlowerScale);
   }, [
     growingStage,
+    flowerStage,
     baseRadius,
     tipRadius,
+    curveAmount,
+    curvePower,
+    minThickness,
     baseColor,
     shadowColor,
     subsurfaceColor

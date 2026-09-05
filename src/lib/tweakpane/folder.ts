@@ -3,16 +3,16 @@ import type { Schema } from "./types";
 
 const FOLDER_MARKER = Symbol("tweakpane.folder");
 
-export type FolderNode = {
+export type FolderNode<S extends Schema = Schema> = {
   [FOLDER_MARKER]: true;
-  schema: Schema;
+  schema: S;
   opts: { collapsed?: boolean };
 };
 
-export function folder(
-  schema: Schema,
+export function folder<S extends Schema>(
+  schema: S,
   opts: { collapsed?: boolean } = {}
-): FolderNode {
+): FolderNode<S> {
   return { [FOLDER_MARKER]: true, schema, opts };
 }
 

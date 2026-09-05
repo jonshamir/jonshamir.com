@@ -46,10 +46,7 @@ export default function Page() {
         <PostList wide />
       </section>
 
-      {/* <section className={clsx(styles.section, "flow")}>
-        <h3 className={styles.sectionTitle}>Projects & Experiments</h3>
-        <ExperimentGrid />
-      </section> */}
+      <div data-page-dim="" />
     </div>
   );
 }

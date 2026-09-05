@@ -15,6 +15,7 @@ import type { ColorTuple, PlantGeometryResult } from "./types";
  * @param age - Age multiplier affecting stem thickness (0 to 1)
  * @param baseRadius - Radius at the base of the stem
  * @param tipRadius - Radius at the tip of the stem
+ * @param minThickness - Fraction of full radius at age 0 (1 = constant thickness)
  * @param baseColor - RGB color for the base [r, g, b]
  * @param shadowColor - RGB color for shadows [r, g, b]
  * @param subsurfaceColor - RGB color for subsurface scattering [r, g, b]
@@ -26,6 +27,7 @@ export function getStemVertices(
   age: number,
   baseRadius: number = 0.05,
   tipRadius: number = 0.02,
+  minThickness: number = 0.8,
   baseColor: ColorTuple = [0.2, 0.4, 0.24],
   shadowColor: ColorTuple = [0.06, 0.1, 0.15],
   subsurfaceColor: ColorTuple = [0.8, 1.0, 0.3]
@@ -46,7 +48,9 @@ export function getStemVertices(
     const t = i / n;
     const p = curve.getPointAt(t);
     const tangent = curve.getTangentAt(t);
-    const r = lerp(baseRadius, tipRadius, Math.pow(t, 1.5)) * age;
+    const r =
+      lerp(baseRadius, tipRadius, Math.pow(t, 1.5)) *
+      lerp(minThickness, 1, age);
     const layer = getCircularLayerVertices(p, r, tangent, segments);
     allVertices.push(...layer);
 

@@ -1,4 +1,4 @@
-import { ShaderMaterial, UniformsLib, UniformsUtils } from "three";
+import { Color, ShaderMaterial, UniformsLib, UniformsUtils } from "three";
 
 const vertexShader = /* glsl */ `
 #include <common>
@@ -88,15 +88,23 @@ varying vec3 vSubsurfaceColor;
 
 uniform float age;
 uniform float translucency;
+uniform vec3 stemColor;
+uniform vec3 stemShadowColor;
+uniform vec3 stemSubsurfaceColor;
+uniform float colorMix;
 
 #if defined(USE_SHADOWMAP) && NUM_DIR_LIGHT_SHADOWS > 0
     varying vec4 vDirectionalShadowCoordFlipped[NUM_DIR_LIGHT_SHADOWS];
 #endif
 
 void main() {
+    // Blend vertex colors toward the stem palette (colorMix 1 = pure vertex color)
+    vec3 baseCol = mix(stemColor, vBaseColor, colorMix);
+    vec3 shadowCol = mix(stemShadowColor, vShadowColor, colorMix);
+    vec3 subsurfaceCol = mix(stemSubsurfaceColor, vSubsurfaceColor, colorMix);
+
     // Base-to-tip gradient (using localZ: 0 at base, 1 at tip)
-    // Use vertex base color instead of uniform
-    vec3 color = mix(vBaseColor*0.7, vBaseColor, vLocalZ);
+    vec3 color = mix(baseCol*0.7, baseCol, vLocalZ);
 
     // Simple lighting using the directional light from the scene
     #if NUM_DIR_LIGHTS > 0
@@ -150,10 +158,10 @@ void main() {
     color *= lighting * finalShadow;
 
     // Color the shadow
-    color += vShadowColor * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.2;
+    color += shadowCol * (1.0 - finalShadow) - pow(1.0 - vLocalZ, 2.0) * 0.2;
 
     // Add subsurface scattering
-    color += finalShadow * (1.0 - isFacingLight) * vSubsurfaceColor * 0.3;
+    color += finalShadow * (1.0 - isFacingLight) * subsurfaceCol * 0.3;
 
     // Add diffuse lighting from world-space up direction (sky)
     color -= dot(vNormal, vWorldUp) * 0.05;
@@ -188,7 +196,11 @@ export class PlantMaterial extends ShaderMaterial {
         UniformsLib.lights,
         {
           age: { value: 1.0 },
-          translucency: { value: 0.6 }
+          translucency: { value: 0.6 },
+          stemColor: { value: new Color(0, 0, 0) },
+          stemShadowColor: { value: new Color(0, 0, 0) },
+          stemSubsurfaceColor: { value: new Color(0, 0, 0) },
+          colorMix: { value: 1.0 }
         }
       ]),
       vertexShader,
@@ -210,5 +222,22 @@ export class PlantMaterial extends ShaderMaterial {
   }
   get translucency(): number {
     return this.uniforms.translucency.value as number;
+  }
+
+  set colorMix(value: number) {
+    this.uniforms.colorMix.value = value;
+  }
+  get colorMix(): number {
+    return this.uniforms.colorMix.value as number;
+  }
+
+  set stemColor(value: Color) {
+    (this.uniforms.stemColor.value as Color).copy(value);
+  }
+  set stemShadowColor(value: Color) {
+    (this.uniforms.stemShadowColor.value as Color).copy(value);
+  }
+  set stemSubsurfaceColor(value: Color) {
+    (this.uniforms.stemSubsurfaceColor.value as Color).copy(value);
   }
 }

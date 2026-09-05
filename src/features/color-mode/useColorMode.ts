@@ -27,15 +27,16 @@ export function useColorMode() {
 
   // update favicon
   useEffect(() => {
-    const favicon = document.querySelector(
-      'link[rel="icon"]'
-    ) as HTMLLinkElement;
-    if (favicon === null) return;
-    if (colorMode === "dark") {
-      favicon.href = "/favicon-dark.png";
-    } else {
-      favicon.href = "/favicon-light.png";
-    }
+    if (colorMode === undefined) return;
+    const href =
+      colorMode === "dark" ? "/favicon-dark.png" : "/favicon-light.png";
+    document
+      .querySelectorAll<HTMLLinkElement>('link[rel="icon"]')
+      .forEach((favicon) => {
+        // strip media so the browser's own scheme matching stops competing
+        favicon.removeAttribute("media");
+        favicon.href = href;
+      });
   }, [colorMode]);
 
   return {

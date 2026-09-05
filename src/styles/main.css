@@ -37,6 +37,7 @@
   --duration-slow: 500ms;
   --default-timing: ease-out;
   --transition-defaults: var(--default-duration) var(--default-timing);
+  --transition-fast: var(--duration-fast) var(--default-timing);
 
   --rounding-small: 0.3rem;
   --rounding-medium: 0.6rem;
@@ -58,6 +59,10 @@
   --z-controls: 20;
   --z-header: 100;
   --z-top: 1000;
+  /* Page-dim scrim covers everything incl. the fixed Nav; the hovered project
+     row and its preview lift above the scrim (ProjectList.module.css) */
+  --z-dim: 1010;
+  --z-dim-focus: 1020;
 
   --mono-font: "Fira Code", monospace;
 
@@ -71,6 +76,10 @@
   --color-bg: rgb(var(--color-bg-rgb));
 
   --color-secondary: rgba(var(--color-text-rgb), 0.3);
+
+  /* How far page content appears to fade while a project preview is open —
+     the dim scrim's opacity is this value's complement */
+  --dim-opacity: 0.3;
 
   /* Hairline rule — list separators, hr, the line above the footer. Resolves
      through --color-text-rgb, so it inherits the @property theme transition. */
@@ -113,16 +122,54 @@ body {
   }
 }
 
+/* backwards fill (the from-keyframe covers the delay), not `opacity: 0` +
+   forwards: a forwards-filling opacity animation keeps applying forever, which
+   both overrides any later opacity transition on the element and keeps a
+   permanent stacking context — the page-dim scrim below relies on neither. */
 .fade-in {
-  opacity: 0;
   animation: fadeIn var(--fade-duration, 0.3s) var(--fade-timing, ease-in)
-    var(--fade-delay, 0.35s) forwards;
+    var(--fade-delay, 0.35s) backwards;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .fade-in {
-    opacity: 1;
     animation: none;
+  }
+}
+
+/* Page dim while a project row's preview is open: a fixed scrim in the page
+   background colour above the fixed Nav (--z-dim), with the hovered row lifted
+   over it (--z-dim-focus, in ProjectList.module.css). A scrim rather than
+   opacity on the content itself: opacity would make the Nav's opaque pill
+   translucent over anything scrolled beneath it. [data-page-dim] is the div in
+   app/page.tsx; [data-project-list] the ProjectList root (its module classes
+   are hashed). Gated to viewports where the preview exists (display: none at
+   54rem and below in the module). */
+[data-page-dim] {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) and (width > 54rem) {
+  [data-page-dim] {
+    display: block;
+    position: fixed;
+    inset: 0;
+    margin: 0; /* the stack's gap rule would offset the fixed box downward */
+    z-index: var(--z-dim);
+    background-color: var(--color-bg);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 240ms var(--ease-out-expo);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
+  }
+
+  body:has([data-project-list] a:hover) [data-page-dim] {
+    opacity: calc(1 - var(--dim-opacity));
+    transition-duration: 300ms;
+    transition-delay: 75ms;
   }
 }
 

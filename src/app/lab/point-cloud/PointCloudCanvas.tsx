@@ -26,17 +26,13 @@ const DEFAULT_URL = Object.values(FILES)[0] ?? "";
 export default function PointCloudCanvas() {
   const { file } = useControls("File", {
     file: { value: DEFAULT_URL, options: FILES, label: "Source" }
-  }) as { file: string };
+  });
 
   const { backgroundColor, applyModifier, flipY } = useControls("Display", {
     backgroundColor: { value: "#1e1e1e", label: "Background" },
     applyModifier: { value: true, label: "Apply Modifier" },
     flipY: { value: true, label: "Flip Y" }
-  }) as {
-    backgroundColor: string;
-    applyModifier: boolean;
-    flipY: boolean;
-  };
+  });
 
   const { rotationSpeed } = useControls("Camera", {
     rotationSpeed: {
@@ -46,7 +42,7 @@ export default function PointCloudCanvas() {
       step: 0.1,
       label: "Rotation Speed"
     }
-  }) as { rotationSpeed: number };
+  });
 
   const { noiseFreq, noiseSpeed, noiseRise, maxSize } = useControls(
     "Distortion",
@@ -81,12 +77,7 @@ export default function PointCloudCanvas() {
       }
     },
     { collapsed: false }
-  ) as {
-    noiseFreq: number;
-    noiseSpeed: number;
-    noiseRise: number;
-    maxSize: number;
-  };
+  );
 
   const [focus, setFocus] = useState(1.0);
 
