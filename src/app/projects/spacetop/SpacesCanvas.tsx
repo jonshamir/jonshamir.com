@@ -241,11 +241,12 @@ function highlightOwnOutline({ id, p, refs, colors }: AnimContext) {
   line.material.color.lerpColors(colors.grid, colors.line, easeOutCubic(p));
 }
 
-// Sway 0 -> peak -> 0 around Y. The phase only ever runs forward; hover
-// progress scales the amplitude, so releasing fades the sway out where it
-// stands instead of reversing the phase to chase a zero-crossing. Both terms
-// are continuous, so there is no direction flip to feel — and letting go
-// early can't buy a full excursion, because the envelope is already closing.
+// Sway back and forth around Y: 0 -> +peak -> 0 -> -peak. The phase only ever
+// runs forward; hover progress scales the amplitude, so releasing fades the
+// sway out where it stands instead of reversing the phase to chase a
+// zero-crossing. Both terms are continuous, so there is no direction flip to
+// feel — and letting go early can't buy a full excursion, because the envelope
+// is already closing.
 function swayY(
   target: THREE.Group | null,
   { p, dt, hovered, state }: AnimContext,
@@ -263,7 +264,7 @@ function swayY(
     return;
   }
   state.phase = (state.phase + dt * speed) % TWO_PI;
-  target.rotation.y = swing * p * (0.5 - 0.5 * Math.cos(state.phase));
+  target.rotation.y = swing * p * Math.sin(state.phase);
 }
 
 // Canvas Space breathes: its radius — and with it every other shell, each
@@ -290,9 +291,9 @@ function breatheShells(
   for (const shell of shells) shell.setCanvasRadius(radius);
 }
 
-// Sign is direction: negative swings toward -Y rotation, i.e. the scene turns
-// the other way than a bare positive amplitude would.
-const WORK_SWING = -Math.PI / 4; // 45° peak of the Work Space sway
+// Sign is which way it goes first: negative leads toward -Y rotation, i.e. the
+// scene turns the other way than a bare positive amplitude would.
+const WORK_SWING = -Math.PI / 8; // ±45° peaks of the Work Space sway
 const WORK_SPEED = 2; // rad/s of the back-and-forth oscillation
 // User Space is 3 wide on a shell of 3.5, so it subtends ≈ 0.86 rad of the
 // canvas's 2 rad and a swing under ~0.57 rad keeps it on the surface — the

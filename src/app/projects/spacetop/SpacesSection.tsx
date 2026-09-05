@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useIntersectionObserver, useMediaQuery } from "usehooks-ts";
 
 import {
+  DEFAULT_DESCRIPTION,
   INTRO_DELAY_MS,
   INTRO_DURATION_MS,
   type SpaceId,
@@ -97,6 +98,10 @@ export function SpacesSection() {
           </li>
         ))}
       </ul>
+      <p className={clsx(styles.spaceDescription, active && styles.visible)}>
+        {SPACES.find((s) => s.id === active)?.description ??
+          DEFAULT_DESCRIPTION}
+      </p>
     </div>
   );
 }

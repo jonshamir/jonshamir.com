@@ -1,3 +1,10 @@
+.spaceList {
+  grid-column: narrow;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
 .spaceList li {
   cursor: default;
   transition: color var(--transition-defaults);
@@ -6,7 +13,7 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
   font-weight: 500;
-  padding: var(--space-sm) var(--space-md);
+  padding: var(--space-sm);
   margin: 0;
   cursor: help;
 }
@@ -24,14 +31,17 @@
 }
 
 .spaces {
-  --canvas-height: 44rem;
+  --canvas-height: 42rem;
+  /* The strip of canvas the negative bottom margin hands to the next paragraph.
+     Named so the description overlay can clear it without restating the value. */
+  --canvas-bleed-bottom: 2rem;
 
   grid-column: full;
   display: grid;
   grid-template-columns: subgrid;
   row-gap: var(--space-md);
-  margin-top: -4rem;
-  margin-bottom: -8rem;
+  margin-top: -6rem;
+  margin-bottom: calc(-1 * var(--canvas-bleed-bottom));
 }
 
 .figure {
@@ -39,21 +49,43 @@
   min-height: var(--canvas-height);
 }
 
-.spaceList {
-  grid-column: narrow;
+/* Rows are explicit because the description claims row 1 outright; leaving the
+   other two to auto-placement around it would put them wherever the cursor
+   happened to land. */
+.overlay .figure {
+  grid-row: 1;
 }
 
-@media (min-width: 72rem) {
-  .overlay .figure,
+.overlay .spaceList {
+  grid-row: 2;
+}
+
+/* Overlaid at every width, unlike the list: it sits at the foot of the canvas,
+   aligned to the text column so it reads as part of the prose. */
+.overlay .spaceDescription {
+  grid-row: 1;
+  grid-column: narrow;
+  align-self: end;
+  margin-block-end: calc(var(--canvas-bleed-bottom) + var(--space-xl));
+  /* R3F's container is position: relative, so it paints over the paragraph. */
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+  /* Never blank: the resting prompt sits back, a description comes forward. */
+  opacity: 0.5;
+  transition: opacity var(--transition-defaults);
+}
+
+.overlay .spaceDescription.visible {
+  opacity: 1;
+}
+
+@media (min-width: 56rem) {
   .overlay .spaceList {
     grid-row: 1;
-  }
-
-  .overlay .spaceList {
     grid-column: wide;
     justify-self: start;
     align-self: center;
-    list-style: none;
     padding-inline-start: 0;
     /* R3F's container is position: relative, so it paints over the list. */
     position: relative;

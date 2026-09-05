@@ -86,10 +86,10 @@ export default function Page() {
 
       <h2>UI Spaces</h2>
       <p>
-        Giving the desktop a third dimension opens up a lot of exciting
-        opportunities, but also a class of problems that don't exist in 2D:
-        panels can obscure content, overlap and intersect, causing legibility
-        issues and user confusion.
+        Giving the desktop a third dimension opens up exciting opportunities,
+        but also a class of problems that don't exist in 2D: panels can obscure
+        content, overlap and intersect, causing legibility issues and user
+        confusion.
       </p>
       <p>
         To deal with this, I came up with the concept of <i>UI Spaces</i>: a set
