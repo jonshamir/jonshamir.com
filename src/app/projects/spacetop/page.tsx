@@ -28,7 +28,7 @@ export default function Page() {
       <p className="description">Augmented reality laptop OS</p>
       <p>
         Spacetop is a spatial operating system, designed to work with a
-        keyboard, mouse and augmented reality glasses instead of a traditional
+        keyboard, mouse and augmented reality glasses instead of a physical
         display. Spacetop has a minimal learning curve and is intuitive to
         first-time users because it builds upon traditional desktop interaction
         paradigms.
@@ -44,6 +44,7 @@ export default function Page() {
           Spacetop is like a huge virtual screen that you can take anywhere
         </figcaption>
       </figure>
+
       <p>
         Spacetop&apos;s unique approach to spatial computing resonated beyond
         the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
@@ -82,46 +83,66 @@ export default function Page() {
         frameworks to manage UI in 3D space, creating special shader effects and
         more.
       </p>
-      {/* <figure className="grid-full">
-        <TilePrototype />
-        <figcaption>
-          Interactive prototype: drag and resize tiles with snapping
-        </figcaption>
-      </figure> */}
+      <p>
+        I spent five years at Sightful building Spacetop — first as a UX
+        engineer, then as UI architect. The role spanned design and engineering:
+        prototyping novel spatial interactions, building the app frameworks and
+        internal libraries the team shipped on. I continue to work with the team
+        as a consultant.
+      </p>
 
       <h2>UI Spaces</h2>
       <p>
-        Allowing the traditional desktop UI to expand into a new dimension opens
-        up a lot of exciting opportunities. However, it also raised a unique set
-        of challanges: interface panels can obscure important content, overlap
-        and intersect, causing legibility issues and user confusion in ways that
-        are simply not possible in 2D.
+        Giving the desktop a third dimension opens up a lot of exciting
+        opportunities, but also a class of problems that don't exist in 2D:
+        panels can obscure content, overlap and intersect, causing legibility
+        issues and user confusion.
       </p>
       <p>
-        To solve this, I came up with the concept of <i>UI Spaces</i> - 3D
-        surfaces upon which UI can be placed. Each space has a set of properties
-        that is designed to convey the importance of their content to the user -
-        including distance, curvature and following behaviour.
+        To deal with this, I came up with the concept of <i>UI Spaces</i>: a set
+        of 3D surfaces upon which UI can be placed. Each space has a set of
+        properties - distance from the user, curvature, and following behavior -
+        that is designed to convey the importance of its content to the user.
+      </p>
+      <p>
+        The spaces are nested, and the closer a space sits to the user, the more
+        insistent it is allowed to be.
       </p>
       <p>
         For spacetop, I proposed a heirarchy of spaces nested within each other,
         where spaces closer to the user indicate urgency or importance:
       </p>
       <ul>
-        <li>World Space</li>
-        <li>Work Space</li>
-        <li>Canvas Space</li>
-        <li>User Space / Modal Space </li>
-        <li>Head Space</li>
+        <li>
+          World Space - global coordinate system. Content placed here stays
+          fixed relative to the real environment.
+        </li>
+        <li>
+          Work Space - the user's "setup", anchored by the user (or by hardware
+          tracking). It positions the Canvas and holds 3D objects and UI within
+          comfortable reach, like the Home Bar
+        </li>
+        <li>
+          Canvas Space - a curved surface at the optimal viewing distance (1.5–2
+          m) where main content lives.
+        </li>
+        <li>
+          User Space - follows the user's yaw with damping, stays parallel to
+          the ground, and snaps to the Canvas. Home to the launcher, system
+          dialogs and notifications: present and persistent, but not blocking
+        </li>
+        <li>
+          Head Space - HUD, follows the user's head. Highly distracting by
+          design, so reserved for small, non-interactive indicators
+        </li>
       </ul>
       <figure className="grid-full" style={{ minHeight: "30rem" }}>
         {!reducedMotion && <SpacesCanvas />}
       </figure>
       <p>
-        This structure gave Spacetop UI a predictable structure and allowed
-        designers and developers to reason about the 3D space surrounding the
-        user, placing each interface component according to its importance and
-        context.
+        This gave Spacetop UI a predictable structure and allowed designers and
+        developers to reason about the 3D space surrounding the user, placing
+        interface components according to their importance and context.
       </p>
       <p>
         <br />
@@ -171,6 +192,22 @@ export default function Page() {
           The compass points to a window outside the field of view
         </figcaption>
       </figure>
+
+      <h2>Cross-platform design system</h2>
+
+      <p>
+        Spacetop's interface is a mix of native Unity UI and embedded web-based
+        apps, and they needed to look and behave identically. I designed and
+        built a design system that spans both:
+      </p>
+      <p>
+        a shared token and spec layer defining color, type, spacing, and motion
+        a React component library for the web-based apps an experimental
+        React-to-Unity renderer, built on open-source work, that drives Unity UI
+        from React components a custom CSS-compatible shader for Unity that
+        renders the same rounded rects, borders, and shadows the web components
+        use — later extracted as UIRect
+      </p>
       <h2>Materials & Rendering</h2>
       <p>
         Rendering spatial interfaces opens up interesting possibilities and

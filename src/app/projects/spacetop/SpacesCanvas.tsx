@@ -2,11 +2,58 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { ThreeElements, useFrame, useThree } from "@react-three/fiber";
-import { useMemo, useRef, useState } from "react";
+import {
+  ComponentRef,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState
+} from "react";
+import { useIntersectionObserver } from "usehooks-ts";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import { easeOutCubic, lerp, saturate } from "../../../lib/math";
 import { Rect } from "../../lab/rect/Rect";
 import { RectOutline } from "../../lab/rect/RectOutline";
+
+type OrbitControlsRef = ComponentRef<typeof OrbitControls>;
+
+// Head-on (azimuth 0, polar π/2) is the OrbitControls default; the intro eases to
+// a side-from-above framing the first time the canvas scrolls into view.
+const HEAD_ON = { azimuth: 0, polar: Math.PI / 2 };
+const SIDE_ABOVE = { azimuth: 0.6, polar: 1.05 };
+const INTRO_DURATION = 1.5; // seconds
+
+// Drives the OrbitControls angles directly (rather than rotating a group) so the
+// controls' internal state stays consistent and dragging continues smoothly from
+// the final orientation. Runs once, from the frame `play` first flips true.
+function OrbitIntro({
+  controls,
+  play
+}: {
+  controls: RefObject<OrbitControlsRef | null>;
+  play: boolean;
+}) {
+  const start = useRef<number | null>(null);
+  const done = useRef(false);
+
+  useFrame((state) => {
+    const c = controls.current;
+    if (!play || !c || done.current) return;
+    if (start.current === null) start.current = state.clock.elapsedTime;
+    const t = saturate(
+      (state.clock.elapsedTime - start.current) / INTRO_DURATION
+    );
+    const e = easeOutCubic(t);
+    c.setAzimuthalAngle(lerp(HEAD_ON.azimuth, SIDE_ABOVE.azimuth, e));
+    c.setPolarAngle(lerp(HEAD_ON.polar, SIDE_ABOVE.polar, e));
+    c.update();
+    if (t >= 1) done.current = true;
+  });
+
+  return null;
+}
 
 const CANVAS_R = 4;
 
@@ -214,109 +261,122 @@ export default function SpacesCanvas() {
   );
   const theme = useMemo(() => lerpTheme(t), [t]);
 
+  const controls = useRef<OrbitControlsRef>(null);
+  const { isIntersecting, ref } = useIntersectionObserver({
+    rootMargin: "25% 0% 25% 0%",
+    threshold: 0
+  });
+  const [play, setPlay] = useState(false);
+  useEffect(() => {
+    if (isIntersecting) setPlay(true);
+  }, [isIntersecting]);
+
   return (
-    <ThreeCanvas
-      camera={{ position: [0, 0, 10], zoom: 3.5 }}
-      gl={{ alpha: true }}
-      style={{ height: "30rem" }}
-    >
-      <FrameSampler onSample={setT} />
-      <OrbitControls enablePan={false} enableZoom={false} />
-      {/* Canvas Space */}
-      <SpaceRect
-        size={{ x: 8, y: 3 }}
-        radius={0.2}
-        color={theme.line}
-        fillColor={theme.fill}
-        fillOpacity={0.2}
-        curveRadius={CANVAS_R}
-        position={[0, 0, -2]}
-        gridCols={16}
-        gridRows={6}
-        gridColor={theme.grid}
-        gridWidth={2}
-        depthWrite={false}
-      />
+    <div ref={ref}>
+      <ThreeCanvas
+        camera={{ position: [0, 0, 10], zoom: 3.5 }}
+        gl={{ alpha: true }}
+        style={{ height: "30rem" }}
+      >
+        <FrameSampler onSample={setT} />
+        <OrbitIntro controls={controls} play={play} />
+        <OrbitControls ref={controls} enablePan={false} enableZoom={false} />
+        {/* Canvas Space */}
+        <SpaceRect
+          size={{ x: 8, y: 3 }}
+          radius={0.2}
+          color={theme.line}
+          fillColor={theme.fill}
+          fillOpacity={0.2}
+          curveRadius={CANVAS_R}
+          position={[0, 0, -2]}
+          gridCols={16}
+          gridRows={6}
+          gridColor={theme.grid}
+          gridWidth={2}
+          depthWrite={false}
+        />
 
-      {/* Windows */}
-      <CanvasWindow
-        angle={0.1}
-        height={0.5}
-        size={{ x: 1.2, y: 1 }}
-        theme={theme}
-      />
-      <CanvasWindow
-        angle={-0.3}
-        height={0.8}
-        size={{ x: 1.4, y: 1 }}
-        theme={theme}
-      />
+        {/* Windows */}
+        <CanvasWindow
+          angle={0.1}
+          height={0.5}
+          size={{ x: 1.2, y: 1 }}
+          theme={theme}
+        />
+        <CanvasWindow
+          angle={-0.3}
+          height={0.8}
+          size={{ x: 1.4, y: 1 }}
+          theme={theme}
+        />
 
-      {/* User Space */}
-      <SpaceRect
-        size={{ x: 3, y: 1 }}
-        radius={0.2}
-        color={theme.line}
-        fillColor={theme.bg}
-        curveRadius={3.5}
-        position={[0, -0.2, -1.5]}
-        gridCols={6}
-        gridRows={2}
-        gridColor={theme.grid}
-        gridWidth={2}
-      />
+        {/* User Space */}
+        <SpaceRect
+          size={{ x: 3, y: 1 }}
+          radius={0.2}
+          color={theme.line}
+          fillColor={theme.bg}
+          curveRadius={3.5}
+          position={[0, -0.2, -1.5]}
+          gridCols={6}
+          gridRows={2}
+          gridColor={theme.grid}
+          gridWidth={2}
+        />
 
-      {/* Homebar */}
-      <SpaceRect
-        size={{ x: 1, y: 0.2 }}
-        radius={0.5}
-        color={theme.line}
-        fillColor={theme.bg}
-        curveRadius={0}
-        position={[0, -0.4, -1]}
-        rotation={[-0.4, 0, 0]}
-      />
+        {/* Homebar */}
+        <SpaceRect
+          size={{ x: 1, y: 0.2 }}
+          radius={0.5}
+          color={theme.line}
+          fillColor={theme.bg}
+          curveRadius={0}
+          position={[0, -0.4, -1]}
+          rotation={[-0.4, 0, 0]}
+        />
 
-      {/* Spacetop — the physical laptop */}
-      <SpaceRect
-        size={{ x: 0.6, y: 0.6 }}
-        radius={0.16}
-        color={theme.deviceLine}
-        fillColor={theme.deviceFill}
-        curveRadius={0}
-        position={[0, -0.65, 0]}
-        rotation={[-1.2, 0, 0]}
-      />
+        {/* Spacetop — the physical laptop */}
+        <SpaceRect
+          size={{ x: 0.6, y: 0.6 }}
+          radius={0.16}
+          color={theme.deviceLine}
+          fillColor={theme.deviceFill}
+          curveRadius={0}
+          position={[0, -0.65, 0]}
+          rotation={[-1.2, 0, 0]}
+        />
 
-      {/* Keyboard */}
-      <SpaceRect
-        lineWidth={2}
-        size={{ x: 0.44, y: 0.26 }}
-        radius={0.05}
-        color={theme.deviceLine}
-        fillColor={theme.deviceFill}
-        curveRadius={0}
-        position={[0, -0.6, -0.08]}
-        rotation={[-1.2, 0, 0]}
-        gridCols={8}
-        gridRows={5}
-        gridWidth={2}
-        gridColor={theme.deviceLine}
-      />
+        {/* Keyboard */}
+        <SpaceRect
+          lineWidth={2}
+          size={{ x: 0.44, y: 0.26 }}
+          radius={0.05}
+          color={theme.deviceLine}
+          fillColor={theme.deviceFill}
+          curveRadius={0}
+          position={[0, -0.6, -0.08]}
+          rotation={[-1.2, 0, 0]}
+          gridCols={8}
+          gridRows={5}
+          gridWidth={2}
+          gridColor={theme.deviceLine}
+        />
 
-      {/* Trackpad */}
-      <SpaceRect
-        lineWidth={2}
-        size={{ x: 0.24, y: 0.16 }}
-        radius={0.05}
-        color={theme.deviceLine}
-        fillColor={theme.deviceLine}
-        fillOpacity={0.3}
-        curveRadius={0}
-        position={[0, -0.7, 0.15]}
-        rotation={[-1.2, 0, 0]}
-        gridColor={theme.deviceLine}
-      />
-    </ThreeCanvas>
+        {/* Trackpad */}
+        <SpaceRect
+          lineWidth={2}
+          size={{ x: 0.24, y: 0.16 }}
+          radius={0.05}
+          color={theme.deviceLine}
+          fillColor={theme.deviceLine}
+          fillOpacity={0.3}
+          curveRadius={0}
+          position={[0, -0.7, 0.15]}
+          rotation={[-1.2, 0, 0]}
+          gridColor={theme.deviceLine}
+        />
+      </ThreeCanvas>
+    </div>
   );
 }
