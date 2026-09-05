@@ -1,0 +1,20 @@
+.spaceList li {
+  cursor: default;
+  transition: color var(--transition-defaults);
+  /* Pull the ring off the text without shifting the list. */
+  border-radius: var(--rounding-small);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+/* Set by pointer hover and by keyboard focus alike — both drive the same
+   animation in SpacesCanvas, so they share one slot. */
+.spaceList li.active {
+  color: var(--color-accent);
+}
+
+/* The global :focus rule in typography.css only covers form controls, so these
+   focusable-but-non-interactive items need their own ring. */
+.spaceList li:focus-visible {
+  outline-color: var(--color-link);
+}

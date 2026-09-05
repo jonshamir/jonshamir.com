@@ -1,10 +1,14 @@
 "use client";
 
 import { Line } from "@react-three/drei";
-import { useMemo } from "react";
+import { ComponentRef, Ref, useMemo } from "react";
 import type { ColorRepresentation } from "three";
 
 import { createRoundedRectContourPoints } from "./roundedRectContour";
+
+// The drei Line's underlying object. Each Line owns its own LineMaterial, so
+// mutating `.material.color` through this ref animates one outline only.
+export type RectOutlineRef = ComponentRef<typeof Line>;
 
 export type RectOutlineProps = {
   size?: { x: number; y: number };
@@ -17,6 +21,7 @@ export type RectOutlineProps = {
   depthBias?: number;
   position?: [number, number, number];
   renderOrder?: number;
+  ref?: Ref<RectOutlineRef>;
 };
 
 export function RectOutline({
@@ -29,7 +34,8 @@ export function RectOutline({
   cornerSegments = 8,
   depthBias = 0,
   position,
-  renderOrder = 0
+  renderOrder = 0,
+  ref
 }: RectOutlineProps) {
   const points = useMemo(
     () =>
@@ -46,6 +52,7 @@ export function RectOutline({
 
   return (
     <Line
+      ref={ref}
       points={points}
       color={color}
       lineWidth={lineWidth}

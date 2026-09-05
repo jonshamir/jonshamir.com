@@ -1,8 +1,6 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useMediaQuery } from "usehooks-ts";
 
 import { ButtonLink } from "../../../components/Button";
 import AwardAweIcon from "./award-awe.svg";
@@ -14,14 +12,9 @@ import compassImg from "./compass.gif";
 import cursorMoveImg from "./cursor-move.gif";
 import heroImg from "./hero.jpg";
 import navImg from "./nav.gif";
-
-const SpacesCanvas = dynamic(() => import("./SpacesCanvas"), { ssr: false });
+import { SpacesSection } from "./SpacesSection";
 
 export default function Page() {
-  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)", {
-    initializeWithValue: false
-  });
-
   return (
     <>
       <h1>Spacetop</h1>
@@ -108,37 +101,7 @@ export default function Page() {
         The spaces are nested, and the closer a space sits to the user, the more
         insistent it is allowed to be.
       </p>
-      <p>
-        For spacetop, I proposed a heirarchy of spaces nested within each other,
-        where spaces closer to the user indicate urgency or importance:
-      </p>
-      <ul>
-        <li>
-          World Space - global coordinate system. Content placed here stays
-          fixed relative to the real environment.
-        </li>
-        <li>
-          Work Space - the user's "setup", anchored by the user (or by hardware
-          tracking). It positions the Canvas and holds 3D objects and UI within
-          comfortable reach, like the Home Bar
-        </li>
-        <li>
-          Canvas Space - a curved surface at the optimal viewing distance (1.5–2
-          m) where main content lives.
-        </li>
-        <li>
-          User Space - follows the user's yaw with damping, stays parallel to
-          the ground, and snaps to the Canvas. Home to the launcher, system
-          dialogs and notifications: present and persistent, but not blocking
-        </li>
-        <li>
-          Head Space - HUD, follows the user's head. Highly distracting by
-          design, so reserved for small, non-interactive indicators
-        </li>
-      </ul>
-      <figure className="grid-full" style={{ minHeight: "30rem" }}>
-        {!reducedMotion && <SpacesCanvas />}
-      </figure>
+      <SpacesSection />
       <p>
         This gave Spacetop UI a predictable structure and allowed designers and
         developers to reason about the 3D space surrounding the user, placing
