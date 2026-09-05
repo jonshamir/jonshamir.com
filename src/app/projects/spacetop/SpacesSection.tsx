@@ -52,7 +52,7 @@ export function SpacesSection() {
             onFocus={() => setActive(id)}
             onBlur={() => clear(id)}
           >
-            {name} - {description}
+            {name}
           </li>
         ))}
       </ul>

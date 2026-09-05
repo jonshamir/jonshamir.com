@@ -25,7 +25,7 @@ type OrbitControlsRef = ComponentRef<typeof OrbitControls>;
 // Head-on (azimuth 0, polar π/2) is the OrbitControls default; the intro eases to
 // a side-from-above framing the first time the canvas scrolls into view.
 const HEAD_ON = { azimuth: 0, polar: Math.PI / 2 };
-const SIDE_ABOVE = { azimuth: 0.6, polar: 1.05 };
+const SIDE_ABOVE = { azimuth: -0.6, polar: 1.3 };
 const INTRO_DURATION = 1.5; // seconds
 
 // Drives the OrbitControls angles directly (rather than rotating a group) so the
