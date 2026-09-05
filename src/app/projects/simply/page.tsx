@@ -64,6 +64,10 @@ export default function Page() {
         </ButtonLink>
       </p>
 
+      {/* <figure className="grid">
+        <video src={demoVideo} autoPlay muted loop playsInline />
+      </figure> */}
+
       <h2>Virtual Piano</h2>
       <p>
         The virtual piano feature allows learning even without a physical
