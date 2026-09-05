@@ -1,3 +1,58 @@
+/* The UI Spaces section: a scene, a list of names, and a description line, all
+   sharing one grid row so the two text layers sit over the canvas.
+
+   `.overlay` is set on the section whenever motion is allowed — i.e. whenever
+   the canvas is rendered at all. Unprefixed rules are the reduced-motion
+   fallback, where the list and description are ordinary stacked blocks. */
+
+/* --- Section shell ------------------------------------------------------- */
+
+/* The strip of canvas the following paragraph is pulled up over. Declared on the
+   sibling as well as on the section: the sibling is what owns the pull (see
+   below), and custom properties inherit down, not sideways. */
+.spaces,
+.spaces + * {
+  --canvas-bleed-bottom: 2rem;
+}
+
+.spaces {
+  --canvas-height: 42rem;
+
+  grid-column: full;
+  display: grid;
+  grid-template-columns: subgrid;
+  row-gap: var(--space-md);
+  margin-top: -6rem;
+}
+
+/* A margin-bottom on .spaces would do nothing: the stack pins every .grid
+   child's margin-block-end to 0 !important (layout.css). Block-end spacing is
+   the next sibling's stack gap, and that gap is free to go negative. */
+.spaces + * {
+  --space: calc(-1 * var(--canvas-bleed-bottom));
+}
+
+/* --- Canvas -------------------------------------------------------------- */
+
+/* Row 1 is the overlay row; the list and description claim it too. Only
+   rendered when motion is allowed, so no .overlay prefix is needed. */
+.figure {
+  grid-row: 1;
+  grid-column: full;
+  min-height: var(--canvas-height);
+}
+
+.canvasFade {
+  opacity: 0;
+  transition: opacity var(--duration-slow) var(--default-timing);
+}
+
+.canvasFade.visible {
+  opacity: 1;
+}
+
+/* --- Space list ---------------------------------------------------------- */
+
 .spaceList {
   grid-column: narrow;
   list-style: none;
@@ -5,17 +60,33 @@
   padding: 0;
 }
 
+.overlay .spaceList {
+  grid-row: 1;
+  grid-column: wide;
+  justify-self: start;
+  align-self: center;
+  /* R3F's container is position: relative, so it paints over the list. */
+  position: relative;
+  z-index: 1;
+  /* The gutter and the gaps between items are inside the ul but outside every
+     li, so the ul itself must not swallow the pointer. */
+  pointer-events: none;
+}
+
 .spaceList li {
-  cursor: default;
+  margin: 0;
+  padding: var(--space-sm);
+  font-weight: 500;
+  cursor: help;
   transition: color var(--transition-defaults);
   /* Pull the ring off the text without shifting the list. */
   border-radius: var(--rounding-small);
   outline: 2px solid transparent;
   outline-offset: 2px;
-  font-weight: 500;
-  padding: var(--space-sm);
-  margin: 0;
-  cursor: help;
+}
+
+.overlay .spaceList li {
+  pointer-events: auto;
 }
 
 /* Set by pointer hover and by keyboard focus alike — both drive the same
@@ -30,38 +101,26 @@
   outline-color: var(--color-link);
 }
 
-.spaces {
-  --canvas-height: 42rem;
-  /* The strip of canvas the negative bottom margin hands to the next paragraph.
-     Named so the description overlay can clear it without restating the value. */
-  --canvas-bleed-bottom: 2rem;
-
-  grid-column: full;
-  display: grid;
-  grid-template-columns: subgrid;
-  row-gap: var(--space-md);
-  margin-top: -6rem;
-  margin-bottom: calc(-1 * var(--canvas-bleed-bottom));
+/* Intro: names stagger in once the orbit move has settled. */
+.pending li {
+  opacity: 0;
 }
 
-.figure {
-  grid-column: full;
-  min-height: var(--canvas-height);
+.revealed li {
+  animation: nameIn var(--duration-slow) var(--ease-out-expo) backwards;
 }
 
-/* Rows are explicit because the description claims row 1 outright; leaving the
-   other two to auto-placement around it would put them wherever the cursor
-   happened to land. */
-.overlay .figure {
-  grid-row: 1;
+@keyframes nameIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
 }
 
-.overlay .spaceList {
-  grid-row: 2;
-}
+/* --- Description --------------------------------------------------------- */
 
-/* Overlaid at every width, unlike the list: it sits at the foot of the canvas,
-   aligned to the text column so it reads as part of the prose. */
+/* Sits at the foot of the canvas, aligned to the text column so it reads as
+   part of the prose. */
 .overlay .spaceDescription {
   grid-row: 1;
   grid-column: narrow;
@@ -78,46 +137,4 @@
 
 .overlay .spaceDescription.visible {
   opacity: 1;
-}
-
-@media (min-width: 56rem) {
-  .overlay .spaceList {
-    grid-row: 1;
-    grid-column: wide;
-    justify-self: start;
-    align-self: center;
-    padding-inline-start: 0;
-    /* R3F's container is position: relative, so it paints over the list. */
-    position: relative;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .overlay .spaceList li {
-    pointer-events: auto;
-  }
-}
-
-.canvasFade {
-  opacity: 0;
-  transition: opacity var(--duration-slow) var(--default-timing);
-}
-
-.canvasFade.visible {
-  opacity: 1;
-}
-
-.pending li {
-  opacity: 0;
-}
-
-.revealed li {
-  animation: nameIn var(--duration-slow) var(--ease-out-expo) backwards;
-}
-
-@keyframes nameIn {
-  from {
-    opacity: 0;
-    transform: translateY(0.4rem);
-  }
 }
