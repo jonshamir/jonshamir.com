@@ -601,22 +601,24 @@ export default function SpacesCanvas({
           <Shell
             shells={sceneRefs.shells}
             depth={WINDOW_DEPTH}
-            arc={0.4}
+            arc={0.8}
             height={0.5}
-            size={{ x: 1.2, y: 1 }}
+            size={{ x: 1.6, y: 1 }}
             radius={0}
             color={theme.grid}
             fillColor={theme.bg}
+            lineWidth={2}
           />
           <Shell
             shells={sceneRefs.shells}
             depth={WINDOW_DEPTH}
             arc={-1.2}
             height={0.8}
-            size={{ x: 1.4, y: 1 }}
+            size={{ x: 1.6, y: 1 }}
             radius={0}
             color={theme.grid}
             fillColor={theme.bg}
+            lineWidth={2}
           />
 
           {/* User Space. Its pivot is the head pivot's own origin, so the hover
@@ -648,7 +650,7 @@ export default function SpacesCanvas({
             rotation={[-0.4, 0, 0]}
             size={{ x: 1, y: 0.2 }}
             radius={0.5}
-            color={theme.line}
+            color={theme.grid}
             fillColor={theme.bg}
           />
         </group>

@@ -47,6 +47,8 @@ export function SpacesSection() {
     };
   }, [isIntersecting]);
 
+  const activeSpace = SPACES.find((s) => s.id === active);
+
   // Only this item may clear the slot, so a blur arriving after the pointer has
   // already moved on to the next item doesn't wipe out its highlight.
   const clear = (id: SpaceId) =>
@@ -99,8 +101,17 @@ export function SpacesSection() {
         ))}
       </ul>
       <p className={clsx(styles.spaceDescription, active && styles.visible)}>
-        {SPACES.find((s) => s.id === active)?.description ??
-          DEFAULT_DESCRIPTION}
+        {activeSpace ? (
+          <>
+            {/* Every description opens with the space's own name (spaces.ts),
+                so slicing it off hands the name to <strong> without repeating
+                it in the data. */}
+            <strong>{activeSpace.name}</strong>
+            {activeSpace.description.slice(activeSpace.name.length)}
+          </>
+        ) : (
+          DEFAULT_DESCRIPTION
+        )}
       </p>
     </div>
   );
