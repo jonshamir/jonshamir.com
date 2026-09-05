@@ -5,7 +5,6 @@ import { PostList } from "../components/PostList/PostList";
 import ProjectList from "../components/ProjectList/ProjectList";
 import { SelectedWork } from "../components/SelectedWork/SelectedWork";
 import { StaggeredText } from "../components/StaggeredText/StaggeredText";
-import { ExperimentGrid } from "../features/homepage/ExperimentGrid/ExperimentGrid";
 import styles from "./page.module.css";
 
 export default function Page() {
@@ -45,11 +44,6 @@ export default function Page() {
       <section className={clsx(styles.section, "flow")}>
         <h3 className={styles.sectionTitle}>Writing</h3>
         <PostList wide />
-      </section>
-
-      <section className={clsx(styles.section, "flow")}>
-        <h3 className={styles.sectionTitle}>Experiments</h3>
-        <ExperimentGrid />
       </section>
 
       <div data-page-dim="" />

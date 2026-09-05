@@ -1,33 +1,11 @@
-"use client";
-
-import LabItem from "./components/LabItem/LabItem";
-
-const EXPERIMENTS = [
-  { title: "Topo", slug: "topo" },
-  { title: "SDF Collision", slug: "sdf-collision" },
-  { title: "Rect", slug: "rect" },
-  { title: "Earth", slug: "earth" },
-  { title: "Craters", slug: "craters" },
-  { title: "Plant", slug: "plant" },
-  { title: "Moon", slug: "moon" },
-  { title: "Point Cloud", slug: "point-cloud" }
-];
+import { ExperimentGrid } from "../../features/lab/ExperimentGrid/ExperimentGrid";
 
 export default function Page() {
   return (
-    <>
+    <div className="canvas flow">
       <h1>Lab</h1>
       <p>Small projects & experiments</p>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
-        {EXPERIMENTS.map((e) => (
-          <LabItem
-            key={e.slug}
-            image={`/lab/${e.slug}.png`}
-            title={e.title}
-            link={`/lab/${e.slug}`}
-          />
-        ))}
-      </div>
-    </>
+      <ExperimentGrid />
+    </div>
   );
 }
