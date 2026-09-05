@@ -1,7 +1,3 @@
-// Intro timeline, shared by SpacesSection (which owns the timers) and
-// SpacesCanvas (which runs the camera move). Lives here rather than in
-// SpacesCanvas so the section can read it without statically importing the
-// dynamically-loaded canvas.
 export const INTRO_DELAY_MS = 750;
 export const INTRO_DURATION_MS = 1500;
 

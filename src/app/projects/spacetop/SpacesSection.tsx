@@ -15,28 +15,17 @@ import styles from "./spaces.module.css";
 
 const SpacesCanvas = dynamic(() => import("./SpacesCanvas"), { ssr: false });
 
-// Seconds between consecutive names appearing.
 const STAGGER = 0.07;
 
 // Owns the hover state so pointing at a list item re-renders this section
-// rather than the whole page. The wrapper is a subgrid spanning `full`, which
-// keeps the page grid's tracks and named lines available to the figure and the
-// list — they were direct children of `main.grid` before, and that is where
-// their columns came from. Sharing a grid row is what lets the list sit over
-// the canvas on wide screens; see spaces.module.css.
+// rather than the whole page. The wrapper is a subgrid so the figure and list
+// keep the page grid's named lines while sharing a row to overlap.
 export function SpacesSection() {
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)", {
     initializeWithValue: false
   });
   const [active, setActive] = useState<SpaceId | null>(null);
 
-  // The intro is one timeline, owned here rather than inside the canvas
-  // because both halves of it live in this component: the canvas fades in on
-  // sight, the camera move starts a beat later, and the names appear once it
-  // has finished. Timers rather than a callback from the canvas — they fire
-  // even if WebGL never starts, so the list can't be stranded invisible.
-  // Frozen once visible: `isIntersecting` latches, so the effect runs exactly
-  // once and scrolling back out can't restart it.
   const { isIntersecting, ref } = useIntersectionObserver({
     rootMargin: "25% 0% 25% 0%",
     threshold: 0,
@@ -75,7 +64,6 @@ export function SpacesSection() {
             styles.canvasFade,
             isIntersecting && styles.visible
           )}
-          style={{ minHeight: "30rem" }}
         >
           <SpacesCanvas hoveredSpace={active} play={playing} />
         </figure>
@@ -83,7 +71,6 @@ export function SpacesSection() {
       <ul
         className={clsx(
           styles.spaceList,
-          // Held back only when there is an intro to wait for.
           !reducedMotion && (revealed ? styles.revealed : styles.pending)
         )}
       >

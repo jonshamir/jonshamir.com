@@ -69,7 +69,7 @@ const THEMES: Record<"dark" | "light", Theme> = {
     bg: "#1e1e1e",
     line: "#5772ad",
     fill: "#2c3a57",
-    grid: "#2c3a57",
+    grid: "#3c527b",
     deviceFill: "#414141",
     deviceLine: "#777777"
   },
@@ -402,9 +402,6 @@ function CanvasWindow({
   );
 }
 
-// `play` is the section's cue to start the camera move: it owns the whole intro
-// timeline (fade, then this, then the names), so the timing survives even if
-// WebGL never starts.
 export default function SpacesCanvas({
   hoveredSpace,
   play
@@ -430,9 +427,9 @@ export default function SpacesCanvas({
 
   return (
     <ThreeCanvas
-      camera={{ position: [0, 0, 10], zoom: 3.5 }}
+      camera={{ position: [0, 0, 10], zoom: 2.6 }}
       gl={{ alpha: true }}
-      style={{ height: "30rem" }}
+      style={{ height: "var(--canvas-height, 38rem)" }}
     >
       <FrameSampler onSample={setT} />
       <OrbitIntro controls={controls} play={play} />

@@ -23,29 +23,24 @@
   outline-color: var(--color-link);
 }
 
-/* Subgrid wrapper: the figure and list used to be direct .grid children, which
-   is what gave them their columns and rhythm. Spanning `full` with a subgrid
-   template inherits the page grid's tracks *and its named lines*, so
-   `grid-column: narrow` / `wide` below still mean what they mean everywhere
-   else — and the two can share a row to overlap on wide screens. */
 .spaces {
+  --canvas-height: 38rem;
+
   grid-column: full;
   display: grid;
   grid-template-columns: subgrid;
-  /* Stands in for the stack gap the wrapper swallowed. */
   row-gap: var(--space-md);
 }
 
 .figure {
   grid-column: full;
+  min-height: var(--canvas-height);
 }
 
 .spaceList {
   grid-column: narrow;
 }
 
-/* .overlay is only set when the canvas is actually rendered — without it a
-   reduced-motion reader would get a list floating at the right of an empty row. */
 @media (min-width: 72rem) {
   .overlay .figure,
   .overlay .spaceList {
@@ -58,14 +53,9 @@
     align-self: center;
     list-style: none;
     padding-inline-start: 0;
-    /* R3F sets position: relative inline on its container, which paints it in
-       the positioned layer — above a later, non-positioned sibling. The list
-       has to join that layer to sit over the scene. Local to this stacking
-       context, so a literal rather than a --z-* token. */
+    /* R3F's container is position: relative, so it paints over the list. */
     position: relative;
     z-index: 1;
-    /* Let drags pass through to the canvas underneath; the items themselves
-       stay hoverable and focusable because they drive the scene. */
     pointer-events: none;
   }
 
@@ -74,8 +64,6 @@
   }
 }
 
-/* Revealed once the section scrolls into view; the orbit intro follows a beat
-   later (ORBIT_DELAY_MS in SpacesCanvas). */
 .canvasFade {
   opacity: 0;
   transition: opacity var(--duration-slow) var(--default-timing);
@@ -85,12 +73,6 @@
   opacity: 1;
 }
 
-/* The names are held back until the orbit intro has finished, then arrive one
-   after another (delay set per item in SpacesSection, following
-   StaggeredText's pattern). `backwards` fill covers each item's delay, so
-   nothing flashes in before its turn. Keyframes are module-local by necessity:
-   css-loader hashes every animation-name, so a module can't reach the global
-   fadeIn in main.css. */
 .pending li {
   opacity: 0;
 }
