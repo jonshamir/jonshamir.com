@@ -24,23 +24,43 @@
   color: inherit;
 }
 
-/* Only the title underlines, so the widened hit target doesn't read as a
-   link-shaped date. */
+/* Title weights up on hover (Supreme is a variable font, so it tweens) rather
+   than underlining, so the widened hit target doesn't read as a link-shaped date. */
+/* The global `a:hover` (typography.css) re-underlines on hover and outweighs
+   .postLink's `text-decoration: none`; this reset (0,2,0) beats it back. */
+.postLink:hover {
+  text-decoration: none;
+}
+
+.title {
+  transition: font-weight var(--transition-fast);
+}
+
 .postLink:hover .title {
-  text-decoration: underline;
-  text-decoration-color: rgba(var(--color-text-rgb), 0.4);
+  font-weight: 700;
 }
 
 .date {
   font-size: 0.85em;
   white-space: nowrap;
   min-width: 3.5em;
+  max-width: 5rem;
 }
 
-/* Wide variant — see PostList.tsx. Moves the date to the trailing edge via
-   `order`, so the markup stays date-first for the default layout. */
-.wide .date {
-  order: 1;
+/* Arrow rides the trailing edge inside a clipped box, sliding in from the right
+   on row hover. align-self: center sidesteps the baseline of an overflow box. */
+.arrowClip {
   margin-inline-start: auto;
-  text-align: end;
+  align-self: center;
+  display: flex;
+  overflow: hidden;
+}
+
+.arrowClip :global(.arrow) {
+  transform: translateX(120%);
+  transition: transform var(--transition-defaults);
+}
+
+.postLink:hover .arrowClip :global(.arrow) {
+  transform: translateX(0);
 }
