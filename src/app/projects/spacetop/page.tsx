@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
-import { useIntersectionObserver, useMediaQuery } from "usehooks-ts";
+import { useMediaQuery } from "usehooks-ts";
 
 import { ButtonLink } from "../../../components/Button";
 import AwardAweIcon from "./award-awe.svg";
@@ -18,10 +18,6 @@ import navImg from "./nav.gif";
 const SpacesCanvas = dynamic(() => import("./SpacesCanvas"), { ssr: false });
 
 export default function Page() {
-  const { isIntersecting, ref } = useIntersectionObserver({
-    rootMargin: "25% 0% 25% 0%",
-    threshold: 0
-  });
   const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)", {
     initializeWithValue: false
   });
@@ -118,8 +114,8 @@ export default function Page() {
         <li>User Space / Modal Space </li>
         <li>Head Space</li>
       </ul>
-      <figure className="grid-full" ref={ref} style={{ minHeight: "30rem" }}>
-        {isIntersecting && !reducedMotion && <SpacesCanvas />}
+      <figure className="grid-full" style={{ minHeight: "30rem" }}>
+        {!reducedMotion && <SpacesCanvas />}
         <figcaption>
           Illustration of the UI Spaces, upon which the virtual UI is placed
         </figcaption>

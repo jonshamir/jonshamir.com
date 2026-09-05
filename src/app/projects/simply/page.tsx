@@ -34,7 +34,8 @@ export default function Page() {
 
       <p>
         The app is a unique use case for mixed reality technology, allowing
-        users to see virtual indications and hints on top of a real piano.
+        users to learn how to play by seeing virtual indications and hints on
+        top of a real piano.
       </p>
 
       <p>Learn more about the project here:</p>
@@ -51,9 +52,9 @@ export default function Page() {
 
       <h2>Virtual Piano</h2>
       <p>
-        The app features a virtual piano that allow the user to learn without a
-        real piano. Using hand tracking information from the device, we can
-        simulate a piano that allows users to practice in any environment.
+        The virtual piano feature allows users to learn and practice even
+        without a physical keyboard. Using hand tracking information from the
+        device and fine-tuned algorithms, users can practice in any environment.
       </p>
 
       <p>
@@ -68,8 +69,8 @@ export default function Page() {
       <h2>Note Rendering</h2>
       <p>
         In order to render musical notation that is crisp and clear from any
-        angle and distance, I used signed distance fields that appear sharp and
-        atialiased at any distance
+        angle, I implementes a custom SDF-based note renderer fields that draws
+        crisp, antialiased notes at any distance.
       </p>
       <figure>
         <Image
