@@ -32,6 +32,18 @@
   --space: calc(-1 * var(--canvas-bleed-bottom));
 }
 
+/* The canvas bleeds over the prose on both sides, and R3F's container is
+   position: relative, so it paints over anything static. Lifting the two
+   neighbours into the positioned layer puts the text back on top — same trick
+   the list and description use. The canvas keeps z-index auto rather than going
+   negative: negative would drop it behind the page background, and hit-testing
+   follows paint order, so the drag would stop reaching it. */
+*:has(+ .spaces),
+.spaces + * {
+  position: relative;
+  z-index: 1;
+}
+
 /* --- Canvas -------------------------------------------------------------- */
 
 /* Row 1 is the overlay row; the list and description claim it too. Only
