@@ -68,9 +68,9 @@ export default function Page() {
 
       <h2>Note Rendering</h2>
       <p>
-        In order to render musical notation that is crisp and clear from any
-        angle, I implementes a custom SDF-based note renderer fields that draws
-        crisp, antialiased notes at any distance.
+        In order to render musical notation that is clear from any angle, I
+        implemented a custom SDF-based note renderer fields that draws crisp,
+        antialiased notes at any distance.
       </p>
       <figure>
         <Image
