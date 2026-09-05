@@ -32,8 +32,8 @@ export default function Page() {
       <p className="description">Augmented reality laptop OS</p>
       <p>
         Spacetop is a spatial operating system, designed to work with a
-        keyboard, mouse and augmented reality glasses as a display. Unlike other
-        XR products, Spacetop has a minimal learning curve and is intuitive to
+        keyboard, mouse and augmented reality glasses instead of a traditional
+        display. Spacetop has a minimal learning curve and is intuitive to
         first-time users because it builds upon traditional desktop interaction
         paradigms.
       </p>
@@ -48,15 +48,13 @@ export default function Page() {
           Spacetop is like a huge virtual screen that you can take anywhere
         </figcaption>
       </figure>
-
       <p>
         Spacetop&apos;s unique approach to spatial computing resonated beyond
-        just the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
+        the XR community, earning <i>Best of Show at CES 2024</i>,{" "}
         <i>TIME Best Invention of 2023</i>, and recognition from{" "}
         <i>Fast Company</i> as one of the{" "}
         <i>Top 10 Most Innovative CE Companies of 2024</i>.
       </p>
-
       <figure>
         <div
           style={{
@@ -81,9 +79,6 @@ export default function Page() {
           <AwardFcIcon style={{ width: "100px", height: "auto" }} />
         </div>
       </figure>
-
-      <h2>From desktop to Spacetop</h2>
-
       <p>
         Translating the traditional desktop user interface to a 3D environment
         provided many challenges, both in design and implementation. My work
@@ -91,7 +86,6 @@ export default function Page() {
         frameworks to manage UI in 3D space, creating special shader effects and
         more.
       </p>
-
       {/* <figure className="grid-full">
         <TilePrototype />
         <figcaption>
@@ -99,6 +93,46 @@ export default function Page() {
         </figcaption>
       </figure> */}
 
+      <h2>UI Spaces</h2>
+      <p>
+        Allowing the traditional desktop UI to expand into a new dimension opens
+        up a lot of exciting opportunities. However, it also raised a unique set
+        of challanges: interface panels can obscure important content, overlap
+        and intersect, causing legibility issues and user confusion in ways that
+        are simply not possible in 2D.
+      </p>
+      <p>
+        To solve this, I came up with the concept of <i>UI Spaces</i> - 3D
+        surfaces upon which UI can be placed. Each space has a set of properties
+        that is designed to convey the importance of their content to the user -
+        including distance, curvature and following behaviour.
+      </p>
+      <p>
+        For spacetop, I proposed a heirarchy of spaces nested within each other,
+        where spaces closer to the user indicate urgency or importance:
+      </p>
+      <ul>
+        <li>World Space</li>
+        <li>Work Space</li>
+        <li>Canvas Space</li>
+        <li>User Space / Modal Space </li>
+        <li>Head Space</li>
+      </ul>
+      <figure className="grid-full" ref={ref} style={{ minHeight: "30rem" }}>
+        {isIntersecting && !reducedMotion && <SpacesCanvas />}
+        <figcaption>
+          Illustration of the UI Spaces, upon which the virtual UI is placed
+        </figcaption>
+      </figure>
+      <p>
+        This structure gave Spacetop UI a predictable structure and allowed
+        designers and developers to reason about the 3D space surrounding the
+        user, placing each interface component according to its importance and
+        context.
+      </p>
+      <p>
+        <br />
+      </p>
       <h2>The Canvas</h2>
       <p>
         <img
@@ -111,7 +145,7 @@ export default function Page() {
             borderRadius: "var(--rounding-small)"
           }}
         />
-        The canvas is a huge virtual &quot;screen&quot; that curves around the
+        The Canvas is a huge virtual &quot;screen&quot; that curves around the
         user. Instead of being limited by the edges of a physical screen, the
         virtual canvas can expand to fit many windows. To allow the users to
         understand the 3D shape and position of the canvas surface, we used a
@@ -129,51 +163,6 @@ export default function Page() {
         />
       </figure>
 
-      <h2>UI Spaces</h2>
-
-      <p>
-        Spacetop allows UI to live in a new dimention - this opens up a lot of
-        creative opportunities but comes with a unique set of challanges. UIs
-        can obscure important content, overlap or intersect in ways that are
-        simply not possible on a 2D screen.
-      </p>
-
-      <p>
-        As part of my work on UI architecture in, I wanted to find a solution
-        for this that would be intuitive, easy to use and reason about, an give
-        the user the best experience
-      </p>
-
-      <p>
-        To solve this, I came up with a concept of <strong>UI Spaces</strong> -
-        coordinate systems that surround the user, each one with a set of
-        behaviours, animations and limitations.
-      </p>
-
-      <p>
-        For spacetop, I proposed a heirarchy of spaces nested within each other,
-        where spaces closer to the user indicate urgency or importance:
-      </p>
-
-      <ul>
-        <li> World Space</li>
-        <li>Work Space</li>
-        <li>Canvas Space</li>
-        <li>User Space / Modal Space </li>
-        <li>Head Space</li>
-      </ul>
-
-      <figure className="grid-full" ref={ref} style={{ minHeight: "30rem" }}>
-        {isIntersecting && !reducedMotion && <SpacesCanvas />}
-        <figcaption>The nested UI Spaces that surround the user</figcaption>
-      </figure>
-
-      <p>
-        This structure gave Spacetop UI a predictable structure and allowed
-        designers and developers to think where each UI belongs according to its
-        use and context.
-      </p>
-
       <p>
         In some cases, the limited field of view still required some creative
         solutions - such a the compass component that guides your attention when
@@ -189,7 +178,6 @@ export default function Page() {
           The compass points to a window outside the field of view
         </figcaption>
       </figure>
-
       <h2>Materials & Rendering</h2>
       <p>
         Rendering spatial interfaces opens up interesting possibilities and
@@ -210,7 +198,6 @@ export default function Page() {
         position of the head. Using Parallax mapping and normal mapping a 3D
         illusion can be achieved.
       </p>
-
       <p>
         <ButtonLink
           href="https://www.sightful.com/"
