@@ -2,36 +2,22 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { ThreeElements, useFrame, useThree } from "@react-three/fiber";
-import { clsx } from "clsx";
-import {
-  ComponentRef,
-  Ref,
-  RefObject,
-  useEffect,
-  useMemo,
-  useRef,
-  useState
-} from "react";
+import { ComponentRef, Ref, RefObject, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
-import { useIntersectionObserver } from "usehooks-ts";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { easeOutCubic, lerp, saturate } from "../../../lib/math";
 import { Rect } from "../../lab/rect/Rect";
 import { RectOutline, type RectOutlineRef } from "../../lab/rect/RectOutline";
-import { SPACE_IDS, type SpaceId } from "./spaces";
-import styles from "./spaces.module.css";
+import { INTRO_DURATION_MS, SPACE_IDS, type SpaceId } from "./spaces";
 
 type OrbitControlsRef = ComponentRef<typeof OrbitControls>;
 
 // Head-on (azimuth 0, polar π/2) is the OrbitControls default; the intro eases to
 // a side-from-above framing the first time the canvas scrolls into view.
 const HEAD_ON = { azimuth: 0, polar: Math.PI / 2 };
-const SIDE_ABOVE = { azimuth: -0.6, polar: 1.3 };
-const INTRO_DURATION = 1.5; // seconds
-// The scene fades up first (--duration-slow in spaces.module.css), then holds a
-// beat before the camera moves, so the framing registers before it changes.
-const ORBIT_DELAY_MS = 750;
+const SIDE_ABOVE = { azimuth: 0.6, polar: 1.2 };
+const INTRO_DURATION = INTRO_DURATION_MS / 1000; // seconds
 
 // Drives the OrbitControls angles directly (rather than rotating a group) so the
 // controls' internal state stays consistent and dragging continues smoothly from
@@ -416,10 +402,15 @@ function CanvasWindow({
   );
 }
 
+// `play` is the section's cue to start the camera move: it owns the whole intro
+// timeline (fade, then this, then the names), so the timing survives even if
+// WebGL never starts.
 export default function SpacesCanvas({
-  hoveredSpace
+  hoveredSpace,
+  play
 }: {
   hoveredSpace: SpaceId | null;
+  play: boolean;
 }) {
   const [t, setT] = useState(() =>
     readDarkMode(getComputedStyle(document.documentElement))
@@ -427,21 +418,6 @@ export default function SpacesCanvas({
   const theme = useMemo(() => lerpTheme(t), [t]);
 
   const controls = useRef<OrbitControlsRef>(null);
-  // Frozen once visible: `isIntersecting` latches true, so the effect below runs
-  // exactly once and scrolling back out can't restart the intro.
-  const { isIntersecting, ref } = useIntersectionObserver({
-    rootMargin: "25% 0% 25% 0%",
-    threshold: 0,
-    freezeOnceVisible: true
-  });
-  const [visible, setVisible] = useState(false);
-  const [play, setPlay] = useState(false);
-  useEffect(() => {
-    if (!isIntersecting) return;
-    setVisible(true);
-    const id = setTimeout(() => setPlay(true), ORBIT_DELAY_MS);
-    return () => clearTimeout(id);
-  }, [isIntersecting]);
 
   // Animations reach their target by space id, so adding a behaviour never
   // widens this type. Held in a ref, not a memo: these are identity-critical
@@ -453,122 +429,117 @@ export default function SpacesCanvas({
   });
 
   return (
-    <div
-      ref={ref}
-      className={clsx(styles.canvasFade, visible && styles.visible)}
+    <ThreeCanvas
+      camera={{ position: [0, 0, 10], zoom: 3.5 }}
+      gl={{ alpha: true }}
+      style={{ height: "30rem" }}
     >
-      <ThreeCanvas
-        camera={{ position: [0, 0, 10], zoom: 3.5 }}
-        gl={{ alpha: true }}
-        style={{ height: "30rem" }}
-      >
-        <FrameSampler onSample={setT} />
-        <OrbitIntro controls={controls} play={play} />
-        <OrbitControls ref={controls} enablePan={false} enableZoom={false} />
-        <SpaceAnimator refs={sceneRefs} theme={theme} hovered={hoveredSpace} />
-        <group ref={sceneRefs.sceneGroup}>
-          {/* Canvas Space */}
-          <SpaceRect
-            outlineRef={sceneRefs.outlines.canvas}
-            size={{ x: 8, y: 3 }}
-            radius={0.2}
-            // Resting tone only: the hover animation owns this material's
-            // colour from the first frame on.
-            color={theme.grid}
-            fillColor={theme.fill}
-            fillOpacity={0.2}
-            curveRadius={CANVAS_R}
-            position={[0, 0, CANVAS_Z]}
-            gridCols={16}
-            gridRows={6}
-            gridColor={theme.grid}
-            gridWidth={2}
-            depthWrite={false}
-          />
+      <FrameSampler onSample={setT} />
+      <OrbitIntro controls={controls} play={play} />
+      <OrbitControls ref={controls} enablePan={false} enableZoom={false} />
+      <SpaceAnimator refs={sceneRefs} theme={theme} hovered={hoveredSpace} />
+      <group ref={sceneRefs.sceneGroup}>
+        {/* Canvas Space */}
+        <SpaceRect
+          outlineRef={sceneRefs.outlines.canvas}
+          size={{ x: 8, y: 3 }}
+          radius={0.2}
+          // Resting tone only: the hover animation owns this material's
+          // colour from the first frame on.
+          color={theme.grid}
+          fillColor={theme.fill}
+          fillOpacity={0.2}
+          curveRadius={CANVAS_R}
+          position={[0, 0, CANVAS_Z]}
+          gridCols={16}
+          gridRows={6}
+          gridColor={theme.grid}
+          gridWidth={2}
+          depthWrite={false}
+        />
 
-          {/* Windows */}
-          <CanvasWindow
-            angle={0.1}
-            height={0.5}
-            size={{ x: 1.2, y: 1 }}
-            theme={theme}
-          />
-          <CanvasWindow
-            angle={-0.3}
-            height={0.8}
-            size={{ x: 1.4, y: 1 }}
-            theme={theme}
-          />
+        {/* Windows */}
+        <CanvasWindow
+          angle={0.1}
+          height={0.5}
+          size={{ x: 1.2, y: 1 }}
+          theme={theme}
+        />
+        <CanvasWindow
+          angle={-0.3}
+          height={0.8}
+          size={{ x: 1.4, y: 1 }}
+          theme={theme}
+        />
 
-          {/* User Space */}
-          <SpaceRect
-            outlineRef={sceneRefs.outlines.user}
-            size={{ x: 3, y: 1 }}
-            radius={0.2}
-            // Resting tone only — see Canvas Space above.
-            color={theme.grid}
-            fillColor={theme.bg}
-            curveRadius={3.5}
-            position={[0, -0.2, -1.5]}
-            gridCols={6}
-            gridRows={2}
-            gridColor={theme.grid}
-            gridWidth={2}
-          />
+        {/* User Space */}
+        <SpaceRect
+          outlineRef={sceneRefs.outlines.user}
+          size={{ x: 3, y: 1 }}
+          radius={0.2}
+          // Resting tone only — see Canvas Space above.
+          color={theme.grid}
+          fillColor={theme.bg}
+          curveRadius={3.5}
+          position={[0, -0.2, -1.5]}
+          gridCols={6}
+          gridRows={2}
+          gridColor={theme.grid}
+          gridWidth={2}
+        />
 
-          {/* Homebar */}
-          <SpaceRect
-            size={{ x: 1, y: 0.2 }}
-            radius={0.5}
-            color={theme.line}
-            fillColor={theme.bg}
-            curveRadius={0}
-            position={[0, -0.4, -1]}
-            rotation={[-0.4, 0, 0]}
-          />
+        {/* Homebar */}
+        <SpaceRect
+          size={{ x: 1, y: 0.2 }}
+          radius={0.5}
+          color={theme.line}
+          fillColor={theme.bg}
+          curveRadius={0}
+          position={[0, -0.4, -1]}
+          rotation={[-0.4, 0, 0]}
+        />
 
-          {/* Spacetop — the physical laptop */}
-          <SpaceRect
-            size={{ x: 0.6, y: 0.6 }}
-            radius={0.16}
-            color={theme.deviceLine}
-            fillColor={theme.deviceFill}
-            curveRadius={0}
-            position={[0, -0.65, 0]}
-            rotation={[-1.2, 0, 0]}
-          />
+        {/* Spacetop — the physical laptop */}
+        <SpaceRect
+          size={{ x: 0.6, y: 0.6 }}
+          radius={0.16}
+          color={theme.deviceLine}
+          fillColor={theme.deviceFill}
+          curveRadius={0}
+          position={[0, -0.65, 0]}
+          rotation={[-1.2, 0, 0]}
+        />
 
-          {/* Keyboard */}
-          <SpaceRect
-            lineWidth={2}
-            size={{ x: 0.44, y: 0.26 }}
-            radius={0.05}
-            color={theme.deviceLine}
-            fillColor={theme.deviceFill}
-            curveRadius={0}
-            position={[0, -0.6, -0.08]}
-            rotation={[-1.2, 0, 0]}
-            gridCols={8}
-            gridRows={5}
-            gridWidth={2}
-            gridColor={theme.deviceLine}
-          />
+        {/* Keyboard */}
+        <SpaceRect
+          lineWidth={2}
+          size={{ x: 0.44, y: 0.26 }}
+          radius={0.05}
+          color={theme.deviceLine}
+          fillColor={theme.deviceFill}
+          curveRadius={0}
+          position={[0, -0.6, -0.08]}
+          rotation={[-1.2, 0, 0]}
+          gridCols={8}
+          gridRows={5}
+          gridWidth={2}
+          gridColor={theme.deviceLine}
+        />
 
-          {/* Trackpad */}
-          <SpaceRect
-            lineWidth={2}
-            size={{ x: 0.24, y: 0.16 }}
-            radius={0.05}
-            color={theme.deviceLine}
-            fillColor={theme.deviceLine}
-            fillOpacity={0.3}
-            curveRadius={0}
-            position={[0, -0.7, 0.15]}
-            rotation={[-1.2, 0, 0]}
-            gridColor={theme.deviceLine}
-          />
-        </group>
-      </ThreeCanvas>
-    </div>
+        {/* Trackpad */}
+        <SpaceRect
+          lineWidth={2}
+          size={{ x: 0.24, y: 0.16 }}
+          radius={0.05}
+          color={theme.deviceLine}
+          fillColor={theme.deviceLine}
+          fillOpacity={0.3}
+          curveRadius={0}
+          position={[0, -0.7, 0.15]}
+          rotation={[-1.2, 0, 0]}
+          gridColor={theme.deviceLine}
+        />
+      </group>
+    </ThreeCanvas>
   );
 }

@@ -6,6 +6,9 @@
   outline: 2px solid transparent;
   outline-offset: 2px;
   font-weight: 500;
+  padding: var(--space-sm) var(--space-md);
+  margin: 0;
+  cursor: help;
 }
 
 /* Set by pointer hover and by keyboard focus alike — both drive the same
@@ -51,7 +54,7 @@
 
   .overlay .spaceList {
     grid-column: wide;
-    justify-self: end;
+    justify-self: start;
     align-self: center;
     list-style: none;
     padding-inline-start: 0;
@@ -80,4 +83,25 @@
 
 .canvasFade.visible {
   opacity: 1;
+}
+
+/* The names are held back until the orbit intro has finished, then arrive one
+   after another (delay set per item in SpacesSection, following
+   StaggeredText's pattern). `backwards` fill covers each item's delay, so
+   nothing flashes in before its turn. Keyframes are module-local by necessity:
+   css-loader hashes every animation-name, so a module can't reach the global
+   fadeIn in main.css. */
+.pending li {
+  opacity: 0;
+}
+
+.revealed li {
+  animation: nameIn var(--duration-slow) var(--ease-out-expo) backwards;
+}
+
+@keyframes nameIn {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
 }
