@@ -1,8 +1,8 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { ThreeElements, useThree } from "@react-three/fiber";
-import { useEffect, useState } from "react";
+import { ThreeElements, useFrame, useThree } from "@react-three/fiber";
+import { useMemo, useRef, useState } from "react";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { Rect } from "../../lab/rect/Rect";
@@ -27,8 +27,8 @@ const THEMES: Record<"dark" | "light", Theme> = {
     line: "#5772ad",
     fill: "#2c3a57",
     grid: "#2c3a57",
-    deviceFill: "#353434",
-    deviceLine: "#828181"
+    deviceFill: "#414141",
+    deviceLine: "#777777"
   },
   light: {
     bg: "#f0f0f0",
@@ -36,22 +36,71 @@ const THEMES: Record<"dark" | "light", Theme> = {
     fill: "#5772ad",
     grid: "#aab6d6",
     deviceFill: "#929292",
-    deviceLine: "#313131"
+    deviceLine: "#4d4d4d"
   }
 };
 
-function useTheme(): Theme {
-  const [isDark, setIsDark] = useState(false);
-  useEffect(() => {
-    const root = document.documentElement;
-    setIsDark(root.classList.contains("dark"));
-    const observer = new MutationObserver(() => {
-      setIsDark(root.classList.contains("dark"));
-    });
-    observer.observe(root, { attributes: true, attributeFilter: ["class"] });
-    return () => observer.disconnect();
-  }, []);
-  return isDark ? THEMES.dark : THEMES.light;
+const THEME_KEYS = [
+  "bg",
+  "line",
+  "fill",
+  "grid",
+  "deviceFill",
+  "deviceLine"
+] as const;
+
+type ThemeBytes = Record<(typeof THEME_KEYS)[number], [number, number, number]>;
+
+function hexToBytes(hex: string): [number, number, number] {
+  const n = parseInt(hex.slice(1), 16);
+  return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+}
+
+function paletteBytes(theme: Theme): ThemeBytes {
+  const out = {} as ThemeBytes;
+  for (const k of THEME_KEYS) out[k] = hexToBytes(theme[k]);
+  return out;
+}
+
+const THEME_BYTES = {
+  light: paletteBytes(THEMES.light),
+  dark: paletteBytes(THEMES.dark)
+};
+
+// Interpolate the two palettes in sRGB byte space (not THREE.Color, which would
+// lerp in linear space and drift from the page's --color-* CSS transitions).
+function lerpTheme(t: number): Theme {
+  const out = {} as Theme;
+  for (const k of THEME_KEYS) {
+    const a = THEME_BYTES.light[k];
+    const b = THEME_BYTES.dark[k];
+    const n =
+      (Math.round(a[0] + (b[0] - a[0]) * t) << 16) |
+      (Math.round(a[1] + (b[1] - a[1]) * t) << 8) |
+      Math.round(a[2] + (b[2] - a[2]) * t);
+    out[k] = "#" + (n | (1 << 24)).toString(16).slice(1);
+  }
+  return out;
+}
+
+function readDarkMode(style: CSSStyleDeclaration): number {
+  const v = Number(style.getPropertyValue("--dark-mode"));
+  return Number.isNaN(v) ? 0 : v;
+}
+
+// The site transitions --dark-mode 0->1 over 250ms on theme toggle; sampling it
+// each frame drives the color lerp in sync with the rest of the page.
+function FrameSampler({ onSample }: { onSample: (t: number) => void }) {
+  const style = useMemo(() => getComputedStyle(document.documentElement), []);
+  const last = useRef(-1);
+  useFrame(() => {
+    const t = readDarkMode(style);
+    if (Math.abs(t - last.current) > 1e-4) {
+      last.current = t;
+      onSample(t);
+    }
+  });
+  return null;
 }
 
 type SpaceRectProps = {
@@ -160,7 +209,10 @@ function CanvasWindow({
 }
 
 export default function SpacesCanvas() {
-  const theme = useTheme();
+  const [t, setT] = useState(() =>
+    readDarkMode(getComputedStyle(document.documentElement))
+  );
+  const theme = useMemo(() => lerpTheme(t), [t]);
 
   return (
     <ThreeCanvas
@@ -168,6 +220,7 @@ export default function SpacesCanvas() {
       gl={{ alpha: true }}
       style={{ height: "30rem" }}
     >
+      <FrameSampler onSample={setT} />
       <OrbitControls enablePan={false} enableZoom={false} />
       {/* Canvas Space */}
       <SpaceRect

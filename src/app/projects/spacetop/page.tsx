@@ -116,9 +116,6 @@ export default function Page() {
       </ul>
       <figure className="grid-full" style={{ minHeight: "30rem" }}>
         {!reducedMotion && <SpacesCanvas />}
-        <figcaption>
-          Illustration of the UI Spaces, upon which the virtual UI is placed
-        </figcaption>
       </figure>
       <p>
         This structure gave Spacetop UI a predictable structure and allowed
