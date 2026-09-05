@@ -180,13 +180,13 @@ function FrameSampler({ onSample }: { onSample: (t: number) => void }) {
 // an enter/leave crossfade the last writer wins), and should leave their target
 // untouched once fully at rest so a future behaviour can claim it.
 //
-// Four kinds of target exist so far: an outline's material (`refs.outlines`), a
-// group's transform (`refs.sceneGroup`, `refs.groups`), the concentric shells'
-// radii (`refs.shells`), which is a geometry rewrite, and a rect's opacity
-// (`refs.fills` plus its outline).
+// Three kinds of target exist so far: the rects a space is made of
+// (`refs.rects` — their fade and their outline colour), a group's transform
+// (`refs.sceneGroup`, `refs.groups`), and the concentric shells' radii
+// (`refs.shells`), which is a geometry rewrite.
 //
-// Adding one is two edits: wire that space's rect to `refs.outlines[id]` (or
-// whatever object it drives) and fill in its `ANIMATIONS` entry.
+// Adding one is two edits: hand that space's rects `refs.rects[id]` (or wire up
+// whatever else it drives) and fill in its `ANIMATIONS` entry.
 
 // Approach speeds for the hover progress, in reciprocal seconds. Release is
 // deliberately the faster of the two: engaging should feel like the scene is
@@ -207,14 +207,21 @@ type SpaceState = { p: number; phase: number };
 // same number and each one works out where that puts it.
 type ShellHandle = { setCanvasRadius: (radius: number) => void };
 
+// A rect a behaviour can drive: fading it bodily — fill, grid and outline on
+// one number — and ramping its outline's colour. Registered by the rect itself,
+// so a space made of four of them is no different to the animation than a space
+// made of one.
+type RectHandle = {
+  setFade: (o: number) => void;
+  setOutlineColor: (from: THREE.Color, to: THREE.Color, t: number) => void;
+};
+
 type SceneRefs = {
   sceneGroup: RefObject<THREE.Group | null>;
-  // Only the spaces whose behaviour lights up a rect have an outline here.
-  outlines: Partial<Record<SpaceId, RefObject<RectOutlineRef | null>>>;
   // Spaces whose behaviour moves their own rect rather than the whole scene.
   groups: Partial<Record<SpaceId, RefObject<THREE.Group | null>>>;
-  // Fill meshes of the spaces that fade in and out as a whole.
-  fills: Partial<Record<SpaceId, RefObject<THREE.Mesh | null>>>;
+  // Every rect a behaviour can reach, by space. They register themselves.
+  rects: Partial<Record<SpaceId, RectHandle[]>>;
   // Every curved surface, in mount order. Shells register themselves.
   shells: ShellHandle[];
 };
@@ -238,25 +245,23 @@ type AnimContext = {
 // Unlike `lerpTheme` above — which lerps sRGB bytes to track the page's CSS
 // transition — this one interpolates in THREE's linear working space. Nothing
 // in CSS is mirroring it, and linear gives the ramp a smoother midpoint.
-function highlightOwnOutline({ id, p, refs, colors }: AnimContext) {
-  const line = refs.outlines[id]?.current;
-  if (!line) return;
-  line.material.color.lerpColors(colors.grid, colors.line, easeOutCubic(p));
+function highlightOutlines({ id, p, refs, colors }: AnimContext) {
+  const rects = refs.rects[id];
+  if (!rects) return;
+  const t = easeOutCubic(p);
+  for (const rect of rects) rect.setOutlineColor(colors.grid, colors.line, t);
 }
 
-// The whole rect fades with the hover rather than lighting up in place: the
+// The rects fade with the hover rather than only lighting up in place: the
 // shader's uFade scales fill and grid alike (uOpacity is the fill's own, so it
 // stays out of this), and the outline's line material carries the same value.
 // Gained up so the surface is there well before the sway peaks, and on release
 // runs back down through the faster RELEASE_RATE.
-function fadeOwnRect({ id, p, refs }: AnimContext) {
+function fadeRects({ id, p, refs }: AnimContext) {
   const o = saturate(p * FADE_GAIN);
-  const material = refs.fills[id]?.current?.material as
-    | THREE.ShaderMaterial
-    | undefined;
-  if (material) material.uniforms.uFade.value = o;
-  const line = refs.outlines[id]?.current;
-  if (line) line.material.opacity = o;
+  const rects = refs.rects[id];
+  if (!rects) return;
+  for (const rect of rects) rect.setFade(o);
 }
 
 // Sway back and forth around Y: 0 -> +peak -> 0 -> -peak. The phase only ever
@@ -323,6 +328,11 @@ const WORK_SPEED = 2; // rad/s of the back-and-forth oscillation
 // a follow, not a swing.
 const USER_SWING = -0.3;
 const USER_SPEED = 1.6;
+// Head Space rides ~2 out from the head pivot, so this swings its indicators
+// about 0.4 across — several times their own size, which is the point: the HUD
+// is rigidly attached, and turns fastest of the three when the head does.
+const HEAD_SWING = -0.2;
+const HEAD_SPEED = 2.4;
 // The canvas radius breathes CANVAS_R ± this, i.e. between 3.4 and 4.6. Slower
 // again than the sways: a surface settling to a comfortable distance.
 const CANVAS_SWING = 0.6;
@@ -334,17 +344,23 @@ const ANIMATIONS: Record<SpaceId, (ctx: AnimContext) => void> = {
     swayY(ctx.refs.sceneGroup.current, ctx, WORK_SWING, WORK_SPEED),
   // Disjoint again: the outline's material colour and the shells' geometry.
   canvas: (ctx) => {
-    highlightOwnOutline(ctx);
+    highlightOutlines(ctx);
     breatheShells(ctx.refs.shells, ctx, CANVAS_SWING, CANVAS_SPEED);
   },
   // The three compose because they write disjoint objects: the rect's opacity,
   // the outline's material colour and the pivot group's rotation.
   user: (ctx) => {
-    fadeOwnRect(ctx);
-    highlightOwnOutline(ctx);
+    fadeRects(ctx);
+    highlightOutlines(ctx);
     swayY(ctx.refs.groups.user?.current ?? null, ctx, USER_SWING, USER_SPEED);
   },
-  head: () => {} // stub — describe the animation to fill this in
+  // Same pair as User Space, over four rects instead of one: they fade in
+  // together and swing about the head pivot they hang off.
+  head: (ctx) => {
+    fadeRects(ctx);
+    highlightOutlines(ctx);
+    swayY(ctx.refs.groups.head?.current ?? null, ctx, HEAD_SWING, HEAD_SPEED);
+  }
 };
 
 function createSpaceStates(): Record<SpaceId, SpaceState> {
@@ -410,9 +426,8 @@ type SpaceRectProps = {
   // Rest value for the whole-rect fade; hover animations drive it from there.
   fade?: number;
   lineWidth?: number;
-  outlineRef?: Ref<RectOutlineRef>;
-  // The fill mesh, for behaviours that write its material directly.
-  fillRef?: Ref<THREE.Mesh>;
+  // Registry this rect adds itself to, so behaviours can reach it.
+  rects?: RectHandle[];
   // One handle for the pair: the fill and the outline must bend together.
   curveRef?: Ref<CurveHandle>;
   segments?: number;
@@ -437,8 +452,7 @@ function SpaceRect({
   fillOpacity = 1,
   fade = 1,
   lineWidth = 4,
-  outlineRef,
-  fillRef,
+  rects,
   curveRef,
   segments = 32,
   curveRadius = 0,
@@ -458,6 +472,31 @@ function SpaceRect({
 
   const fillCurve = useRef<CurveHandle>(null);
   const outlineCurve = useRef<CurveHandle>(null);
+
+  // Behaviours reach the rect through both halves of it.
+  const fillMesh = useRef<THREE.Mesh>(null);
+  const outline = useRef<RectOutlineRef>(null);
+
+  useEffect(() => {
+    if (!rects) return;
+    const handle: RectHandle = {
+      setFade: (o) => {
+        const material = fillMesh.current?.material as
+          | THREE.ShaderMaterial
+          | undefined;
+        if (material) material.uniforms.uFade.value = o;
+        if (outline.current) outline.current.material.opacity = o;
+      },
+      setOutlineColor: (from, to, t) => {
+        outline.current?.material.color.lerpColors(from, to, t);
+      }
+    };
+    rects.push(handle);
+    return () => {
+      const i = rects.indexOf(handle);
+      if (i !== -1) rects.splice(i, 1);
+    };
+  }, [rects]);
   useImperativeHandle(
     curveRef,
     () => ({
@@ -476,7 +515,7 @@ function SpaceRect({
   return (
     <group position={position} rotation={rotation}>
       <Rect
-        ref={fillRef}
+        ref={fillMesh}
         curveRef={fillCurve}
         size={size}
         radius={radius}
@@ -494,7 +533,7 @@ function SpaceRect({
         renderOrder={renderOrder}
       />
       <RectOutline
-        ref={outlineRef}
+        ref={outline}
         curveRef={outlineCurve}
         size={size}
         radius={radius}
@@ -597,9 +636,8 @@ export default function SpacesCanvas({
   const sceneRefsRef = useRef<SceneRefs | null>(null);
   const sceneRefs = (sceneRefsRef.current ??= {
     sceneGroup: { current: null },
-    outlines: { canvas: { current: null }, user: { current: null } },
-    groups: { user: { current: null } },
-    fills: { user: { current: null } },
+    groups: { user: { current: null }, head: { current: null } },
+    rects: { canvas: [], user: [], head: [] },
     shells: []
   });
 
@@ -622,7 +660,7 @@ export default function SpacesCanvas({
           {/* Canvas Space */}
           <Shell
             shells={sceneRefs.shells}
-            outlineRef={sceneRefs.outlines.canvas}
+            rects={sceneRefs.rects.canvas}
             size={{ x: 8, y: 3 }}
             radius={0.1}
             // Resting tone only: the hover animation owns this material's
@@ -668,8 +706,7 @@ export default function SpacesCanvas({
               shells={sceneRefs.shells}
               depth={USER_DEPTH}
               height={-0.2}
-              outlineRef={sceneRefs.outlines.user}
-              fillRef={sceneRefs.fills.user}
+              rects={sceneRefs.rects.user}
               size={{ x: 3, y: 1 }}
               radius={0.1}
               // Resting tone only — see Canvas Space above.
@@ -752,39 +789,62 @@ export default function SpacesCanvas({
           gridColor={theme.deviceLine}
         />
 
-        {/* Headspace indicators */}
-        <SpaceRect
-          size={{ x: 0.1, y: 0.1 }}
-          color={theme.grid}
-          fillColor={theme.bg}
-          position={[-0.4, 0, 0]}
-          lineWidth={3}
-          radius={0.01}
-        />
-        <SpaceRect
-          size={{ x: 0.1, y: 0.1 }}
-          color={theme.grid}
-          fillColor={theme.bg}
-          position={[0.4, 0, 0]}
-          lineWidth={3}
-          radius={0.01}
-        />
-        <SpaceRect
-          size={{ x: 0.1, y: 0.1 }}
-          color={theme.grid}
-          fillColor={theme.bg}
-          position={[-0.4, 0.6, 0]}
-          lineWidth={3}
-          radius={0.01}
-        />
-        <SpaceRect
-          size={{ x: 0.1, y: 0.1 }}
-          color={theme.grid}
-          fillColor={theme.bg}
-          position={[0.4, 0.6, 0]}
-          lineWidth={3}
-          radius={0.01}
-        />
+        {/* Headspace indicators. A HUD hung off the head pivot rather than a
+            shell, so the hover sway turns them with the head instead of sliding
+            them along the canvas. They fade like User Space, and for the same
+            reason don't write depth — order carries it, after everything else. */}
+        <group position={[0, 0, HEAD_Z]}>
+          <group ref={sceneRefs.groups.head}>
+            <SpaceRect
+              size={{ x: 0.1, y: 0.1 }}
+              color={theme.grid}
+              fillColor={theme.bg}
+              position={[-0.4, 0, -HEAD_Z]}
+              lineWidth={3}
+              radius={0.01}
+              rects={sceneRefs.rects.head}
+              fade={0}
+              depthWrite={false}
+              renderOrder={2}
+            />
+            <SpaceRect
+              size={{ x: 0.1, y: 0.1 }}
+              color={theme.grid}
+              fillColor={theme.bg}
+              position={[0.4, 0, -HEAD_Z]}
+              lineWidth={3}
+              radius={0.01}
+              rects={sceneRefs.rects.head}
+              fade={0}
+              depthWrite={false}
+              renderOrder={2}
+            />
+            <SpaceRect
+              size={{ x: 0.1, y: 0.1 }}
+              color={theme.grid}
+              fillColor={theme.bg}
+              position={[-0.4, 0.6, -HEAD_Z]}
+              lineWidth={3}
+              radius={0.01}
+              rects={sceneRefs.rects.head}
+              fade={0}
+              depthWrite={false}
+              renderOrder={2}
+            />
+            <SpaceRect
+              size={{ x: 0.1, y: 0.1 }}
+              color={theme.grid}
+              fillColor={theme.bg}
+              position={[0.4, 0.6, -HEAD_Z]}
+              lineWidth={3}
+              radius={0.01}
+              rects={sceneRefs.rects.head}
+              fade={0}
+              depthWrite={false}
+              renderOrder={2}
+            />
+          </group>
+        </group>
       </group>
     </ThreeCanvas>
   );
