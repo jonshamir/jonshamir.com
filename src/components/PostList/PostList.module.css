@@ -10,6 +10,7 @@
 .item {
   margin-top: 0;
   border-block-start: var(--rule);
+  overflow: hidden;
 }
 
 /* The anchor, not the li, is the row: it owns the padding so the whole row —
@@ -37,7 +38,7 @@
 }
 
 .postLink:hover .title {
-  font-weight: 700;
+  font-weight: 600;
 }
 
 .date {
@@ -52,7 +53,7 @@
   margin-inline-start: auto;
   align-self: center;
   display: flex;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .arrowClip :global(.arrow) {
@@ -61,5 +62,5 @@
 }
 
 .postLink:hover .arrowClip :global(.arrow) {
-  transform: translateX(0);
+  transform: translateX(-50%);
 }
