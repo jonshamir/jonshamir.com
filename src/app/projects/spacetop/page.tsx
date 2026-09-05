@@ -103,9 +103,10 @@ export default function Page() {
       </p>
       <SpacesSection />
       <p>
-        This gave Spacetop UI a predictable structure and allowed designers and
-        developers to reason about the 3D space surrounding the user, placing
-        interface components according to their importance and context.
+        This system gave Spacetop UI a predictable structure and allowed
+        designers and developers to reason about the 3D space surrounding the
+        user, placing interface components according to their importance and
+        context.
       </p>
       <p>
         <br />
