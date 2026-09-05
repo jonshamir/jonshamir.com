@@ -21,6 +21,7 @@ uniform vec3 uColor;
 uniform vec4 uRadius;
 uniform vec2 uSize;
 uniform float uOpacity;
+uniform float uFade;
 uniform float uStrokeWidth;
 uniform vec2 uGridCells;
 uniform vec3 uGridColor;
@@ -76,6 +77,10 @@ void main() {
         color = (gridColor * g + color * alpha * (1.0 - g)) / max(outAlpha, 1e-5);
         alpha = outAlpha;
     }
+
+    // uOpacity is the fill's own; this one scales the finished rect, so the
+    // grid fades with it instead of compositing over it at full strength.
+    alpha *= uFade;
 
     if (alpha < 0.001) discard;
 

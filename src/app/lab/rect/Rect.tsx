@@ -16,6 +16,8 @@ export type RectProps = ThreeElements["mesh"] & {
   size?: { x: number; y: number };
   color?: THREE.ColorRepresentation;
   opacity?: number;
+  // Scales the finished rect, grid included, where `opacity` is the fill's own.
+  fade?: number;
   depthTest?: boolean;
   depthWrite?: boolean;
   radius?: number;
@@ -37,6 +39,7 @@ type RectUniforms = {
   uRadius: { value: THREE.Vector4 };
   uSize: { value: THREE.Vector2 };
   uOpacity: { value: number };
+  uFade: { value: number };
   uStrokeWidth: { value: number };
   uGridCells: { value: THREE.Vector2 };
   uGridColor: { value: THREE.Color };
@@ -47,6 +50,7 @@ export function Rect(props: RectProps) {
   const {
     color = "",
     opacity = 1,
+    fade = 1,
     radius = 0,
     depthTest = true,
     depthWrite = false,
@@ -68,6 +72,7 @@ export function Rect(props: RectProps) {
     uRadius: { value: new THREE.Vector4(radius, radius, radius, radius) },
     uSize: { value: new THREE.Vector2(size.x, size.y) },
     uOpacity: { value: opacity },
+    uFade: { value: fade },
     uStrokeWidth: { value: strokeWidth },
     uGridCells: { value: new THREE.Vector2(gridCols, gridRows) },
     uGridColor: { value: new THREE.Color(gridColor) },
@@ -80,6 +85,7 @@ export function Rect(props: RectProps) {
     uniformsRef.current.uRadius.value.set(r, r, r, r);
     uniformsRef.current.uSize.value.set(size.x, size.y);
     uniformsRef.current.uOpacity.value = opacity;
+    uniformsRef.current.uFade.value = fade;
     uniformsRef.current.uStrokeWidth.value = strokeWidth;
     uniformsRef.current.uGridCells.value.set(gridCols, gridRows);
     uniformsRef.current.uGridColor.value.set(gridColor);
@@ -87,6 +93,7 @@ export function Rect(props: RectProps) {
   }, [
     color,
     opacity,
+    fade,
     radius,
     size.x,
     size.y,

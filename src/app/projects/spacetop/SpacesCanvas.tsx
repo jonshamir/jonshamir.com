@@ -180,9 +180,10 @@ function FrameSampler({ onSample }: { onSample: (t: number) => void }) {
 // an enter/leave crossfade the last writer wins), and should leave their target
 // untouched once fully at rest so a future behaviour can claim it.
 //
-// Three kinds of target exist so far: an outline's material (`refs.outlines`), a
-// group's transform (`refs.sceneGroup`, `refs.groups`), and the concentric
-// shells' radii (`refs.shells`), which is a geometry rewrite.
+// Four kinds of target exist so far: an outline's material (`refs.outlines`), a
+// group's transform (`refs.sceneGroup`, `refs.groups`), the concentric shells'
+// radii (`refs.shells`), which is a geometry rewrite, and a rect's opacity
+// (`refs.fills` plus its outline).
 //
 // Adding one is two edits: wire that space's rect to `refs.outlines[id]` (or
 // whatever object it drives) and fill in its `ANIMATIONS` entry.
@@ -212,6 +213,8 @@ type SceneRefs = {
   outlines: Partial<Record<SpaceId, RefObject<RectOutlineRef | null>>>;
   // Spaces whose behaviour moves their own rect rather than the whole scene.
   groups: Partial<Record<SpaceId, RefObject<THREE.Group | null>>>;
+  // Fill meshes of the spaces that fade in and out as a whole.
+  fills: Partial<Record<SpaceId, RefObject<THREE.Mesh | null>>>;
   // Every curved surface, in mount order. Shells register themselves.
   shells: ShellHandle[];
 };
@@ -239,6 +242,21 @@ function highlightOwnOutline({ id, p, refs, colors }: AnimContext) {
   const line = refs.outlines[id]?.current;
   if (!line) return;
   line.material.color.lerpColors(colors.grid, colors.line, easeOutCubic(p));
+}
+
+// The whole rect fades with the hover rather than lighting up in place: the
+// shader's uFade scales fill and grid alike (uOpacity is the fill's own, so it
+// stays out of this), and the outline's line material carries the same value.
+// Gained up so the surface is there well before the sway peaks, and on release
+// runs back down through the faster RELEASE_RATE.
+function fadeOwnRect({ id, p, refs }: AnimContext) {
+  const o = saturate(p * FADE_GAIN);
+  const material = refs.fills[id]?.current?.material as
+    | THREE.ShaderMaterial
+    | undefined;
+  if (material) material.uniforms.uFade.value = o;
+  const line = refs.outlines[id]?.current;
+  if (line) line.material.opacity = o;
 }
 
 // Sway back and forth around Y: 0 -> +peak -> 0 -> -peak. The phase only ever
@@ -291,6 +309,10 @@ function breatheShells(
   for (const shell of shells) shell.setCanvasRadius(radius);
 }
 
+// How far ahead of the hover progress a fading rect reaches full opacity: at
+// ENGAGE_RATE this lands it around 180ms, quick but still legible as a fade.
+const FADE_GAIN = 1.5;
+
 // Sign is which way it goes first: negative leads toward -Y rotation, i.e. the
 // scene turns the other way than a bare positive amplitude would.
 const WORK_SWING = -Math.PI / 8; // ±45° peaks of the Work Space sway
@@ -315,9 +337,10 @@ const ANIMATIONS: Record<SpaceId, (ctx: AnimContext) => void> = {
     highlightOwnOutline(ctx);
     breatheShells(ctx.refs.shells, ctx, CANVAS_SWING, CANVAS_SPEED);
   },
-  // The two compose because they write disjoint objects: the outline's material
-  // colour and the pivot group's rotation.
+  // The three compose because they write disjoint objects: the rect's opacity,
+  // the outline's material colour and the pivot group's rotation.
   user: (ctx) => {
+    fadeOwnRect(ctx);
     highlightOwnOutline(ctx);
     swayY(ctx.refs.groups.user?.current ?? null, ctx, USER_SWING, USER_SPEED);
   },
@@ -384,8 +407,12 @@ type SpaceRectProps = {
   color: string;
   fillColor: string;
   fillOpacity?: number;
+  // Rest value for the whole-rect fade; hover animations drive it from there.
+  fade?: number;
   lineWidth?: number;
   outlineRef?: Ref<RectOutlineRef>;
+  // The fill mesh, for behaviours that write its material directly.
+  fillRef?: Ref<THREE.Mesh>;
   // One handle for the pair: the fill and the outline must bend together.
   curveRef?: Ref<CurveHandle>;
   segments?: number;
@@ -395,6 +422,9 @@ type SpaceRectProps = {
   gridColor?: string;
   gridWidth?: number;
   depthWrite?: boolean;
+  // Painter's-order slot for the whole rect. Only needed by a rect that can't
+  // write depth — one that fades — since order is then all it has to go on.
+  renderOrder?: number;
   position?: ThreeElements["group"]["position"];
   rotation?: ThreeElements["group"]["rotation"];
 };
@@ -405,8 +435,10 @@ function SpaceRect({
   color,
   fillColor,
   fillOpacity = 1,
+  fade = 1,
   lineWidth = 4,
   outlineRef,
+  fillRef,
   curveRef,
   segments = 32,
   curveRadius = 0,
@@ -415,6 +447,7 @@ function SpaceRect({
   gridColor,
   gridWidth = 1,
   depthWrite = true,
+  renderOrder = 0,
   position,
   rotation
 }: SpaceRectProps) {
@@ -443,11 +476,13 @@ function SpaceRect({
   return (
     <group position={position} rotation={rotation}>
       <Rect
+        ref={fillRef}
         curveRef={fillCurve}
         size={size}
         radius={radius}
         color={fillColor}
         opacity={fillOpacity}
+        fade={fade}
         segments={segments}
         curveRadius={curveRadius}
         gridCols={gridCols}
@@ -456,6 +491,7 @@ function SpaceRect({
         gridWidth={gridWidth}
         polygonOffsetFactor={fillOffsetFactor}
         depthWrite={depthWrite}
+        renderOrder={renderOrder}
       />
       <RectOutline
         ref={outlineRef}
@@ -466,8 +502,11 @@ function SpaceRect({
         lineWidth={lineWidth}
         segments={segments}
         curveRadius={curveRadius}
+        depthWrite={depthWrite}
         depthBias={-10}
-        renderOrder={1}
+        // Half a step, so an outline clears its own fill without clearing the
+        // fills of rects that sit in front of it.
+        renderOrder={renderOrder + 0.5}
       />
     </group>
   );
@@ -560,6 +599,7 @@ export default function SpacesCanvas({
     sceneGroup: { current: null },
     outlines: { canvas: { current: null }, user: { current: null } },
     groups: { user: { current: null } },
+    fills: { user: { current: null } },
     shells: []
   });
 
@@ -602,7 +642,7 @@ export default function SpacesCanvas({
             shells={sceneRefs.shells}
             depth={WINDOW_DEPTH}
             arc={0.8}
-            height={0.5}
+            height={0.1}
             size={{ x: 1.6, y: 1 }}
             radius={0}
             color={theme.grid}
@@ -613,7 +653,7 @@ export default function SpacesCanvas({
             shells={sceneRefs.shells}
             depth={WINDOW_DEPTH}
             arc={-1.2}
-            height={0.8}
+            height={0.35}
             size={{ x: 1.6, y: 1 }}
             radius={0}
             color={theme.grid}
@@ -629,11 +669,26 @@ export default function SpacesCanvas({
               depth={USER_DEPTH}
               height={-0.2}
               outlineRef={sceneRefs.outlines.user}
+              fillRef={sceneRefs.fills.user}
               size={{ x: 3, y: 1 }}
               radius={0.1}
               // Resting tone only — see Canvas Space above.
               color={theme.grid}
               fillColor={theme.bg}
+              // Resting state, not a constant: the hover fade owns this from the
+              // first frame. Declared so Rect's prop-sync effect — which re-runs
+              // on every frame of a theme transition, `color` being a dependency
+              // — can't flash the rect back in while nothing is hovered.
+              fade={0}
+              // Both layers blend rather than write depth: a depth write is
+              // binary, so the mask would punch its full hole the moment the
+              // fade leaves zero instead of easing in with it. Order then has to
+              // carry what depth used to — drawing after the outlines of the
+              // canvas and windows behind it, which sit at 0.5. Everything in
+              // front (homebar, device) writes depth, so the depth test still
+              // keeps this from painting over any of it.
+              depthWrite={false}
+              renderOrder={1}
               gridCols={6}
               gridRows={2}
               gridColor={theme.grid}
@@ -664,6 +719,7 @@ export default function SpacesCanvas({
           curveRadius={0}
           position={[0, -0.65, 0]}
           rotation={[-1.2, 0, 0]}
+          lineWidth={3}
         />
 
         {/* Keyboard */}
@@ -694,6 +750,40 @@ export default function SpacesCanvas({
           position={[0, -0.7, 0.15]}
           rotation={[-1.2, 0, 0]}
           gridColor={theme.deviceLine}
+        />
+
+        {/* Headspace indicators */}
+        <SpaceRect
+          size={{ x: 0.1, y: 0.1 }}
+          color={theme.grid}
+          fillColor={theme.bg}
+          position={[-0.4, 0, 0]}
+          lineWidth={3}
+          radius={0.01}
+        />
+        <SpaceRect
+          size={{ x: 0.1, y: 0.1 }}
+          color={theme.grid}
+          fillColor={theme.bg}
+          position={[0.4, 0, 0]}
+          lineWidth={3}
+          radius={0.01}
+        />
+        <SpaceRect
+          size={{ x: 0.1, y: 0.1 }}
+          color={theme.grid}
+          fillColor={theme.bg}
+          position={[-0.4, 0.6, 0]}
+          lineWidth={3}
+          radius={0.01}
+        />
+        <SpaceRect
+          size={{ x: 0.1, y: 0.1 }}
+          color={theme.grid}
+          fillColor={theme.bg}
+          position={[0.4, 0.6, 0]}
+          lineWidth={3}
+          radius={0.01}
         />
       </group>
     </ThreeCanvas>

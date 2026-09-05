@@ -34,6 +34,9 @@ export type RectOutlineProps = {
   curveRef?: Ref<CurveHandle>;
   cornerSegments?: number;
   depthBias?: number;
+  // Off for a line that fades: LineMaterial writes depth whatever its opacity,
+  // so an invisible outline would still occlude what sits behind it.
+  depthWrite?: boolean;
   position?: [number, number, number];
   renderOrder?: number;
   ref?: Ref<RectOutlineRef>;
@@ -49,6 +52,7 @@ export function RectOutline({
   curveRef,
   cornerSegments = 8,
   depthBias = 0,
+  depthWrite = true,
   position,
   renderOrder = 0,
   ref
@@ -134,6 +138,7 @@ export function RectOutline({
       polygonOffset={depthBias !== 0}
       polygonOffsetFactor={0}
       polygonOffsetUnits={depthBias}
+      depthWrite={depthWrite}
       transparent
     />
   );
