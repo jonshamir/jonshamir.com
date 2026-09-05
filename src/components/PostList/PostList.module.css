@@ -41,9 +41,8 @@
 }
 
 .date {
-  font-size: 0.85em;
   white-space: nowrap;
-  min-width: 3.5em;
+  min-width: 4em;
   max-width: 5rem;
 }
 
