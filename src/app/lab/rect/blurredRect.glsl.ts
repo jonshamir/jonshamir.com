@@ -1,3 +1,5 @@
+import { linearToSRGB } from "../../../lib/shaders/colorSpace.glsl";
+
 export const vertexShader = /* glsl */ `
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -19,6 +21,8 @@ uniform vec3 uColor;
 uniform vec4 uRadius;
 uniform vec2 uSize;
 uniform float uBlur;
+
+${linearToSRGB}
 
 // https://madebyevan.com/shaders/fast-rounded-rectangle-shadows/
 
@@ -80,7 +84,7 @@ void main() {
     float alpha = roundedBoxShadow(pos, uSize, uBlur * 0.5, uRadius.x);
 
     vec3 normal = vNormal.xyz * 0.5 + 0.5;
-    vec3 gammaCorrectedColor = pow(uColor.rgb, vec3(1.0/2.2));
+    vec3 gammaCorrectedColor = LinearTosRGB(vec4(uColor.rgb, 1.0)).rgb;
     gl_FragColor = vec4(gammaCorrectedColor, alpha);
 }
 `;

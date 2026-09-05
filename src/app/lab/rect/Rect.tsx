@@ -1,8 +1,12 @@
 import { ThreeElements } from "@react-three/fiber";
-import { useEffect, useMemo, useRef } from "react";
+import { Ref, useEffect, useImperativeHandle, useMemo, useRef } from "react";
 import * as THREE from "three";
 
-import { createCurvedPlaneGeometry } from "./curvedPlaneGeometry";
+import {
+  createCurvedPlaneGeometry,
+  type CurveHandle,
+  setGeometryCurveRadius
+} from "./curvedPlaneGeometry";
 import { fragmentShader, vertexShader } from "./rect.glsl";
 
 // Remounts the material when the shader source changes (hot reload).
@@ -18,6 +22,9 @@ export type RectProps = ThreeElements["mesh"] & {
   strokeWidth?: number;
   segments?: number;
   curveRadius?: number;
+  // Drives the bend after mount. `curveRadius` stays the rest value: it keys the
+  // geometry, and re-keying it mid-animation would rebuild what this is writing.
+  curveRef?: Ref<CurveHandle>;
   polygonOffsetFactor?: number;
   gridCols?: number;
   gridRows?: number;
@@ -47,6 +54,7 @@ export function Rect(props: RectProps) {
     strokeWidth = 0,
     segments = 1,
     curveRadius = 0,
+    curveRef,
     polygonOffsetFactor = 1,
     gridCols = 0,
     gridRows = 0,
@@ -94,6 +102,12 @@ export function Rect(props: RectProps) {
     [size.x, size.y, segments, curveRadius]
   );
   useEffect(() => () => geometry.dispose(), [geometry]);
+
+  useImperativeHandle(
+    curveRef,
+    () => ({ setCurveRadius: (r) => setGeometryCurveRadius(geometry, r) }),
+    [geometry]
+  );
 
   return (
     <mesh {...rest} geometry={geometry}>

@@ -51,6 +51,7 @@ export default function RectCanvas() {
       <ThreeCanvas
         camera={{ position: [0, 0, 10], zoom: 3.5 }}
         isFullscreen={true}
+        flat
       >
         <OrbitControls enablePan={false} />
         <ShadowRect

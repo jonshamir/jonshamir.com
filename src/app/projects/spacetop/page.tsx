@@ -160,9 +160,10 @@ export default function Page() {
       <h2>Cross-platform design system</h2>
 
       <p>
-        Spacetop's interface is a mix of native Unity UI and embedded web-based
-        apps, and they needed to look and behave identically. I designed and
-        built a design system that spans both:
+        Spacetop's interface is a mix of Unity UI, native UI and embedded
+        web-based apps, and they needed to look and behave coherently. I created
+        a react-based design system that spans both "platforms" and provides a
+        shared set of components, styles and behaviors.
       </p>
       <p>
         a shared token and spec layer defining color, type, spacing, and motion

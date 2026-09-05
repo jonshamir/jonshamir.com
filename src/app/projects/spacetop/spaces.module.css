@@ -24,12 +24,14 @@
 }
 
 .spaces {
-  --canvas-height: 38rem;
+  --canvas-height: 44rem;
 
   grid-column: full;
   display: grid;
   grid-template-columns: subgrid;
   row-gap: var(--space-md);
+  margin-top: -4rem;
+  margin-bottom: -8rem;
 }
 
 .figure {

@@ -1,8 +1,12 @@
-import { bendAroundY } from "./curvedPlaneGeometry";
+import { bendX, bendZ } from "./curvedPlaneGeometry";
 
 type Point2D = [number, number];
 
 const EPS = 1e-9;
+
+function cornerRadius(width: number, height: number, radius: number) {
+  return Math.max(0, Math.min(radius, Math.min(width, height)) / 2);
+}
 
 function buildContour(hw: number, hh: number, r: number, arcSegments: number) {
   const points: Point2D[] = [];
@@ -61,6 +65,62 @@ function insertChordCrossings(contour: Point2D[], hw: number, step: number) {
   return refined;
 }
 
+// The flat contour, split at every chord boundary. Its point count depends only
+// on the rect's dimensions and `segments` — never on the curve radius — so one
+// contour can be bent to any radius, which is what lets bendContourInto animate
+// a live line. Only the curved path goes through here: the flat case below
+// keeps the unsplit contour it has always used.
+export function createRefinedContour(
+  width: number,
+  height: number,
+  radius: number,
+  segments: number,
+  cornerSegments = 8
+): Point2D[] {
+  const hw = width / 2;
+  const contour = buildContour(
+    hw,
+    height / 2,
+    cornerRadius(width, height, radius),
+    cornerSegments
+  );
+  return insertChordCrossings(contour, hw, width / segments);
+}
+
+// Bends a refined contour, writing xyz triplets into `out` (3 per point).
+// Allocation-free, so the frame loop can drive it.
+//
+// The fill quad renders the cylinder as `segments` flat chords, so the line
+// must lie on that chord surface — not the true cylinder — or it dips behind
+// the fill between quad vertices. The contour already carries a point at every
+// chord boundary; positions in between interpolate along the bent chord.
+export function bendContourInto(
+  contour: Point2D[],
+  width: number,
+  segments: number,
+  curveRadius: number,
+  out: Float32Array
+) {
+  const hw = width / 2;
+  const step = width / segments;
+  for (let i = 0; i < contour.length; i++) {
+    const [x, y] = contour[i];
+    const seg = Math.min(
+      segments - 1,
+      Math.max(0, Math.floor((x + hw) / step))
+    );
+    const x0 = -hw + seg * step;
+    const ax = bendX(x0, curveRadius);
+    const az = bendZ(x0, curveRadius);
+    const bx = bendX(x0 + step, curveRadius);
+    const bz = bendZ(x0 + step, curveRadius);
+    const t = (x - x0) / step;
+    out[i * 3] = ax + (bx - ax) * t;
+    out[i * 3 + 1] = y;
+    out[i * 3 + 2] = az + (bz - az) * t;
+  }
+}
+
 export function createRoundedRectContourPoints(
   width: number,
   height: number,
@@ -69,26 +129,24 @@ export function createRoundedRectContourPoints(
   curveRadius: number,
   cornerSegments = 8
 ): [number, number, number][] {
-  const hw = width / 2;
-  const hh = height / 2;
-  const r = Math.max(0, Math.min(radius, Math.min(width, height)) / 2);
-  const contour = buildContour(hw, hh, r, cornerSegments);
+  if (curveRadius === 0) {
+    const contour = buildContour(
+      width / 2,
+      height / 2,
+      cornerRadius(width, height, radius),
+      cornerSegments
+    );
+    return contour.map(([x, y]) => [x, y, 0]);
+  }
 
-  if (curveRadius === 0) return contour.map(([x, y]) => [x, y, 0]);
-
-  // The fill quad renders the cylinder as `segments` flat chords, so the line
-  // must lie on that chord surface — not the true cylinder — or it dips behind
-  // the fill between quad vertices. Split segments at every chord boundary,
-  // then interpolate positions along the bent chords.
-  const step = width / segments;
-  const bendOntoChords = ([x, y]: Point2D): [number, number, number] => {
-    const i = Math.min(segments - 1, Math.max(0, Math.floor((x + hw) / step)));
-    const x0 = -hw + i * step;
-    const [ax, , az] = bendAroundY(x0, y, curveRadius);
-    const [bx, , bz] = bendAroundY(x0 + step, y, curveRadius);
-    const t = (x - x0) / step;
-    return [ax + (bx - ax) * t, y, az + (bz - az) * t];
-  };
-
-  return insertChordCrossings(contour, hw, step).map(bendOntoChords);
+  const contour = createRefinedContour(
+    width,
+    height,
+    radius,
+    segments,
+    cornerSegments
+  );
+  const out = new Float32Array(contour.length * 3);
+  bendContourInto(contour, width, segments, curveRadius, out);
+  return contour.map((_, i) => [out[i * 3], out[i * 3 + 1], out[i * 3 + 2]]);
 }

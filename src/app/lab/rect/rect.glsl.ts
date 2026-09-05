@@ -1,3 +1,5 @@
+import { linearToSRGB } from "../../../lib/shaders/colorSpace.glsl";
+
 export const vertexShader = /* glsl */ `
 varying vec2 vUv;
 varying vec3 vNormal;
@@ -23,6 +25,8 @@ uniform float uStrokeWidth;
 uniform vec2 uGridCells;
 uniform vec3 uGridColor;
 uniform float uGridWidth;
+
+${linearToSRGB}
 
 float sdRoundedBox(in vec2 p, in vec2 b, in vec4 r)
 {
@@ -59,7 +63,7 @@ void main() {
 
     alpha *= uOpacity;
 
-    vec3 color = pow(uColor.rgb, vec3(1.0/2.2));
+    vec3 color = LinearTosRGB(vec4(uColor.rgb, 1.0)).rgb;
 
     if (uGridWidth > 0.0) {
         float interior = 1.0 - smoothstep(-aa, 0.0, d + uStrokeWidth * pixelSize);
@@ -67,7 +71,7 @@ void main() {
             gridLineCoverage(pos.x, uSize.x, uGridCells.x, uGridWidth),
             gridLineCoverage(pos.y, uSize.y, uGridCells.y, uGridWidth)
         ) * interior;
-        vec3 gridColor = pow(uGridColor.rgb, vec3(1.0/2.2));
+        vec3 gridColor = LinearTosRGB(vec4(uGridColor.rgb, 1.0)).rgb;
         float outAlpha = g + alpha * (1.0 - g);
         color = (gridColor * g + color * alpha * (1.0 - g)) / max(outAlpha, 1e-5);
         alpha = outAlpha;
