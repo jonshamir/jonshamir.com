@@ -109,9 +109,19 @@ export function CustomLeaf({
         new BufferAttribute(new Float32Array(vertexSubsurfaceColors), 3)
       );
 
+      const old = meshRef.current.geometry;
       meshRef.current.geometry = geometry;
+      old.dispose();
     }
   }, [growingStage, dyingStage, baseColor, shadowColor, subsurfaceColor]);
+
+  useEffect(() => {
+    const mesh = meshRef.current;
+    return () => {
+      mesh?.geometry.dispose();
+      material.dispose();
+    };
+  }, [material]);
 
   return (
     <mesh {...props} ref={meshRef} castShadow receiveShadow>

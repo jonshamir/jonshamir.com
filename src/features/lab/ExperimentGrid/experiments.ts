@@ -9,6 +9,7 @@ type BaseItem = {
   span: 1 | 2 | 3; // sixths of the grid width
   aspectRatio: string;
   href?: string;
+  hidden?: boolean; // omit from the rendered grid
 };
 
 export type ExperimentItem =
@@ -27,7 +28,8 @@ export const experiments: ExperimentItem[] = [
     src: "/homepage/cavorite.mp4",
     caption: "Cavorite",
     span: 3,
-    aspectRatio: "16 / 9"
+    aspectRatio: "16 / 9",
+    hidden: true
   },
   {
     id: "topo",
@@ -68,16 +70,6 @@ export const experiments: ExperimentItem[] = [
     aspectRatio: "1596 / 828"
   },
   {
-    id: "point-cloud",
-    kind: "image",
-    src: "/lab/point-cloud.png",
-    alt: "Gaussian splat point cloud scan",
-    caption: "Gaussian splats",
-    span: 2,
-    aspectRatio: "1 / 1",
-    href: "/lab/point-cloud"
-  },
-  {
     id: "uirect",
     kind: "image",
     src: "/homepage/uirect.webp",
@@ -87,6 +79,15 @@ export const experiments: ExperimentItem[] = [
     aspectRatio: "2480 / 3508"
   },
   {
+    id: "sdf-collision",
+    kind: "video",
+    src: "/homepage/sdf-collision.mp4",
+    caption: "SDF shape collisions",
+    span: 2,
+    aspectRatio: "3 / 4",
+    href: "/lab/sdf-collision"
+  },
+  {
     id: "hex",
     kind: "image",
     src: "/homepage/hex.webp",
@@ -94,5 +95,46 @@ export const experiments: ExperimentItem[] = [
     caption: "Riso print",
     span: 1,
     aspectRatio: "1440 / 1594"
+  },
+  {
+    id: "rect",
+    kind: "image",
+    src: "/lab/rect.png",
+    alt: "Rounded rectangles drawn with signed distance fields",
+    caption: "Rect",
+    span: 2,
+    aspectRatio: "1 / 1",
+    href: "/lab/rect",
+    hidden: true
+  },
+  {
+    id: "earth",
+    kind: "image",
+    src: "/lab/earth.png",
+    alt: "Map projections of the Earth",
+    caption: "Earth projections",
+    span: 2,
+    aspectRatio: "1 / 1",
+    href: "/lab/earth"
+  },
+  {
+    id: "moon",
+    kind: "image",
+    src: "/lab/moon.png",
+    alt: "Spherical projection mapping of the Moon",
+    caption: "Moon",
+    span: 2,
+    aspectRatio: "1 / 1",
+    href: "/lab/moon"
+  },
+  {
+    id: "point-cloud",
+    kind: "image",
+    src: "/lab/point-cloud.png",
+    alt: "Gaussian splat point cloud render",
+    caption: "Gaussian splat particles",
+    span: 2,
+    aspectRatio: "1 / 1",
+    href: "/lab/point-cloud"
   }
 ];

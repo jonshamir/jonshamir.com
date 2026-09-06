@@ -68,8 +68,12 @@
   font-style: normal;
 }
 
+.exploreLink :global(.arrow) {
+  transform: translateX(0.2em);
+}
+
 .exploreLink:hover :global(.arrow) {
-  transform: translateX(0.15em);
+  transform: translateX(0.45em);
 }
 
 /* Hidden-until-hover only where hover exists; touch devices keep it visible */

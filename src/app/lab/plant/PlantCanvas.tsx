@@ -1,23 +1,39 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { useEffect, useMemo } from "react";
+import { clsx } from "clsx";
+import { useCallback, useEffect, useMemo, useRef } from "react";
 import { Color, PCFShadowMap } from "three";
 
+import { Button } from "../../../components/Button/Button";
+import { FeatherIcon } from "../../../components/FeatherIcon/FeatherIcon";
 import { ParallaxRig } from "../../../components/ThreeCanvas/ParallaxRig";
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
+import {
+  TimelineDriver,
+  useTimelinePlayer
+} from "../../../components/ThreeCanvas/TimelinePlayer";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useLinearColors } from "../../../lib/hooks/useLinearColor";
 import { useControls } from "../../../lib/tweakpane";
 import { FlowerStem } from "./FlowerStem";
 import { GroundMaterial } from "./groundMaterial";
+import { computeGrowthValues, growthSchema, totalDuration } from "./growth";
 import { PhyllotaxisSpawner } from "./PhyllotaxisSpawner";
 import { Plant } from "./Plant";
-import { PLANT_BG } from "./plantBg";
+import styles from "./PlantCanvas.module.css";
+import {
+  environmentSchema,
+  flowerColorsSchema,
+  flowersSchema,
+  leafColorsSchema,
+  potColorsSchema,
+  potDimensionsSchema,
+  stemSchema
+} from "./plantControls";
 import { Pot } from "./Pot";
 import { SimpleFlower } from "./SimpleFlower";
-
-const GOLDEN_ANGLE = 2.39996;
+import { saturate } from "./utils";
 
 export default function PlantCanvas({
   controls = true,
@@ -34,100 +50,76 @@ export default function PlantCanvas({
     shadowPlaneColor,
     lightPitch,
     lightYaw
-  } = useControls(
-    "Environment",
-    {
-      bgColor: { value: PLANT_BG, label: "Background", alpha: true },
-      groundColor: { value: "#7c4b2c", label: "Ground Color" },
-      groundShadowColor: { value: "#13121a", label: "Ground Shadow Color" },
-      shadowPlaneEnabled: { value: true, label: "Shadow Plane Enabled" },
-      shadowPlaneColor: { value: "#10163d", label: "Shadow Plane Color" },
-      lightPitch: {
-        value: 60,
-        min: 0,
-        max: 90,
-        step: 1,
-        label: "Light Pitch (°)"
-      },
-      lightYaw: {
-        value: 130,
-        min: 0,
-        max: 360,
-        step: 1,
-        label: "Light Yaw (°)"
-      }
-    },
-    { collapsed: true }
-  ) as {
-    bgColor: string;
-    groundColor: string;
-    groundShadowColor: string;
-    shadowPlaneEnabled: boolean;
-    shadowPlaneColor: string;
-    lightPitch: number;
-    lightYaw: number;
-  };
+  } = useControls("Environment", environmentSchema, { collapsed: true });
 
   const { currAge } = useControls({
     currAge: { value: 19, min: 0, max: 200 }
-  }) as { currAge: number };
+  });
+
+  const player = useTimelinePlayer();
+
+  const { progress, ...animParams } = useControls(
+    "Animation",
+    {
+      ...growthSchema,
+      progress: { value: 0, min: 0, max: 1, step: 0.001, label: "Progress" },
+      replay: { button: player.replay, label: "Replay" }
+    },
+    { collapsed: true }
+  );
+
+  const paramsRef = useRef(animParams);
+  paramsRef.current = animParams;
+  const getDuration = useCallback(() => totalDuration(paramsRef.current), []);
+
+  // Scrubbing the progress slider pauses playback and jumps the plant there.
+  // Guard on the value changing, not on "first run": effects can re-run with
+  // refs intact (dev double-invoke, hidden remounts), which would kill autoplay.
+  const { scrubTo } = player;
+  const lastScrub = useRef(progress);
+  useEffect(() => {
+    if (progress === lastScrub.current) return;
+    lastScrub.current = progress;
+    scrubTo(progress);
+  }, [progress, scrubTo]);
+
+  const anim = computeGrowthValues(player.progress, animParams);
 
   const { leafBaseColor, leafShadowColor, leafSubsurfaceColor } = useControls(
     "Leaf Colors",
-    {
-      leafBaseColor: { value: "#458052", label: "Base Color" },
-      leafShadowColor: { value: "#1f3438", label: "Shadow Color" },
-      leafSubsurfaceColor: { value: "#b7ff00", label: "Subsurface Color" }
-    },
+    leafColorsSchema,
     { collapsed: true }
-  ) as {
-    leafBaseColor: string;
-    leafShadowColor: string;
-    leafSubsurfaceColor: string;
-  };
+  );
 
   const { flowerBaseColor, flowerShadowColor, flowerSubsurfaceColor } =
-    useControls(
-      "Flower Colors",
-      {
-        flowerBaseColor: { value: "#a8b2f8", label: "Base Color" },
-        flowerShadowColor: { value: "#5258ba", label: "Shadow Color" },
-        flowerSubsurfaceColor: { value: "#6300ff", label: "Subsurface Color" }
-      },
-      { collapsed: true }
-    ) as {
-      flowerBaseColor: string;
-      flowerShadowColor: string;
-      flowerSubsurfaceColor: string;
-    };
+    useControls("Flower Colors", flowerColorsSchema, { collapsed: true });
 
-  const { fCount, fMatureAge, fBasePitch, fBaseYaw, fLayerHeight } =
-    useControls(
-      "Flowers",
-      {
-        fCount: { value: 28, min: 0, max: 50, step: 1 },
-        fMatureAge: { value: 30, min: 1, max: 200, step: 1 },
-        fBasePitch: { value: -3, min: -Math.PI, max: Math.PI },
-        fBaseYaw: { value: GOLDEN_ANGLE, min: 0, max: Math.PI },
-        fLayerHeight: { value: 0.018, min: 0, max: 0.3 }
-      },
-      { collapsed: true }
-    ) as {
-      fCount: number;
-      fMatureAge: number;
-      fBasePitch: number;
-      fBaseYaw: number;
-      fLayerHeight: number;
-    };
+  const {
+    fCount,
+    fMatureAge,
+    fBasePitch,
+    fAgePitch,
+    fDyingPitch,
+    fBaseYaw,
+    fLayerHeight,
+    fSpacingPower,
+    fMinScale,
+    fMinThickness,
+    fColorPower,
+    fOpenStage
+  } = useControls("Flowers", flowersSchema, { collapsed: true });
+
+  const { stemCurveAmount, stemCurvePower, stemMinThickness } = useControls(
+    "Stem",
+    stemSchema,
+    { collapsed: true }
+  );
 
   const { potBaseColor, potShadowColor } = useControls(
     "Pot Colors",
-    {
-      potBaseColor: { value: "#ad826c", label: "Base Color" },
-      potShadowColor: { value: "#201d2e", label: "Shadow Color" }
-    },
+    potColorsSchema,
     { collapsed: true }
-  ) as { potBaseColor: string; potShadowColor: string };
+  );
 
   const {
     potHeight,
@@ -136,61 +128,7 @@ export default function PlantCanvas({
     potRimHeight,
     potRimThickness,
     potThickness
-  } = useControls(
-    "Pot Dimensions",
-    {
-      potHeight: {
-        value: 0.4,
-        min: 0.1,
-        max: 2.0,
-        step: 0.05,
-        label: "Height"
-      },
-      potBottomRadius: {
-        value: 0.15,
-        min: 0.1,
-        max: 1.0,
-        step: 0.05,
-        label: "Bottom Radius"
-      },
-      potTopRadius: {
-        value: 0.25,
-        min: 0.1,
-        max: 1.0,
-        step: 0.05,
-        label: "Top Radius"
-      },
-      potRimHeight: {
-        value: 0.11,
-        min: 0.01,
-        max: 0.5,
-        step: 0.01,
-        label: "Rim Height"
-      },
-      potRimThickness: {
-        value: 0.025,
-        min: 0.01,
-        max: 0.2,
-        step: 0.01,
-        label: "Rim Thickness"
-      },
-      potThickness: {
-        value: 0.01,
-        min: 0.01,
-        max: 0.1,
-        step: 0.01,
-        label: "Wall Thickness"
-      }
-    },
-    { collapsed: true }
-  ) as {
-    potHeight: number;
-    potBottomRadius: number;
-    potTopRadius: number;
-    potRimHeight: number;
-    potRimThickness: number;
-    potThickness: number;
-  };
+  } = useControls("Pot Dimensions", potDimensionsSchema, { collapsed: true });
 
   // Convert pitch/yaw to cartesian coordinates
   const lightPosition: [number, number, number] = useMemo(() => {
@@ -235,65 +173,86 @@ export default function PlantCanvas({
     shadowPlane: shadowPlaneColor
   });
 
-  return (
-    <>
-      {controls && <TweakpanePanel />}
-      <ThreeCanvas
-        camera={{
-          fov: 45,
-          position: isFullscreen ? [0, 0, -5] : [0, -0.3, -4.3],
-          near: 0.01
-        }}
-        isFullscreen={isFullscreen}
-        grabCursor={isFullscreen}
-        shadows={{ type: PCFShadowMap }}
-        frameloop={isFullscreen ? "always" : "demand"}
-        style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
-      >
-        {/* <StatsGl className="stats-gl" /> */}
-        <OrbitControls
-          target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
-          enableZoom={isFullscreen}
-          enableRotate={isFullscreen}
-          enablePan={isFullscreen}
+  const replayButton = (
+    <Button
+      round
+      variant="opaque"
+      aria-label="Replay growth animation"
+      className={clsx(
+        styles.replayButton,
+        isFullscreen ? styles.fixedButton : styles.tileButton
+      )}
+      onClick={player.replay}
+    >
+      <FeatherIcon iconName="rotate-ccw" />
+    </Button>
+  );
+
+  const scene = (
+    <ThreeCanvas
+      camera={{
+        fov: 45,
+        position: isFullscreen ? [0, 0, -5] : [0, -0.3, -4.3],
+        near: 0.01
+      }}
+      isFullscreen={isFullscreen}
+      grabCursor={isFullscreen}
+      shadows={{ type: PCFShadowMap }}
+      frameloop={isFullscreen ? "always" : "demand"}
+      style={{ backgroundColor: `var(--canvas-bg, ${bgColor})` }}
+    >
+      {/* <StatsGl className="stats-gl" /> */}
+      <TimelineDriver player={player} getDuration={getDuration} />
+      <OrbitControls
+        target={isFullscreen ? [0, 0, 0] : [0, -0.3, 0]}
+        enableZoom={isFullscreen}
+        enableRotate={isFullscreen}
+        enablePan={isFullscreen}
+      />
+      <ambientLight intensity={0.4} />
+      <ParallaxRig enabled={!isFullscreen}>
+        <directionalLight
+          position={lightPosition}
+          intensity={1.5}
+          castShadow
+          shadow-mapSize-width={shadowMapSize}
+          shadow-mapSize-height={shadowMapSize}
+          shadow-camera-far={50}
+          shadow-camera-left={-3}
+          shadow-camera-right={3}
+          shadow-camera-top={3}
+          shadow-camera-bottom={-3}
+          shadow-normalBias={shadowNormalBias}
+          shadow-radius={5}
         />
-        <ambientLight intensity={0.4} />
-        <ParallaxRig enabled={!isFullscreen}>
-          <directionalLight
-            position={lightPosition}
-            intensity={1.5}
-            castShadow
-            shadow-mapSize-width={shadowMapSize}
-            shadow-mapSize-height={shadowMapSize}
-            shadow-camera-far={50}
-            shadow-camera-left={-3}
-            shadow-camera-right={3}
-            shadow-camera-top={3}
-            shadow-camera-bottom={-3}
-            shadow-normalBias={shadowNormalBias}
-            shadow-radius={5}
-          />
-          <Pot
-            position={[0, -0.8, 0]}
-            baseColor={colors.potBase}
-            shadowColor={colors.potShadow}
-            height={potHeight}
-            bottomRadius={potBottomRadius}
-            topRadius={potTopRadius}
-            rimHeight={potRimHeight}
-            rimThickness={potRimThickness}
-            potThickness={potThickness}
-          />
+        <Pot
+          position={[0, -0.8, 0]}
+          baseColor={colors.potBase}
+          shadowColor={colors.potShadow}
+          height={potHeight}
+          bottomRadius={potBottomRadius}
+          topRadius={potTopRadius}
+          rimHeight={potRimHeight}
+          rimThickness={potRimThickness}
+          potThickness={potThickness}
+        />
+        {/* Scale group carries the plant's base position so growth scales
+              from the pot rim, not the world origin. */}
+        <group position={[0, -1, 0]} scale={anim.scale}>
           <Plant
             age={currAge}
-            position={[0, -1, 0]}
+            maturity={anim.leaves}
+            matureAgeStartMult={animParams.matureAgeMult}
             baseColor={colors.leafBase}
             shadowColor={colors.leafShadow}
             subsurfaceColor={colors.leafSubsurface}
           />
           <FlowerStem
-            growingStage={1}
-            position={[0, -1, 0]}
+            growingStage={anim.stalk}
+            flowerStage={anim.flowers}
+            curveAmount={stemCurveAmount}
+            curvePower={stemCurvePower}
+            minThickness={stemMinThickness}
             baseColor={colors.leafBase}
             shadowColor={colors.leafShadow}
             subsurfaceColor={colors.leafSubsurface}
@@ -304,7 +263,11 @@ export default function PlantCanvas({
                   matureAge={fMatureAge}
                   baseYaw={fBaseYaw}
                   basePitch={fBasePitch}
-                  layerHeight={-fLayerHeight}
+                  invertAge
+                  agePitch={fAgePitch}
+                  dyingPitch={fDyingPitch}
+                  spacingPower={fSpacingPower}
+                  layerHeight={fLayerHeight * anim.flowers}
                   curve={curve}
                   baseColor={colors.flowerBase}
                   shadowColor={colors.flowerShadow}
@@ -313,35 +276,62 @@ export default function PlantCanvas({
                     <SimpleFlower
                       key={spawnProps.index}
                       {...spawnProps}
-                      growingStage={spawnProps.growingStage * flowerScale}
+                      minScale={fMinScale}
+                      minThickness={fMinThickness}
+                      colorMixPower={fColorPower}
+                      openStage={fOpenStage}
+                      stemColor={colors.leafBase}
+                      stemShadowColor={colors.leafShadow}
+                      stemSubsurfaceColor={colors.leafSubsurface}
+                      growingStage={
+                        spawnProps.growingStage *
+                        saturate(
+                          flowerScale * (1 + animParams.flowerStagger) -
+                            (1 - spawnProps.index / fCount) *
+                              animParams.flowerStagger
+                        )
+                      }
                     />
                   )}
                 />
               </group>
             )}
           />
+        </group>
+        <mesh
+          rotation={[-Math.PI / 2, 0, 0]}
+          position={[0, -0.88, 0]}
+          receiveShadow
+          castShadow
+        >
+          <circleGeometry args={[potTopRadius, 64]} />
+          <primitive object={groundMaterial} attach="material" />
+        </mesh>
+        {/* Transparent ground plane for catching shadows */}
+        {shadowPlaneEnabled && (
           <mesh
             rotation={[-Math.PI / 2, 0, 0]}
-            position={[0, -0.88, 0]}
+            position={[0, -1.2, 0]}
             receiveShadow
-            castShadow
           >
-            <circleGeometry args={[potTopRadius, 64]} />
-            <primitive object={groundMaterial} attach="material" />
+            <planeGeometry args={[10, 10]} />
+            <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
           </mesh>
-          {/* Transparent ground plane for catching shadows */}
-          {shadowPlaneEnabled && (
-            <mesh
-              rotation={[-Math.PI / 2, 0, 0]}
-              position={[0, -1.2, 0]}
-              receiveShadow
-            >
-              <planeGeometry args={[10, 10]} />
-              <shadowMaterial color={colors.shadowPlane} opacity={0.3} />
-            </mesh>
-          )}
-        </ParallaxRig>
-      </ThreeCanvas>
+        )}
+      </ParallaxRig>
+    </ThreeCanvas>
+  );
+
+  return isFullscreen ? (
+    <>
+      {controls && <TweakpanePanel />}
+      {replayButton}
+      {scene}
     </>
+  ) : (
+    <div className={styles.tileFrame}>
+      {scene}
+      {replayButton}
+    </div>
   );
 }

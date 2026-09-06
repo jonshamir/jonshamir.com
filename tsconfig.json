@@ -17,6 +17,13 @@
     "plugins": [
       {
         "name": "next"
+      },
+      {
+        "name": "typescript-plugin-css-modules",
+        "options": {
+          "goToDefinition": true,
+          "customTemplate": "./css-modules-template.js"
+        }
       }
     ],
     "strictNullChecks": true,

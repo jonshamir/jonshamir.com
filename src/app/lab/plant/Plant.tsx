@@ -8,6 +8,8 @@ const GOLDEN_ANGLE = 2.39996;
 
 interface PlantProps {
   age: number;
+  maturity?: number; // 0 = all leaves young, 1 = normal matureAge
+  matureAgeStartMult?: number; // effective matureAge multiplier at maturity 0
   position?: [number, number, number];
   rotation?: Euler;
   baseColor?: Color;
@@ -17,6 +19,8 @@ interface PlantProps {
 
 export function Plant({
   age: n,
+  maturity = 1,
+  matureAgeStartMult = 1,
   baseColor,
   shadowColor,
   subsurfaceColor,
@@ -31,17 +35,17 @@ export function Plant({
       layerHeight: { value: 0.01, min: 0, max: 0.2 }
     },
     { collapsed: true }
-  ) as {
-    matureAge: number;
-    basePitch: number;
-    baseYaw: number;
-    layerHeight: number;
-  };
+  );
+
+  // growingStage = pow(2*age, 0.3) is steep near 0, so matureAge must sweep
+  // into the thousands for leaves to read young — interpolate in log space.
+  const effectiveMatureAge =
+    matureAge * Math.pow(matureAgeStartMult, 1 - maturity);
 
   return (
     <PhyllotaxisSpawner
       count={n}
-      matureAge={matureAge}
+      matureAge={effectiveMatureAge}
       baseYaw={baseYaw}
       basePitch={basePitch}
       layerHeight={layerHeight}

@@ -20,7 +20,7 @@ export default function TopoCanvas() {
   const controls = useControls(schema);
 
   useEffect(() => {
-    syncControlsToUniforms(controls as unknown as TopoControls, uniforms);
+    syncControlsToUniforms(controls as TopoControls, uniforms);
   }, [controls, uniforms]);
 
   return (

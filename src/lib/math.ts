@@ -100,3 +100,43 @@ export function pseudoRandom(n: number): number {
 export function easeInExpo(x: number): number {
   return x === 0 ? 0 : Math.pow(2, 10 * x - 10);
 }
+
+/**
+ * Linear interpolation between two values
+ * @param a - Start value
+ * @param b - End value
+ * @param t - Interpolation factor (0 to 1)
+ * @returns Interpolated value
+ */
+export function lerp(a: number, b: number, t: number): number {
+  return a + (b - a) * t;
+}
+
+/**
+ * Cubic ease-out function
+ * @param x - Input value (0 to 1)
+ * @returns Eased value
+ */
+export function easeOutCubic(x: number): number {
+  return 1 - Math.pow(1 - x, 3);
+}
+
+/**
+ * Cubic ease-in-out function
+ * @param x - Input value (0 to 1)
+ * @returns Eased value
+ */
+export function easeInOutCubic(x: number): number {
+  return x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+}
+
+/**
+ * Back ease-out function (slight overshoot past 1)
+ * @param x - Input value (0 to 1)
+ * @returns Eased value
+ */
+export function easeOutBack(x: number): number {
+  const c1 = 1.70158;
+  const c3 = c1 + 1;
+  return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+}
