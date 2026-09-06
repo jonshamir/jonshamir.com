@@ -88,7 +88,7 @@ type Theme = {
 const THEMES: Record<"dark" | "light", Theme> = {
   dark: {
     bg: "#1e1e1e",
-    line: "#5772ad",
+    line: "#5886e9",
     fill: "#2c3a57",
     grid: "#3c527b",
     deviceFill: "#414141",
