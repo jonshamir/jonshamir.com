@@ -33,9 +33,9 @@ export default function Page() {
 
       <p>
         The project included both design and implementation. Working alongside
-        Simply's AR team, I built the entire app from the ground up using Unity
-        and the Android XR SDK. The audio engine, lesson content and course
-        structure were ported from Simply's existing apps.
+        Simply&apos;s AR team, I built the entire app from the ground up using
+        Unity and the Android XR SDK. The audio engine, lesson content and
+        course structure were ported from Simply&apos;s existing apps.
       </p>
 
       <p>
@@ -89,9 +89,9 @@ export default function Page() {
       <h2>Note Rendering</h2>
       <p>
         At the heart of the app, musical notation has to stay legible whether
-        it's an arm's length away or across the room. I implemented a custom{" "}
-        <i>signed distance field</i> note renderer that draws crisp, antialiased
-        notes at any distance.
+        it&apos;s an arm&apos;s length away or across the room. I implemented a
+        custom <i>signed distance field</i> note renderer that draws crisp,
+        antialiased notes at any distance.
       </p>
       <figure>
         <Image
@@ -105,19 +105,20 @@ export default function Page() {
 
       <h2>Design</h2>
       <p>
-        The goal was to make Simply's existing visual language feel native to
-        Android XR rather than a flat app floating in space. I kept the brand's
-        look but rebuilt the layouts around depth — layering panels, notation
-        and the keyboard at different distances to create hierarchy and bring
-        the interface to life.
+        The goal was to make Simply&apos;s existing visual language feel native
+        to Android XR rather than a flat app floating in space. I kept the
+        brand&apos;s look but rebuilt the layouts around depth — layering
+        panels, notation and the keyboard at different distances to create
+        hierarchy and bring the interface to life.
       </p>
 
       <h2>Outcome</h2>
       <p>
         Simply Piano XR is free on Google Play for Galaxy XR. It was featured in
-        Google's Project Aura showcase at I/O 2026 and will ship on XREAL's Aura
-        glasses at their launch later this year, moving the same experience from
-        a passthrough headset to optical see-through glasses.
+        Google&apos;s Project Aura showcase at I/O 2026 and will ship on
+        XREAL&apos;s Aura glasses at their launch later this year, moving the
+        same experience from a passthrough headset to optical see-through
+        glasses.
       </p>
     </>
   );

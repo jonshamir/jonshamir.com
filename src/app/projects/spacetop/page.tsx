@@ -87,9 +87,9 @@ export default function Page() {
       <h2>UI Spaces</h2>
       <p>
         Giving the desktop a third dimension opens up exciting opportunities,
-        but also a class of problems that don't exist in 2D: panels can obscure
-        content, overlap and intersect, causing legibility issues and user
-        confusion.
+        but also a class of problems that don&apos;t exist in 2D: panels can
+        obscure content, overlap and intersect, causing legibility issues and
+        user confusion.
       </p>
       <p>
         To deal with this, I came up with the concept of <i>UI Spaces</i>: a set
@@ -160,10 +160,10 @@ export default function Page() {
       <h2>Cross-platform design system</h2>
 
       <p>
-        Spacetop's interface is a mix of Unity UI, native UI and embedded
+        Spacetop&apos;s interface is a mix of Unity UI, native UI and embedded
         web-based apps, and they needed to look and behave coherently. I created
-        a react-based design system that spans both "platforms" and provides a
-        shared set of components, styles and behaviors.
+        a react-based design system that spans both &quot;platforms&quot; and
+        provides a shared set of components, styles and behaviors.
       </p>
       <p>
         a shared token and spec layer defining color, type, spacing, and motion
