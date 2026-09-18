@@ -13,6 +13,7 @@ import { useControls } from "../../../lib/tweakpane";
 import { Fruit } from "./Fruit";
 import {
   colorSchema,
+  grainSchema,
   shadingSchema,
   shapeSchema,
   subdivisionSchema,
@@ -20,11 +21,14 @@ import {
 } from "./fruitControls";
 
 export default function FruitCanvas() {
+  // Folders appear in call order, so Colors is declared first to sit at the top
+  // of the panel.
+  const colors = useControls("Colors", colorSchema, { collapsed: true });
   const shape = useControls("Shape", shapeSchema);
   const subdivisions = useControls("Subdivisions", subdivisionSchema);
   const top = useControls("Top", topSchema);
   const shading = useControls("Shading", shadingSchema, { collapsed: true });
-  const colors = useControls("Colors", colorSchema, { collapsed: true });
+  const grain = useControls("Grain", grainSchema, { collapsed: true });
 
   const { profileSegments, radialSegments, wireframe } = subdivisions;
   const { showTop, topSegments, topDrop, topSpread, topLift, topTwist } = top;
@@ -77,6 +81,7 @@ export default function FruitCanvas() {
         <Fruit
           params={params}
           shading={shading}
+          grain={grain}
           colors={colors}
           showTop={showTop}
           wireframe={wireframe}

@@ -1,13 +1,19 @@
+import { useThree } from "@react-three/fiber";
 import { useEffect, useMemo } from "react";
 import { DoubleSide } from "three/webgpu";
 
-import type { ColorControls, ShadingControls } from "./fruitControls";
+import type {
+  ColorControls,
+  GrainControls,
+  ShadingControls
+} from "./fruitControls";
 import {
   createFruitGeometries,
   type FruitGeometryParams
 } from "./fruitGeometry";
 import {
   applyColors,
+  applyGrain,
   applyShading,
   createFruitMaterial
 } from "./fruitMaterial";
@@ -15,6 +21,7 @@ import {
 export type FruitProps = {
   params: FruitGeometryParams;
   shading: ShadingControls;
+  grain: GrainControls;
   colors: ColorControls;
   showTop: boolean;
   wireframe: boolean;
@@ -23,6 +30,7 @@ export type FruitProps = {
 export function Fruit({
   params,
   shading,
+  grain,
   colors,
   showTop,
   wireframe
@@ -42,9 +50,28 @@ export function Fruit({
     applyShading(topMaterial.uniforms, shading);
   }, [shading, bodyMaterial, topMaterial]);
 
+  // The screen-space grain samples gl_FragCoord, which is in device pixels, so
+  // it needs the dpr to express its size in CSS pixels.
+  const pixelRatio = useThree((state) => state.viewport.dpr);
+
   useEffect(() => {
-    applyColors(bodyMaterial.uniforms, colors.bodyLight, colors.bodyShadow);
-    applyColors(topMaterial.uniforms, colors.topLight, colors.topShadow);
+    applyGrain(bodyMaterial.uniforms, grain, pixelRatio);
+    applyGrain(topMaterial.uniforms, grain, pixelRatio);
+  }, [grain, pixelRatio, bodyMaterial, topMaterial]);
+
+  useEffect(() => {
+    applyColors(
+      bodyMaterial.uniforms,
+      colors.bodyLight,
+      colors.bodyShadow,
+      colors.splatter
+    );
+    applyColors(
+      topMaterial.uniforms,
+      colors.topLight,
+      colors.topShadow,
+      colors.splatter
+    );
   }, [colors, bodyMaterial, topMaterial]);
 
   useEffect(() => {

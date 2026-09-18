@@ -74,15 +74,83 @@ export const shadingSchema = {
   lightPitch: { value: 40, min: -89, max: 89, step: 1, label: "Light Pitch" }
 } satisfies Schema;
 
+// Two dither layers plus splatter, each off at 0. The dither feeds every
+// threshold below it, so raising it roughens the band edges, the blob outlines
+// and the specular cut together.
+export const grainSchema = {
+  // Anchored to the surface: cycles per unit, so bigger is finer and the
+  // pattern grows with the fruit.
+  objectDitherStrength: {
+    value: 0.5,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: "Object Dither"
+  },
+  objectDitherScale: {
+    value: 60,
+    min: 0.5,
+    max: 150,
+    step: 0.5,
+    label: "Object Scale"
+  },
+  // Anchored to the screen: a period in CSS pixels, so bigger is coarser and
+  // the size holds however far away the fruit is.
+  screenDitherStrength: {
+    value: 0,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: "Screen Dither"
+  },
+  screenDitherSize: {
+    value: 6,
+    min: 1,
+    max: 64,
+    step: 1,
+    label: "Screen Size"
+  },
+  splatterStrength: {
+    value: 0.6,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: "Splatter"
+  },
+  splatterScale: {
+    value: 16,
+    min: 0.5,
+    max: 40,
+    step: 0.5,
+    label: "Splatter Scale"
+  },
+  splatterCut: {
+    value: 0.1,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: "Splatter Cutoff"
+  },
+  splatterSoftness: {
+    value: 0.05,
+    min: 0,
+    max: 0.5,
+    step: 0.005,
+    label: "Splatter Softness"
+  }
+} satisfies Schema;
+
 export const colorSchema = {
   bodyLight: { value: "#e8503a", label: "Body Light" },
   bodyShadow: { value: "#7c2340", label: "Body Shadow" },
   topLight: { value: "#7cb342", label: "Top Light" },
-  topShadow: { value: "#33561f", label: "Top Shadow" }
+  topShadow: { value: "#33561f", label: "Top Shadow" },
+  splatter: { value: "#672300", label: "Splatter" }
 } satisfies Schema;
 
 export type ShapeControls = InferValues<typeof shapeSchema>;
 export type SubdivisionControls = InferValues<typeof subdivisionSchema>;
 export type TopControls = InferValues<typeof topSchema>;
 export type ShadingControls = InferValues<typeof shadingSchema>;
+export type GrainControls = InferValues<typeof grainSchema>;
 export type ColorControls = InferValues<typeof colorSchema>;
