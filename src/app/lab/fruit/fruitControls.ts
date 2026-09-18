@@ -26,14 +26,14 @@ export const shapeSchema = {
 
 export const subdivisionSchema = {
   profileSegments: {
-    value: 64,
+    value: 8,
     min: 3,
     max: 256,
     step: 1,
     label: "Spline"
   },
   radialSegments: {
-    value: 64,
+    value: 16,
     min: 3,
     max: 256,
     step: 1,

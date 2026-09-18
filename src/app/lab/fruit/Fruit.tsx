@@ -56,7 +56,14 @@ export function Fruit({
 
   useEffect(() => {
     applyGrain(bodyMaterial.uniforms, grain, pixelRatio);
-    applyGrain(topMaterial.uniforms, grain, pixelRatio);
+    // Splatter marks the fruit skin only. The cap still takes both dither
+    // layers, and zeroing the strength here also trips the shader's own guard,
+    // so its material skips the worley lookup entirely.
+    applyGrain(
+      topMaterial.uniforms,
+      { ...grain, splatterStrength: 0 },
+      pixelRatio
+    );
   }, [grain, pixelRatio, bodyMaterial, topMaterial]);
 
   useEffect(() => {
