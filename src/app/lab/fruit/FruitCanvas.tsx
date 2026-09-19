@@ -15,6 +15,7 @@ import { Fruit } from "./Fruit";
 import {
   colorSchema,
   grainSchema,
+  motionSchema,
   shadingSchema,
   shapeSchema,
   subdivisionSchema,
@@ -40,6 +41,7 @@ export default function FruitCanvas() {
   const top = useControls("Top", topSchema);
   const shading = useControls("Shading", shadingSchema, { collapsed: true });
   const grain = useControls("Grain", grainSchema, { collapsed: true });
+  const motion = useControls("Motion", motionSchema, { collapsed: true });
 
   const [session, setSession] = useLocalStorage<FruitPreset | null>(
     SESSION_STORAGE_KEY,
@@ -66,7 +68,7 @@ export default function FruitCanvas() {
 
   useEffect(() => {
     saveSession(capturePreset());
-  }, [colors, shape, subdivisions, top, shading, grain, saveSession]);
+  }, [colors, shape, subdivisions, top, shading, grain, motion, saveSession]);
 
   // Listed field by field rather than spread, so the display-only toggles don't
   // land in the dependencies and rebuild the geometry.
@@ -117,6 +119,7 @@ export default function FruitCanvas() {
           params={params}
           shading={shading}
           grain={grain}
+          motion={motion}
           colors={colors}
           showTop={showTop}
           wireframe={wireframe}

@@ -7,12 +7,10 @@ import {
   If,
   mix,
   mx_fractal_noise_float,
-  mx_fractal_noise_float_2d,
   mx_worley_noise_float,
   normalWorld,
   positionLocal,
   positionWorld,
-  screenCoordinate,
   smoothstep,
   uniform
 } from "three/tsl";
@@ -25,28 +23,23 @@ import type { GrainControls, ShadingControls } from "./fruitControls";
 // dynamically-bounded loop on the WebGL fallback.
 const DITHER_OCTAVES = 3;
 
-// How far, in pixels, the dither is allowed to push the specular cut.
-const SPEC_DITHER_PIXELS = 3;
-
 function createFruitUniforms() {
   return {
     lightDirection: uniform(new Vector3(0.4, 0.7, 0.55)),
     colorLight: uniform(new Color("#e8503a")),
     colorShadow: uniform(new Color("#7c2340")),
     colorSplatter: uniform(new Color("#3d1420")),
+    colorSpecular: uniform(new Color("#ffffff")),
     bands: uniform(4),
     bandSoftness: uniform(0),
     ambient: uniform(0.15),
     specCut: uniform(0.5),
     specPower: uniform(40),
     specStrength: uniform(0.6),
-    // screenCoordinate is in device pixels, so the screen-space sizes below are
-    // scaled by this to stay constant in CSS pixels across displays.
-    pixelRatio: uniform(1),
     objectDitherStrength: uniform(0),
     objectDitherScale: uniform(60),
-    screenDitherStrength: uniform(0),
-    screenDitherSize: uniform(6),
+    // How far, in pixels, the dither is allowed to push the specular cut.
+    specDither: uniform(10),
     splatterStrength: uniform(0),
     splatterScale: uniform(8),
     splatterCut: uniform(0.35),
@@ -82,33 +75,16 @@ export function createFruitMaterial(): FruitMaterial {
     const light = uniforms.lightDirection.normalize();
     const view = cameraPosition.sub(positionWorld).normalize();
 
-    // Two dither layers, summed. They differ in what they are anchored to, and
-    // their scale sliders read in opposite directions as a result.
-    const dither = float(0).toVar();
-
     // Object space: the grain sits on the surface and turns with it, so it
     // reads as texture belonging to the fruit. Scale is cycles per unit, so
     // bigger is finer, and the pattern grows with the fruit.
+    const dither = float(0).toVar();
     If(uniforms.objectDitherStrength.greaterThan(0), () => {
       dither.addAssign(
         mx_fractal_noise_float(
           positionLocal.mul(uniforms.objectDitherScale),
           DITHER_OCTAVES
         ).mul(uniforms.objectDitherStrength)
-      );
-    });
-
-    // Screen space: size is a period in CSS pixels, so bigger is coarser and
-    // the grain holds its size however far away the fruit is. Pinned to the
-    // screen, so the surface moves underneath it as the camera orbits.
-    If(uniforms.screenDitherStrength.greaterThan(0), () => {
-      dither.addAssign(
-        mx_fractal_noise_float_2d(
-          screenCoordinate.div(
-            uniforms.screenDitherSize.mul(uniforms.pixelRatio)
-          ),
-          DITHER_OCTAVES
-        ).mul(uniforms.screenDitherStrength)
       );
     });
 
@@ -168,10 +144,14 @@ export function createFruitMaterial(): FruitMaterial {
     const specularBand = smoothstep(
       uniforms.specCut.sub(specularWidth),
       uniforms.specCut.add(specularWidth),
-      specular.add(dither.mul(specularWidth).mul(SPEC_DITHER_PIXELS))
+      specular.add(dither.mul(specularWidth).mul(uniforms.specDither))
     );
 
-    base.addAssign(specularBand.mul(uniforms.specStrength));
+    // Added rather than mixed, so the highlight reads as light falling on the
+    // skin. White leaves the term achromatic, exactly as before it was a colour.
+    base.addAssign(
+      uniforms.colorSpecular.mul(specularBand).mul(uniforms.specStrength)
+    );
 
     return base;
   })();
@@ -201,27 +181,25 @@ export function applyShading(
 
 export function applyGrain(
   uniforms: FruitUniforms,
-  grain: GrainControls,
-  pixelRatio: number
+  grain: GrainControls
 ): void {
-  uniforms.pixelRatio.value = pixelRatio;
   uniforms.objectDitherStrength.value = grain.objectDitherStrength;
   uniforms.objectDitherScale.value = grain.objectDitherScale;
-  uniforms.screenDitherStrength.value = grain.screenDitherStrength;
-  uniforms.screenDitherSize.value = grain.screenDitherSize;
+  uniforms.specDither.value = grain.specDither;
   uniforms.splatterStrength.value = grain.splatterStrength;
   uniforms.splatterScale.value = grain.splatterScale;
   uniforms.splatterCut.value = grain.splatterCut;
   uniforms.splatterSoftness.value = grain.splatterSoftness;
 }
 
+// Named rather than positional: every field is a colour string, so an argument
+// out of order would type-check and quietly paint the wrong thing.
 export function applyColors(
   uniforms: FruitUniforms,
-  light: string,
-  shadow: string,
-  splatter: string
+  colors: { light: string; shadow: string; splatter: string; specular: string }
 ): void {
-  uniforms.colorLight.value.set(light);
-  uniforms.colorShadow.value.set(shadow);
-  uniforms.colorSplatter.value.set(splatter);
+  uniforms.colorLight.value.set(colors.light);
+  uniforms.colorShadow.value.set(colors.shadow);
+  uniforms.colorSplatter.value.set(colors.splatter);
+  uniforms.colorSpecular.value.set(colors.specular);
 }

@@ -51,6 +51,18 @@ export const topSchema = {
   topTwist: { value: 0, min: 0, max: 1, step: 0.01, label: "Twist" }
 } satisfies Schema;
 
+// Radians per second, 0 to hold still. The light is fixed in world space, so
+// the spin sweeps the bands across the fruit rather than turning a static image.
+export const motionSchema = {
+  rotationSpeed: {
+    value: 0.2,
+    min: 0,
+    max: 2,
+    step: 0.01,
+    label: "Rotation"
+  }
+} satisfies Schema;
+
 export const shadingSchema = {
   bands: { value: 3, min: 1, max: 16, step: 1, label: "Bands" },
   bandSoftness: {
@@ -74,9 +86,9 @@ export const shadingSchema = {
   lightPitch: { value: 40, min: -89, max: 89, step: 1, label: "Light Pitch" }
 } satisfies Schema;
 
-// Two dither layers plus splatter, each off at 0. The dither feeds every
-// threshold below it, so raising it roughens the band edges, the blob outlines
-// and the specular cut together.
+// Dither plus splatter, each off at 0. The dither feeds every threshold below
+// it, so raising it roughens the band edges, the blob outlines and the specular
+// cut together.
 export const grainSchema = {
   // Anchored to the surface: cycles per unit, so bigger is finer and the
   // pattern grows with the fruit.
@@ -94,21 +106,14 @@ export const grainSchema = {
     step: 0.5,
     label: "Object Scale"
   },
-  // Anchored to the screen: a period in CSS pixels, so bigger is coarser and
-  // the size holds however far away the fruit is.
-  screenDitherStrength: {
-    value: 0,
+  // A pixel offset rather than a strength: the specular term is nearly binary,
+  // so the cut has to be broken up in screen space to read as speckle.
+  specDither: {
+    value: 32,
     min: 0,
-    max: 1,
-    step: 0.01,
-    label: "Screen Dither"
-  },
-  screenDitherSize: {
-    value: 6,
-    min: 1,
-    max: 64,
-    step: 1,
-    label: "Screen Size"
+    max: 128,
+    step: 0.5,
+    label: "Spec Dither"
   },
   splatterStrength: {
     value: 0.6,
@@ -145,12 +150,14 @@ export const colorSchema = {
   bodyShadow: { value: "#7c2340", label: "Body Shadow" },
   topLight: { value: "#7cb342", label: "Top Light" },
   topShadow: { value: "#33561f", label: "Top Shadow" },
-  splatter: { value: "#672300", label: "Splatter" }
+  splatter: { value: "#672300", label: "Splatter" },
+  specular: { value: "#ffffff", label: "Specular" }
 } satisfies Schema;
 
 export type ShapeControls = InferValues<typeof shapeSchema>;
 export type SubdivisionControls = InferValues<typeof subdivisionSchema>;
 export type TopControls = InferValues<typeof topSchema>;
+export type MotionControls = InferValues<typeof motionSchema>;
 export type ShadingControls = InferValues<typeof shadingSchema>;
 export type GrainControls = InferValues<typeof grainSchema>;
 export type ColorControls = InferValues<typeof colorSchema>;

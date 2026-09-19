@@ -1,10 +1,11 @@
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
 import { DoubleSide, type Group } from "three/webgpu";
 
 import type {
   ColorControls,
   GrainControls,
+  MotionControls,
   ShadingControls
 } from "./fruitControls";
 import {
@@ -18,14 +19,11 @@ import {
   createFruitMaterial
 } from "./fruitMaterial";
 
-// Radians per second. The light is fixed in world space, so this sweeps the
-// bands across the fruit rather than just spinning a static image.
-const ROTATION_SPEED = 0.2;
-
 export type FruitProps = {
   params: FruitGeometryParams;
   shading: ShadingControls;
   grain: GrainControls;
+  motion: MotionControls;
   colors: ColorControls;
   showTop: boolean;
   wireframe: boolean;
@@ -35,6 +33,7 @@ export function Fruit({
   params,
   shading,
   grain,
+  motion,
   colors,
   showTop,
   wireframe
@@ -42,7 +41,9 @@ export function Fruit({
   const groupRef = useRef<Group>(null);
 
   useFrame((_, delta) => {
-    if (groupRef.current) groupRef.current.rotation.y += delta * ROTATION_SPEED;
+    if (groupRef.current) {
+      groupRef.current.rotation.y += delta * motion.rotationSpeed;
+    }
   });
 
   const { body, top } = useMemo(() => createFruitGeometries(params), [params]);
@@ -60,35 +61,27 @@ export function Fruit({
     applyShading(topMaterial.uniforms, shading);
   }, [shading, bodyMaterial, topMaterial]);
 
-  // The screen-space grain samples gl_FragCoord, which is in device pixels, so
-  // it needs the dpr to express its size in CSS pixels.
-  const pixelRatio = useThree((state) => state.viewport.dpr);
+  useEffect(() => {
+    applyGrain(bodyMaterial.uniforms, grain);
+    // Splatter marks the fruit skin only. The cap still takes the dither, and
+    // zeroing the strength here also trips the shader's own guard, so its
+    // material skips the worley lookup entirely.
+    applyGrain(topMaterial.uniforms, { ...grain, splatterStrength: 0 });
+  }, [grain, bodyMaterial, topMaterial]);
 
   useEffect(() => {
-    applyGrain(bodyMaterial.uniforms, grain, pixelRatio);
-    // Splatter marks the fruit skin only. The cap still takes both dither
-    // layers, and zeroing the strength here also trips the shader's own guard,
-    // so its material skips the worley lookup entirely.
-    applyGrain(
-      topMaterial.uniforms,
-      { ...grain, splatterStrength: 0 },
-      pixelRatio
-    );
-  }, [grain, pixelRatio, bodyMaterial, topMaterial]);
-
-  useEffect(() => {
-    applyColors(
-      bodyMaterial.uniforms,
-      colors.bodyLight,
-      colors.bodyShadow,
-      colors.splatter
-    );
-    applyColors(
-      topMaterial.uniforms,
-      colors.topLight,
-      colors.topShadow,
-      colors.splatter
-    );
+    applyColors(bodyMaterial.uniforms, {
+      light: colors.bodyLight,
+      shadow: colors.bodyShadow,
+      splatter: colors.splatter,
+      specular: colors.specular
+    });
+    applyColors(topMaterial.uniforms, {
+      light: colors.topLight,
+      shadow: colors.topShadow,
+      splatter: colors.splatter,
+      specular: colors.specular
+    });
   }, [colors, bodyMaterial, topMaterial]);
 
   useEffect(() => {

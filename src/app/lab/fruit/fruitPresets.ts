@@ -7,6 +7,7 @@ import {
 import {
   colorSchema,
   grainSchema,
+  motionSchema,
   shadingSchema,
   shapeSchema,
   subdivisionSchema,
@@ -24,7 +25,8 @@ const FOLDER_SCHEMAS = {
   Subdivisions: subdivisionSchema,
   Top: topSchema,
   Shading: shadingSchema,
-  Grain: grainSchema
+  Grain: grainSchema,
+  Motion: motionSchema
 };
 
 const FRUIT_FOLDERS = Object.keys(FOLDER_SCHEMAS);
