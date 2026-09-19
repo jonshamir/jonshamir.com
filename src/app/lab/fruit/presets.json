@@ -1,0 +1,110 @@
+{
+  "Apple": {
+    "Shape": {
+      "height": 1.8,
+      "radius": 1.1,
+      "bulge": 0.45,
+      "baseFlare": 0.9,
+      "bottomTension": 0.5,
+      "topTension": 0.55,
+      "tipFlare": 1.05
+    },
+    "Top": {
+      "showTop": true,
+      "topSegments": 5,
+      "topDrop": 0.08,
+      "topSpread": 0.45,
+      "topLift": 0.02
+    },
+    "Colors": {
+      "bodyLight": "#e8503a",
+      "bodyShadow": "#7c2340",
+      "topLight": "#6b8f3a",
+      "topShadow": "#33561f",
+      "splatter": "#672300"
+    }
+  },
+  "Pear": {
+    "Shape": {
+      "height": 2.4,
+      "radius": 0.95,
+      "bulge": 0.3,
+      "baseFlare": 0.85,
+      "bottomTension": 0.45,
+      "topTension": 1.1,
+      "tipFlare": 0.5
+    },
+    "Top": {
+      "showTop": true,
+      "topSegments": 4,
+      "topDrop": 0.06,
+      "topSpread": 0.3,
+      "topLift": 0.01
+    },
+    "Grain": {
+      "splatterStrength": 0.45,
+      "splatterScale": 22,
+      "splatterCut": 0.08
+    },
+    "Colors": {
+      "bodyLight": "#c8c24a",
+      "bodyShadow": "#6d6a26",
+      "topLight": "#7a6340",
+      "topShadow": "#3d2f1c",
+      "splatter": "#5e4a12"
+    }
+  },
+  "Lemon": {
+    "Shape": {
+      "height": 2.0,
+      "radius": 0.85,
+      "bulge": 0.5,
+      "baseFlare": 0.35,
+      "bottomTension": 0.6,
+      "topTension": 0.6,
+      "tipFlare": 0.25
+    },
+    "Top": {
+      "showTop": false
+    },
+    "Grain": {
+      "splatterStrength": 0
+    },
+    "Colors": {
+      "bodyLight": "#f2d13c",
+      "bodyShadow": "#8a6b14",
+      "topLight": "#7cb342",
+      "topShadow": "#33561f",
+      "splatter": "#7a5c0b"
+    }
+  },
+  "Tomato": {
+    "Shape": {
+      "height": 1.2,
+      "radius": 1.25,
+      "bulge": 0.45,
+      "baseFlare": 1.1,
+      "bottomTension": 0.5,
+      "topTension": 0.5,
+      "tipFlare": 1.15
+    },
+    "Top": {
+      "showTop": true,
+      "topSegments": 7,
+      "topDrop": 0.18,
+      "topSpread": 1.9,
+      "topLift": 0.1,
+      "topTwist": 0.3
+    },
+    "Grain": {
+      "splatterStrength": 0
+    },
+    "Colors": {
+      "bodyLight": "#e03a24",
+      "bodyShadow": "#6d1520",
+      "topLight": "#6aa32f",
+      "topShadow": "#2c4a18",
+      "splatter": "#5e1408"
+    }
+  }
+}

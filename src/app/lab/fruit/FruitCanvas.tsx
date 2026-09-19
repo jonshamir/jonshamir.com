@@ -1,8 +1,9 @@
 "use client";
 
 import { OrbitControls } from "@react-three/drei";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import { WebGPURenderer } from "three/webgpu";
+import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 
 import {
   CANVAS_BG,
@@ -19,6 +20,14 @@ import {
   subdivisionSchema,
   topSchema
 } from "./fruitControls";
+import {
+  applyPreset,
+  capturePreset,
+  type FruitPreset,
+  parsePreset,
+  SESSION_STORAGE_KEY
+} from "./fruitPresets";
+import { PresetBar } from "./PresetBar";
 
 export default function FruitCanvas() {
   // Folders appear in call order, so Colors is declared first to sit at the top
@@ -30,8 +39,32 @@ export default function FruitCanvas() {
   const shading = useControls("Shading", shadingSchema, { collapsed: true });
   const grain = useControls("Grain", grainSchema, { collapsed: true });
 
+  const [session, setSession] = useLocalStorage<FruitPreset | null>(
+    SESSION_STORAGE_KEY,
+    null
+  );
+
+  // Declared after the useControls calls on purpose. Effects run in declaration
+  // order within a component, so by the time this fires every folder has
+  // registered itself and the restore can find its bindings. In a child
+  // component it would run first and silently do nothing.
+  useEffect(() => {
+    const restored = parsePreset(session);
+    if (restored) applyPreset(restored);
+    // Mount only — this restores the working state once, and must not re-run
+    // when the session is written back below.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Debounced so dragging a slider doesn't write to localStorage every frame.
+  const saveSession = useDebounceCallback(setSession, 300);
+
   const { profileSegments, radialSegments, wireframe } = subdivisions;
   const { showTop, topSegments, topDrop, topSpread, topLift, topTwist } = top;
+
+  useEffect(() => {
+    saveSession(capturePreset());
+  }, [colors, shape, subdivisions, top, shading, grain, saveSession]);
 
   // Listed field by field rather than spread, so the display-only toggles don't
   // land in the dependencies and rebuild the geometry.
@@ -61,6 +94,7 @@ export default function FruitCanvas() {
   return (
     <>
       <TweakpanePanel />
+      <PresetBar />
       <ThreeCanvas
         camera={{ fov: 35, position: [0, 0.6, 6] }}
         isFullscreen={true}

@@ -1,9 +1,10 @@
 // src/lib/tweakpane/useControls.ts
-import type { FolderApi } from "@tweakpane/core";
+import type { BindingApi, FolderApi } from "@tweakpane/core";
 import { useEffect, useState } from "react";
 
 import { type FolderNode, isFolder } from "./folder";
 import { getPane } from "./pane";
+import { registerControlGroup, ROOT_GROUP } from "./registry";
 import type { Field, InferValues, Schema } from "./types";
 
 type Values = Record<string, unknown>;
@@ -37,6 +38,7 @@ export function useControls(
       : pane;
 
     const disposers: Array<() => void> = [];
+    const bindings = new Map<string, BindingApi>();
     bindSchema(
       root,
       schema,
@@ -44,10 +46,21 @@ export function useControls(
       () => {
         setValues({ ...store });
       },
-      disposers
+      disposers,
+      bindings
     );
 
+    // Makes the store and bindings reachable from outside the hook, which is
+    // the only way anything can push values back into the pane. Adds no
+    // reactivity — both are already stable for the lifetime of the effect.
+    const unregister = registerControlGroup({
+      folder: folderName ?? ROOT_GROUP,
+      store,
+      bindings
+    });
+
     return () => {
+      unregister();
       for (const d of disposers) d();
       if (folderName && root !== (pane as unknown as FolderApi)) {
         root.dispose();
@@ -83,7 +96,8 @@ function bindSchema(
   schema: Schema,
   store: Values,
   onChange: () => void,
-  disposers: Array<() => void>
+  disposers: Array<() => void>,
+  bindings: Map<string, BindingApi>
 ): void {
   for (const [key, node] of Object.entries(schema)) {
     if (isFolder(node)) {
@@ -92,10 +106,10 @@ function bindSchema(
         title: key,
         expanded: !f.opts.collapsed
       });
-      bindSchema(sub, f.schema, store, onChange, disposers);
+      bindSchema(sub, f.schema, store, onChange, disposers, bindings);
       disposers.push(() => sub.dispose());
     } else {
-      addBinding(parent, key, node, store, onChange, disposers);
+      addBinding(parent, key, node, store, onChange, disposers, bindings);
     }
   }
 }
@@ -106,7 +120,8 @@ function addBinding(
   field: Field,
   store: Values,
   onChange: () => void,
-  disposers: Array<() => void>
+  disposers: Array<() => void>,
+  bindings: Map<string, BindingApi>
 ): void {
   if ("button" in field) {
     const btn = parent.addButton({ title: field.label ?? key });
@@ -153,5 +168,6 @@ function addBinding(
       : field.value;
   const binding = parent.addBinding(store, key, opts);
   binding.on("change", onChange);
+  bindings.set(key, binding);
   disposers.push(() => binding.dispose());
 }
