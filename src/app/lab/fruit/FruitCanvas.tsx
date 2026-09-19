@@ -27,11 +27,13 @@ import {
   parsePreset,
   SESSION_STORAGE_KEY
 } from "./fruitPresets";
-import { PresetBar } from "./PresetBar";
+import { usePresetFolder } from "./usePresetFolder";
 
 export default function FruitCanvas() {
-  // Folders appear in call order, so Colors is declared first to sit at the top
-  // of the panel.
+  // Folders appear in call order, so Presets sits at the top of the panel and
+  // Colors directly under it.
+  usePresetFolder();
+
   const colors = useControls("Colors", colorSchema, { collapsed: true });
   const shape = useControls("Shape", shapeSchema);
   const subdivisions = useControls("Subdivisions", subdivisionSchema);
@@ -94,7 +96,6 @@ export default function FruitCanvas() {
   return (
     <>
       <TweakpanePanel />
-      <PresetBar />
       <ThreeCanvas
         camera={{ fov: 35, position: [0, 0.6, 6] }}
         isFullscreen={true}

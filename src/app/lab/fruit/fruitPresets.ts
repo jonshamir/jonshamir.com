@@ -98,6 +98,44 @@ export function parsePreset(input: unknown): FruitPreset | null {
   };
 }
 
+export type SavedPresets = Record<string, FruitPreset>;
+
+// Plain localStorage rather than a hook: the preset UI lives in the Tweakpane
+// pane now, so none of this drives a React render. Matches the direct access in
+// src/features/color-mode/useColorMode.ts.
+export function loadSavedPresets(): SavedPresets {
+  try {
+    const raw = window.localStorage.getItem(PRESETS_STORAGE_KEY);
+    if (!raw) return {};
+
+    const parsed: unknown = JSON.parse(raw);
+    if (
+      typeof parsed !== "object" ||
+      parsed === null ||
+      Array.isArray(parsed)
+    ) {
+      return {};
+    }
+
+    const out: SavedPresets = {};
+    for (const [name, value] of Object.entries(parsed)) {
+      const preset = parsePreset(value);
+      if (preset) out[name] = preset;
+    }
+    return out;
+  } catch {
+    return {};
+  }
+}
+
+export function storeSavedPresets(presets: SavedPresets): void {
+  try {
+    window.localStorage.setItem(PRESETS_STORAGE_KEY, JSON.stringify(presets));
+  } catch {
+    // Private mode or a full quota — the in-memory list still works.
+  }
+}
+
 export function presetFilename(name: string): string {
   const slug = name
     .trim()

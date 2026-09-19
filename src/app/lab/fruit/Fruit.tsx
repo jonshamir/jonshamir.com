@@ -1,6 +1,6 @@
-import { useThree } from "@react-three/fiber";
-import { useEffect, useMemo } from "react";
-import { DoubleSide } from "three/webgpu";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useMemo, useRef } from "react";
+import { DoubleSide, type Group } from "three/webgpu";
 
 import type {
   ColorControls,
@@ -17,6 +17,10 @@ import {
   applyShading,
   createFruitMaterial
 } from "./fruitMaterial";
+
+// Radians per second. The light is fixed in world space, so this sweeps the
+// bands across the fruit rather than just spinning a static image.
+const ROTATION_SPEED = 0.2;
 
 export type FruitProps = {
   params: FruitGeometryParams;
@@ -35,6 +39,12 @@ export function Fruit({
   showTop,
   wireframe
 }: FruitProps) {
+  const groupRef = useRef<Group>(null);
+
+  useFrame((_, delta) => {
+    if (groupRef.current) groupRef.current.rotation.y += delta * ROTATION_SPEED;
+  });
+
   const { body, top } = useMemo(() => createFruitGeometries(params), [params]);
 
   const bodyMaterial = useMemo(() => createFruitMaterial(), []);
@@ -103,7 +113,7 @@ export function Fruit({
   );
 
   return (
-    <group position={[0, -params.height / 2, 0]}>
+    <group ref={groupRef} position={[0, -params.height / 2, 0]}>
       <mesh geometry={body}>
         <primitive object={bodyMaterial.material} attach="material" />
       </mesh>
