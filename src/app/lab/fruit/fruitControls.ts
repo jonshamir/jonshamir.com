@@ -51,11 +51,11 @@ export const topSchema = {
   topTwist: { value: 0, min: 0, max: 1, step: 0.01, label: "Twist" }
 } satisfies Schema;
 
-// Radians per second, 0 to hold still. The light is fixed in world space, so
-// the spin sweeps the bands across the fruit rather than turning a static image.
+// Radians per second, off at 0. The light is fixed in world space, so the spin
+// sweeps the bands across the fruit rather than turning a static image.
 export const motionSchema = {
   rotationSpeed: {
-    value: 0.2,
+    value: 0,
     min: 0,
     max: 2,
     step: 0.01,
@@ -65,13 +65,6 @@ export const motionSchema = {
 
 export const shadingSchema = {
   bands: { value: 3, min: 1, max: 16, step: 1, label: "Bands" },
-  bandSoftness: {
-    value: 0,
-    min: 0,
-    max: 1,
-    step: 0.01,
-    label: "Band Softness"
-  },
   ambient: { value: 0.15, min: 0, max: 1, step: 0.01, label: "Ambient" },
   specCut: { value: 0.8, min: 0, max: 1, step: 0.01, label: "Spec Cutoff" },
   specPower: { value: 40, min: 1, max: 256, step: 1, label: "Spec Power" },

@@ -58,7 +58,9 @@ export function Fruit({
 
   useEffect(() => {
     applyShading(bodyMaterial.uniforms, shading);
-    applyShading(topMaterial.uniforms, shading);
+    // The highlight belongs to the skin. The cap is matte, so it takes the
+    // bands and the ambient but no specular term.
+    applyShading(topMaterial.uniforms, { ...shading, specStrength: 0 });
   }, [shading, bodyMaterial, topMaterial]);
 
   useEffect(() => {

@@ -31,7 +31,6 @@ function createFruitUniforms() {
     colorSplatter: uniform(new Color("#3d1420")),
     colorSpecular: uniform(new Color("#ffffff")),
     bands: uniform(4),
-    bandSoftness: uniform(0),
     ambient: uniform(0.15),
     specCut: uniform(0.5),
     specPower: uniform(40),
@@ -119,9 +118,7 @@ export function createFruitMaterial(): FruitMaterial {
     // into speckle while leaving the flat interior of each band alone.
     const lit = dot(normal, light).max(0).add(dither);
     const posterized = lit.mul(uniforms.bands).floor().div(uniforms.bands);
-    const shade = mix(posterized, lit, uniforms.bandSoftness)
-      .add(uniforms.ambient)
-      .saturate();
+    const shade = posterized.add(uniforms.ambient).saturate();
 
     const base = mix(uniforms.colorShadow, uniforms.colorLight, shade).toVar();
 
@@ -164,7 +161,6 @@ export function applyShading(
   shading: ShadingControls
 ): void {
   uniforms.bands.value = shading.bands;
-  uniforms.bandSoftness.value = shading.bandSoftness;
   uniforms.ambient.value = shading.ambient;
   uniforms.specCut.value = shading.specCut;
   uniforms.specPower.value = shading.specPower;

@@ -5,10 +5,7 @@ import { useEffect, useMemo } from "react";
 import { WebGPURenderer } from "three/webgpu";
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 
-import {
-  CANVAS_BG,
-  ThreeCanvas
-} from "../../../components/ThreeCanvas/ThreeCanvas";
+import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
 import { useControls } from "../../../lib/tweakpane";
 import { Fruit } from "./Fruit";
@@ -101,7 +98,10 @@ export default function FruitCanvas() {
       <ThreeCanvas
         camera={{ fov: 35, position: [0, 0.6, 6] }}
         isFullscreen={true}
-        style={{ backgroundColor: `var(--canvas-bg, ${CANVAS_BG})` }}
+        // Transparent by default so the page background shows through. The
+        // custom property is still honoured, so an ExperimentGrid tile can set
+        // a backdrop without this needing to change.
+        style={{ backgroundColor: "var(--canvas-bg, transparent)" }}
         // Awaiting init() here means the WebGL2 fallback has already been
         // resolved by the time R3F receives the renderer.
         gl={async (defaults) => {
