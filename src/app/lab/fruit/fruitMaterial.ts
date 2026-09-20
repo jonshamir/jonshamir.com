@@ -8,20 +8,34 @@ import {
   mix,
   mx_fractal_noise_float,
   mx_worley_noise_float,
+  normalLocal,
   normalWorld,
   positionLocal,
   positionWorld,
   smoothstep,
-  uniform
+  uniform,
+  uv,
+  vec3
 } from "three/tsl";
 import { Color, MathUtils, MeshBasicNodeMaterial, Vector3 } from "three/webgpu";
 
 import type { GrainControls, ShadingControls } from "./fruitControls";
+import type { SurfaceMetrics } from "./fruitGeometry";
 
 // Fixed rather than exposed: the octave count is the loop bound inside
 // mx_fractal_noise_float, and keeping it a build-time constant avoids a
 // dynamically-bounded loop on the WebGL fallback.
 const DITHER_OCTAVES = 3;
+
+// Vertex jitter. Offsets are measured in grid cells and capped below half a
+// cell, past which neighbouring quads would fold through each other.
+const JITTER_OCTAVES = 2;
+const JITTER_FOLD_LIMIT = 0.45;
+// How much of the profile at each end fades the jitter out. The pole ring
+// collapses to a single point, so moving those vertices apart tears it open.
+const JITTER_POLE_FADE = 0.12;
+// Decorrelates the second noise channel from the first.
+const JITTER_CHANNEL_OFFSET = 31.7;
 
 function createFruitUniforms() {
   return {
@@ -42,7 +56,13 @@ function createFruitUniforms() {
     splatterStrength: uniform(0),
     splatterScale: uniform(8),
     splatterCut: uniform(0.35),
-    splatterSoftness: uniform(0.05)
+    splatterSoftness: uniform(0.05),
+    jitterStrength: uniform(0),
+    jitterScale: uniform(4),
+    jitterSeed: uniform(0),
+    // One cell of the body grid, supplied by createFruitGeometries.
+    jitterCellAngle: uniform(0.1),
+    jitterCellLength: uniform(0.05)
   };
 }
 
@@ -62,6 +82,72 @@ export type FruitMaterial = {
 export function createFruitMaterial(): FruitMaterial {
   const uniforms = createFruitUniforms();
   const material = new MeshBasicNodeMaterial();
+
+  // Slides each vertex across the surface it already sits on, rather than
+  // displacing it off the surface. The (theta, v) parameterisation IS the
+  // tangent chart of a surface of revolution, so a parameter-space offset is a
+  // tangential one — the silhouette and volume are unchanged, only the
+  // tessellation moves.
+  // Slides each vertex across the surface it already sits on, rather than
+  // displacing it off the surface. The (theta, v) parameterisation IS the
+  // tangent chart of a surface of revolution, so a parameter-space offset is a
+  // tangential one — the silhouette and volume are unchanged, only the
+  // tessellation moves.
+  //
+  // Deliberately unbranched, unlike the grain layers in colorNode. normalLocal
+  // is a .toVar(), so it declares its variable at first use: reading it inside
+  // an `If` would scope that declaration to the branch, and everything reading
+  // the normal afterwards would get an uninitialised value whenever the branch
+  // was skipped. A vertex shader runs a few hundred times here against roughly
+  // a million fragments, so the branch saved nothing worth that risk.
+  material.positionNode = Fn(() => {
+    const v = uv().y;
+    const theta = uv().x.mul(Math.PI * 2);
+    const sinTheta = theta.sin();
+    const cosTheta = theta.cos();
+
+    // Sampled on the circle rather than on u, so the duplicated seam column
+    // gets an identical offset and the seam cannot split open.
+    const noiseAt = vec3(cosTheta, sinTheta, v)
+      .mul(uniforms.jitterScale)
+      .add(uniforms.jitterSeed);
+
+    const around = mx_fractal_noise_float(noiseAt, JITTER_OCTAVES);
+    const along = mx_fractal_noise_float(
+      noiseAt.add(JITTER_CHANNEL_OFFSET),
+      JITTER_OCTAVES
+    );
+
+    // Fades to nothing at both poles: the ring there collapses to a single
+    // point, and moving those vertices apart would tear it into a star.
+    const fade = smoothstep(0, JITTER_POLE_FADE, v).mul(
+      smoothstep(0, JITTER_POLE_FADE, v.oneMinus())
+    );
+    const amount = uniforms.jitterStrength.mul(fade).mul(JITTER_FOLD_LIMIT);
+
+    // A rotation about the axis is exact: the vertex lands precisely on the
+    // surface, where stepping along the tangent would cut the chord. At
+    // strength 0 this is the identity, so the position passes through untouched.
+    const dTheta = around.mul(amount).mul(uniforms.jitterCellAngle);
+    const rotCos = dTheta.cos();
+    const rotSin = dTheta.sin();
+    const rotated = vec3(
+      positionLocal.x.mul(rotCos).sub(positionLocal.z.mul(rotSin)),
+      positionLocal.y,
+      positionLocal.x.mul(rotSin).add(positionLocal.z.mul(rotCos))
+    );
+
+    // Along the profile there is no closed form without the curve, so this
+    // steps along the surface tangent instead. Both tangents come free from
+    // data already on the mesh: the horizontal one from uv.x, the other from
+    // its cross product with the normal. Offsets stay under one cell, so the
+    // deviation is offset^2/2R — around 0.0003 at unit radius.
+    const tangentAround = vec3(sinTheta.negate(), 0, cosTheta);
+    const tangentAlong = normalLocal.cross(tangentAround);
+    const dAlong = along.mul(amount).mul(uniforms.jitterCellLength);
+
+    return rotated.add(tangentAlong.mul(dAlong));
+  })();
 
   // colorNode rather than fragmentNode: it feeds the regular output pipeline, so
   // tone mapping and the sRGB output transform still get applied. That is also
@@ -154,6 +240,21 @@ export function createFruitMaterial(): FruitMaterial {
   })();
 
   return { material, uniforms };
+}
+
+// The cap is a triangle fan, not a revolve: its uv has no relation to the
+// profile, so it passes strength 0 and the shader's own guard skips the whole
+// block.
+export function applyJitter(
+  uniforms: FruitUniforms,
+  jitter: { jitterStrength: number; jitterScale: number; jitterSeed: number },
+  metrics: SurfaceMetrics
+): void {
+  uniforms.jitterStrength.value = jitter.jitterStrength;
+  uniforms.jitterScale.value = jitter.jitterScale;
+  uniforms.jitterSeed.value = jitter.jitterSeed;
+  uniforms.jitterCellAngle.value = metrics.cellAngle;
+  uniforms.jitterCellLength.value = metrics.cellLength;
 }
 
 export function applyShading(

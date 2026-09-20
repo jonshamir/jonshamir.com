@@ -25,9 +25,24 @@ export type FruitGeometryParams = FruitProfileParams &
     radialSegments: number;
   };
 
+// One grid cell of the body mesh, which is what the vertex jitter measures its
+// offsets in — expressing them in cells rather than world units is what keeps
+// them below the fold-over threshold at any subdivision.
+export type SurfaceMetrics = {
+  cellAngle: number;
+  cellLength: number;
+};
+
+export type SurfaceJitter = {
+  jitterStrength: number;
+  jitterScale: number;
+  jitterSeed: number;
+};
+
 export type FruitGeometries = {
   body: BufferGeometry;
   top: BufferGeometry;
+  metrics: SurfaceMetrics;
 };
 
 export function createFruitGeometries(
@@ -41,7 +56,11 @@ export function createFruitGeometries(
 
   return {
     body: createRevolvedGeometry(profile, params.radialSegments),
-    top: createFanCapGeometry(apex, createTopRing(path, params))
+    top: createFanCapGeometry(apex, createTopRing(path, params)),
+    metrics: {
+      cellAngle: (Math.PI * 2) / params.radialSegments,
+      cellLength: path.getLength() / params.profileSegments
+    }
   };
 }
 

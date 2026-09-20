@@ -28,18 +28,30 @@ export const subdivisionSchema = {
   profileSegments: {
     value: 8,
     min: 3,
-    max: 256,
+    max: 32,
     step: 1,
     label: "Spline"
   },
   radialSegments: {
     value: 16,
     min: 3,
-    max: 256,
+    max: 32,
     step: 1,
     label: "Revolution"
   },
-  wireframe: { value: false, label: "Wireframe" }
+  wireframe: { value: false, label: "Wireframe" },
+  // Slides vertices across the surface they already sit on, so the form is
+  // untouched and only the tessellation moves. Measured in grid cells, so it
+  // stays fold-safe as the segment counts change.
+  jitterStrength: { value: 0, min: 0, max: 1, step: 0.01, label: "Jitter" },
+  jitterScale: {
+    value: 4,
+    min: 0.5,
+    max: 20,
+    step: 0.1,
+    label: "Jitter Scale"
+  },
+  jitterSeed: { value: 0, min: 0, max: 100, step: 1, label: "Jitter Seed" }
 } satisfies Schema;
 
 export const topSchema = {

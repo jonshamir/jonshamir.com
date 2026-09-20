@@ -10,17 +10,20 @@ import type {
 } from "./fruitControls";
 import {
   createFruitGeometries,
-  type FruitGeometryParams
+  type FruitGeometryParams,
+  type SurfaceJitter
 } from "./fruitGeometry";
 import {
   applyColors,
   applyGrain,
+  applyJitter,
   applyShading,
   createFruitMaterial
 } from "./fruitMaterial";
 
 export type FruitProps = {
   params: FruitGeometryParams;
+  jitter: SurfaceJitter;
   shading: ShadingControls;
   grain: GrainControls;
   motion: MotionControls;
@@ -31,6 +34,7 @@ export type FruitProps = {
 
 export function Fruit({
   params,
+  jitter,
   shading,
   grain,
   motion,
@@ -46,7 +50,10 @@ export function Fruit({
     }
   });
 
-  const { body, top } = useMemo(() => createFruitGeometries(params), [params]);
+  const { body, top, metrics } = useMemo(
+    () => createFruitGeometries(params),
+    [params]
+  );
 
   const bodyMaterial = useMemo(() => createFruitMaterial(), []);
   const topMaterial = useMemo(() => {
@@ -62,6 +69,18 @@ export function Fruit({
     // bands and the ambient but no specular term.
     applyShading(topMaterial.uniforms, { ...shading, specStrength: 0 });
   }, [shading, bodyMaterial, topMaterial]);
+
+  useEffect(() => {
+    applyJitter(bodyMaterial.uniforms, jitter, metrics);
+    // The cap is a fan whose uv has no relation to the profile, so the same
+    // displacement would mangle it. Zero also trips the shader's guard, so its
+    // material skips the noise entirely.
+    applyJitter(
+      topMaterial.uniforms,
+      { ...jitter, jitterStrength: 0 },
+      metrics
+    );
+  }, [jitter, metrics, bodyMaterial, topMaterial]);
 
   useEffect(() => {
     applyGrain(bodyMaterial.uniforms, grain);

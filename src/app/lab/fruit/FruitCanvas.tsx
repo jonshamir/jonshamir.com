@@ -60,8 +60,21 @@ export default function FruitCanvas() {
   // Debounced so dragging a slider doesn't write to localStorage every frame.
   const saveSession = useDebounceCallback(setSession, 300);
 
-  const { profileSegments, radialSegments, wireframe } = subdivisions;
+  const {
+    profileSegments,
+    radialSegments,
+    wireframe,
+    jitterStrength,
+    jitterScale,
+    jitterSeed
+  } = subdivisions;
   const { showTop, topSegments, topDrop, topSpread, topLift, topTwist } = top;
+
+  // Uniforms rather than geometry inputs, so these never rebuild the mesh.
+  const jitter = useMemo(
+    () => ({ jitterStrength, jitterScale, jitterSeed }),
+    [jitterStrength, jitterScale, jitterSeed]
+  );
 
   useEffect(() => {
     saveSession(capturePreset());
@@ -117,6 +130,7 @@ export default function FruitCanvas() {
         <OrbitControls makeDefault minDistance={2} maxDistance={20} />
         <Fruit
           params={params}
+          jitter={jitter}
           shading={shading}
           grain={grain}
           motion={motion}
