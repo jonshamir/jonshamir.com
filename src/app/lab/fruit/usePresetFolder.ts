@@ -5,7 +5,6 @@ import type { ListBladeApi, TextBladeApi } from "tweakpane";
 import { type ControlValues, getPane } from "../../../lib/tweakpane";
 import { downloadJson } from "../../../utils/downloadJson";
 import {
-  applyPreset,
   capturePreset,
   defaultPreset,
   type FruitPreset,
@@ -17,6 +16,7 @@ import {
   storeSavedPresets
 } from "./fruitPresets";
 import builtIns from "./presets.json";
+import { cancelPresetTransition, transitionToPreset } from "./presetTransition";
 
 const BUILT_IN: Record<string, ControlValues> = builtIns;
 
@@ -96,7 +96,7 @@ export function usePresetFolder(): void {
         : saved[selected];
 
       if (!preset) return;
-      applyPreset(preset);
+      transitionToPreset(preset);
       setName(selected);
     });
 
@@ -148,7 +148,7 @@ export function usePresetFolder(): void {
               flash("not a fruit preset");
               return;
             }
-            applyPreset(preset);
+            transitionToPreset(preset);
             if (preset.name) setName(preset.name);
             selected = NONE;
             setList(NONE);
@@ -163,7 +163,7 @@ export function usePresetFolder(): void {
 
     const reset = folder.addButton({ title: "Reset" });
     reset.on("click", () => {
-      applyPreset(defaultPreset());
+      transitionToPreset(defaultPreset());
       selected = NONE;
       setList(NONE);
       flash("reset");
@@ -191,6 +191,8 @@ export function usePresetFolder(): void {
 
     return () => {
       if (flashTimer) clearTimeout(flashTimer);
+      // Otherwise an in-flight transition keeps writing after the pane is gone.
+      cancelPresetTransition();
       folder.dispose();
     };
   }, []);

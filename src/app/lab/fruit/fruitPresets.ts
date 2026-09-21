@@ -19,7 +19,7 @@ export const PRESET_VERSION = 1;
 // Folder titles as passed to useControls in FruitCanvas. Capturing through this
 // list rather than taking everything registered means a control group belonging
 // to another lab can never end up in a fruit preset.
-const FOLDER_SCHEMAS = {
+export const FOLDER_SCHEMAS = {
   Colors: colorSchema,
   Shape: shapeSchema,
   Subdivisions: subdivisionSchema,

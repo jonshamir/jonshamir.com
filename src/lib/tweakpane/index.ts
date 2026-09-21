@@ -1,5 +1,5 @@
 // src/lib/tweakpane/index.ts
-export { folder } from "./folder";
+export { folder, isFolder } from "./folder";
 export { getPane } from "./pane";
 export type { ControlValues } from "./registry";
 export { readControlValues, writeControlValues } from "./registry";
