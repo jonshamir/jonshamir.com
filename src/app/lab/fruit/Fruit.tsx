@@ -1,12 +1,13 @@
 import { useFrame } from "@react-three/fiber";
 import { useEffect, useMemo, useRef } from "react";
-import { DoubleSide, type Group } from "three/webgpu";
+import type { Group } from "three/webgpu";
 
 import type {
   ColorControls,
   GrainControls,
   MotionControls,
-  ShadingControls
+  ShadingControls,
+  TopShapeControls
 } from "./fruitControls";
 import {
   createFruitGeometries,
@@ -18,7 +19,9 @@ import {
   applyGrain,
   applyJitter,
   applyShading,
-  createFruitMaterial
+  applyTopShape,
+  createFruitMaterial,
+  createTopMaterial
 } from "./fruitMaterial";
 
 export type FruitProps = {
@@ -28,6 +31,7 @@ export type FruitProps = {
   grain: GrainControls;
   motion: MotionControls;
   colors: ColorControls;
+  topShape: TopShapeControls;
   showTop: boolean;
   wireframe: boolean;
 };
@@ -39,6 +43,7 @@ export function Fruit({
   grain,
   motion,
   colors,
+  topShape,
   showTop,
   wireframe
 }: FruitProps) {
@@ -56,12 +61,11 @@ export function Fruit({
   );
 
   const bodyMaterial = useMemo(() => createFruitMaterial(), []);
-  const topMaterial = useMemo(() => {
-    const created = createFruitMaterial();
-    // The cap's underside shows whenever it flares away from the body.
-    created.material.side = DoubleSide;
-    return created;
-  }, []);
+  const topMaterial = useMemo(() => createTopMaterial(), []);
+
+  useEffect(() => {
+    applyTopShape(topMaterial.uniforms, topShape);
+  }, [topShape, topMaterial]);
 
   useEffect(() => {
     applyShading(bodyMaterial.uniforms, shading);

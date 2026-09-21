@@ -17,9 +17,19 @@ import {
   uv,
   vec3
 } from "three/tsl";
-import { Color, MathUtils, MeshBasicNodeMaterial, Vector3 } from "three/webgpu";
+import {
+  Color,
+  DoubleSide,
+  MathUtils,
+  MeshBasicNodeMaterial,
+  Vector3
+} from "three/webgpu";
 
-import type { GrainControls, ShadingControls } from "./fruitControls";
+import type {
+  GrainControls,
+  ShadingControls,
+  TopShapeControls
+} from "./fruitControls";
 import type { SurfaceMetrics } from "./fruitGeometry";
 
 // Fixed rather than exposed: the octave count is the loop bound inside
@@ -62,7 +72,13 @@ function createFruitUniforms() {
     jitterSeed: uniform(0),
     // One cell of the body grid, supplied by createFruitGeometries.
     jitterCellAngle: uniform(0.1),
-    jitterCellLength: uniform(0.05)
+    jitterCellLength: uniform(0.05),
+    // The cap's silhouette. Only createTopMaterial reads these; the body never
+    // has them applied, and both endpoints at 1 mean "reach the ring", which
+    // is the uncut cap.
+    topShapeCenter: uniform(1),
+    topShapeEdge: uniform(1),
+    topShapeSharpness: uniform(1)
   };
 }
 
@@ -83,11 +99,6 @@ export function createFruitMaterial(): FruitMaterial {
   const uniforms = createFruitUniforms();
   const material = new MeshBasicNodeMaterial();
 
-  // Slides each vertex across the surface it already sits on, rather than
-  // displacing it off the surface. The (theta, v) parameterisation IS the
-  // tangent chart of a surface of revolution, so a parameter-space offset is a
-  // tangential one — the silhouette and volume are unchanged, only the
-  // tessellation moves.
   // Slides each vertex across the surface it already sits on, rather than
   // displacing it off the surface. The (theta, v) parameterisation IS the
   // tangent chart of a surface of revolution, so a parameter-space offset is a
@@ -242,6 +253,59 @@ export function createFruitMaterial(): FruitMaterial {
   return { material, uniforms };
 }
 
+// The cap's own material. Everything the fan needs and the body does not lives
+// here, so the body pays for none of it — not even the alpha test, which it
+// never gets an opacityNode to trigger.
+export function createTopMaterial(): FruitMaterial {
+  const created = createFruitMaterial();
+  const { material, uniforms } = created;
+
+  // The cap's underside shows whenever it flares away from the body.
+  material.side = DoubleSide;
+  // The canvas asks for antialias, so the carved edge resolves out of sample
+  // coverage and the material can stay opaque: no sorting against the body, no
+  // blending, and the DoubleSide faces cannot order themselves wrong.
+  material.alphaToCoverage = true;
+
+  // A radial height field over each fan triangle: for every ray out of the
+  // apex, how far along it the cap survives. Folding the triangle about its
+  // centreline makes the field symmetric, so one function carves every polygon
+  // the same way and the cap keeps its rotational symmetry.
+  //
+  // This only ever removes. Long petals come from spreading the ring wider and
+  // cutting back into it, not from a limit above 1.
+  material.opacityNode = Fn(() => {
+    const opacity = float(1).toVar();
+
+    // Uniform across the draw call, so the branch is free. Worth taking: with
+    // the cut wide open the smoothstep below would still shave a pixel off the
+    // ring edge, where the field happens to cross zero, for no visible gain.
+    If(uniforms.topShapeCenter.min(uniforms.topShapeEdge).lessThan(1), () => {
+      // uv is triangle-local here, not a position around the ring — see
+      // createFanCapGeometry.
+      const lateral = uv().x.mul(2).sub(1).abs();
+      const along = uv().y;
+
+      const limit = mix(
+        uniforms.topShapeCenter,
+        uniforms.topShapeEdge,
+        lateral.pow(uniforms.topShapeSharpness)
+      );
+
+      // A signed field rather than a comparison, so one pixel of its own
+      // gradient antialiases the cut — the same fwidth trick the specular band
+      // uses below.
+      const signed = limit.sub(along).toVar();
+      const width = signed.fwidth();
+      opacity.assign(smoothstep(width.negate(), width, signed));
+    });
+
+    return opacity;
+  })();
+
+  return created;
+}
+
 // The cap is a triangle fan, not a revolve: its uv has no relation to the
 // profile, so it passes strength 0 and the shader's own guard skips the whole
 // block.
@@ -255,6 +319,15 @@ export function applyJitter(
   uniforms.jitterSeed.value = jitter.jitterSeed;
   uniforms.jitterCellAngle.value = metrics.cellAngle;
   uniforms.jitterCellLength.value = metrics.cellLength;
+}
+
+export function applyTopShape(
+  uniforms: FruitUniforms,
+  shape: TopShapeControls
+): void {
+  uniforms.topShapeCenter.value = shape.topShapeCenter;
+  uniforms.topShapeEdge.value = shape.topShapeEdge;
+  uniforms.topShapeSharpness.value = shape.topShapeSharpness;
 }
 
 export function applyShading(

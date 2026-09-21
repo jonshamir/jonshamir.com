@@ -93,8 +93,7 @@
       "topSegments": 7,
       "topDrop": 0.18,
       "topSpread": 1.9,
-      "topLift": 0.1,
-      "topTwist": 0.3
+      "topLift": 0.1
     },
     "Grain": {
       "splatterStrength": 0

@@ -68,12 +68,26 @@ export default function FruitCanvas() {
     jitterScale,
     jitterSeed
   } = subdivisions;
-  const { showTop, topSegments, topDrop, topSpread, topLift, topTwist } = top;
+  const {
+    showTop,
+    topSegments,
+    topDrop,
+    topSpread,
+    topLift,
+    topShapeCenter,
+    topShapeEdge,
+    topShapeSharpness
+  } = top;
 
   // Uniforms rather than geometry inputs, so these never rebuild the mesh.
   const jitter = useMemo(
     () => ({ jitterStrength, jitterScale, jitterSeed }),
     [jitterStrength, jitterScale, jitterSeed]
+  );
+
+  const topShape = useMemo(
+    () => ({ topShapeCenter, topShapeEdge, topShapeSharpness }),
+    [topShapeCenter, topShapeEdge, topShapeSharpness]
   );
 
   useEffect(() => {
@@ -90,8 +104,7 @@ export default function FruitCanvas() {
       topSegments,
       topDrop,
       topSpread,
-      topLift,
-      topTwist
+      topLift
     }),
     [
       shape,
@@ -100,8 +113,7 @@ export default function FruitCanvas() {
       topSegments,
       topDrop,
       topSpread,
-      topLift,
-      topTwist
+      topLift
     ]
   );
 
@@ -135,6 +147,7 @@ export default function FruitCanvas() {
           grain={grain}
           motion={motion}
           colors={colors}
+          topShape={topShape}
           showTop={showTop}
           wireframe={wireframe}
         />

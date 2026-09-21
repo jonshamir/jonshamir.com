@@ -16,7 +16,6 @@ export type FruitTopParams = {
   topDrop: number;
   topSpread: number;
   topLift: number;
-  topTwist: number;
 };
 
 export type FruitGeometryParams = FruitProfileParams &
@@ -72,14 +71,14 @@ function createTopRing(
   path: CurvePath<Vector2>,
   params: FruitTopParams
 ): Vector3[] {
-  const { topSegments, topDrop, topSpread, topLift, topTwist } = params;
+  const { topSegments, topDrop, topSpread, topLift } = params;
 
   const base = sampleProfileAt(path, clamp(1 - topDrop, 0, 1));
   const radius = base.position.x * topSpread + topLift * base.normal.x;
   const y = base.position.y + topLift * base.normal.y;
 
   return Array.from({ length: topSegments }, (_, i) => {
-    const theta = ((i + topTwist) / topSegments) * Math.PI * 2;
+    const theta = (i / topSegments) * Math.PI * 2;
     return new Vector3(radius * Math.cos(theta), y, radius * Math.sin(theta));
   });
 }

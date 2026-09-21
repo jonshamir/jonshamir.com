@@ -56,11 +56,29 @@ export const subdivisionSchema = {
 
 export const topSchema = {
   showTop: { value: true, label: "Show Top" },
-  topSegments: { value: 6, min: 3, max: 24, step: 1, label: "Revolutions" },
+  topSegments: { value: 6, min: 3, max: 12, step: 1, label: "Revolutions" },
   topDrop: { value: 0.12, min: 0.02, max: 0.4, step: 0.005, label: "Drop" },
   topSpread: { value: 1.35, min: 0.2, max: 3, step: 0.01, label: "Spread" },
   topLift: { value: 0.06, min: -0.3, max: 0.5, step: 0.005, label: "Lift" },
-  topTwist: { value: 0, min: 0, max: 1, step: 0.01, label: "Twist" }
+  // How far each polygon of the cap reaches, as a fraction of the way from the
+  // apex to the ring, at its centreline and at the edge it shares with its
+  // neighbour. Both at 1 leave the cap whole; dropping Edge parts it into
+  // petals, dropping Center notches each one. Sharpness bends the ramp between.
+  topShapeCenter: {
+    value: 1,
+    min: 0,
+    max: 1,
+    step: 0.01,
+    label: "Shape Center"
+  },
+  topShapeEdge: { value: 1, min: 0, max: 1, step: 0.01, label: "Shape Edge" },
+  topShapeSharpness: {
+    value: 1,
+    min: 0.2,
+    max: 8,
+    step: 0.05,
+    label: "Shape Sharpness"
+  }
 } satisfies Schema;
 
 // Radians per second, off at 0. The light is fixed in world space, so the spin
@@ -162,6 +180,12 @@ export const colorSchema = {
 export type ShapeControls = InferValues<typeof shapeSchema>;
 export type SubdivisionControls = InferValues<typeof subdivisionSchema>;
 export type TopControls = InferValues<typeof topSchema>;
+// Uniforms, not geometry inputs: split out so changing them never rebuilds the
+// mesh.
+export type TopShapeControls = Pick<
+  TopControls,
+  "topShapeCenter" | "topShapeEdge" | "topShapeSharpness"
+>;
 export type MotionControls = InferValues<typeof motionSchema>;
 export type ShadingControls = InferValues<typeof shadingSchema>;
 export type GrainControls = InferValues<typeof grainSchema>;

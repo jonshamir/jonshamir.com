@@ -41,9 +41,6 @@ export function createFanCapGeometry(
     const first = flip ? next : current;
     const second = flip ? current : next;
 
-    const uCurrent = i / ring.length;
-    const uNext = (i + 1) / ring.length;
-
     positions.push(
       apex.x,
       apex.y,
@@ -60,14 +57,12 @@ export function createFanCapGeometry(
       normals.push(normal.x, normal.y, normal.z);
     }
 
-    uvs.push(
-      (uCurrent + uNext) / 2,
-      0,
-      flip ? uNext : uCurrent,
-      1,
-      flip ? uCurrent : uNext,
-      1
-    );
+    // Triangle-local rather than a position around the ring: x runs 0 to 1
+    // across the base with the apex at 0.5, y runs 0 at the apex to 1 at the
+    // ring. That is the chart the cap's shape cut works in, and folding x
+    // about the centreline is what makes every polygon carve the same
+    // silhouette. Identical for every triangle, so the swap above is moot.
+    uvs.push(0.5, 0, 0, 1, 1, 1);
   }
 
   const geometry = new BufferGeometry();
