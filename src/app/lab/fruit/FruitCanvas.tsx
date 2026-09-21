@@ -71,9 +71,9 @@ export default function FruitCanvas() {
   const {
     showTop,
     topSegments,
-    topDrop,
-    topSpread,
-    topLift,
+    topRadius,
+    topAngle,
+    topOffset,
     topShapeCenter,
     topShapeEdge,
     topShapeSharpness
@@ -102,18 +102,18 @@ export default function FruitCanvas() {
       profileSegments,
       radialSegments,
       topSegments,
-      topDrop,
-      topSpread,
-      topLift
+      topRadius,
+      topAngle,
+      topOffset
     }),
     [
       shape,
       profileSegments,
       radialSegments,
       topSegments,
-      topDrop,
-      topSpread,
-      topLift
+      topRadius,
+      topAngle,
+      topOffset
     ]
   );
 

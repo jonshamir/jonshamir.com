@@ -35,7 +35,12 @@ export function createFanCapGeometry(
     // Deriving the winding from the face normal we already need is more robust
     // than hand-reasoning about vertex order, and stays correct if the ring is
     // lifted above the apex.
-    const flip = normal.dot(outward) < 0;
+    //
+    // A flat cap is the exception: the apex lands in the ring's plane, so
+    // `outward` lies in it too and the dot vanishes for every triangle at once.
+    // The cap sits on the fruit's tip, so up is unambiguously outside there.
+    const facing = normal.dot(outward);
+    const flip = (Math.abs(facing) > 1e-9 ? facing : normal.y) < 0;
     if (flip) normal.negate();
 
     const first = flip ? next : current;

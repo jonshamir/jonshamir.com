@@ -12,9 +12,9 @@
     "Top": {
       "showTop": true,
       "topSegments": 5,
-      "topDrop": 0.08,
-      "topSpread": 0.45,
-      "topLift": 0.02
+      "topRadius": 0.12,
+      "topAngle": 5,
+      "topOffset": 0
     },
     "Colors": {
       "bodyLight": "#e8503a",
@@ -37,9 +37,9 @@
     "Top": {
       "showTop": true,
       "topSegments": 4,
-      "topDrop": 0.06,
-      "topSpread": 0.3,
-      "topLift": 0.01
+      "topRadius": 0.07,
+      "topAngle": 12,
+      "topOffset": 0
     },
     "Grain": {
       "splatterStrength": 0.45,
@@ -91,9 +91,9 @@
     "Top": {
       "showTop": true,
       "topSegments": 7,
-      "topDrop": 0.18,
-      "topSpread": 1.9,
-      "topLift": 0.1
+      "topRadius": 1.12,
+      "topAngle": 4,
+      "topOffset": 0
     },
     "Grain": {
       "splatterStrength": 0

@@ -1,21 +1,22 @@
-import type { BufferGeometry, CurvePath, Vector2 } from "three/webgpu";
-import { Vector3 } from "three/webgpu";
+import type { BufferGeometry } from "three/webgpu";
+import { MathUtils, Vector3 } from "three/webgpu";
 
-import { clamp } from "../../../lib/math";
 import { createFanCapGeometry } from "./fanCapGeometry";
 import {
   createProfilePath,
   type FruitProfileParams,
-  sampleProfile,
-  sampleProfileAt
+  sampleProfile
 } from "./fruitProfile";
 import { createRevolvedGeometry } from "./revolvedGeometry";
 
 export type FruitTopParams = {
   topSegments: number;
-  topDrop: number;
-  topSpread: number;
-  topLift: number;
+  // Apex to rim, so it is the cap's radius when the cap is flat.
+  topRadius: number;
+  // Degrees the wall is tilted up from flat.
+  topAngle: number;
+  // Slides apex and rim together along the axis.
+  topOffset: number;
 };
 
 export type FruitGeometryParams = FruitProfileParams &
@@ -51,11 +52,11 @@ export function createFruitGeometries(
   const profile = sampleProfile(path, params.profileSegments);
 
   const tip = profile[profile.length - 1];
-  const apex = new Vector3(0, tip.position.y, 0);
+  const { apex, ring } = createTopCap(tip.position.y, params);
 
   return {
     body: createRevolvedGeometry(profile, params.radialSegments),
-    top: createFanCapGeometry(apex, createTopRing(path, params)),
+    top: createFanCapGeometry(apex, ring),
     metrics: {
       cellAngle: (Math.PI * 2) / params.radialSegments,
       cellLength: path.getLength() / params.profileSegments
@@ -63,22 +64,28 @@ export function createFruitGeometries(
   };
 }
 
-// The ring is read off the same profile curve as the body, which is what keeps
-// the cap glued to the surface when the body's shape changes. topLift then
-// pushes it along the body's own surface normal, so it peels away perpendicular
-// to the skin rather than straight up.
-function createTopRing(
-  path: CurvePath<Vector2>,
+// The cap in polar form about the fruit's tip: every rim point is one radius
+// out from the apex at the given tilt, so 0° lies it flat as a disc and 90°
+// stands the wall straight up, collapsing the rim onto the axis.
+//
+// Nothing here reads the body. The cap is exactly what the three sliders say,
+// which is what keeps each of them smooth and independent of the others.
+function createTopCap(
+  tipY: number,
   params: FruitTopParams
-): Vector3[] {
-  const { topSegments, topDrop, topSpread, topLift } = params;
+): { apex: Vector3; ring: Vector3[] } {
+  const { topSegments, topRadius, topAngle, topOffset } = params;
 
-  const base = sampleProfileAt(path, clamp(1 - topDrop, 0, 1));
-  const radius = base.position.x * topSpread + topLift * base.normal.x;
-  const y = base.position.y + topLift * base.normal.y;
+  const tilt = MathUtils.degToRad(topAngle);
+  const radius = topRadius * Math.cos(tilt);
+  const apexY = tipY + topOffset;
+  const y = apexY + topRadius * Math.sin(tilt);
 
-  return Array.from({ length: topSegments }, (_, i) => {
-    const theta = (i / topSegments) * Math.PI * 2;
-    return new Vector3(radius * Math.cos(theta), y, radius * Math.sin(theta));
-  });
+  return {
+    apex: new Vector3(0, apexY, 0),
+    ring: Array.from({ length: topSegments }, (_, i) => {
+      const theta = (i / topSegments) * Math.PI * 2;
+      return new Vector3(radius * Math.cos(theta), y, radius * Math.sin(theta));
+    })
+  };
 }

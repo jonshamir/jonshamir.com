@@ -1,5 +1,4 @@
-import { Color } from "three/webgpu";
-
+import { hexToOklch, mixOklch, oklchToHex } from "../../../lib/color";
 import { easeInOutCubic, lerp } from "../../../lib/math";
 import {
   type ControlValues,
@@ -51,20 +50,15 @@ function quantize(value: number, step: number | undefined): number {
 
 const HEX = /^#([0-9a-f]{6})([0-9a-f]{2})?$/i;
 
-const fromColor = new Color();
-const toColor = new Color();
-
 function lerpHex(from: string, to: string, t: number): string {
   const a = HEX.exec(from);
   const b = HEX.exec(to);
   if (!a || !b) return t < 0.5 ? from : to;
 
-  // lerpHSL takes the shortest way round the wheel, so red -> yellow travels
-  // through orange instead of desaturating through grey on the way.
-  fromColor.set(`#${a[1]}`);
-  toColor.set(`#${b[1]}`);
-  fromColor.lerpHSL(toColor, t);
-  const hex = `#${fromColor.getHexString()}`;
+  // Oklch, so the arc is the short way round the wheel and both lightness and
+  // chroma move at an even perceptual rate: red -> yellow passes through orange
+  // without the mid-transition brightness dip a linear-RGB mix would give.
+  const hex = `#${oklchToHex(mixOklch(hexToOklch(a[1]), hexToOklch(b[1]), t))}`;
 
   if (!a[2] && !b[2]) return hex;
 

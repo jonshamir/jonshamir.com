@@ -56,10 +56,15 @@ export const subdivisionSchema = {
 
 export const topSchema = {
   showTop: { value: true, label: "Show Top" },
-  topSegments: { value: 6, min: 3, max: 12, step: 1, label: "Revolutions" },
-  topDrop: { value: 0.12, min: 0.02, max: 0.4, step: 0.005, label: "Drop" },
-  topSpread: { value: 1.35, min: 0.2, max: 3, step: 0.01, label: "Spread" },
-  topLift: { value: 0.06, min: -0.3, max: 0.5, step: 0.005, label: "Lift" },
+  // "Segments" rather than "Revolutions": nothing revolves, and the body's
+  // radialSegments under Subdivisions is already labelled "Revolution".
+  topSegments: { value: 6, min: 3, max: 12, step: 1, label: "Segments" },
+  // The cap as a cone about the fruit's tip: radius is apex to rim, angle
+  // tilts that wall up from flat, offset slides the whole thing along the axis.
+  // At ±90 the rim closes onto the axis and the cap vanishes to a needle.
+  topRadius: { value: 0.54, min: 0.02, max: 2, step: 0.01, label: "Radius" },
+  topAngle: { value: 0, min: -90, max: 90, step: 1, label: "Angle" },
+  topOffset: { value: 0, min: -0.5, max: 0.5, step: 0.005, label: "Offset" },
   // How far each polygon of the cap reaches, as a fraction of the way from the
   // apex to the ring, at its centreline and at the edge it shares with its
   // neighbour. Both at 1 leave the cap whole; dropping Edge parts it into
