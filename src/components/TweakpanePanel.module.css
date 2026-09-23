@@ -9,8 +9,30 @@
     }
   }
 
+  /* Pinned while .tweakpane-host scrolls; z-index clears .tp-rotv_c, which is
+   * positioned and later in the DOM, so it would otherwise paint over this.
+   * Tweakpane's --cnt-bg* tints are translucent and would show the blades
+   * sliding underneath, so they move to an image layer (painted above
+   * background-color) over an opaque base. */
   button:global(.tp-rotv_b) {
     border-radius: var(--bs-br);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--bs-bg);
+    background-image: linear-gradient(var(--cnt-bg), var(--cnt-bg));
+
+    &:hover {
+      background-image: linear-gradient(var(--cnt-bg-h), var(--cnt-bg-h));
+    }
+
+    &:focus {
+      background-image: linear-gradient(var(--cnt-bg-f), var(--cnt-bg-f));
+    }
+
+    &:active {
+      background-image: linear-gradient(var(--cnt-bg-a), var(--cnt-bg-a));
+    }
   }
 
   input {
