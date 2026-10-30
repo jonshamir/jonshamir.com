@@ -2,95 +2,176 @@
 
 import Image from "next/image";
 
+import arduinoImg from "./arduino.jpg";
 import coverImg from "./cover.jpg";
+import heroImg from "./hooke-device.jpg";
+import styles from "./placeholder.module.css";
+
+function Placeholder({ label }: { label: string }) {
+  return <div className={styles.placeholder}>{label}</div>;
+}
 
 export default function Page() {
   return (
     <>
-      <h1>Falcon Self-Serve Exam</h1>
-      <p className="description">
-        Patient-operated eye exam for a near-eye device
+      <h1>Hooke</h1>
+      <p className="description">Self-guided eye exam device</p>
+      <p>
+        Hooke&apos;s Falcon fits a complete eye exam into one portable device,
+        with AR optics that replace the traditional 3–6 metre exam room.
       </p>
       <p>
-        Hooke&apos;s Falcon fits a full eye exam into one portable device. Hooke
-        brought me in as a UX expert to remove the last requirement: the
-        optometrist. The work covered hardware UX, a prototype, 3D animation and
-        implementation.
+        Hooke brought me in as a UX expert to design a self-serve version of the
+        exam: one that patients can take on their own, guided by the device
+        itself.
+      </p>
+      <p>
+        Since the experience depends on everything the patient touches, sees and
+        hears, the work spanned the physical input, the in-device interface, a
+        stereoscopic 3D animation and the device software.
       </p>
 
+      <figure className="grid-wide">
+        <Image
+          src={heroImg}
+          alt="A wall-mounted Falcon device being presented to a customer in a shop"
+        />
+        <figcaption>The Falcon self-serve eye exam</figcaption>
+      </figure>
+
+      <h2>The challenge</h2>
+      <p>
+        In a traditional exam, an optometrist guides you through every step.
+        Here, the patient is on their own:
+      </p>
+      <ul>
+        <li>
+          <strong>No one to ask.</strong> Every instruction has to come from the
+          device.
+        </li>
+        <li>
+          <strong>A tiny screen.</strong> Falcon&apos;s small display has to fit
+          both the interface and the test stimulus.
+        </li>
+        <li>
+          <strong>Working blind.</strong> Patients can&apos;t see their
+          surroundings or their own hands.
+        </li>
+      </ul>
+      <p>
+        The existing screens, built for an optometrist to drive, had no
+        instructions at all.
+      </p>
+      <p>
+        The goal: an exam patients can complete confidently on their own, clear
+        at every step, clinically valid and engaging.
+      </p>
+
+      <h2>Finding the right input</h2>
+      <p>
+        Every step comes down to picking one option from a short list, so the
+        question was which control makes that easiest without looking.
+      </p>
+      <p>
+        I explored a button pad, a joystick, a dial and voice control. Buttons
+        are hard to tell apart by touch, joysticks are less precise, and voice
+        is awkward in noisy or public places.
+      </p>
+      <figure>
+        <Placeholder label="Concept sheet comparing the four input options" />
+      </figure>
+      <p>
+        I built an Arduino prototype with 3D-printed knobs and had people try
+        the options.
+      </p>
+      <figure>
+        <Image
+          src={arduinoImg}
+          alt="Arduino joystick shield with buttons, wired to a white 3D-printed dial"
+        />
+        <figcaption>The Arduino test rig and a 3D-printed knob</figcaption>
+      </figure>
+      <p>
+        The dial won: like the iPod click wheel, it&apos;s one gesture and one
+        click, easy to use by touch and good for numbers like age. The final
+        dial was chosen for its size, weight, click and feel.
+      </p>
+
+      <h2>Designing in the dark</h2>
+      <p>
+        The exam takes place on pure black, which blends into the darkness
+        inside the device so the screen feels larger than it is.
+      </p>
+      <p>Instructions and options sit clearly apart from the test stimulus.</p>
+      <p>
+        On an eye exam, interface text is itself a vision test, so type size and
+        placement had to keep instructions readable without affecting the
+        measurement.
+      </p>
+      <figure>
+        <Placeholder label="Before/after of an exam screen" />
+      </figure>
+
+      <h2>A guided exam</h2>
+      <p>
+        I designed the exam as a conversation: each step asks one clear question
+        with a few answers to choose from.
+      </p>
+      <p>
+        Hooke&apos;s optometrist defined the exam logic as a state machine, and
+        I turned each state into a step the patient can follow alone.
+      </p>
+      <figure className="grid-wide">
+        <Placeholder label="Diagram: the exam flow, from start to results" />
+      </figure>
+      <p>
+        I wrote the script and produced AI narration. Sound cues, animations and
+        transitions confirm each answer and show what comes next.
+      </p>
+      <p>
+        Reporting &quot;the smallest line I can read&quot; feels harder than
+        actually reading, so the acuity test moves from Snellen to a
+        forced-choice Landolt C.
+      </p>
+      <p>
+        I built the flow as a high-fidelity React prototype so Hooke could try
+        it end to end.
+      </p>
+      <figure className="grid-wide">
+        <Placeholder label="Video: prototype walkthrough of the guided exam" />
+      </figure>
+
+      <h2>The dragonfly</h2>
+      <p>
+        During the objective measurement, patients focus on a stereoscopic 3D
+        dragonfly I modelled and animated in Blender.
+      </p>
+      <p>
+        Its hovering flight naturally matches the path the target needs to
+        follow, and its red colour blends with the device&apos;s red test LED.
+      </p>
       <figure className="grid-wide">
         <Image
           src={coverImg}
           alt="A red dragonfly flying over a pond with water lilies"
         />
       </figure>
+      <p>
+        The animation had to be precise: its virtual distance drives the
+        eye&apos;s vergence and depth of field, so age sets how close it flies,
+        and its timing stays in sync with the automated measurements.
+      </p>
+      <figure>
+        <Placeholder label="Illustration: flight path over time, with the measurement windows and age bands marked" />
+      </figure>
 
-      <h2>The challenge</h2>
-      <ul>
-        <li>No one in the room to guide the patient</li>
-        <li>One small display holds both the UI and the test stimulus</li>
-        <li>The patient can&apos;t see their surroundings or their hands</li>
-        <li>
-          The existing screens had stimuli and buttons, but no instructions
-        </li>
-      </ul>
-
-      <h2>Finding the right input</h2>
-      <ul>
-        <li>Compared buttons, joystick, dial and voice</li>
-        <li>
-          Built an Arduino rig with 3D-printed knobs and let people try it
-        </li>
-        <li>Chose a dial for its size, weight, click and feel</li>
-      </ul>
-
-      <h2>Designing in the dark</h2>
-      <ul>
-        <li>A pure black background makes the screen feel larger</li>
-        <li>
-          On-screen text is itself a vision stimulus, on optics sharper than the
-          eye
-        </li>
-      </ul>
-
-      <h2>A guided exam</h2>
-      <ul>
-        <li>
-          Exam logic and state machine defined with Hooke&apos;s optometrist
-        </li>
-        <li>One question and a few answers per step</li>
-        <li>Wrote the script and produced AI narration</li>
-        <li>
-          Sound, motion and transitions show what&apos;s happening and what
-          comes next
-        </li>
-        <li>Snellen first, moving to Landolt C</li>
-      </ul>
-
-      <h2>The dragonfly</h2>
-      <ul>
-        <li>
-          Replaced an old fish animation that looked bad and had several issues
-        </li>
-        <li>
-          A dragonfly&apos;s natural flight matches the required trajectory
-        </li>
-        <li>Red, to blend with the device&apos;s red test LED</li>
-        <li>
-          Built in Blender, with distance set by age and timing synced to the
-          measurements
-        </li>
-      </ul>
-
-      <h2>From prototype to product</h2>
-      <ul>
-        <li>High-fidelity prototype in React</li>
-        <li>Ported to Python and running on the device</li>
-        <li>Data-driven exam flow</li>
-      </ul>
-
-      <h2>Status</h2>
-      <p>Unreleased, with voice input as a possible next step.</p>
+      <h2>Outcome</h2>
+      <p>
+        After the prototype, Hooke asked me to implement the flow and interface
+        as well. I built it into Falcon&apos;s Python software, with a
+        data-driven flow the team can change without touching code.
+      </p>
+      <p>The self-serve exam is still unreleased.</p>
     </>
   );
 }
