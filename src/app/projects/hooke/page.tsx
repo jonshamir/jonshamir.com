@@ -1,5 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
+import coverImg from "./cover.jpg";
+
 export default function Page() {
   return (
     <>
@@ -13,6 +17,13 @@ export default function Page() {
         optometrist. The work covered hardware UX, a prototype, 3D animation and
         implementation.
       </p>
+
+      <figure className="grid-wide">
+        <Image
+          src={coverImg}
+          alt="A red dragonfly flying over a pond with water lilies"
+        />
+      </figure>
 
       <h2>The challenge</h2>
       <ul>
