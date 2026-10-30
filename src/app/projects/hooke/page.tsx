@@ -1,0 +1,67 @@
+"use client";
+
+import { ButtonLink } from "../../../components/Button";
+import { Outlink } from "../../../components/Outlink";
+import heroImg from "./hero.png";
+
+export default function Page() {
+  return (
+    <>
+      <h1>Hooke</h1>
+      <p className="description">Automatic eye tests</p>
+      <p>
+        <ButtonLink
+          href="https://jonshamir.github.io/leaf-map/"
+          target="_blank"
+          variant="opaque"
+          rel="noreferrer"
+        >
+          Visit Project <span className="arrow">↗</span>
+        </ButtonLink>
+      </p>
+      <p>
+        I&apos;ve always been fascinated by the shapes of plants. While studying
+        Dimensionality Reduction and data visualization techniques, I applied
+        these concepts to categorize tree species based on leaf shapes. My goal
+        was to develop a more intuitive and user-friendly approach to plant
+        species identification.
+      </p>
+
+      <figure className="grid-wide">
+        <img
+          src={heroImg.src}
+          alt="Leaves sorted by shape"
+          style={{ maxHeight: "300px" }}
+        />
+      </figure>
+
+      <p>
+        Using the{" "}
+        <Outlink href="https://en.wikipedia.org/wiki/Shape_context">
+          Shape Context Algorithm
+        </Outlink>{" "}
+        I generated a &quot;fingerprint&quot; vector representing each leaf. The
+        vectors of similarly shaped leaves lie closer to each other in
+        n-dimensional space. To display a 2D map of the leaves I reduced the
+        dimensionality using a combination of PCA and{" "}
+        <Outlink href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding">
+          t-SNE
+        </Outlink>
+        .
+      </p>
+
+      <p>
+        Finally the leaves are displayed on an interactive canvas I created
+        using D3.js. The project was inspired by the{" "}
+        <Outlink href="https://www.designboom.com/design/ideo-font-map-interview-typography-04-21-2017/">
+          IDEO Font Map
+        </Outlink>
+        , all data and images were taken from the{" "}
+        <Outlink href="https://leafsnap.com/dataset/">
+          Leaf Snap dataset
+        </Outlink>
+        .
+      </p>
+    </>
+  );
+}
