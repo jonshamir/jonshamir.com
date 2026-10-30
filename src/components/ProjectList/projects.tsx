@@ -31,15 +31,15 @@ export type ProjectItem = {
 };
 
 const projects: ProjectItem[] = [
-  {
-    slug: "hooke",
-    name: "Hooke",
-    subtitle: "Automated eye tests",
-    icon: SpacetopIcon as FC,
-    preview: hookePreview,
-    previewSmall: hookePreviewSmall,
-    year: 2026
-  },
+  // {
+  //   slug: "hooke",
+  //   name: "Hooke",
+  //   subtitle: "Automated eye tests",
+  //   icon: SpacetopIcon as FC,
+  //   preview: hookePreview,
+  //   previewSmall: hookePreviewSmall,
+  //   year: 2026
+  // },
   {
     slug: "spacetop",
     name: "Spacetop",

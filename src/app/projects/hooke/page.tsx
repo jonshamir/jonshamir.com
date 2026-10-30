@@ -1,67 +1,85 @@
 "use client";
 
-import { ButtonLink } from "../../../components/Button";
-import { Outlink } from "../../../components/Outlink";
-import heroImg from "./hero.png";
-
 export default function Page() {
   return (
     <>
-      <h1>Hooke</h1>
-      <p className="description">Automatic eye tests</p>
-      <p>
-        <ButtonLink
-          href="https://jonshamir.github.io/leaf-map/"
-          target="_blank"
-          variant="opaque"
-          rel="noreferrer"
-        >
-          Visit Project <span className="arrow">↗</span>
-        </ButtonLink>
+      <h1>Falcon Self-Serve Exam</h1>
+      <p className="description">
+        Patient-operated eye exam for a near-eye device
       </p>
       <p>
-        I&apos;ve always been fascinated by the shapes of plants. While studying
-        Dimensionality Reduction and data visualization techniques, I applied
-        these concepts to categorize tree species based on leaf shapes. My goal
-        was to develop a more intuitive and user-friendly approach to plant
-        species identification.
+        Hooke&apos;s Falcon fits a full eye exam into one portable device. Hooke
+        brought me in as a UX expert to remove the last requirement: the
+        optometrist. The work covered hardware UX, a prototype, 3D animation and
+        implementation.
       </p>
 
-      <figure className="grid-wide">
-        <img
-          src={heroImg.src}
-          alt="Leaves sorted by shape"
-          style={{ maxHeight: "300px" }}
-        />
-      </figure>
+      <h2>The challenge</h2>
+      <ul>
+        <li>No one in the room to guide the patient</li>
+        <li>One small display holds both the UI and the test stimulus</li>
+        <li>The patient can&apos;t see their surroundings or their hands</li>
+        <li>
+          The existing screens had stimuli and buttons, but no instructions
+        </li>
+      </ul>
 
-      <p>
-        Using the{" "}
-        <Outlink href="https://en.wikipedia.org/wiki/Shape_context">
-          Shape Context Algorithm
-        </Outlink>{" "}
-        I generated a &quot;fingerprint&quot; vector representing each leaf. The
-        vectors of similarly shaped leaves lie closer to each other in
-        n-dimensional space. To display a 2D map of the leaves I reduced the
-        dimensionality using a combination of PCA and{" "}
-        <Outlink href="https://en.wikipedia.org/wiki/T-distributed_stochastic_neighbor_embedding">
-          t-SNE
-        </Outlink>
-        .
-      </p>
+      <h2>Finding the right input</h2>
+      <ul>
+        <li>Compared buttons, joystick, dial and voice</li>
+        <li>
+          Built an Arduino rig with 3D-printed knobs and let people try it
+        </li>
+        <li>Chose a dial for its size, weight, click and feel</li>
+      </ul>
 
-      <p>
-        Finally the leaves are displayed on an interactive canvas I created
-        using D3.js. The project was inspired by the{" "}
-        <Outlink href="https://www.designboom.com/design/ideo-font-map-interview-typography-04-21-2017/">
-          IDEO Font Map
-        </Outlink>
-        , all data and images were taken from the{" "}
-        <Outlink href="https://leafsnap.com/dataset/">
-          Leaf Snap dataset
-        </Outlink>
-        .
-      </p>
+      <h2>Designing in the dark</h2>
+      <ul>
+        <li>A pure black background makes the screen feel larger</li>
+        <li>
+          On-screen text is itself a vision stimulus, on optics sharper than the
+          eye
+        </li>
+      </ul>
+
+      <h2>A guided exam</h2>
+      <ul>
+        <li>
+          Exam logic and state machine defined with Hooke&apos;s optometrist
+        </li>
+        <li>One question and a few answers per step</li>
+        <li>Wrote the script and produced AI narration</li>
+        <li>
+          Sound, motion and transitions show what&apos;s happening and what
+          comes next
+        </li>
+        <li>Snellen first, moving to Landolt C</li>
+      </ul>
+
+      <h2>The dragonfly</h2>
+      <ul>
+        <li>
+          Replaced an old fish animation that looked bad and had several issues
+        </li>
+        <li>
+          A dragonfly&apos;s natural flight matches the required trajectory
+        </li>
+        <li>Red, to blend with the device&apos;s red test LED</li>
+        <li>
+          Built in Blender, with distance set by age and timing synced to the
+          measurements
+        </li>
+      </ul>
+
+      <h2>From prototype to product</h2>
+      <ul>
+        <li>High-fidelity prototype in React</li>
+        <li>Ported to Python and running on the device</li>
+        <li>Data-driven exam flow</li>
+      </ul>
+
+      <h2>Status</h2>
+      <p>Unreleased, with voice input as a possible next step.</p>
     </>
   );
 }

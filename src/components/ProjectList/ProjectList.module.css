@@ -1,11 +1,5 @@
-/* No `margin: 0` — reset.css already zeroes it, and a plain class here would beat
-   the stack's zero-specificity rule and ignore whatever --space its container sets. */
 .ProjectList {
-  list-style: none;
-  padding: 0;
-
-  display: flex;
-  flex-direction: column;
+  position: relative;
 
   li {
     margin-top: 0;
@@ -40,7 +34,7 @@
       width: 16rem;
     }
 
-    /* Lifts the row's content and preview over the rows below AND the page-dim
+    /* Lifts the row's content over the rows below AND the page-dim
        scrim (which sits above the fixed Nav — see main.css). The li and its
        hairline stay in normal flow under the scrim, so they dim with the page.
        Relies on no ancestor (section, .canvas, .grid) creating a stacking
@@ -50,77 +44,120 @@
       z-index: var(--z-dim-focus);
     }
 
-    .preview {
+    .slot {
       flex: 1 1 0;
       min-width: 0;
       height: 1em;
-      overflow: visible;
-      pointer-events: none;
       padding-inline: var(--space-md);
-      display: flex;
-      align-items: flex-start;
-      gap: var(--space-sm);
-
-      img {
-        object-fit: cover;
-        object-position: left center;
-        /* both auto so the width/height attrs next/image emits don't fix the size */
-        width: auto;
-        height: auto;
-        min-width: 0;
-        max-height: 300px;
-        clip-path: inset(0 0 100% 0 round var(--rounding-small));
-        transform: translateY(1rem);
-        transition:
-          clip-path 240ms var(--ease-out-expo),
-          transform 240ms var(--ease-out-expo);
-        margin-top: calc(-1 * var(--space-sm));
-      }
-
-      .previewSmall {
-        flex: 0 1 auto;
-        max-width: 16rem;
-      }
-
-      .previewLarge {
-        flex: 1 1 0;
-        min-height: 200px;
-      }
     }
   }
 }
 
-@media (hover: hover) and (pointer: fine) {
-  .projectLink:hover .preview img {
-    clip-path: inset(0 round var(--rounding-small));
-    /* --preview-overflow (set from JS on hover) is how far the image's bottom
-       would poke past the viewport; pull it up to keep a --space-md gap. Must
-       stay a pure translateY — the measurement assumes the hover baseline
-       reduces to identity. */
-    transform: translateY(
-      calc(-1 * max(0px, var(--preview-overflow, -100vh) + var(--space-md)))
-    );
-    transition-duration: 300ms; /* the rule above is the exit, ~20% quicker */
-  }
+.list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
 
-  .projectLink:hover .preview .previewLarge {
-    transition-delay: 30ms;
+/* One preview for the whole list: it glides between rows and morphs to each
+   project's aspect ratio, with the images sliding inside. Geometry (--x, --y,
+   --small-w/h, --large-w/h) is set from PreviewStage.tsx, which also reads the
+   limits below. Transitions only run while open, so opening snaps to the
+   hovered row before revealing. */
+.stage {
+  --open-duration: 300ms;
+  --close-duration: 240ms; /* ~20% quicker exit */
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin-top: calc(-1 * var(--space-sm));
+  padding-bottom: var(--space-md); /* kept clear of the viewport bottom */
+  z-index: var(--z-dim-focus);
+  pointer-events: none;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+  transform: translate(var(--x, 0px), var(--y, 0px));
+
+  &[data-open] {
+    transition: transform var(--open-duration) var(--ease-out-expo);
   }
 }
 
+.frame {
+  position: relative;
+  flex-shrink: 0;
+  clip-path: inset(0 0 100% 0 round var(--rounding-small));
+  transform: translateY(1rem);
+  transition:
+    clip-path var(--close-duration) var(--ease-out-expo),
+    transform var(--close-duration) var(--ease-out-expo);
+
+  .stage[data-open] & {
+    clip-path: inset(0 round var(--rounding-small));
+    transform: none;
+    transition:
+      clip-path var(--open-duration) var(--ease-out-expo),
+      transform var(--open-duration) var(--ease-out-expo),
+      width var(--open-duration) var(--ease-out-expo),
+      height var(--open-duration) var(--ease-out-expo);
+  }
+
+  .stage[data-open] &.frameLarge {
+    transition-delay: 30ms, 30ms, 0s, 0s;
+  }
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left center;
+
+    &[data-pos="above"] {
+      transform: translateY(-100%);
+    }
+
+    &[data-pos="below"] {
+      transform: translateY(100%);
+    }
+
+    &[data-moving] {
+      transition: transform var(--open-duration) var(--ease-out-expo);
+    }
+  }
+}
+
+.frameSmall {
+  width: var(--small-w);
+  height: var(--small-h);
+  max-width: 16rem;
+  max-height: 300px;
+}
+
+.frameLarge {
+  width: var(--large-w);
+  height: var(--large-h);
+  min-height: 200px;
+  max-height: 300px;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .ProjectList .projectLink .preview img {
-    transition: none;
+  .ProjectList .stage {
+    --open-duration: 0ms;
+    --close-duration: 0ms;
   }
 }
 
 @media (max-width: 72rem) {
-  .ProjectList .projectLink .preview .previewLarge {
+  .frameLarge {
     display: none;
   }
 
-  .ProjectList .projectLink .preview .previewSmall {
-    flex: 1 1 0;
+  .stage .frameSmall {
     max-width: none;
   }
 }
@@ -138,7 +175,8 @@
     margin-top: calc(-1 * var(--space-sm));
   }
 
-  .ProjectList .projectLink .preview {
+  .ProjectList .projectLink .slot,
+  .ProjectList .stage {
     display: none;
   }
 }
