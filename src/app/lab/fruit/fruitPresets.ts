@@ -13,9 +13,13 @@ import {
   subdivisionSchema,
   topSchema
 } from "./fruitControls";
-import { LEGACY_DEFAULTS, migrateLegacyShape } from "./legacyProfile";
+import {
+  LEGACY_DEFAULTS,
+  migrateFiveAnchorShape,
+  migrateLegacyShape
+} from "./legacyProfile";
 
-export const PRESET_VERSION = 2;
+export const PRESET_VERSION = 3;
 
 // Folder titles as passed to useControls in FruitCanvas. Capturing through this
 // list rather than taking everything registered means a control group belonging
@@ -93,12 +97,16 @@ export function parsePreset(input: unknown): FruitPreset | null {
     }
   }
 
-  const legacy = usable.Shape && "bulge" in usable.Shape;
-  if (legacy)
-    usable.Shape = migrateLegacyShape(legacyShapeValues(usable.Shape));
+  const shape = usable.Shape;
+  const migrated = shape && ("bulge" in shape || "lowerX" in shape);
+  if (shape && "bulge" in shape) {
+    usable.Shape = migrateLegacyShape(legacyShapeValues(shape));
+  } else if (shape && "lowerX" in shape) {
+    usable.Shape = migrateFiveAnchorShape(shape);
+  }
 
   return {
-    version: legacy ? PRESET_VERSION : candidate.version,
+    version: migrated ? PRESET_VERSION : candidate.version,
     lab: "fruit",
     name: typeof candidate.name === "string" ? candidate.name : undefined,
     values: usable

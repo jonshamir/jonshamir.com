@@ -20,32 +20,11 @@ export const LEGACY_DEFAULTS: LegacyProfileParams = {
   tipFlare: 0.8
 };
 
-type Point = [number, number];
-
-const mid = (a: Point, b: Point): Point => [
-  (a[0] + b[0]) / 2,
-  (a[1] + b[1]) / 2
-];
-const distance = (a: Point, b: Point) => Math.hypot(b[0] - a[0], b[1] - a[1]);
-const angleOf = (from: Point, to: Point) =>
-  (Math.atan2(to[1] - from[1], to[0] - from[0]) * 180) / Math.PI;
-
-// De Casteljau at t = 0.5: the split point plus the handles either side of it.
-function split(p0: Point, p1: Point, p2: Point, p3: Point) {
-  const a = mid(p0, p1);
-  const b = mid(p1, p2);
-  const c = mid(p2, p3);
-  const d = mid(a, b);
-  const e = mid(b, c);
-  return { a, c, d, e, m: mid(d, e) };
-}
-
 // Matches the slider steps in fruitControls, which Tweakpane snaps to anyway.
 const round = (value: number) => Number(value.toFixed(3));
-const roundAngle = (value: number) => Number(value.toFixed(1));
 
-// The old two-cubic profile, halved into four at t = 0.5, is exactly the
-// five-anchor one; only the rounding to slider precision loses anything.
+// Version 1: the bulge/flare/tension sliders placed the same three anchors
+// directly, so this conversion is exact up to slider precision.
 export function migrateLegacyShape(
   old: Partial<LegacyProfileParams>
 ): FruitProfileParams {
@@ -59,40 +38,62 @@ export function migrateLegacyShape(
     tipFlare
   } = { ...LEGACY_DEFAULTS, ...old };
 
-  const lower = split(
-    [0, 0],
-    [baseFlare, 0],
-    [1, bulge * (1 - bottomTension)],
-    [1, bulge]
-  );
-  const upper = split(
-    [1, bulge],
-    [1, bulge + topTension * (1 - bulge)],
-    [tipFlare, 1],
-    [0, 1]
-  );
-
   return {
     height,
     radius,
     baseY: 0,
-    baseHandle: round(lower.a[0]),
-    lowerX: round(lower.m[0]),
-    lowerY: round(lower.m[1]),
-    lowerAngle: roundAngle(angleOf(lower.d, lower.e)),
-    lowerIn: round(distance(lower.d, lower.m)),
-    lowerOut: round(distance(lower.m, lower.e)),
+    baseHandle: round(baseFlare),
+    baseAngle: 0,
     midX: 1,
     midY: round(bulge),
     midAngle: 90,
-    midIn: round(distance(lower.c, [1, bulge])),
-    midOut: round(distance([1, bulge], upper.a)),
-    upperX: round(upper.m[0]),
-    upperY: round(upper.m[1]),
-    upperAngle: roundAngle(angleOf(upper.d, upper.e)),
-    upperIn: round(distance(upper.d, upper.m)),
-    upperOut: round(distance(upper.m, upper.e)),
+    midIn: round(bottomTension * bulge),
+    midOut: round(topTension * (1 - bulge)),
     tipY: 1,
-    tipHandle: round(upper.c[0])
+    tipHandle: round(tipFlare),
+    tipAngle: 180
+  };
+}
+
+const KEPT_KEYS = [
+  "height",
+  "radius",
+  "baseY",
+  "baseHandle",
+  "baseAngle",
+  "midX",
+  "midY",
+  "midAngle",
+  "midIn",
+  "midOut",
+  "tipY",
+  "tipHandle",
+  "tipAngle"
+];
+
+// Version 2 had shoulder anchors between the poles and the middle. Those came
+// from halving each segment, which halves the handles beside the kept anchors,
+// so doubling them back reverses it; shoulders that were moved by hand can
+// only be approximated.
+export function migrateFiveAnchorShape(
+  shape: Record<string, unknown>
+): Record<string, unknown> {
+  const kept = Object.fromEntries(
+    KEPT_KEYS.filter((key) => typeof shape[key] === "number").map((key) => [
+      key,
+      shape[key]
+    ])
+  );
+  const double = (key: string) =>
+    typeof kept[key] === "number" ? { [key]: kept[key] * 2 } : {};
+
+  return {
+    baseAngle: 0,
+    tipAngle: 180,
+    ...kept,
+    ...double("baseHandle"),
+    ...double("midIn"),
+    ...double("midOut"),
+    ...double("tipHandle")
   };
 }

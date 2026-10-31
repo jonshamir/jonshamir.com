@@ -23,27 +23,19 @@ const handle = (value: number, label: string, min = 0) => ({
 });
 
 // Anchors in normalized space, which Height and Radius then scale. The poles
-// stay on the axis with a horizontal tangent, so they only move along it.
+// stay on the axis; their angle ranges keep the handle on the outer side.
 export const profilePointsSchema = {
   baseY: coord(0, "Base Y"),
-  baseHandle: handle(0.375, "Base Handle", 0.01),
-  lowerX: coord(0.781, "Lower X", 0, 1.5),
-  lowerY: coord(0.123, "Lower Y"),
-  lowerAngle: angle(26, "Lower Angle"),
-  lowerIn: handle(0.174, "Lower In"),
-  lowerOut: handle(0.174, "Lower Out"),
+  baseHandle: handle(0.75, "Base Handle", 0.01),
+  baseAngle: { value: 0, min: -90, max: 90, step: 0.1, label: "Base Angle" },
   midX: coord(1, "Mid X", 0, 1.5),
   midY: coord(0.42, "Mid Y"),
   midAngle: angle(90, "Mid Angle"),
-  midIn: handle(0.115, "Mid In"),
-  midOut: handle(0.174, "Mid Out"),
-  upperX: coord(0.8, "Upper X", 0, 1.5),
-  upperY: coord(0.841, "Upper Y"),
-  upperAngle: angle(145.9, "Upper Angle"),
-  upperIn: handle(0.181, "Upper In"),
-  upperOut: handle(0.181, "Upper Out"),
+  midIn: handle(0.231, "Mid In"),
+  midOut: handle(0.348, "Mid Out"),
   tipY: coord(1, "Tip Y"),
-  tipHandle: handle(0.4, "Tip Handle", 0.01)
+  tipHandle: handle(0.8, "Tip Handle", 0.01),
+  tipAngle: { value: 180, min: 90, max: 270, step: 0.1, label: "Tip Angle" }
 } satisfies Schema;
 
 export const shapeSchema = {
