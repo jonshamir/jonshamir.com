@@ -9,15 +9,11 @@ import { Vector2 } from "three/webgpu";
 
 import { getPane, writeControlValues } from "../../../lib/tweakpane";
 import { profilePointsSchema, type ShapeControls } from "./fruitControls";
-import {
-  type InteriorAnchor,
-  type ProfileAnchors,
-  profileControlPoints
-} from "./fruitProfile";
+import { type ProfileAnchors, profileControlPoints } from "./fruitProfile";
 import { cancelPresetTransition } from "./presetTransition";
 import styles from "./ProfileEditor.module.css";
 
-type AnchorKey = "base" | InteriorAnchor | "tip";
+type AnchorKey = "base" | "mid" | "tip";
 type Target = { kind: "anchor" | "in" | "out"; key: AnchorKey };
 type Frame = { maxX: number; minY: number; maxY: number };
 type Drag = { target: Target; offset: Vector2; frame: Frame };
@@ -31,17 +27,11 @@ const HANDLE_RADIUS_PX = 3.5;
 const CONTROLS: { target: Target; index: number; anchorIndex: number }[] = [
   { target: { kind: "anchor", key: "base" }, index: 0, anchorIndex: 0 },
   { target: { kind: "out", key: "base" }, index: 1, anchorIndex: 0 },
-  { target: { kind: "in", key: "lower" }, index: 2, anchorIndex: 3 },
-  { target: { kind: "anchor", key: "lower" }, index: 3, anchorIndex: 3 },
-  { target: { kind: "out", key: "lower" }, index: 4, anchorIndex: 3 },
-  { target: { kind: "in", key: "mid" }, index: 5, anchorIndex: 6 },
-  { target: { kind: "anchor", key: "mid" }, index: 6, anchorIndex: 6 },
-  { target: { kind: "out", key: "mid" }, index: 7, anchorIndex: 6 },
-  { target: { kind: "in", key: "upper" }, index: 8, anchorIndex: 9 },
-  { target: { kind: "anchor", key: "upper" }, index: 9, anchorIndex: 9 },
-  { target: { kind: "out", key: "upper" }, index: 10, anchorIndex: 9 },
-  { target: { kind: "in", key: "tip" }, index: 11, anchorIndex: 12 },
-  { target: { kind: "anchor", key: "tip" }, index: 12, anchorIndex: 12 }
+  { target: { kind: "in", key: "mid" }, index: 2, anchorIndex: 3 },
+  { target: { kind: "anchor", key: "mid" }, index: 3, anchorIndex: 3 },
+  { target: { kind: "out", key: "mid" }, index: 4, anchorIndex: 3 },
+  { target: { kind: "in", key: "tip" }, index: 5, anchorIndex: 6 },
+  { target: { kind: "anchor", key: "tip" }, index: 6, anchorIndex: 6 }
 ];
 
 const HANDLES = CONTROLS.filter(({ target }) => target.kind !== "anchor");
@@ -58,8 +48,8 @@ function clampField(key: PointKey, value: number): number {
   return Math.min(Math.max(value, min), max);
 }
 
-// atan2's (-180, 180] shifted to [-90, 270), so the shoulders' usual range
-// (pointing up and over towards the axis) never wraps.
+// atan2's (-180, 180] shifted to [-90, 270), which is the range every angle
+// field uses, so a handle pointing up and over towards the axis never wraps.
 function toAngle(v: Vector2): number {
   const degrees = (Math.atan2(v.y, v.x) * 180) / Math.PI;
   return degrees < -90 ? degrees + 360 : degrees;
@@ -74,20 +64,24 @@ function dragValues(
   const x = Math.max(p.x, 0);
 
   if (key === "base" || key === "tip") {
-    return kind === "anchor" ? { [`${key}Y`]: p.y } : { [`${key}Handle`]: x };
+    if (kind === "anchor") return { [`${key}Y`]: p.y };
+
+    const v = new Vector2(x, p.y - anchors[`${key}Y`]);
+    const length = v.length();
+    if (length === 0) return {};
+    if (key === "tip") v.negate();
+
+    return { [`${key}Angle`]: toAngle(v), [`${key}Handle`]: length };
   }
 
-  if (kind === "anchor") return { [`${key}X`]: x, [`${key}Y`]: p.y };
+  if (kind === "anchor") return { midX: x, midY: p.y };
 
-  const v = new Vector2(x - anchors[`${key}X`], p.y - anchors[`${key}Y`]);
+  const v = new Vector2(x - anchors.midX, p.y - anchors.midY);
   const length = v.length();
   if (length === 0) return {};
   if (kind === "in") v.negate();
 
-  return {
-    [`${key}Angle`]: toAngle(v),
-    [kind === "in" ? `${key}In` : `${key}Out`]: length
-  };
+  return { midAngle: toAngle(v), [kind === "in" ? "midIn" : "midOut"]: length };
 }
 
 function frameOf(points: Vector2[]): Frame {
