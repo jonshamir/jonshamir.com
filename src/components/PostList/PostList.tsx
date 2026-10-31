@@ -127,7 +127,14 @@ export function PostList({ wide = false }: { wide?: boolean }) {
           <li key={post.slug} className={styles.item}>
             <Link href={`/writing/${post.slug}`} className={styles.postLink}>
               <span className={styles.date}>{formattedDate}</span>
-              <span className={styles.title}>{post.title}</span>
+              <span className={styles.title}>
+                <span className={styles.roll}>
+                  {post.title}
+                  <span className={styles.rollCopy} aria-hidden>
+                    {post.title}
+                  </span>
+                </span>
+              </span>
               <span className={styles.arrowClip} aria-hidden>
                 <span className="arrow">→</span>
               </span>

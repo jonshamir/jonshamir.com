@@ -3,7 +3,7 @@ import { extend, useFrame, useLoader } from "@react-three/fiber";
 import { useRef } from "react";
 import * as THREE from "three";
 import { TextureLoader } from "three";
-import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry";
+import { RoundedBoxGeometry } from "three/examples/jsm/geometries/RoundedBoxGeometry.js";
 
 // import { OBJLoader } from "three/examples/jsm/loaders/OBJLoader";
 import { CustomMaterial } from "./CustomMaterial";

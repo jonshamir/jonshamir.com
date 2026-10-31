@@ -3,7 +3,7 @@ import { ThreeElements, useFrame } from "@react-three/fiber";
 import { useLayoutEffect, useRef } from "react";
 import * as THREE from "three";
 import { Vector3 } from "three";
-import { DEG2RAD } from "three/src/math/MathUtils";
+import { DEG2RAD } from "three/src/math/MathUtils.js";
 
 import { circleFragmentShader, circleVertexShader } from "./circle.glsl";
 import craters from "./craters.json";
