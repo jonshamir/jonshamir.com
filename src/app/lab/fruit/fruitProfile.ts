@@ -1,13 +1,32 @@
 import { CubicBezierCurve, CurvePath, Vector2 } from "three/webgpu";
 
-export type FruitProfileParams = {
+// Normalized space: x in radius units, y in height units. Angles are degrees,
+// measured along the direction of travel from base to tip.
+export type ProfileAnchors = {
+  baseY: number;
+  baseHandle: number;
+  lowerX: number;
+  lowerY: number;
+  lowerAngle: number;
+  lowerIn: number;
+  lowerOut: number;
+  midX: number;
+  midY: number;
+  midAngle: number;
+  midIn: number;
+  midOut: number;
+  upperX: number;
+  upperY: number;
+  upperAngle: number;
+  upperIn: number;
+  upperOut: number;
+  tipY: number;
+  tipHandle: number;
+};
+
+export type FruitProfileParams = ProfileAnchors & {
   height: number;
   radius: number;
-  bulge: number;
-  baseFlare: number;
-  bottomTension: number;
-  topTension: number;
-  tipFlare: number;
 };
 
 export type ProfileSample = {
@@ -16,45 +35,71 @@ export type ProfileSample = {
   v: number;
 };
 
-// The silhouette of the fruit, in the (radius, height) half-plane, as two cubic
-// segments meeting at the widest point.
-//
-// Both poles are approached horizontally and the widest point is approached and
-// left vertically. That tangent arrangement is what lets the revolved surface
-// close with a defined (0, ±1, 0) normal at the poles instead of pinching into a
-// cone, and keeps the silhouette tangent-continuous across the seam.
+export type InteriorAnchor = "lower" | "mid" | "upper";
+
+function anchorDirection(angle: number): Vector2 {
+  const radians = (angle * Math.PI) / 180;
+  return new Vector2(Math.cos(radians), Math.sin(radians));
+}
+
+function interiorPoints(anchors: ProfileAnchors, key: InteriorAnchor) {
+  const anchor = new Vector2(anchors[`${key}X`], anchors[`${key}Y`]);
+  const dir = anchorDirection(anchors[`${key}Angle`]);
+  return {
+    in: anchor.clone().addScaledVector(dir, -anchors[`${key}In`]),
+    anchor,
+    out: anchor.clone().addScaledVector(dir, anchors[`${key}Out`])
+  };
+}
+
+// The 13 control points of the four cubic segments, base to tip, with every x
+// clamped to the axis so the curve can never cross it.
+export function profileControlPoints(anchors: ProfileAnchors): Vector2[] {
+  const lower = interiorPoints(anchors, "lower");
+  const mid = interiorPoints(anchors, "mid");
+  const upper = interiorPoints(anchors, "upper");
+
+  const points = [
+    new Vector2(0, anchors.baseY),
+    new Vector2(anchors.baseHandle, anchors.baseY),
+    lower.in,
+    lower.anchor,
+    lower.out,
+    mid.in,
+    mid.anchor,
+    mid.out,
+    upper.in,
+    upper.anchor,
+    upper.out,
+    new Vector2(anchors.tipHandle, anchors.tipY),
+    new Vector2(0, anchors.tipY)
+  ];
+
+  for (const point of points) point.x = Math.max(point.x, 0);
+  return points;
+}
+
+// Both poles are approached horizontally, which is what lets the revolved
+// surface close with a defined (0, ±1, 0) normal instead of pinching into a
+// cone.
 export function createProfilePath(
   params: FruitProfileParams
 ): CurvePath<Vector2> {
-  const {
-    height,
-    radius,
-    bulge,
-    baseFlare,
-    bottomTension,
-    topTension,
-    tipFlare
-  } = params;
-
-  const bulgeY = bulge * height;
-
-  const lower = new CubicBezierCurve(
-    new Vector2(0, 0),
-    new Vector2(baseFlare * radius, 0),
-    new Vector2(radius, bulgeY - bottomTension * bulgeY),
-    new Vector2(radius, bulgeY)
-  );
-
-  const upper = new CubicBezierCurve(
-    new Vector2(radius, bulgeY),
-    new Vector2(radius, bulgeY + topTension * (height - bulgeY)),
-    new Vector2(tipFlare * radius, height),
-    new Vector2(0, height)
+  const points = profileControlPoints(params).map(
+    (p) => new Vector2(p.x * params.radius, p.y * params.height)
   );
 
   const path = new CurvePath<Vector2>();
-  path.add(lower);
-  path.add(upper);
+  for (let i = 0; i < points.length - 1; i += 3) {
+    path.add(
+      new CubicBezierCurve(
+        points[i],
+        points[i + 1],
+        points[i + 2],
+        points[i + 3]
+      )
+    );
+  }
 
   return path;
 }

@@ -1,27 +1,55 @@
-import type { InferValues, Schema } from "../../../lib/tweakpane";
+import { folder, type InferValues, type Schema } from "../../../lib/tweakpane";
 
-// Tension handles past ~1.2 make the profile overshoot its own radius and
-// self-intersect, so the sliders stop short of it.
+const coord = (value: number, label: string, min = -0.25, max = 1.25) => ({
+  value,
+  min,
+  max,
+  step: 0.001,
+  label
+});
+const angle = (value: number, label: string) => ({
+  value,
+  min: -90,
+  max: 270,
+  step: 0.1,
+  label
+});
+const handle = (value: number, label: string, min = 0) => ({
+  value,
+  min,
+  max: 1.5,
+  step: 0.001,
+  label
+});
+
+// Anchors in normalized space, which Height and Radius then scale. The poles
+// stay on the axis with a horizontal tangent, so they only move along it.
+export const profilePointsSchema = {
+  baseY: coord(0, "Base Y"),
+  baseHandle: handle(0.375, "Base Handle", 0.01),
+  lowerX: coord(0.781, "Lower X", 0, 1.5),
+  lowerY: coord(0.123, "Lower Y"),
+  lowerAngle: angle(26, "Lower Angle"),
+  lowerIn: handle(0.174, "Lower In"),
+  lowerOut: handle(0.174, "Lower Out"),
+  midX: coord(1, "Mid X", 0, 1.5),
+  midY: coord(0.42, "Mid Y"),
+  midAngle: angle(90, "Mid Angle"),
+  midIn: handle(0.115, "Mid In"),
+  midOut: handle(0.174, "Mid Out"),
+  upperX: coord(0.8, "Upper X", 0, 1.5),
+  upperY: coord(0.841, "Upper Y"),
+  upperAngle: angle(145.9, "Upper Angle"),
+  upperIn: handle(0.181, "Upper In"),
+  upperOut: handle(0.181, "Upper Out"),
+  tipY: coord(1, "Tip Y"),
+  tipHandle: handle(0.4, "Tip Handle", 0.01)
+} satisfies Schema;
+
 export const shapeSchema = {
   height: { value: 2, min: 0.5, max: 4, step: 0.01, label: "Height" },
   radius: { value: 1, min: 0.2, max: 2, step: 0.01, label: "Radius" },
-  bulge: { value: 0.42, min: 0.05, max: 0.95, step: 0.01, label: "Bulge" },
-  baseFlare: { value: 0.75, min: 0, max: 1.2, step: 0.01, label: "Base Flare" },
-  bottomTension: {
-    value: 0.55,
-    min: 0,
-    max: 1.2,
-    step: 0.01,
-    label: "Bottom Tension"
-  },
-  topTension: {
-    value: 0.6,
-    min: 0,
-    max: 1.2,
-    step: 0.01,
-    label: "Top Tension"
-  },
-  tipFlare: { value: 0.8, min: 0, max: 1.2, step: 0.01, label: "Tip Flare" }
+  Points: folder(profilePointsSchema, { collapsed: true })
 } satisfies Schema;
 
 export const subdivisionSchema = {

@@ -13,8 +13,9 @@ import {
   subdivisionSchema,
   topSchema
 } from "./fruitControls";
+import { LEGACY_DEFAULTS, migrateLegacyShape } from "./legacyProfile";
 
-export const PRESET_VERSION = 1;
+export const PRESET_VERSION = 2;
 
 // Folder titles as passed to useControls in FruitCanvas. Capturing through this
 // list rather than taking everything registered means a control group belonging
@@ -92,12 +93,26 @@ export function parsePreset(input: unknown): FruitPreset | null {
     }
   }
 
+  const legacy = usable.Shape && "bulge" in usable.Shape;
+  if (legacy)
+    usable.Shape = migrateLegacyShape(legacyShapeValues(usable.Shape));
+
   return {
-    version: candidate.version,
+    version: legacy ? PRESET_VERSION : candidate.version,
     lab: "fruit",
     name: typeof candidate.name === "string" ? candidate.name : undefined,
     values: usable
   };
+}
+
+// Version 1 presets described the profile with bulge, flare and tension
+// sliders. Unknown or malformed fields fall back to the old defaults.
+function legacyShapeValues(shape: Record<string, unknown>) {
+  return Object.fromEntries(
+    Object.keys(LEGACY_DEFAULTS)
+      .filter((key) => typeof shape[key] === "number")
+      .map((key) => [key, shape[key]])
+  );
 }
 
 export type SavedPresets = Record<string, FruitPreset>;

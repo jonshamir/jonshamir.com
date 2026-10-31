@@ -43,6 +43,9 @@ export type FruitGeometries = {
   body: BufferGeometry;
   top: BufferGeometry;
   metrics: SurfaceMetrics;
+  // Midway between the lowest and highest profile points, which the poles no
+  // longer are once either one is dimpled.
+  centerY: number;
 };
 
 export function createFruitGeometries(
@@ -54,13 +57,17 @@ export function createFruitGeometries(
   const tip = profile[profile.length - 1];
   const { apex, ring } = createTopCap(tip.position.y, params);
 
+  const ys = path.getSpacedPoints(64).map((point) => point.y);
+  const centerY = (Math.min(...ys) + Math.max(...ys)) / 2;
+
   return {
     body: createRevolvedGeometry(profile, params.radialSegments),
     top: createFanCapGeometry(apex, ring),
     metrics: {
       cellAngle: (Math.PI * 2) / params.radialSegments,
       cellLength: path.getLength() / params.profileSegments
-    }
+    },
+    centerY
   };
 }
 
