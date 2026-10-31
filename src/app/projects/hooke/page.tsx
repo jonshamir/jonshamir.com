@@ -157,18 +157,9 @@ export default function Page() {
         transitions confirm each answer and show what comes next.
       </p>
       <p>
-        Reporting &quot;the smallest line I can read&quot; feels harder than
-        actually reading, so the acuity test moves from Snellen to a
-        forced-choice Landolt C.
+        I built the flow as a high-fidelity prototype so Hooke could try it end
+        to end.
       </p>
-      <p>
-        I built the flow as a high-fidelity React prototype so Hooke could try
-        it end to end.
-      </p>
-      <figure className="grid-wide">
-        <Placeholder label="Video: prototype walkthrough of the guided exam" />
-      </figure>
-
       <h2>The dragonfly</h2>
       <p>
         During the objective measurement, patients focus on a stereoscopic 3D
