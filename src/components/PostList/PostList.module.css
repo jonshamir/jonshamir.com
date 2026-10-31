@@ -25,20 +25,38 @@
   color: inherit;
 }
 
-/* Title weights up on hover (Supreme is a variable font, so it tweens) rather
-   than underlining, so the widened hit target doesn't read as a link-shaped date. */
-/* The global `a:hover` (typography.css) re-underlines on hover and outweighs
-   .postLink's `text-decoration: none`; this reset (0,2,0) beats it back. */
+/* Title rolls on hover rather than underlining, so the widened hit target doesn't
+   read as a link-shaped date. The global `a:hover` (typography.css) re-underlines
+   on hover and outweighs .postLink's `text-decoration: none`; this reset (0,2,0)
+   beats it back. */
 .postLink:hover {
   text-decoration: none;
 }
 
+/* clip, not hidden: hidden would make this a scroll container and move its
+   baseline to the bottom edge, breaking the row's baseline alignment. */
 .title {
-  transition: font-weight var(--transition-fast);
+  overflow: clip;
 }
 
-.postLink:hover .title {
-  font-weight: 600;
+.roll {
+  display: block;
+  position: relative;
+  transition: transform 300ms var(--ease-out-expo);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
+}
+
+.rollCopy {
+  position: absolute;
+  top: 100%;
+  inset-inline: 0;
+}
+
+.postLink:hover .roll {
+  transform: translateY(-100%);
 }
 
 .date {
@@ -58,7 +76,7 @@
 
 .arrowClip :global(.arrow) {
   transform: translateX(120%);
-  transition: transform var(--transition-defaults);
+  transition: transform 300ms var(--ease-out-expo);
 }
 
 .postLink:hover .arrowClip :global(.arrow) {
