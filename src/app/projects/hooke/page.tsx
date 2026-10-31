@@ -50,7 +50,7 @@ export default function Page() {
       <h2>The challenge</h2>
       <p>
         In a traditional exam, an optometrist guides you through every step.
-        Here, the patient is on their own:
+        Here, the patient is on their own, which means:
       </p>
       <ul>
         <li>
@@ -67,7 +67,7 @@ export default function Page() {
         </li>
       </ul>
       <p>
-        The existing screens, built for an optometrist to drive, had no
+        Existing screens, built for an optometrist to drive, have no
         instructions at all.
       </p>
       <p>
@@ -122,7 +122,7 @@ export default function Page() {
       </p>
       <p>Instructions and options sit clearly apart from the test stimulus.</p>
       <p>
-        On an eye exam, interface text is itself a vision test, so type size and
+        During an eye exam, interface text can affect results. The size and
         placement had to keep instructions readable without affecting the
         measurement.
       </p>
@@ -190,8 +190,8 @@ export default function Page() {
 
       <h2>Outcome</h2>
       <p>
-        After the prototype, Hooke asked me to implement the flow and interface
-        as well. I built it into Falcon&apos;s Python software, with a
+        Following the prototype, Hooke asked me to implement the flow and
+        interface as well. I built it into Falcon&apos;s custom software, with a
         data-driven flow the team can change without touching code.
       </p>
       <p>The self-serve exam is still unreleased.</p>

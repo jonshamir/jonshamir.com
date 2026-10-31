@@ -2,6 +2,7 @@
 
 import { OrbitControls } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 import { WebGPURenderer } from "three/webgpu";
 import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 
@@ -25,14 +26,16 @@ import {
   parsePreset,
   SESSION_STORAGE_KEY
 } from "./fruitPresets";
+import { ProfileEditor, useProfileEditorSlot } from "./ProfileEditor";
 import { usePresetFolder } from "./usePresetFolder";
 
 export default function FruitCanvas() {
-  // Folders appear in call order, so Presets sits at the top of the panel and
-  // Colors directly under it.
+  // Folders appear in call order: Presets, Colors, the Profile editor, then
+  // Shape.
   usePresetFolder();
 
   const colors = useControls("Colors", colorSchema, { collapsed: true });
+  const profileSlot = useProfileEditorSlot();
   const shape = useControls("Shape", shapeSchema);
   const subdivisions = useControls("Subdivisions", subdivisionSchema);
   const top = useControls("Top", topSchema);
@@ -120,6 +123,8 @@ export default function FruitCanvas() {
   return (
     <>
       <TweakpanePanel />
+      {profileSlot &&
+        createPortal(<ProfileEditor shape={shape} />, profileSlot)}
       <ThreeCanvas
         camera={{ fov: 35, position: [0, 0.6, 6] }}
         isFullscreen={true}

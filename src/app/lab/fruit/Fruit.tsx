@@ -59,7 +59,7 @@ export function Fruit({
     }
   });
 
-  const { body, top, metrics } = useMemo(
+  const { body, top, metrics, centerY } = useMemo(
     () => createFruitGeometries(params),
     [params]
   );
@@ -135,7 +135,7 @@ export function Fruit({
   );
 
   return (
-    <group ref={groupRef} position={[0, -params.height / 2, 0]}>
+    <group ref={groupRef} position={[0, -centerY, 0]}>
       <mesh geometry={body}>
         <primitive object={bodyMaterial.material} attach="material" />
       </mesh>
