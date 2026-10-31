@@ -131,6 +131,15 @@ export function easeInOutCubic(x: number): number {
 }
 
 /**
+ * Quintic ease-in-out function
+ * @param x - Input value (0 to 1)
+ * @returns Eased value
+ */
+export function easeInOutQuint(x: number): number {
+  return x < 0.5 ? 16 * x ** 5 : 1 - Math.pow(-2 * x + 2, 5) / 2;
+}
+
+/**
  * Back ease-out function (slight overshoot past 1)
  * @param x - Input value (0 to 1)
  * @returns Eased value
