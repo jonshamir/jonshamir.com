@@ -25,10 +25,8 @@
   color: inherit;
 }
 
-/* Title rolls on hover rather than underlining, so the widened hit target doesn't
-   read as a link-shaped date. The global `a:hover` (typography.css) re-underlines
-   on hover and outweighs .postLink's `text-decoration: none`; this reset (0,2,0)
-   beats it back. */
+/* The global `a:hover` (typography.css) re-underlines on hover and outweighs
+   .postLink's `text-decoration: none`; this reset (0,2,0) beats it back. */
 .postLink:hover {
   text-decoration: none;
 }
@@ -65,20 +63,23 @@
   max-width: 5rem;
 }
 
-/* Arrow rides the trailing edge inside a clipped box, sliding in from the right
-   on row hover. align-self: center sidesteps the baseline of an overflow box. */
+/* Arrow follows the title and slides out from behind its trailing edge.
+   clip-path rather than overflow, so the box keeps its text baseline. */
 .arrowClip {
-  margin-inline-start: auto;
-  align-self: center;
   display: flex;
-  overflow: visible;
+  margin-inline-start: -0.35em;
+  clip-path: inset(-0.5em 0);
 }
 
 .arrowClip :global(.arrow) {
-  transform: translateX(120%);
+  transform: translateX(-100%);
   transition: transform 300ms var(--ease-out-expo);
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 }
 
 .postLink:hover .arrowClip :global(.arrow) {
-  transform: translateX(-50%);
+  transform: none;
 }

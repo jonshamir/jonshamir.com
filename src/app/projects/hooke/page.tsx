@@ -19,10 +19,6 @@ const inputOptions = [
   { label: "Dial", img: inputDialImg }
 ];
 
-function Placeholder({ label }: { label: string }) {
-  return <div className={styles.placeholder}>{label}</div>;
-}
-
 export default function Page() {
   return (
     <>
