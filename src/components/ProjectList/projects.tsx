@@ -1,8 +1,8 @@
 import type { StaticImageData } from "next/image";
 import { FC } from "react";
 
-import hookePreview from "../../app/projects/hooke/cover.jpg";
-import hookePreviewSmall from "../../app/projects/hooke/preview-small.png";
+// import hookePreview from "../../app/projects/hooke/cover.jpg";
+// import hookePreviewSmall from "../../app/projects/hooke/preview-small.png";
 import leafMapPreview from "../../app/projects/leaf-map/hero.png";
 import leafMapPreviewSmall from "../../app/projects/leaf-map/preview-small.png";
 import muserPreview from "../../app/projects/muser/preview.png";
