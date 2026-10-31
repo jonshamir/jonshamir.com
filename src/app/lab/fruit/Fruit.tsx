@@ -23,6 +23,7 @@ import {
   createFruitMaterial,
   createTopMaterial
 } from "./fruitMaterial";
+import { spinOffset } from "./presetTransition";
 
 export type FruitProps = {
   params: FruitGeometryParams;
@@ -48,10 +49,13 @@ export function Fruit({
   wireframe
 }: FruitProps) {
   const groupRef = useRef<Group>(null);
+  const angleRef = useRef(0);
 
   useFrame((_, delta) => {
+    angleRef.current += delta * motion.rotationSpeed;
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * motion.rotationSpeed;
+      groupRef.current.rotation.y =
+        angleRef.current + spinOffset(performance.now());
     }
   });
 
