@@ -5,8 +5,17 @@ import Image from "next/image";
 import arduinoImg from "./arduino.jpg";
 import coverImg from "./cover.jpg";
 import heroImg from "./hooke-device.jpg";
+import inputButtonsImg from "./input-buttons.jpg";
+import inputDialImg from "./input-dial.jpg";
+import inputJoystickImg from "./input-joystick.jpg";
 import styles from "./page.module.css";
 import slideImg from "./slide.png";
+
+const inputOptions = [
+  { label: "Button pad", img: inputButtonsImg },
+  { label: "Joystick", img: inputJoystickImg },
+  { label: "Dial", img: inputDialImg }
+];
 
 function Placeholder({ label }: { label: string }) {
   return <div className={styles.placeholder}>{label}</div>;
@@ -78,8 +87,15 @@ export default function Page() {
         are hard to tell apart by touch, joysticks are less precise, and voice
         is awkward in noisy or public places.
       </p>
-      <figure>
-        <Placeholder label="Concept sheet comparing the four input options" />
+      <figure className="grid-wide">
+        <div className={styles.inputs}>
+          {inputOptions.map(({ label, img }) => (
+            <div key={label}>
+              <Image src={img} alt={label} />
+              <span className="figcaption">{label}</span>
+            </div>
+          ))}
+        </div>
       </figure>
       <p>
         I built an Arduino prototype with 3D-printed knobs and had people try

@@ -28,3 +28,24 @@
 .screen:hover img {
   outline-color: rgba(255, 255, 255, 0.4);
 }
+
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
+  width: 100%;
+}
+
+.inputs > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.inputs img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: var(--rounding-medium);
+}
