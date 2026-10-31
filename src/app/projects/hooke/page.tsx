@@ -100,8 +100,11 @@ export default function Page() {
 
       <h2>Designing in the dark</h2>
       <p>
-        The exam takes place on pure black, which blends into the darkness
-        inside the device so the screen feels larger than it is.
+        The exam takes place on pure black, and the interface runs right up to
+        the edge of the screen. Inside the device, that black is
+        indistinguishable from the darkness around it, so the darkness becomes
+        the whitespace: no pixels are spent on margins, and the screen feels
+        larger than it is.
       </p>
       <p>Instructions and options sit clearly apart from the test stimulus.</p>
       <p>
@@ -116,6 +119,10 @@ export default function Page() {
             alt="Exam screen asking “What is the smallest line you can read?” with three lines of numbers and A, B, C answer buttons"
           />
         </div>
+        <figcaption>
+          The UI fills the screen edge to edge, using the device&apos;s darkness
+          as its margin. Hover to see where the screen ends.
+        </figcaption>
       </figure>
 
       <h2>A guided exam</h2>
