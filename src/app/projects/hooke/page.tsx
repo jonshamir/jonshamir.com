@@ -4,6 +4,8 @@ import Image from "next/image";
 
 import arduinoImg from "./arduino.jpg";
 import coverImg from "./cover.jpg";
+import dragonflyVideo from "./dragonfly.mp4";
+import flightPathImg from "./flight-path.jpg";
 import heroImg from "./hooke-device.jpg";
 import inputButtonsImg from "./input-buttons.jpg";
 import inputDialImg from "./input-dial.jpg";
@@ -177,9 +179,14 @@ export default function Page() {
         follow, and its red colour blends with the device&apos;s red test LED.
       </p>
       <figure className="grid-wide">
-        <Image
-          src={coverImg}
-          alt="A red dragonfly flying over a pond with water lilies"
+        <video
+          src={dragonflyVideo}
+          poster={coverImg.src}
+          aria-label="A red dragonfly hovering over a pond with water lilies"
+          playsInline
+          autoPlay
+          muted
+          loop
         />
       </figure>
       <p>
@@ -188,7 +195,10 @@ export default function Page() {
         and its timing stays in sync with the automated measurements.
       </p>
       <figure>
-        <Placeholder label="Illustration: flight path over time, with the measurement windows and age bands marked" />
+        <Image
+          src={flightPathImg}
+          alt="Top-down Blender view of the pond, with the dragonfly's flight path drawn between the lily pads"
+        />
       </figure>
 
       <h2>Outcome</h2>
