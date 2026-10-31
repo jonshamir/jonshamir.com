@@ -5,7 +5,8 @@ import Image from "next/image";
 import arduinoImg from "./arduino.jpg";
 import coverImg from "./cover.jpg";
 import heroImg from "./hooke-device.jpg";
-import styles from "./placeholder.module.css";
+import styles from "./page.module.css";
+import slideImg from "./slide.png";
 
 function Placeholder({ label }: { label: string }) {
   return <div className={styles.placeholder}>{label}</div>;
@@ -109,7 +110,12 @@ export default function Page() {
         measurement.
       </p>
       <figure>
-        <Placeholder label="Before/after of an exam screen" />
+        <div className={styles.screen}>
+          <Image
+            src={slideImg}
+            alt="Exam screen asking “What is the smallest line you can read?” with three lines of numbers and A, B, C answer buttons"
+          />
+        </div>
       </figure>
 
       <h2>A guided exam</h2>
@@ -121,9 +127,6 @@ export default function Page() {
         Hooke&apos;s optometrist defined the exam logic as a state machine, and
         I turned each state into a step the patient can follow alone.
       </p>
-      <figure className="grid-wide">
-        <Placeholder label="Diagram: the exam flow, from start to results" />
-      </figure>
       <p>
         I wrote the script and produced AI narration. Sound cues, animations and
         transitions confirm each answer and show what comes next.

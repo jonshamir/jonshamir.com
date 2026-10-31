@@ -1,0 +1,30 @@
+.placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: var(--space-md);
+  border: 1px dashed var(--color-secondary);
+  border-radius: var(--rounding-medium);
+  color: var(--color-secondary);
+  text-align: center;
+}
+
+.screen {
+  padding: var(--space-2xl);
+  border-radius: var(--rounding-medium);
+  background: #000;
+}
+
+.screen img {
+  display: block;
+  outline: 3px dotted transparent;
+  outline-offset: 0px;
+  transition: outline-color var(--transition-defaults);
+  border-radius: 0;
+}
+
+.screen:hover img {
+  outline-color: rgba(255, 255, 255, 0.4);
+}
