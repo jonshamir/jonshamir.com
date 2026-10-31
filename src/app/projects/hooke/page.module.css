@@ -20,7 +20,7 @@
 .screen img {
   display: block;
   outline: 3px dotted transparent;
-  outline-offset: 0px;
+  outline-offset: 2px;
   transition: outline-color var(--transition-defaults);
   border-radius: 0;
 }
