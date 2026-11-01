@@ -4,6 +4,7 @@ import Image from "next/image";
 
 import arduinoImg from "./arduino.jpg";
 import coverImg from "./cover.jpg";
+import dialIntroVideo from "./dial-intro.mp4";
 import dragonflyVideo from "./dragonfly.mp4";
 import flightPathImg from "./flight-path.jpg";
 import heroImg from "./hooke-device.jpg";
@@ -111,6 +112,18 @@ export default function Page() {
         click, easy to use by touch and good for numbers like age. The final
         dial was chosen for its size, weight, click and feel.
       </p>
+      <figure>
+        <div className={styles.screen}>
+          <video
+            src={dialIntroVideo}
+            aria-label="Exam screen introducing the dial: a rotating knob icon above “Rotate, then click” with two answer buttons"
+            playsInline
+            autoPlay
+            muted
+            loop
+          />
+        </div>
+      </figure>
 
       <h2>Designing in the dark</h2>
       <p>

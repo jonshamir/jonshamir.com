@@ -13,16 +13,20 @@
 
 .screen {
   padding: var(--space-2xl);
-  border-radius: var(--rounding-medium);
+  border-radius: var(--rounding-small);
   background: #000;
 }
 
-.screen img {
+.screen img,
+.screen video {
   display: block;
+  border-radius: 0;
+}
+
+.screen img {
   outline: 3px dotted transparent;
   outline-offset: 2px;
   transition: outline-color var(--transition-defaults);
-  border-radius: 0;
 }
 
 .screen:hover img {
