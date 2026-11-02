@@ -116,6 +116,10 @@
     height: 100%;
     object-fit: cover;
     object-position: left center;
+    visibility: hidden;
+    transition-property: transform, visibility;
+    transition-duration: 0s;
+    transition-delay: 0s, var(--open-duration);
 
     &[data-pos="above"] {
       transform: translateY(-100%);
@@ -125,8 +129,14 @@
       transform: translateY(100%);
     }
 
+    &[data-pos="active"] {
+      visibility: visible;
+      transition-delay: 0s;
+    }
+
     &[data-moving] {
-      transition: transform var(--open-duration) var(--ease-out-expo);
+      transition-duration: var(--open-duration), 0s;
+      transition-timing-function: var(--ease-out-expo);
     }
   }
 }
