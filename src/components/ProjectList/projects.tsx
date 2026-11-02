@@ -7,6 +7,8 @@ import leafMapPreview from "../../app/projects/leaf-map/hero.png";
 import leafMapPreviewSmall from "../../app/projects/leaf-map/preview-small.png";
 import muserPreview from "../../app/projects/muser/preview.png";
 import muserPreviewSmall from "../../app/projects/muser/preview-small.png";
+// import prepbookPreview from "../../app/projects/prepbook/hero.jpg";
+// import prepbookPreviewSmall from "../../app/projects/prepbook/preview-small.png";
 import simplyPreview from "../../app/projects/simply/hero.jpg";
 import simplyPreviewSmall from "../../app/projects/simply/preview-small.png";
 import spacetopPreview from "../../app/projects/spacetop/hero.jpg";
@@ -15,6 +17,7 @@ import widgetsPreviewSmall from "../../app/projects/widgets/preview-small.png";
 import widgetsPreview from "../../app/projects/widgets/screenshot.png";
 import LeafMapIcon from "./icons/leaf-map.svg";
 import MuserIcon from "./icons/muser.svg";
+// import PrepbookIcon from "./icons/prepbook.svg";
 import SimplyIcon from "./icons/simply.svg";
 import SpacetopIcon from "./icons/spacetop.svg";
 import WidgetsIcon from "./icons/widgets.svg";
@@ -58,6 +61,16 @@ const projects: ProjectItem[] = [
     previewSmall: simplyPreviewSmall,
     year: 2025
   },
+  // {
+  //   slug: "prepbook",
+  //   name: "Prepbook",
+  //   subtitle: "Text-first recipe manager",
+  //   icon: PrepbookIcon as FC,
+  //   preview: prepbookPreview,
+  //   previewSmall: prepbookPreviewSmall,
+  //   link: "https://prepbook.app",
+  //   year: 2026
+  // },
   {
     slug: "muser",
     name: "Muser",
