@@ -100,8 +100,7 @@ export default function Page() {
         <li>Offline first; it syncs when it can.</li>
         <li>
           Sharing as a link that opens anywhere, no app or account on the other
-          end. {/* TODO: shared recipe URL */}
-          <Outlink href="TODO">Try one</Outlink>
+          end. <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
         </li>
         <li>Import from a link, a video, or a photo of a cookbook page.</li>
         <li>
