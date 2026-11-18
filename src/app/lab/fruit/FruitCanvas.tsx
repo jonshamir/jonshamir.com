@@ -119,7 +119,7 @@ export default function FruitCanvas() {
 
   return (
     <>
-      <TweakpanePanel />
+      <TweakpanePanel defaultExpanded />
       <ThreeCanvas
         camera={{ fov: 35, position: [0, 0.6, 6] }}
         isFullscreen={true}
