@@ -88,7 +88,6 @@
 .spaceList li {
   margin: 0;
   padding: var(--space-sm);
-  font-weight: 500;
   cursor: help;
   transition: color var(--transition-defaults);
   /* Pull the ring off the text without shifting the list. */

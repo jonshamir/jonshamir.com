@@ -40,7 +40,7 @@ export default function Page() {
         We started it as a side project three years ago, after years of keeping
         recipes split between Paprika and Google Docs — one had the structure,
         the other had the writing. I designed the product and built with my
-        friend Jordan: one React Native codebase on iOS, Android and the web.
+        friend Jordan, using it to organize our recipes along the way.
       </p>
 
       <h2>Recipes as documents</h2>
@@ -70,10 +70,10 @@ export default function Page() {
         <Image src={scalerImg} alt="Scaling a recipe in Prepbook" />
       </figure>
       <p>
-        Because Prepbook knows where every amount sits in the text, scaling
-        rewrites all of them, including the ones buried in the instructions. You
-        don&apos;t pick a multiplier — you change the number in front of you,
-        and the recipe follows.
+        Because Prepbook knows where every amount sits in the text, you can just
+        click an amount and the whole recipe scales in proportion. The scaling
+        is a mix of rules and LLMs, so it can handle the tricky cases - "a
+        pinch" or "a few" - and even scale across units and languages.
       </p>
 
       <h2>Search</h2>
