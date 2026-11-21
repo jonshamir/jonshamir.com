@@ -138,6 +138,22 @@ float boxDistance(float dx, float dy) {
   return length(max(vec2(dx, dy), 0.0)) + min(max(dx, dy), 0.0);
 }
 
+const int OUTLINE_SAMPLES = 16;
+const int OUTLINE_REFINE = 8;
+
+float marginWidth(float t) {
+  return bladeWidth(t) * teeth(t);
+}
+
+float outlineDistance2(float t, vec2 p, float len) {
+  vec2 q = p - vec2(t * len, marginWidth(t));
+  return dot(q, q);
+}
+
+float sideDistance(vec2 p, float s, float w) {
+  return length(vec2(p.x - s, p.y - clamp(p.y, 0.0, w)));
+}
+
 float bladeDistance() {
   float len = vLen;
   float curvature = vB.y;
@@ -153,26 +169,48 @@ float bladeDistance() {
     v = sign(curvature) * (abs(radius) - length(q));
   }
 
-  float av = abs(v);
+  vec2 p = vec2(s, abs(v));
   float t = s / len;
-  float taper = vB.w;
 
-  float lamina;
   float axis = 1e5;
-  if (t < 0.0) {
-    lamina = boxDistance(-s, av - bladeWidth(0.0));
-    if (vC.x > 0.0) axis = length(vec2(s, v)) - vB.z;
-  } else if (t > 1.0) {
-    lamina = boxDistance(s - len, av - bladeWidth(1.0));
-  } else {
-    float e = 0.002;
-    float slope = (bladeWidth(min(t + e, 1.0)) - bladeWidth(max(t - e, 0.0)))
-      / ((min(t + e, 1.0) - max(t - e, 0.0)) * len);
-    float w = bladeWidth(t) * teeth(t);
-    lamina = max((av - w) / sqrt(1.0 + slope * slope), max(-s, s - len));
-    axis = av - vB.z * mix(1.0, taper, t) * (1.0 - stalkMask(t));
+  if (vC.x > 0.0) {
+    float tc = clamp(t, 0.0, 1.0);
+    float r = vB.z * mix(1.0, vB.w, tc) * (1.0 - stalkMask(tc));
+    axis = length(vec2(s - tc * len, p.y)) - r;
   }
-  return min(lamina, axis);
+
+  float bound = boxDistance(max(-s, s - len), p.y - vB.x);
+  if (bound > uCutoff) return min(bound, axis);
+
+  float best = 1e10;
+  float bestT = 0.0;
+  for (int i = 0; i <= OUTLINE_SAMPLES; i++) {
+    float ti = float(i) / float(OUTLINE_SAMPLES);
+    float d2 = outlineDistance2(ti, p, len);
+    if (d2 < best) {
+      best = d2;
+      bestT = ti;
+    }
+  }
+
+  float step = 1.0 / float(OUTLINE_SAMPLES);
+  float lo = max(bestT - step, 0.0);
+  float hi = min(bestT + step, 1.0);
+  for (int j = 0; j < OUTLINE_REFINE; j++) {
+    float m1 = mix(lo, hi, 0.382);
+    float m2 = mix(lo, hi, 0.618);
+    if (outlineDistance2(m1, p, len) < outlineDistance2(m2, p, len)) {
+      hi = m2;
+    } else {
+      lo = m1;
+    }
+  }
+  float dist = sqrt(min(best, outlineDistance2(0.5 * (lo + hi), p, len)));
+  dist = min(dist, sideDistance(p, 0.0, marginWidth(0.0)));
+  dist = min(dist, sideDistance(p, len, marginWidth(1.0)));
+
+  bool inside = t >= 0.0 && t <= 1.0 && p.y < marginWidth(t);
+  return min(inside ? -dist : dist, axis);
 }
 
 float jointWeight() {
