@@ -23,6 +23,7 @@ import {
   createFruitMaterial,
   createTopMaterial
 } from "./fruitMaterial";
+import { spinOffset } from "./presetTransition";
 
 export type FruitProps = {
   params: FruitGeometryParams;
@@ -48,14 +49,17 @@ export function Fruit({
   wireframe
 }: FruitProps) {
   const groupRef = useRef<Group>(null);
+  const angleRef = useRef(0);
 
   useFrame((_, delta) => {
+    angleRef.current += delta * motion.rotationSpeed;
     if (groupRef.current) {
-      groupRef.current.rotation.y += delta * motion.rotationSpeed;
+      groupRef.current.rotation.y =
+        angleRef.current + spinOffset(performance.now());
     }
   });
 
-  const { body, top, metrics } = useMemo(
+  const { body, top, metrics, centerY } = useMemo(
     () => createFruitGeometries(params),
     [params]
   );
@@ -131,7 +135,7 @@ export function Fruit({
   );
 
   return (
-    <group ref={groupRef} position={[0, -params.height / 2, 0]}>
+    <group ref={groupRef} position={[0, -centerY, 0]}>
       <mesh geometry={body}>
         <primitive object={bodyMaterial.material} attach="material" />
       </mesh>

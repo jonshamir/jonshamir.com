@@ -1,5 +1,5 @@
 import { hexToOklch, mixOklch, oklchToHex } from "../../../lib/color";
-import { easeInOutCubic, lerp } from "../../../lib/math";
+import { easeInOutCubic, easeInOutQuint, lerp } from "../../../lib/math";
 import {
   type ControlValues,
   isFolder,
@@ -119,6 +119,16 @@ function blend(
 
 let frame: number | undefined;
 
+const SPIN = Math.PI * 2;
+let spinFrom = 0;
+let spinStart: number | undefined;
+
+export function spinOffset(now: number): number {
+  if (spinStart === undefined) return spinFrom;
+  const t = Math.min((now - spinStart) / DURATION_MS, 1);
+  return spinFrom + SPIN * easeInOutQuint(t);
+}
+
 export function cancelPresetTransition(): void {
   if (frame === undefined) return;
   cancelAnimationFrame(frame);
@@ -140,6 +150,8 @@ export function transitionToPreset(preset: FruitPreset): void {
   // heading for, so interrupting re-aims from the visible state.
   const from = readControlValues();
   const start = performance.now();
+  spinFrom = spinOffset(start) % SPIN;
+  spinStart = start;
 
   const tick = (now: number) => {
     const t = Math.min((now - start) / DURATION_MS, 1);

@@ -1,27 +1,47 @@
-import type { InferValues, Schema } from "../../../lib/tweakpane";
+import { folder, type InferValues, type Schema } from "../../../lib/tweakpane";
 
-// Tension handles past ~1.2 make the profile overshoot its own radius and
-// self-intersect, so the sliders stop short of it.
+const coord = (value: number, label: string, min = -0.25, max = 1.25) => ({
+  value,
+  min,
+  max,
+  step: 0.001,
+  label
+});
+const angle = (value: number, label: string) => ({
+  value,
+  min: -90,
+  max: 270,
+  step: 0.1,
+  label
+});
+const handle = (value: number, label: string, min = 0) => ({
+  value,
+  min,
+  max: 1.5,
+  step: 0.001,
+  label
+});
+
+// Anchors in normalized space, which Height and Radius then scale. The poles
+// stay on the axis; their angle ranges keep the handle on the outer side.
+export const profilePointsSchema = {
+  baseY: coord(0, "Base Y"),
+  baseHandle: handle(0.75, "Base Handle", 0.01),
+  baseAngle: { value: 0, min: -90, max: 90, step: 0.1, label: "Base Angle" },
+  midX: coord(1, "Mid X", 0, 1.5),
+  midY: coord(0.42, "Mid Y"),
+  midAngle: angle(90, "Mid Angle"),
+  midIn: handle(0.231, "Mid In"),
+  midOut: handle(0.348, "Mid Out"),
+  tipY: coord(1, "Tip Y"),
+  tipHandle: handle(0.8, "Tip Handle", 0.01),
+  tipAngle: { value: 180, min: 90, max: 270, step: 0.1, label: "Tip Angle" }
+} satisfies Schema;
+
 export const shapeSchema = {
   height: { value: 2, min: 0.5, max: 4, step: 0.01, label: "Height" },
   radius: { value: 1, min: 0.2, max: 2, step: 0.01, label: "Radius" },
-  bulge: { value: 0.42, min: 0.05, max: 0.95, step: 0.01, label: "Bulge" },
-  baseFlare: { value: 0.75, min: 0, max: 1.2, step: 0.01, label: "Base Flare" },
-  bottomTension: {
-    value: 0.55,
-    min: 0,
-    max: 1.2,
-    step: 0.01,
-    label: "Bottom Tension"
-  },
-  topTension: {
-    value: 0.6,
-    min: 0,
-    max: 1.2,
-    step: 0.01,
-    label: "Top Tension"
-  },
-  tipFlare: { value: 0.8, min: 0, max: 1.2, step: 0.01, label: "Tip Flare" }
+  Points: folder(profilePointsSchema, { collapsed: true })
 } satisfies Schema;
 
 export const subdivisionSchema = {

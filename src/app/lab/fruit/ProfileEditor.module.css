@@ -1,0 +1,60 @@
+.editor {
+  display: block;
+  width: 100%;
+  height: calc(var(--cnt-usz) * 12);
+  background-color: var(--in-bg);
+  border-radius: var(--bld-br);
+  touch-action: none;
+  user-select: none;
+}
+
+.axis {
+  stroke: var(--lbl-fg);
+  stroke-dasharray: 2 3;
+  opacity: 0.5;
+}
+
+.curve,
+.mirror {
+  fill: none;
+  stroke: var(--in-fg);
+  stroke-width: 1.5;
+}
+
+.mirror {
+  opacity: 0.25;
+}
+
+.handleLine {
+  stroke: var(--lbl-fg);
+  stroke-width: 1;
+}
+
+.anchor,
+.handle {
+  cursor: grab;
+
+  & > circle:first-child {
+    fill: transparent;
+  }
+
+  &[data-active] {
+    cursor: grabbing;
+  }
+}
+
+.anchor .dot {
+  fill: var(--in-fg);
+}
+
+.handle .dot {
+  fill: var(--bs-bg);
+  stroke: var(--in-fg);
+  stroke-width: 1.5;
+}
+
+.anchor:hover .dot,
+.handle:hover .dot,
+[data-active] .dot {
+  fill: var(--btn-bg-h);
+}
