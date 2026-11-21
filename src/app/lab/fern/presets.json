@@ -23,22 +23,8 @@
       "teeth": 8,
       "toothDepth": 0
     },
-    "Venation": {
-      "veins": true,
-      "type": "forked",
-      "count": 40,
-      "angle": 70,
-      "forkAt": 0.2,
-      "width": 0.04
-    },
-    "Shading": {
-      "fold": 0.35
-    },
-    "Colors": {
-      "leafLight": "#9ccc5c",
-      "leafDark": "#3e6b2f",
-      "axis": "#4b3b22",
-      "vein": "#c4e38c"
+    "Render": {
+      "color": "#6aa443"
     }
   },
   "Polypody": {
@@ -81,22 +67,8 @@
       "teeth": 10,
       "toothDepth": 0.1
     },
-    "Venation": {
-      "veins": true,
-      "type": "forked",
-      "count": 6,
-      "angle": 55,
-      "forkAt": 0.4,
-      "width": 0.04
-    },
-    "Colors": {
-      "leafLight": "#7fae4e",
-      "leafDark": "#2c5428",
-      "axis": "#6b5a32",
-      "vein": "#a9cf73"
-    },
-    "Shading": {
-      "fold": 0.7
+    "Render": {
+      "color": "#4f7f38"
     }
   },
   "Boston fern": {
@@ -139,22 +111,8 @@
       "teeth": 12,
       "toothDepth": 0.12
     },
-    "Venation": {
-      "veins": true,
-      "type": "forked",
-      "count": 8,
-      "angle": 50,
-      "forkAt": 0.35,
-      "width": 0.04
-    },
-    "Colors": {
-      "leafLight": "#a6d36a",
-      "leafDark": "#3f7a35",
-      "axis": "#5c6b2e",
-      "vein": "#cfe89a"
-    },
-    "Shading": {
-      "fold": 0.7
+    "Render": {
+      "color": "#73ad4c"
     }
   },
   "Lady fern": {
@@ -233,22 +191,8 @@
       "teeth": 4,
       "toothDepth": 0.2
     },
-    "Venation": {
-      "veins": true,
-      "type": "simple",
-      "count": 4,
-      "angle": 45,
-      "forkAt": 0.4,
-      "width": 0.05
-    },
-    "Colors": {
-      "leafLight": "#b5d978",
-      "leafDark": "#4c8a3a",
-      "axis": "#8a4a3a",
-      "vein": "#d6eca6"
-    },
-    "Shading": {
-      "fold": 0.7
+    "Render": {
+      "color": "#7fb556"
     }
   },
   "Bracken": {
@@ -327,22 +271,8 @@
       "teeth": 8,
       "toothDepth": 0
     },
-    "Venation": {
-      "veins": true,
-      "type": "forked",
-      "count": 5,
-      "angle": 50,
-      "forkAt": 0.4,
-      "width": 0.05
-    },
-    "Colors": {
-      "leafLight": "#8fae4a",
-      "leafDark": "#3b5e2a",
-      "axis": "#a08a4a",
-      "vein": "#b9d27a"
-    },
-    "Shading": {
-      "fold": 0.7
+    "Render": {
+      "color": "#62833a"
     }
   },
   "Maidenhair": {
@@ -403,22 +333,8 @@
       "teeth": 5,
       "toothDepth": 0.25
     },
-    "Venation": {
-      "veins": true,
-      "type": "forked",
-      "count": 10,
-      "angle": 20,
-      "forkAt": 0.3,
-      "width": 0.04
-    },
-    "Colors": {
-      "leafLight": "#b9dd8a",
-      "leafDark": "#5b8f45",
-      "axis": "#2a1d18",
-      "vein": "#d4ecae"
-    },
-    "Shading": {
-      "fold": 0.7
+    "Render": {
+      "color": "#86b665"
     }
   }
 }

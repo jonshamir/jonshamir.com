@@ -1,8 +1,7 @@
 import type {
   FrondControls,
   LevelControls,
-  OutlineControls,
-  VenationControls
+  OutlineControls
 } from "../fernControls";
 import { envelope, mulberry32, smoothstep } from "./curves";
 
@@ -10,19 +9,16 @@ export type FernParams = {
   frond: FrondControls;
   levels: [LevelControls, LevelControls, LevelControls];
   outline: OutlineControls;
-  venation: VenationControls;
 };
 
-// Four vec4 per primitive, uploaded as instanced attributes:
-//   a: p0.xy, p1.xy                       segment endpoints
-//   b: w0, w1, a0, a1                      lamina / midrib half-widths
-//   c: s0, s1, veinSpacing, toothSpacing   arc length along the node
-//   d: terminal, nodeLength, veinWidth, level
+// Three vec4 per primitive, uploaded as instanced attributes:
+//   a: p0.xy, p1.xy          segment endpoints
+//   b: w0, w1, a0, a1         lamina / midrib half-widths
+//   c: t0, t1, terminal, 0    normalized position along the node
 export type FrondGeometry = {
   a: Float32Array;
   b: Float32Array;
   c: Float32Array;
-  d: Float32Array;
   count: number;
   truncated: boolean;
 };
@@ -62,12 +58,11 @@ function hash2(a: number, b: number): number {
 const DEG = Math.PI / 180;
 
 export function generateFrond(params: FernParams): FrondGeometry {
-  const { frond, levels, outline, venation } = params;
+  const { frond, levels, outline } = params;
 
   const a = new Float32Array(MAX_PRIMITIVES * 4);
   const b = new Float32Array(MAX_PRIMITIVES * 4);
   const c = new Float32Array(MAX_PRIMITIVES * 4);
-  const d = new Float32Array(MAX_PRIMITIVES * 4);
   let count = 0;
   let truncated = false;
 
@@ -142,15 +137,6 @@ export function generateFrond(params: FernParams): FrondGeometry {
     const L = node.length;
     const wingFrac = Math.max(Math.min(1 - node.D, 1), node.wing, 0);
 
-    let maxW = 0;
-    for (const p of pts)
-      maxW = Math.max(maxW, laminaAt(node, p.s / L, wingFrac));
-
-    const veinSpacing =
-      venation.veins && maxW > 0 ? (maxW * 4) / venation.count : 0;
-    const veinWidth = venation.width * maxW;
-    const toothSpacing = L / outline.teeth;
-
     for (let i = 0; i < pts.length - 1; i++) {
       if (count >= MAX_PRIMITIVES) {
         truncated = true;
@@ -167,14 +153,10 @@ export function generateFrond(params: FernParams): FrondGeometry {
       b[o + 1] = laminaAt(node, q.s / L, wingFrac);
       b[o + 2] = axisAt(node, p.s / L);
       b[o + 3] = axisAt(node, q.s / L);
-      c[o] = p.s;
-      c[o + 1] = q.s;
-      c[o + 2] = veinSpacing;
-      c[o + 3] = toothSpacing;
-      d[o] = terminal ? 1 : 0;
-      d[o + 1] = L;
-      d[o + 2] = veinWidth;
-      d[o + 3] = node.level;
+      c[o] = p.s / L;
+      c[o + 1] = q.s / L;
+      c[o + 2] = terminal ? 1 : 0;
+      c[o + 3] = 0;
       count++;
     }
   }
@@ -271,5 +253,5 @@ export function generateFrond(params: FernParams): FrondGeometry {
     hash: hash2(0x2545f491, Math.round(frond.seed))
   });
 
-  return { a, b, c, d, count, truncated };
+  return { a, b, c, count, truncated };
 }

@@ -12,14 +12,12 @@ import type { Preset } from "../../../lib/presets/presetStore";
 import { usePresetFolder } from "../../../lib/presets/usePresetFolder";
 import { type ControlValues, useControls } from "../../../lib/tweakpane";
 import {
-  colorSchema,
   frondSchema,
   outlineSchema,
   pinnaeSchema,
   pinnulesSchema,
-  segmentsSchema,
-  shadingSchema,
-  venationSchema
+  renderSchema,
+  segmentsSchema
 } from "./fernControls";
 import { fernPresets, fernTransition } from "./fernPresets";
 import { FernRenderer } from "./FernRenderer";
@@ -54,9 +52,7 @@ export default function FernCanvas() {
   const pinnules = useControls("Pinnules", pinnulesSchema, { collapsed: true });
   const segments = useControls("Segments", segmentsSchema, { collapsed: true });
   const outline = useControls("Outline", outlineSchema, { collapsed: true });
-  const venation = useControls("Venation", venationSchema, { collapsed: true });
-  const shading = useControls("Shading", shadingSchema, { collapsed: true });
-  const colors = useControls("Colors", colorSchema, { collapsed: true });
+  const render = useControls("Render", renderSchema, { collapsed: true });
 
   const [session, setSession] = useLocalStorage<Preset | null>(
     fernPresets.sessionKey,
@@ -74,27 +70,16 @@ export default function FernCanvas() {
 
   useEffect(() => {
     saveSession(fernPresets.capture());
-  }, [
-    frond,
-    pinnae,
-    pinnules,
-    segments,
-    outline,
-    venation,
-    shading,
-    colors,
-    saveSession
-  ]);
+  }, [frond, pinnae, pinnules, segments, outline, render, saveSession]);
 
   const geometry = useMemo(
     () =>
       generateFrond({
         frond,
         levels: [pinnae, pinnules, segments],
-        outline,
-        venation
+        outline
       }),
-    [frond, pinnae, pinnules, segments, outline, venation]
+    [frond, pinnae, pinnules, segments, outline]
   );
 
   return (
@@ -122,13 +107,7 @@ export default function FernCanvas() {
           }}
           touches={{ ONE: TOUCH.PAN, TWO: TOUCH.DOLLY_PAN }}
         />
-        <FernRenderer
-          frond={geometry}
-          outline={outline}
-          venation={venation}
-          shading={shading}
-          colors={colors}
-        />
+        <FernRenderer frond={geometry} outline={outline} render={render} />
       </ThreeCanvas>
     </>
   );

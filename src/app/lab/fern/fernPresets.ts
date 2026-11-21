@@ -1,14 +1,12 @@
 import { createPresetStore } from "../../../lib/presets/presetStore";
 import { createPresetTransition } from "../../../lib/presets/presetTransition";
 import {
-  colorSchema,
   frondSchema,
   outlineSchema,
   pinnaeSchema,
   pinnulesSchema,
-  segmentsSchema,
-  shadingSchema,
-  venationSchema
+  renderSchema,
+  segmentsSchema
 } from "./fernControls";
 
 export const fernPresets = createPresetStore({
@@ -20,9 +18,7 @@ export const fernPresets = createPresetStore({
     Pinnules: pinnulesSchema,
     Segments: segmentsSchema,
     Outline: outlineSchema,
-    Venation: venationSchema,
-    Shading: shadingSchema,
-    Colors: colorSchema
+    Render: renderSchema
   }
 });
 

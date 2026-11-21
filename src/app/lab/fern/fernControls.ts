@@ -137,41 +137,14 @@ export const outlineSchema = {
   toothDepth: num(0.25, 0, 1, 0.01, "Tooth Depth")
 } satisfies Schema;
 
-export const venationSchema = {
-  veins: { value: true, label: "Veins" },
-  type: { value: "forked", options: ["simple", "forked"], label: "Type" },
-  count: num(9, 1, 40, 0.5, "Count"),
-  angle: num(45, 10, 85, 0.5, "Angle"),
-  forkAt: num(0.4, 0, 1, 0.01, "Fork At"),
-  width: num(0.04, 0.005, 0.15, 0.005, "Width")
-} satisfies Schema;
-
-export const shadingSchema = {
+export const renderSchema = {
+  color: { value: "#5f9a45", label: "Color" },
   softness: num(0.0015, 0, 0.012, 0.0001, "Softness"),
-  outline: num(1.25, 0, 4, 0.05, "Outline"),
-  fold: num(0.7, 0, 1.5, 0.01, "Fold"),
-  bands: num(3, 1, 8, 1, "Bands"),
-  ambient: num(0.25, 0, 1, 0.01, "Ambient"),
-  lightYaw: num(120, -180, 180, 1, "Light Yaw"),
-  lightPitch: num(45, 5, 89, 1, "Light Pitch"),
-  shadow: num(0.25, 0, 1, 0.01, "Shadow"),
-  shadowOffset: num(6, 0, 30, 0.5, "Shadow Offset"),
   resolution: num(1, 0.5, 2, 0.25, "Resolution")
-} satisfies Schema;
-
-export const colorSchema = {
-  leafLight: { value: "#8fbf5a", label: "Leaf Light" },
-  leafDark: { value: "#2f5d34", label: "Leaf Dark" },
-  axis: { value: "#5b4a2a", label: "Axis" },
-  vein: { value: "#c9e08a", label: "Vein" },
-  outline: { value: "#1d2e1c", label: "Outline" },
-  shadow: { value: "#1b2a1a", label: "Shadow" }
 } satisfies Schema;
 
 export type FrondControls = InferValues<typeof frondSchema>;
 export type LevelControls = InferValues<typeof pinnaeSchema> &
   Partial<InferValues<ReturnType<typeof sides>>>;
 export type OutlineControls = InferValues<typeof outlineSchema>;
-export type VenationControls = InferValues<typeof venationSchema>;
-export type ShadingControls = InferValues<typeof shadingSchema>;
-export type ColorControls = InferValues<typeof colorSchema>;
+export type RenderControls = InferValues<typeof renderSchema>;
