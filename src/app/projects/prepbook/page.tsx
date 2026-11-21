@@ -13,6 +13,14 @@ export default function Page() {
     <>
       <h1>Prepbook</h1>
       <p className="description">Text-first recipe manager</p>
+
+      <p>
+        Prepbook is a recipe manager built around the text. A recipe is a plain
+        document: write it the way you&apos;d jot it down for a friend, and
+        Prepbook works out the ingredients, amounts and steps. Nothing to fill
+        in, nothing to tag.
+      </p>
+
       <p>
         <ButtonLink
           href="https://prepbook.app"
@@ -29,17 +37,10 @@ export default function Page() {
       </figure>
 
       <p>
-        Prepbook is a recipe manager built around the text. A recipe is a plain
-        document: write it the way you&apos;d jot it down for a friend, and
-        Prepbook works out the ingredients, amounts and steps. Nothing to fill
-        in, nothing to tag.
-      </p>
-      <p>
-        I started it as a side project three years ago, after years of keeping
+        We started it as a side project three years ago, after years of keeping
         recipes split between Paprika and Google Docs — one had the structure,
-        the other had the writing. I designed the product and built the
-        interface, editor and apps: one React Native codebase on iOS, Android
-        and the web, in 20 languages.
+        the other had the writing. I designed the product and built with my
+        friend Jordan: one React Native codebase on iOS, Android and the web.
       </p>
 
       <h2>Recipes as documents</h2>
