@@ -1,72 +1,77 @@
 {
-  "Apple": {
-    "Shape": {
-      "height": 1.8,
-      "radius": 1.1,
-      "baseY": 0,
-      "baseHandle": 0.9,
-      "baseAngle": 0,
-      "midX": 1,
-      "midY": 0.45,
-      "midAngle": 90,
-      "midIn": 0.225,
-      "midOut": 0.303,
-      "tipY": 1,
-      "tipHandle": 1.05,
-      "tipAngle": 180
-    },
-    "Top": {
-      "showTop": true,
-      "topSegments": 5,
-      "topRadius": 0.12,
-      "topAngle": 5,
-      "topOffset": 0
-    },
+  "Peary": {
     "Colors": {
-      "bodyLight": "#e8503a",
-      "bodyShadow": "#7c2340",
-      "topLight": "#6b8f3a",
-      "topShadow": "#33561f",
-      "splatter": "#672300"
-    }
-  },
-  "Pear": {
+      "bodyLight": "#c8c24a",
+      "bodyShadow": "#6d6a26",
+      "topLight": "#7a6340",
+      "topShadow": "#3d2f1c",
+      "splatter": "#5e4a12",
+      "specular": "#aea841"
+    },
     "Shape": {
       "height": 2.4,
       "radius": 0.95,
       "baseY": 0,
       "baseHandle": 0.85,
       "baseAngle": 0,
-      "midX": 1,
-      "midY": 0.3,
-      "midAngle": 90,
-      "midIn": 0.135,
-      "midOut": 0.77,
+      "midX": 0.774,
+      "midY": 0.5081,
+      "midAngle": 149.5,
+      "midIn": 0.3617,
+      "midOut": 0.325,
       "tipY": 1,
-      "tipHandle": 0.5,
-      "tipAngle": 180
+      "tipHandle": 0.584,
+      "tipAngle": 179.4
+    },
+    "Subdivisions": {
+      "profileSegments": 12,
+      "radialSegments": 16,
+      "wireframe": false,
+      "jitterStrength": 0.5,
+      "jitterScale": 4,
+      "jitterSeed": 0
     },
     "Top": {
       "showTop": true,
       "topSegments": 4,
-      "topRadius": 0.07,
-      "topAngle": 12,
-      "topOffset": 0
+      "topRadius": 0.92,
+      "topAngle": 87,
+      "topOffset": -0.39,
+      "topShapeCenter": 1,
+      "topShapeEdge": 1,
+      "topShapeSharpness": 8
+    },
+    "Shading": {
+      "bands": 3,
+      "ambient": 0.15,
+      "specCut": 0.57,
+      "specPower": 15,
+      "specStrength": 1.15,
+      "lightYaw": 35,
+      "lightPitch": 40
     },
     "Grain": {
+      "objectDitherStrength": 0.5,
+      "objectDitherScale": 60,
+      "specDither": 128,
       "splatterStrength": 0.45,
       "splatterScale": 22,
-      "splatterCut": 0.08
+      "splatterCut": 0.08,
+      "splatterSoftness": 0.05
     },
-    "Colors": {
-      "bodyLight": "#c8c24a",
-      "bodyShadow": "#6d6a26",
-      "topLight": "#7a6340",
-      "topShadow": "#3d2f1c",
-      "splatter": "#5e4a12"
+    "Motion": {
+      "rotationSpeed": 0
     }
   },
-  "Lemon": {
+  "Lemony": {
+    "Colors": {
+      "bodyLight": "#f2d13c",
+      "bodyShadow": "#8a6b14",
+      "topLight": "#82623a",
+      "topShadow": "#4b4333",
+      "splatter": "#7a5c0b",
+      "specular": "#aea841"
+    },
     "Shape": {
       "height": 2,
       "radius": 0.85,
@@ -82,23 +87,57 @@
       "tipHandle": 0.25,
       "tipAngle": 180
     },
+    "Subdivisions": {
+      "profileSegments": 6,
+      "radialSegments": 12,
+      "wireframe": false,
+      "jitterStrength": 0.5,
+      "jitterScale": 4,
+      "jitterSeed": 0
+    },
     "Top": {
-      "showTop": false
+      "showTop": true,
+      "topSegments": 5,
+      "topRadius": 0.15,
+      "topAngle": -41,
+      "topOffset": 0.045,
+      "topShapeCenter": 1,
+      "topShapeEdge": 1,
+      "topShapeSharpness": 0.2
+    },
+    "Shading": {
+      "bands": 3,
+      "ambient": 0.15,
+      "specCut": 0.57,
+      "specPower": 15,
+      "specStrength": 1.15,
+      "lightYaw": 35,
+      "lightPitch": 40
     },
     "Grain": {
-      "splatterStrength": 0
+      "objectDitherStrength": 0.5,
+      "objectDitherScale": 60,
+      "specDither": 128,
+      "splatterStrength": 0,
+      "splatterScale": 22,
+      "splatterCut": 0.08,
+      "splatterSoftness": 0.05
     },
-    "Colors": {
-      "bodyLight": "#f2d13c",
-      "bodyShadow": "#8a6b14",
-      "topLight": "#7cb342",
-      "topShadow": "#33561f",
-      "splatter": "#7a5c0b"
+    "Motion": {
+      "rotationSpeed": 0
     }
   },
-  "Tomato": {
+  "Persimmon": {
+    "Colors": {
+      "bodyLight": "#e07c23",
+      "bodyShadow": "#6d1520",
+      "topLight": "#9fa32f",
+      "topShadow": "#475217",
+      "splatter": "#5e1408",
+      "specular": "#ae6b41"
+    },
     "Shape": {
-      "height": 1.2,
+      "height": 1.45,
       "radius": 1.25,
       "baseY": 0,
       "baseHandle": 1.1,
@@ -112,22 +151,174 @@
       "tipHandle": 1.15,
       "tipAngle": 180
     },
+    "Subdivisions": {
+      "profileSegments": 6,
+      "radialSegments": 12,
+      "wireframe": false,
+      "jitterStrength": 0.5,
+      "jitterScale": 4,
+      "jitterSeed": 0
+    },
     "Top": {
       "showTop": true,
-      "topSegments": 7,
-      "topRadius": 1.12,
-      "topAngle": 4,
-      "topOffset": 0
+      "topSegments": 4,
+      "topRadius": 1.38,
+      "topAngle": 6,
+      "topOffset": 0,
+      "topShapeCenter": 0.16,
+      "topShapeEdge": 0.73,
+      "topShapeSharpness": 0.2,
+      "topShapeVertices": 7
+    },
+    "Shading": {
+      "bands": 3,
+      "ambient": 0.15,
+      "specCut": 0.57,
+      "specPower": 15,
+      "specStrength": 1.15,
+      "lightYaw": 35,
+      "lightPitch": 40
     },
     "Grain": {
-      "splatterStrength": 0
+      "objectDitherStrength": 0.5,
+      "objectDitherScale": 60,
+      "specDither": 128,
+      "splatterStrength": 0,
+      "splatterScale": 22,
+      "splatterCut": 0.08,
+      "splatterSoftness": 0.05
     },
+    "Motion": {
+      "rotationSpeed": 0
+    }
+  },
+  "Tomaty": {
     "Colors": {
       "bodyLight": "#e03a24",
       "bodyShadow": "#6d1520",
-      "topLight": "#6aa32f",
+      "topLight": "#62952d",
       "topShadow": "#2c4a18",
-      "splatter": "#5e1408"
+      "splatter": "#5e1408",
+      "specular": "#ae6b41"
+    },
+    "Shape": {
+      "height": 1.64,
+      "radius": 1,
+      "baseY": 0,
+      "baseHandle": 0.31,
+      "baseAngle": 0,
+      "midX": 1,
+      "midY": 0.54,
+      "midAngle": 90,
+      "midIn": 0.27,
+      "midOut": 0.23,
+      "tipY": 1,
+      "tipHandle": 1.06,
+      "tipAngle": 180
+    },
+    "Subdivisions": {
+      "profileSegments": 6,
+      "radialSegments": 12,
+      "wireframe": false,
+      "jitterStrength": 0.5,
+      "jitterScale": 4,
+      "jitterSeed": 0
+    },
+    "Top": {
+      "showTop": true,
+      "topSegments": 5,
+      "topRadius": 1.18,
+      "topAngle": 20,
+      "topOffset": 0,
+      "topShapeCenter": 0.14,
+      "topShapeEdge": 0.83,
+      "topShapeSharpness": 0.8,
+      "topShapeVertices": 3
+    },
+    "Shading": {
+      "bands": 4,
+      "ambient": 0.15,
+      "specCut": 0.48,
+      "specPower": 40,
+      "specStrength": 1.15,
+      "lightYaw": 35,
+      "lightPitch": 40
+    },
+    "Grain": {
+      "objectDitherStrength": 0.25,
+      "objectDitherScale": 60,
+      "specDither": 36,
+      "splatterStrength": 0,
+      "splatterScale": 22,
+      "splatterCut": 0.08,
+      "splatterSoftness": 0.05
+    },
+    "Motion": {
+      "rotationSpeed": 0
+    }
+  },
+  "Blueberry": {
+    "Colors": {
+      "bodyLight": "#227ee0",
+      "bodyShadow": "#44146d",
+      "topLight": "#2c79cc",
+      "topShadow": "#392bac",
+      "splatter": "#5e1408",
+      "specular": "#015cff"
+    },
+    "Shape": {
+      "height": 0.58,
+      "radius": 0.43,
+      "baseY": 0,
+      "baseHandle": 0.68,
+      "baseAngle": 0,
+      "midX": 1,
+      "midY": 0.45,
+      "midAngle": 90,
+      "midIn": 0.225,
+      "midOut": 0.275,
+      "tipY": 1,
+      "tipHandle": 0.9,
+      "tipAngle": 180
+    },
+    "Subdivisions": {
+      "profileSegments": 6,
+      "radialSegments": 12,
+      "wireframe": false,
+      "jitterStrength": 0.5,
+      "jitterScale": 4,
+      "jitterSeed": 0
+    },
+    "Top": {
+      "showTop": true,
+      "topSegments": 5,
+      "topRadius": 0.64,
+      "topAngle": 35,
+      "topOffset": -0.13,
+      "topShapeCenter": 0.16,
+      "topShapeEdge": 0.73,
+      "topShapeSharpness": 0.2
+    },
+    "Shading": {
+      "bands": 4,
+      "ambient": 0.15,
+      "specCut": 0.57,
+      "specPower": 15,
+      "specStrength": 1.15,
+      "lightYaw": 35,
+      "lightPitch": 40
+    },
+    "Grain": {
+      "objectDitherStrength": 0.33,
+      "objectDitherScale": 60,
+      "specDither": 128,
+      "splatterStrength": 0,
+      "splatterScale": 22,
+      "splatterCut": 0.08,
+      "splatterSoftness": 0.05
+    },
+    "Motion": {
+      "rotationSpeed": 0
     }
   }
 }
