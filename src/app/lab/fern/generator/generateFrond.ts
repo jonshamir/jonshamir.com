@@ -14,6 +14,7 @@ export type FernParams = {
 // Three vec4 per primitive, uploaded as instanced attributes. c.z is the kind.
 // Segment (0), one link of a stem chain:
 //   a: p0.xy, p1.xy   b: w0, w1, a0, a1 (lamina / midrib half-widths)
+//   c.x, c.y: joined to a previous / next link   c.w: joint blend length
 // Blade (1), a whole leaflet along a constant-curvature arc:
 //   a: base.xy, heading, length   b: width, curvature, midrib, midrib taper
 //   c.x: stalk
@@ -33,6 +34,7 @@ const LEVEL_TAPER = 0.3;
 const RACHIS_SEGMENTS = 56;
 const TERMINAL_SAMPLES = 8;
 const MAX_BEND = 2.5;
+const JOINT_TAPER = 0.5;
 const SEGMENT = 0;
 const BLADE = 1;
 
@@ -54,6 +56,16 @@ type Node = {
 };
 
 type Sample = { x: number; y: number; heading: number; s: number };
+
+type Link = {
+  p: Sample;
+  q: Sample;
+  w0: number;
+  w1: number;
+  a0: number;
+  a1: number;
+  len: number;
+};
 
 function hash2(a: number, b: number): number {
   let h = Math.imul(a ^ (b + 0x9e3779b9 + (a << 6) + (a >>> 2)), 0x85ebca6b);
@@ -147,6 +159,8 @@ export function generateFrond(params: FernParams): FrondGeometry {
     b2: number,
     b3: number,
     c0: number,
+    c1: number,
+    c3: number,
     kind: number
   ): boolean {
     if (count >= MAX_PRIMITIVES) {
@@ -163,9 +177,9 @@ export function generateFrond(params: FernParams): FrondGeometry {
     b[o + 2] = b2;
     b[o + 3] = b3;
     c[o] = c0;
-    c[o + 1] = 0;
+    c[o + 1] = c1;
     c[o + 2] = kind;
-    c[o + 3] = 0;
+    c[o + 3] = c3;
     count++;
     return true;
   }
@@ -173,24 +187,54 @@ export function generateFrond(params: FernParams): FrondGeometry {
   function emitChain(node: Node, pts: Sample[], laminaFrom: number) {
     const L = node.length;
     const wingFrac = Math.max(Math.min(1 - node.D, 1), node.wing, 0);
+    const links: Link[] = [];
     for (let i = 0; i < pts.length - 1; i++) {
       const p = pts[i];
       const q = pts[i + 1];
       const lamina = p.s >= laminaFrom;
-      const ok = push(
-        p.x,
-        p.y,
-        q.x,
-        q.y,
-        lamina ? laminaAt(node, p.s / L, wingFrac) : 0,
-        lamina ? laminaAt(node, q.s / L, wingFrac) : 0,
-        axisAt(node, p.s / L),
-        axisAt(node, q.s / L),
-        0,
+      links.push({
+        p,
+        q,
+        w0: lamina ? laminaAt(node, p.s / L, wingFrac) : 0,
+        w1: lamina ? laminaAt(node, q.s / L, wingFrac) : 0,
+        a0: axisAt(node, p.s / L),
+        a1: axisAt(node, q.s / L),
+        len: Math.hypot(q.x - p.x, q.y - p.y)
+      });
+    }
+
+    const gentle = links.map(
+      (k) =>
+        Math.abs(k.w1 - k.w0) < JOINT_TAPER * k.len &&
+        Math.abs(k.a1 - k.a0) < JOINT_TAPER * k.len
+    );
+    const joined = (i: number) =>
+      i >= 0 &&
+      i + 1 < links.length &&
+      gentle[i] &&
+      gentle[i + 1] &&
+      links[i].w1 > 0 === links[i + 1].w0 > 0;
+
+    let shortest = Infinity;
+    for (const k of links) shortest = Math.min(shortest, k.len);
+    const blend = 0.5 * shortest;
+
+    links.forEach((k, i) => {
+      push(
+        k.p.x,
+        k.p.y,
+        k.q.x,
+        k.q.y,
+        k.w0,
+        k.w1,
+        k.a0,
+        k.a1,
+        joined(i - 1) ? 1 : 0,
+        joined(i) ? 1 : 0,
+        blend,
         SEGMENT
       );
-      if (!ok) return;
-    }
+    });
   }
 
   function emitBlade(node: Node, pts: Sample[]) {
@@ -216,6 +260,8 @@ export function generateFrond(params: FernParams): FrondGeometry {
       node.axisWidth,
       node.axisTaper,
       node.stalk,
+      0,
+      0,
       BLADE
     );
   }

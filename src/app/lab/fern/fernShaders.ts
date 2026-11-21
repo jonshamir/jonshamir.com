@@ -87,10 +87,21 @@ float sdUnevenCapsule(vec2 p, float r1, float r2, float h) {
   return dot(p, vec2(a, b)) - r1;
 }
 
+float sdLink(vec2 p, float r1, float r2, float h) {
+  p.x = abs(p.x);
+  if (h < 1e-6) return length(p) - max(r1, r2);
+  float b = clamp((r1 - r2) / h, -0.999, 0.999);
+  float a = sqrt(1.0 - b * b);
+  float k = dot(p, vec2(-b, a));
+  if (k < 0.0 && vC.x < 0.5) return length(p) - r1;
+  if (k > a * h && vC.y < 0.5) return length(p - vec2(0.0, h)) - r2;
+  return dot(p, vec2(a, b)) - r1;
+}
+
 float segmentDistance() {
-  float axis = sdUnevenCapsule(vLocal.yx, vB.z, vB.w, vLen);
+  float axis = sdLink(vLocal.yx, vB.z, vB.w, vLen);
   if (max(vB.x, vB.y) <= 0.0) return axis;
-  return min(sdUnevenCapsule(vLocal.yx, vB.x, vB.y, vLen), axis);
+  return min(sdLink(vLocal.yx, vB.x, vB.y, vLen), axis);
 }
 
 float envelope(float t) {
@@ -164,10 +175,21 @@ float bladeDistance() {
   return min(lamina, axis);
 }
 
+float jointWeight() {
+  float blend = max(vC.w, 1e-6);
+  float x = vLocal.x;
+  float w = 1.0;
+  if (vC.x > 0.5) w *= clamp(0.5 + 0.5 * x / blend, 0.0, 1.0);
+  if (vC.y > 0.5) w *= clamp(0.5 + 0.5 * (vLen - x) / blend, 0.0, 1.0);
+  return w;
+}
+
 void main() {
-  float d = vC.z > 0.5 ? bladeDistance() : segmentDistance();
+  bool blade = vC.z > 0.5;
+  float d = blade ? bladeDistance() : segmentDistance();
   if (d > uCutoff) discard;
-  gl_FragColor = vec4(exp(-max(d, -uInner) / uK), 0.0, 0.0, 0.0);
+  float weight = blade ? 1.0 : jointWeight();
+  gl_FragColor = vec4(weight * exp(-max(d, -uInner) / uK), 0.0, 0.0, 0.0);
 }
 `;
 
