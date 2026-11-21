@@ -11,21 +11,47 @@ varying vec4 vB;
 varying vec4 vC;
 
 void main() {
-  vec2 p0 = iA.xy;
-  vec2 p1 = iA.zw;
-  vec2 axis = p1 - p0;
-  float len = length(axis);
-  vec2 dir = len > 1e-6 ? axis / len : vec2(1.0, 0.0);
+  vec2 origin;
+  vec2 frame;
+  vec2 center;
+  vec2 dir;
+  vec2 halfSize;
+  float len;
+
+  if (iC.z > 0.5) {
+    origin = iA.xy;
+    len = iA.w;
+    float curvature = iB.y;
+    float bend = curvature * len;
+    float chord = len;
+    float sagitta = 0.0;
+    if (abs(bend) > 1e-4) {
+      chord = 2.0 * sin(0.5 * bend) / curvature;
+      sagitta = (1.0 - cos(0.5 * bend)) / abs(curvature);
+    }
+    float chordAngle = iA.z + 0.5 * bend;
+    dir = vec2(cos(chordAngle), sin(chordAngle));
+    vec2 perp = vec2(-dir.y, dir.x);
+    float r = iB.x + iB.z + uPad;
+    center = origin + dir * 0.5 * chord - perp * sign(curvature) * 0.5 * sagitta;
+    halfSize = vec2(0.5 * chord + r, 0.5 * sagitta + r);
+    frame = vec2(cos(iA.z), sin(iA.z));
+  } else {
+    origin = iA.xy;
+    vec2 axis = iA.zw - origin;
+    len = length(axis);
+    dir = len > 1e-6 ? axis / len : vec2(1.0, 0.0);
+    float r = max(max(iB.x, iB.y), max(iB.z, iB.w)) + uPad;
+    center = 0.5 * (origin + iA.zw);
+    halfSize = vec2(0.5 * len + r, r);
+    frame = dir;
+  }
+
   vec2 perp = vec2(-dir.y, dir.x);
+  vec2 world = center + dir * position.x * halfSize.x + perp * position.y * halfSize.y;
 
-  float r = max(max(iB.x, iB.y), max(iB.z, iB.w)) + uPad;
-  vec2 center = 0.5 * (p0 + p1);
-  vec2 world = center
-    + dir * position.x * (0.5 * len + r)
-    + perp * position.y * r;
-
-  vec2 rel = world - p0;
-  vLocal = vec2(dot(rel, dir), dot(rel, perp));
+  vec2 rel = world - origin;
+  vLocal = vec2(dot(rel, frame), dot(rel, vec2(-frame.y, frame.x)));
   vLen = len;
   vB = iB;
   vC = iC;
@@ -41,6 +67,7 @@ uniform float uInner;
 uniform float uMargin;
 uniform float uTeeth;
 uniform float uToothDepth;
+uniform vec4 uEnvelope;
 
 varying vec2 vLocal;
 varying float vLen;
@@ -60,26 +87,85 @@ float sdUnevenCapsule(vec2 p, float r1, float r2, float h) {
   return dot(p, vec2(a, b)) - r1;
 }
 
-float laminaDistance() {
-  if (max(vB.x, vB.y) <= 0.0) return 1e5;
-  float d = sdUnevenCapsule(vLocal.yx, vB.x, vB.y, vLen);
+float segmentDistance() {
+  float axis = sdUnevenCapsule(vLocal.yx, vB.z, vB.w, vLen);
+  if (max(vB.x, vB.y) <= 0.0) return axis;
+  return min(sdUnevenCapsule(vLocal.yx, vB.x, vB.y, vLen), axis);
+}
 
-  if (vC.z > 0.5 && uMargin > 0.5) {
-    float u = vLen > 1e-6 ? clamp(vLocal.x / vLen, 0.0, 1.0) : 0.0;
-    float t = mix(vC.x, vC.y, u);
-    float x = t * uTeeth;
-    float fade = smoothstep(0.0, 0.15, t) * (1.0 - smoothstep(0.8, 1.0, t));
-    float profile = uMargin < 1.5
-      ? 1.0 - abs(sin(PI * x))
-      : 1.0 - fract(x);
-    d += uToothDepth * mix(vB.x, vB.y, u) * fade * profile;
+float envelope(float t) {
+  float tMax = uEnvelope.x;
+  float base = uEnvelope.y;
+  t = clamp(t, 0.0, 1.0);
+  if (t < tMax) {
+    float u = 1.0 - t / tMax;
+    return base + (1.0 - base) * (1.0 - pow(u, uEnvelope.z));
   }
-  return d;
+  float span = 1.0 - tMax;
+  if (span <= 0.0) return 1.0;
+  return 1.0 - pow(max((t - tMax) / span, 0.0), uEnvelope.w);
+}
+
+float stalkMask(float t) {
+  float stalk = vC.x;
+  return stalk > 0.0 ? smoothstep(stalk, stalk + 0.08, t) : 1.0;
+}
+
+float bladeWidth(float t) {
+  return vB.x * envelope(t) * stalkMask(t);
+}
+
+float teeth(float t) {
+  if (uMargin < 0.5) return 1.0;
+  float x = t * uTeeth;
+  float fade = smoothstep(0.0, 0.15, t) * (1.0 - smoothstep(0.8, 1.0, t));
+  float profile = uMargin < 1.5 ? 1.0 - abs(sin(PI * x)) : 1.0 - fract(x);
+  return 1.0 - uToothDepth * fade * profile;
+}
+
+float boxDistance(float dx, float dy) {
+  return length(max(vec2(dx, dy), 0.0)) + min(max(dx, dy), 0.0);
+}
+
+float bladeDistance() {
+  float len = vLen;
+  float curvature = vB.y;
+  float s = vLocal.x;
+  float v = vLocal.y;
+
+  if (abs(curvature) > 1e-4) {
+    float radius = 1.0 / curvature;
+    vec2 q = vLocal - vec2(0.0, radius);
+    vec2 b = vec2(0.0, -radius);
+    float angle = atan(b.x * q.y - b.y * q.x, dot(b, q));
+    s = angle * radius;
+    v = sign(curvature) * (abs(radius) - length(q));
+  }
+
+  float av = abs(v);
+  float t = s / len;
+  float taper = vB.w;
+
+  float lamina;
+  float axis = 1e5;
+  if (t < 0.0) {
+    lamina = boxDistance(-s, av - bladeWidth(0.0));
+    if (vC.x > 0.0) axis = length(vec2(s, v)) - vB.z;
+  } else if (t > 1.0) {
+    lamina = boxDistance(s - len, av - bladeWidth(1.0));
+  } else {
+    float e = 0.002;
+    float slope = (bladeWidth(min(t + e, 1.0)) - bladeWidth(max(t - e, 0.0)))
+      / ((min(t + e, 1.0) - max(t - e, 0.0)) * len);
+    float w = bladeWidth(t) * teeth(t);
+    lamina = max((av - w) / sqrt(1.0 + slope * slope), max(-s, s - len));
+    axis = av - vB.z * mix(1.0, taper, t) * (1.0 - stalkMask(t));
+  }
+  return min(lamina, axis);
 }
 
 void main() {
-  float axis = sdUnevenCapsule(vLocal.yx, vB.z, vB.w, vLen);
-  float d = min(laminaDistance(), axis);
+  float d = vC.z > 0.5 ? bladeDistance() : segmentDistance();
   if (d > uCutoff) discard;
   gl_FragColor = vec4(exp(-max(d, -uInner) / uK), 0.0, 0.0, 0.0);
 }

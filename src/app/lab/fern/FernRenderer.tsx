@@ -17,6 +17,7 @@ import {
   Scene,
   ShaderMaterial,
   type Texture,
+  Vector4,
   WebGLRenderTarget
 } from "three";
 
@@ -60,7 +61,8 @@ function createResources() {
     uInner: { value: 0 },
     uMargin: { value: 0 },
     uTeeth: { value: 8 },
-    uToothDepth: { value: 0 }
+    uToothDepth: { value: 0 },
+    uEnvelope: { value: new Vector4() }
   };
 
   const shapeMaterial = new ShaderMaterial({
@@ -168,7 +170,13 @@ export function FernRenderer({ frond, outline, render }: FernRendererProps) {
     u.uMargin.value = MARGINS[outline.margin] ?? 0;
     u.uTeeth.value = outline.teeth;
     u.uToothDepth.value = outline.toothDepth;
-  }, [outline.margin, outline.teeth, outline.toothDepth, r]);
+    u.uEnvelope.value.set(
+      outline.tMax,
+      outline.base,
+      outline.baseExp,
+      outline.apexExp
+    );
+  }, [outline, r]);
 
   useEffect(() => {
     r.compositeUniforms.uColor.value.set(render.color);

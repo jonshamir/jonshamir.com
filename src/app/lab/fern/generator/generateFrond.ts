@@ -11,10 +11,12 @@ export type FernParams = {
   outline: OutlineControls;
 };
 
-// Three vec4 per primitive, uploaded as instanced attributes:
-//   a: p0.xy, p1.xy          segment endpoints
-//   b: w0, w1, a0, a1         lamina / midrib half-widths
-//   c: t0, t1, terminal, 0    normalized position along the node
+// Three vec4 per primitive, uploaded as instanced attributes. c.z is the kind.
+// Segment (0), one link of a stem chain:
+//   a: p0.xy, p1.xy   b: w0, w1, a0, a1 (lamina / midrib half-widths)
+// Blade (1), a whole leaflet along a constant-curvature arc:
+//   a: base.xy, heading, length   b: width, curvature, midrib, midrib taper
+//   c.x: stalk
 export type FrondGeometry = {
   a: Float32Array;
   b: Float32Array;
@@ -29,6 +31,10 @@ const APICAL_DROP = 1.5;
 const MIN_LENGTH = 2e-4;
 const LEVEL_TAPER = 0.3;
 const RACHIS_SEGMENTS = 56;
+const TERMINAL_SAMPLES = 8;
+const MAX_BEND = 2.5;
+const SEGMENT = 0;
+const BLADE = 1;
 
 type Node = {
   level: number;
@@ -71,10 +77,8 @@ export function generateFrond(params: FernParams): FrondGeometry {
 
   function samplesFor(node: Node, terminal: boolean): number {
     if (node.level === 0) return RACHIS_SEGMENTS;
-    const n = Math.round(node.length * (terminal ? 60 : 80));
-    return terminal
-      ? Math.min(Math.max(n, 3), 12)
-      : Math.min(Math.max(n, 5), 32);
+    if (terminal) return TERMINAL_SAMPLES;
+    return Math.min(Math.max(Math.round(node.length * 80), 5), 32);
   }
 
   function integrate(node: Node, segments: number): Sample[] {
@@ -133,32 +137,87 @@ export function generateFrond(params: FernParams): FrondGeometry {
     return node.axisWidth * (1 + (node.axisTaper - 1) * u);
   }
 
-  function emitAxis(node: Node, pts: Sample[], terminal: boolean) {
+  function push(
+    a0: number,
+    a1: number,
+    a2: number,
+    a3: number,
+    b0: number,
+    b1: number,
+    b2: number,
+    b3: number,
+    c0: number,
+    kind: number
+  ): boolean {
+    if (count >= MAX_PRIMITIVES) {
+      truncated = true;
+      return false;
+    }
+    const o = count * 4;
+    a[o] = a0;
+    a[o + 1] = a1;
+    a[o + 2] = a2;
+    a[o + 3] = a3;
+    b[o] = b0;
+    b[o + 1] = b1;
+    b[o + 2] = b2;
+    b[o + 3] = b3;
+    c[o] = c0;
+    c[o + 1] = 0;
+    c[o + 2] = kind;
+    c[o + 3] = 0;
+    count++;
+    return true;
+  }
+
+  function emitChain(node: Node, pts: Sample[], laminaFrom: number) {
     const L = node.length;
     const wingFrac = Math.max(Math.min(1 - node.D, 1), node.wing, 0);
-
     for (let i = 0; i < pts.length - 1; i++) {
-      if (count >= MAX_PRIMITIVES) {
-        truncated = true;
-        return;
-      }
       const p = pts[i];
       const q = pts[i + 1];
-      const o = count * 4;
-      a[o] = p.x;
-      a[o + 1] = p.y;
-      a[o + 2] = q.x;
-      a[o + 3] = q.y;
-      b[o] = laminaAt(node, p.s / L, wingFrac);
-      b[o + 1] = laminaAt(node, q.s / L, wingFrac);
-      b[o + 2] = axisAt(node, p.s / L);
-      b[o + 3] = axisAt(node, q.s / L);
-      c[o] = p.s / L;
-      c[o + 1] = q.s / L;
-      c[o + 2] = terminal ? 1 : 0;
-      c[o + 3] = 0;
-      count++;
+      const lamina = p.s >= laminaFrom;
+      const ok = push(
+        p.x,
+        p.y,
+        q.x,
+        q.y,
+        lamina ? laminaAt(node, p.s / L, wingFrac) : 0,
+        lamina ? laminaAt(node, q.s / L, wingFrac) : 0,
+        axisAt(node, p.s / L),
+        axisAt(node, q.s / L),
+        0,
+        SEGMENT
+      );
+      if (!ok) return;
     }
+  }
+
+  function emitBlade(node: Node, pts: Sample[]) {
+    const L = node.length;
+    if (node.pre > 0) {
+      const stipe = pts.filter((p) => p.s < 0);
+      stipe.push(sampleAt(pts, node, 0));
+      emitChain(node, stipe, Infinity);
+    }
+    const base = sampleAt(pts, node, 0);
+    const end = pts[pts.length - 1];
+    const bend = Math.max(
+      -MAX_BEND,
+      Math.min(MAX_BEND, end.heading - base.heading)
+    );
+    push(
+      base.x,
+      base.y,
+      base.heading,
+      L,
+      outline.width * L,
+      bend / L,
+      node.axisWidth,
+      node.axisTaper,
+      node.stalk,
+      BLADE
+    );
   }
 
   function build(node: Node) {
@@ -169,8 +228,11 @@ export function generateFrond(params: FernParams): FrondGeometry {
 
     const terminal = node.D <= 0;
     const pts = integrate(node, samplesFor(node, terminal));
-    emitAxis(node, pts, terminal);
-    if (terminal) return;
+    if (terminal) {
+      emitBlade(node, pts);
+      return;
+    }
+    emitChain(node, pts, 0);
 
     const P = levels[Math.min(node.level, 2)];
     const grow = smoothstep(0, 0.4, node.D);
