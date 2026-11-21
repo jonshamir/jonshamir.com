@@ -8,7 +8,9 @@ import { useDebounceCallback, useLocalStorage } from "usehooks-ts";
 
 import { ThreeCanvas } from "../../../components/ThreeCanvas/ThreeCanvas";
 import { TweakpanePanel } from "../../../components/TweakpanePanel";
-import { useControls } from "../../../lib/tweakpane";
+import type { Preset } from "../../../lib/presets/presetStore";
+import { usePresetFolder } from "../../../lib/presets/usePresetFolder";
+import { type ControlValues, useControls } from "../../../lib/tweakpane";
 import { Fruit } from "./Fruit";
 import {
   colorSchema,
@@ -19,20 +21,17 @@ import {
   subdivisionSchema,
   topSchema
 } from "./fruitControls";
-import {
-  applyPreset,
-  capturePreset,
-  type FruitPreset,
-  parsePreset,
-  SESSION_STORAGE_KEY
-} from "./fruitPresets";
+import { fruitPresets } from "./fruitPresets";
+import builtIns from "./presets.json";
+import { fruitTransition } from "./presetTransition";
 import { ProfileEditor, useProfileEditorSlot } from "./ProfileEditor";
-import { usePresetFolder } from "./usePresetFolder";
+
+const BUILT_IN: Record<string, ControlValues> = builtIns;
 
 export default function FruitCanvas() {
   // Folders appear in call order: Presets, Colors, the Profile editor, then
   // Shape.
-  usePresetFolder();
+  usePresetFolder(fruitPresets, BUILT_IN, fruitTransition);
 
   const colors = useControls("Colors", colorSchema, { collapsed: true });
   const profileSlot = useProfileEditorSlot();
@@ -43,8 +42,8 @@ export default function FruitCanvas() {
   const grain = useControls("Grain", grainSchema, { collapsed: true });
   const motion = useControls("Motion", motionSchema, { collapsed: true });
 
-  const [session, setSession] = useLocalStorage<FruitPreset | null>(
-    SESSION_STORAGE_KEY,
+  const [session, setSession] = useLocalStorage<Preset | null>(
+    fruitPresets.sessionKey,
     null
   );
 
@@ -53,8 +52,8 @@ export default function FruitCanvas() {
   // registered itself and the restore can find its bindings. In a child
   // component it would run first and silently do nothing.
   useEffect(() => {
-    const restored = parsePreset(session);
-    if (restored) applyPreset(restored);
+    const restored = fruitPresets.parse(session);
+    if (restored) fruitPresets.apply(restored);
     // Mount only — this restores the working state once, and must not re-run
     // when the session is written back below.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -94,7 +93,7 @@ export default function FruitCanvas() {
   );
 
   useEffect(() => {
-    saveSession(capturePreset());
+    saveSession(fruitPresets.capture());
   }, [colors, shape, subdivisions, top, shading, grain, motion, saveSession]);
 
   // Listed field by field rather than spread, so the display-only toggles don't

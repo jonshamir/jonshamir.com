@@ -10,7 +10,7 @@ import { Vector2 } from "three/webgpu";
 import { getPane, writeControlValues } from "../../../lib/tweakpane";
 import { profilePointsSchema, type ShapeControls } from "./fruitControls";
 import { type ProfileAnchors, profileControlPoints } from "./fruitProfile";
-import { cancelPresetTransition } from "./presetTransition";
+import { fruitTransition } from "./presetTransition";
 import styles from "./ProfileEditor.module.css";
 
 type AnchorKey = "base" | "mid" | "tip";
@@ -172,7 +172,7 @@ export function ProfileEditor({ shape }: { shape: ShapeControls }) {
     (target: Target, index: number) => (event: ReactPointerEvent) => {
       event.preventDefault();
       event.currentTarget.setPointerCapture(event.pointerId);
-      cancelPresetTransition();
+      fruitTransition.cancel();
 
       dragRef.current = {
         target,
