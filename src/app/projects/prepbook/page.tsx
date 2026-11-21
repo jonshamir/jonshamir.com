@@ -5,7 +5,7 @@ import Link from "next/link";
 
 import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
-import heroImg from "./hero.jpg";
+import { HeroScreenshot } from "./HeroScreenshot";
 import scalerImg from "./scaler.png";
 
 export default function Page() {
@@ -33,7 +33,7 @@ export default function Page() {
       </p>
 
       <figure className="grid-wide">
-        <Image src={heroImg} alt="A recipe in Prepbook" />
+        <HeroScreenshot />
       </figure>
 
       <p>

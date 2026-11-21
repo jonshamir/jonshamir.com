@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import leafMapHero from "../../../app/projects/leaf-map/hero.png";
 import muserHero from "../../../app/projects/muser/hero.png";
-import prepbookHero from "../../../app/projects/prepbook/hero.jpg";
+import prepbookHero from "../../../app/projects/prepbook/screenshots/desktop-dark.jpg";
 import simplyCover from "../../../app/projects/simply/cover.jpg";
 import spacetopHero from "../../../app/projects/spacetop/hero.jpg";
 import widgetsScreenshot from "../../../app/projects/widgets/screenshot.png";

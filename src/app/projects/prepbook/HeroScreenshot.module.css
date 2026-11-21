@@ -1,0 +1,21 @@
+.picture {
+  display: block;
+}
+
+.picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.forDarkSite {
+  display: none;
+}
+
+:global(.dark) .forLightSite {
+  display: none;
+}
+
+:global(.dark) .forDarkSite {
+  display: block;
+}
