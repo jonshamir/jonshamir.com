@@ -1,1 +1,424 @@
-{}
+{
+  "Hart's-tongue": {
+    "Frond": {
+      "division": 0,
+      "stipe": 0.25,
+      "width": 0.008,
+      "taper": 0.3,
+      "lean": -5,
+      "curl": 8,
+      "droop": 0,
+      "wing": 0,
+      "apex": 0,
+      "asymmetry": 0,
+      "jitter": 0
+    },
+    "Outline": {
+      "width": 0.09,
+      "tMax": 0.45,
+      "base": 0.35,
+      "baseExp": 2.5,
+      "apexExp": 2.2,
+      "margin": "entire",
+      "teeth": 8,
+      "toothDepth": 0
+    },
+    "Venation": {
+      "veins": true,
+      "type": "forked",
+      "count": 40,
+      "angle": 70,
+      "forkAt": 0.2,
+      "width": 0.04
+    },
+    "Shading": {
+      "fold": 0.35
+    },
+    "Colors": {
+      "leafLight": "#9ccc5c",
+      "leafDark": "#3e6b2f",
+      "axis": "#4b3b22",
+      "vein": "#c4e38c"
+    }
+  },
+  "Polypody": {
+    "Frond": {
+      "division": 0.9,
+      "stipe": 0.45,
+      "width": 0.008,
+      "taper": 0.35,
+      "lean": -6,
+      "curl": 6,
+      "droop": 0,
+      "wing": 0,
+      "apex": 0.15,
+      "asymmetry": 0,
+      "jitter": 0.06
+    },
+    "Pinnae": {
+      "count": 16,
+      "spacing": 0.95,
+      "length": 0.22,
+      "tMax": 0.25,
+      "base": 0.75,
+      "baseExp": 1,
+      "apexExp": 2.5,
+      "angle": 75,
+      "angleApex": 60,
+      "alternate": 0.3,
+      "stalk": 0,
+      "width": 0.025,
+      "curl": 5,
+      "wing": 0
+    },
+    "Outline": {
+      "width": 0.18,
+      "tMax": 0.2,
+      "base": 0.9,
+      "baseExp": 1,
+      "apexExp": 2,
+      "margin": "entire",
+      "teeth": 10,
+      "toothDepth": 0.1
+    },
+    "Venation": {
+      "veins": true,
+      "type": "forked",
+      "count": 6,
+      "angle": 55,
+      "forkAt": 0.4,
+      "width": 0.04
+    },
+    "Colors": {
+      "leafLight": "#7fae4e",
+      "leafDark": "#2c5428",
+      "axis": "#6b5a32",
+      "vein": "#a9cf73"
+    },
+    "Shading": {
+      "fold": 0.7
+    }
+  },
+  "Boston fern": {
+    "Frond": {
+      "division": 1,
+      "stipe": 0.25,
+      "width": 0.007,
+      "taper": 0.3,
+      "lean": -10,
+      "curl": 25,
+      "droop": 0,
+      "wing": 0,
+      "apex": 0.05,
+      "asymmetry": 0,
+      "jitter": 0.05
+    },
+    "Pinnae": {
+      "count": 40,
+      "spacing": 0.9,
+      "length": 0.13,
+      "tMax": 0.45,
+      "base": 0.25,
+      "baseExp": 1.6,
+      "apexExp": 1.3,
+      "angle": 80,
+      "angleApex": 55,
+      "alternate": 0.5,
+      "stalk": 0,
+      "width": 0.02,
+      "curl": 12,
+      "wing": 0
+    },
+    "Outline": {
+      "width": 0.17,
+      "tMax": 0.15,
+      "base": 0.75,
+      "baseExp": 0.8,
+      "apexExp": 1.1,
+      "margin": "crenate",
+      "teeth": 12,
+      "toothDepth": 0.12
+    },
+    "Venation": {
+      "veins": true,
+      "type": "forked",
+      "count": 8,
+      "angle": 50,
+      "forkAt": 0.35,
+      "width": 0.04
+    },
+    "Colors": {
+      "leafLight": "#a6d36a",
+      "leafDark": "#3f7a35",
+      "axis": "#5c6b2e",
+      "vein": "#cfe89a"
+    },
+    "Shading": {
+      "fold": 0.7
+    }
+  },
+  "Lady fern": {
+    "Frond": {
+      "division": 2.5,
+      "stipe": 0.3,
+      "width": 0.007,
+      "taper": 0.3,
+      "lean": -8,
+      "curl": 15,
+      "droop": 0,
+      "wing": 0,
+      "apex": 0.25,
+      "asymmetry": 0,
+      "jitter": 0.12
+    },
+    "Pinnae": {
+      "count": 20,
+      "spacing": 0.85,
+      "length": 0.28,
+      "tMax": 0.45,
+      "base": 0.2,
+      "baseExp": 1.3,
+      "apexExp": 1.2,
+      "angle": 70,
+      "angleApex": 50,
+      "alternate": 0.25,
+      "stalk": 0.02,
+      "width": 0.015,
+      "curl": 8,
+      "wing": 0
+    },
+    "Pinnules": {
+      "count": 12,
+      "spacing": 0.95,
+      "length": 0.24,
+      "tMax": 0.25,
+      "base": 0.85,
+      "baseExp": 1,
+      "apexExp": 1.4,
+      "angle": 62,
+      "angleApex": 45,
+      "alternate": 0.2,
+      "stalk": 0,
+      "width": 0.04,
+      "curl": 6,
+      "wing": 0.1,
+      "acroscopic": 1.1,
+      "basiscopic": 0.95
+    },
+    "Segments": {
+      "count": 5,
+      "spacing": 1,
+      "length": 0.4,
+      "tMax": 0.15,
+      "base": 0.9,
+      "baseExp": 1,
+      "apexExp": 1.3,
+      "angle": 50,
+      "angleApex": 35,
+      "alternate": 0,
+      "stalk": 0,
+      "width": 0.05,
+      "curl": 0,
+      "wing": 0,
+      "acroscopic": 1,
+      "basiscopic": 1
+    },
+    "Outline": {
+      "width": 0.3,
+      "tMax": 0.3,
+      "base": 0.8,
+      "baseExp": 1,
+      "apexExp": 1.6,
+      "margin": "serrate",
+      "teeth": 4,
+      "toothDepth": 0.2
+    },
+    "Venation": {
+      "veins": true,
+      "type": "simple",
+      "count": 4,
+      "angle": 45,
+      "forkAt": 0.4,
+      "width": 0.05
+    },
+    "Colors": {
+      "leafLight": "#b5d978",
+      "leafDark": "#4c8a3a",
+      "axis": "#8a4a3a",
+      "vein": "#d6eca6"
+    },
+    "Shading": {
+      "fold": 0.7
+    }
+  },
+  "Bracken": {
+    "Frond": {
+      "division": 3,
+      "stipe": 0.7,
+      "width": 0.012,
+      "taper": 0.25,
+      "lean": 0,
+      "curl": 0,
+      "droop": 0,
+      "wing": 0,
+      "apex": 0.35,
+      "asymmetry": 0,
+      "jitter": 0.08
+    },
+    "Pinnae": {
+      "count": 7,
+      "spacing": 0.75,
+      "length": 0.65,
+      "tMax": 0,
+      "base": 1,
+      "baseExp": 1,
+      "apexExp": 1,
+      "angle": 60,
+      "angleApex": 45,
+      "alternate": 0.1,
+      "stalk": 0.05,
+      "width": 0.012,
+      "curl": 10,
+      "wing": 0
+    },
+    "Pinnules": {
+      "count": 11,
+      "spacing": 0.9,
+      "length": 0.33,
+      "tMax": 0,
+      "base": 1,
+      "baseExp": 1,
+      "apexExp": 1.1,
+      "angle": 60,
+      "angleApex": 45,
+      "alternate": 0.1,
+      "stalk": 0.02,
+      "width": 0.025,
+      "curl": 5,
+      "wing": 0,
+      "acroscopic": 0.85,
+      "basiscopic": 1.35
+    },
+    "Segments": {
+      "count": 9,
+      "spacing": 1,
+      "length": 0.35,
+      "tMax": 0.15,
+      "base": 0.9,
+      "baseExp": 1,
+      "apexExp": 1.3,
+      "angle": 60,
+      "angleApex": 40,
+      "alternate": 0,
+      "stalk": 0,
+      "width": 0.05,
+      "curl": 0,
+      "wing": 0,
+      "acroscopic": 1,
+      "basiscopic": 1
+    },
+    "Outline": {
+      "width": 0.22,
+      "tMax": 0.2,
+      "base": 0.85,
+      "baseExp": 1,
+      "apexExp": 1.5,
+      "margin": "entire",
+      "teeth": 8,
+      "toothDepth": 0
+    },
+    "Venation": {
+      "veins": true,
+      "type": "forked",
+      "count": 5,
+      "angle": 50,
+      "forkAt": 0.4,
+      "width": 0.05
+    },
+    "Colors": {
+      "leafLight": "#8fae4a",
+      "leafDark": "#3b5e2a",
+      "axis": "#a08a4a",
+      "vein": "#b9d27a"
+    },
+    "Shading": {
+      "fold": 0.7
+    }
+  },
+  "Maidenhair": {
+    "Frond": {
+      "division": 2,
+      "stipe": 0.4,
+      "width": 0.005,
+      "taper": 0.4,
+      "lean": -10,
+      "curl": 20,
+      "droop": 0,
+      "wing": 0,
+      "apex": 0.1,
+      "asymmetry": 0,
+      "jitter": 0.1
+    },
+    "Pinnae": {
+      "count": 8,
+      "spacing": 0.85,
+      "length": 0.45,
+      "tMax": 0.25,
+      "base": 0.6,
+      "baseExp": 1,
+      "apexExp": 1.2,
+      "angle": 50,
+      "angleApex": 35,
+      "alternate": 0.5,
+      "stalk": 0.08,
+      "width": 0.006,
+      "curl": 15,
+      "wing": 0
+    },
+    "Pinnules": {
+      "count": 9,
+      "spacing": 0.95,
+      "length": 0.17,
+      "tMax": 0.15,
+      "base": 0.9,
+      "baseExp": 1,
+      "apexExp": 1.3,
+      "angle": 75,
+      "angleApex": 55,
+      "alternate": 0.5,
+      "stalk": 0.25,
+      "width": 0.008,
+      "curl": 0,
+      "wing": 0,
+      "acroscopic": 1,
+      "basiscopic": 1
+    },
+    "Outline": {
+      "width": 0.42,
+      "tMax": 0.7,
+      "base": 0.1,
+      "baseExp": 0.9,
+      "apexExp": 3.5,
+      "margin": "crenate",
+      "teeth": 5,
+      "toothDepth": 0.25
+    },
+    "Venation": {
+      "veins": true,
+      "type": "forked",
+      "count": 10,
+      "angle": 20,
+      "forkAt": 0.3,
+      "width": 0.04
+    },
+    "Colors": {
+      "leafLight": "#b9dd8a",
+      "leafDark": "#5b8f45",
+      "axis": "#2a1d18",
+      "vein": "#d4ecae"
+    },
+    "Shading": {
+      "fold": 0.7
+    }
+  }
+}
