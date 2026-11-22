@@ -1,5 +1,10 @@
+.stack {
+  display: grid;
+}
+
 .picture {
   display: block;
+  grid-area: 1 / 1;
 }
 
 .picture img {
@@ -9,13 +14,5 @@
 }
 
 .forDarkSite {
-  display: none;
-}
-
-:global(.dark) .forLightSite {
-  display: none;
-}
-
-:global(.dark) .forDarkSite {
-  display: block;
+  opacity: var(--dark-mode);
 }

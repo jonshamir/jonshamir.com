@@ -26,10 +26,18 @@ function sourceProps(src: StaticImageData) {
   };
 }
 
-function Screenshot({ shots, className }: { shots: Shots; className: string }) {
+function Screenshot({
+  shots,
+  className,
+  alt
+}: {
+  shots: Shots;
+  className: string;
+  alt: string;
+}) {
   const { props: img } = getImageProps({
     src: shots.desktop,
-    alt: ALT,
+    alt,
     loading: "lazy"
   });
 
@@ -45,19 +53,21 @@ function Screenshot({ shots, className }: { shots: Shots; className: string }) {
 
 export function HeroScreenshot() {
   return (
-    <>
+    <div className={styles.stack}>
       <Screenshot
         className={styles.forLightSite}
+        alt={ALT}
         shots={{ desktop: desktopDark, tablet: tabletDark, mobile: mobileDark }}
       />
       <Screenshot
         className={styles.forDarkSite}
+        alt=""
         shots={{
           desktop: desktopLight,
           tablet: tabletLight,
           mobile: mobileLight
         }}
       />
-    </>
+    </div>
   );
 }
