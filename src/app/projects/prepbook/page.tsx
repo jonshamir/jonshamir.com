@@ -1,12 +1,15 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 
 import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
+import editClip from "./clips/edit.mp4";
+import scaleClip from "./clips/scale.mp4";
+import searchClip from "./clips/search.mp4";
+import shareClip from "./clips/share.mp4";
 import { HeroScreenshot } from "./HeroScreenshot";
-import scalerImg from "./scaler.png";
+import styles from "./page.module.css";
 
 export default function Page() {
   return (
@@ -44,9 +47,21 @@ export default function Page() {
       </p>
 
       <h2>Recipes as documents</h2>
-      {/* <figure className="grid-wide">
-        editor GIF: ingredient line → amount + ingredient; a step that says "the eggs" links back
-      </figure> */}
+      <figure>
+        <video
+          className={styles.clip}
+          src={editClip}
+          aria-label="Typing “2.5 cloves garlic” at the end of an ingredient list; it becomes “2½ cloves garlic” with the amount in bold"
+          playsInline
+          autoPlay
+          muted
+          loop
+        />
+        <figcaption>
+          Type an ingredient line the way you&apos;d say it. Prepbook picks out
+          the amount and unit, and tidies 2.5 into 2½.
+        </figcaption>
+      </figure>
       <p>
         Most recipe apps split a recipe into fields — tidy for the data, awkward
         for the writer. In Prepbook the recipe is the document: structure is
@@ -67,19 +82,44 @@ export default function Page() {
 
       <h2>Scaling</h2>
       <figure>
-        <Image src={scalerImg} alt="Scaling a recipe in Prepbook" />
+        <video
+          className={styles.clip}
+          src={scaleClip}
+          aria-label="Tapping an amount opens the Scale Recipe dial; turning it rescales every ingredient in the list"
+          playsInline
+          autoPlay
+          muted
+          loop
+        />
+        <figcaption>
+          Tap any amount and drag the dial. Every other ingredient follows in
+          proportion.
+        </figcaption>
       </figure>
       <p>
         Because Prepbook knows where every amount sits in the text, you can just
         click an amount and the whole recipe scales in proportion. The scaling
-        is a mix of rules and LLMs, so it can handle the tricky cases - "a
-        pinch" or "a few" - and even scale across units and languages.
+        is a mix of rules and LLMs, so it can handle the tricky cases - &ldquo;a
+        pinch&rdquo; or &ldquo;a few&rdquo; - and even scale across units and
+        languages.
       </p>
 
       <h2>Search</h2>
-      {/* <figure className="grid-wide">
-        search GIF: "something quick with leftover rice"
-      </figure> */}
+      <figure>
+        <video
+          className={styles.clip}
+          src={searchClip}
+          aria-label="Searching “Italian”: three title matches appear, then more Italian dishes such as Spaghetti all’Amatriciana and Stracciatella Soup"
+          playsInline
+          autoPlay
+          muted
+          loop
+        />
+        <figcaption>
+          Title matches come back instantly; a moment later, embedding search
+          adds dishes that are Italian without saying so.
+        </figcaption>
+      </figure>
       <p>
         There are no tags or categories. Search runs on embeddings, so it
         understands a recipe the way you&apos;d describe it — an ingredient you
@@ -111,6 +151,21 @@ export default function Page() {
           should feel like something you chose.
         </li>
       </ul>
+      <figure>
+        <video
+          className={styles.clip}
+          src={shareClip}
+          aria-label="Opening a recipe’s menu, choosing Share and copying its prepbook.app link"
+          playsInline
+          autoPlay
+          muted
+          loop
+        />
+        <figcaption>
+          Sharing makes a link that opens in any browser, with no app or account
+          needed.
+        </figcaption>
+      </figure>
 
       <p>
         <ButtonLink
