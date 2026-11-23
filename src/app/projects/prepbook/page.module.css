@@ -1,3 +1,4 @@
 .clip {
   max-width: 22rem;
+  border-radius: var(--rounding-small);
 }
