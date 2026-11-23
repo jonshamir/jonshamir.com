@@ -18,10 +18,8 @@ export default function Page() {
       <p className="description">Text-first recipe manager</p>
 
       <p>
-        Prepbook is a recipe manager built around the text. A recipe is a plain
-        document: write it the way you&apos;d jot it down for a friend, and
-        Prepbook works out the ingredients, amounts and steps. Nothing to fill
-        in, nothing to tag.
+        Prepbook is a recipe manager built around text. A recipe is a plain
+        document: nothing to fill in, nothing to tag.
       </p>
 
       <p>
@@ -40,10 +38,10 @@ export default function Page() {
       </figure>
 
       <p>
-        We started it as a side project three years ago, after years of keeping
-        recipes split between Paprika and Google Docs — one had the structure,
-        the other had the writing. I designed the product and built with my
-        friend Jordan, using it to organize our recipes along the way.
+        Started as a side project years ago, after years of keeping recipes
+        split between Paprika and Google Docs — one had the structure, the other
+        had the writing. I designed the product and built it with my friend
+        Jordan, using it to organize our recipes along the way.
       </p>
 
       <h2>Recipes as documents</h2>

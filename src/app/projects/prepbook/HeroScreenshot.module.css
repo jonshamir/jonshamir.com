@@ -1,5 +1,47 @@
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
 .stack {
   display: grid;
+  grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+  width: 100%;
+  max-width: 100%;
+  --tablet-ratio: 4 / 3;
+  --mobile-ratio: 4 / 5;
+
+  aspect-ratio: var(--desktop-ratio);
+  overflow: hidden;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      aspect-ratio var(--duration-slow) var(--ease-in-out-quint),
+      max-width var(--duration-slow) var(--ease-in-out-quint);
+  }
+
+  &.native {
+    @media (max-width: 48rem) {
+      aspect-ratio: var(--tablet-ratio);
+    }
+
+    @media (max-width: 30rem) {
+      aspect-ratio: var(--mobile-ratio);
+    }
+  }
+
+  &[data-device="tablet"] {
+    max-width: 28rem;
+    aspect-ratio: var(--tablet-ratio);
+  }
+
+  &[data-device="mobile"] {
+    max-width: 18rem;
+    aspect-ratio: var(--mobile-ratio);
+  }
 }
 
 .picture {
@@ -10,19 +52,23 @@
 .picture img {
   display: block;
   width: 100%;
-  height: auto;
+  height: 100%;
   object-fit: cover;
   object-position: top;
-
-  @media (max-width: 48rem) {
-    aspect-ratio: 4 / 3;
-  }
-
-  @media (max-width: 30rem) {
-    aspect-ratio: 4 / 5;
-  }
 }
 
-.forDarkSite {
+.lightShots {
   opacity: var(--dark-mode);
+
+  .stack[data-theme] & {
+    transition: opacity var(--transition-defaults);
+  }
+
+  .stack[data-theme="light"] & {
+    opacity: 1;
+  }
+
+  .stack[data-theme="dark"] & {
+    opacity: 0;
+  }
 }
