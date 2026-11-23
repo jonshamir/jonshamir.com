@@ -43,8 +43,8 @@ function Screenshot({
 
   return (
     <picture className={clsx(styles.picture, className)}>
-      <source media="(max-width: 40rem)" {...sourceProps(shots.mobile)} />
-      <source media="(max-width: 54rem)" {...sourceProps(shots.tablet)} />
+      <source media="(max-width: 30rem)" {...sourceProps(shots.mobile)} />
+      <source media="(max-width: 48rem)" {...sourceProps(shots.tablet)} />
       {/* eslint-disable-next-line @next/next/no-img-element, jsx-a11y/alt-text */}
       <img {...img} />
     </picture>
