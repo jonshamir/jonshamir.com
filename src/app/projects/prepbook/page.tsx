@@ -82,21 +82,20 @@ export default function Page() {
         label="Typing “2.5 cloves garlic” at the end of an ingredient list; it becomes “2½ cloves garlic” with the amount in bold"
       >
         <p>
-          Most recipe apps split a recipe into fields — tidy for the data,
-          awkward for the writer. In Prepbook the recipe is the document:
-          structure is read from the text, never asked for. The parsing is
-          layered: regular expressions and classic parsing where the text is
-          predictable, small purpose-trained neural networks, and an LLM for the
-          cases those can&apos;t resolve.
+          Most recipe apps split a recipe into a bunch of separate fields - easy
+          for the machine, annoying for the human. In Prepbook the recipe is the
+          document: structure is read from the text, never asked for. The
+          parsing is layered: regular expressions and classic parsing where the
+          text is predictable, small purpose-trained neural networks, and an LLM
+          for the cases those can&apos;t resolve.
         </p>
         <p>
-          The hard part was a page that reads cleanly and is fully editable in
-          place, with no separate edit mode. The editor is built on{" "}
-          <Outlink href="https://tiptap.dev">TipTap</Outlink>, with custom nodes
-          — amount chips, inline timers, ingredient links — mixed into the
-          prose; each has to behave like text under the cursor, selection, copy
-          and undo. Every version is kept, because a recipe changes a little
-          every time you cook it.
+          The challange was creating a page that reads cleanly and is fully
+          editable in place, with no separate edit mode. The custom recipe
+          editor is built with amount chips, inline timers and ingredient links
+          inline with the text. It also supports recipe version history,
+          allowing users to experiment with the recipe and keep an organized
+          log.
         </p>
       </FeatureClip>
 
@@ -120,11 +119,10 @@ export default function Page() {
         label="Searching “Italian”: three title matches appear, then more Italian dishes such as Spaghetti all’Amatriciana and Stracciatella Soup"
       >
         <p>
-          There are no tags or categories. Search runs on embeddings, so it
-          understands a recipe the way you&apos;d describe it — an ingredient
-          you have, a dish you&apos;re in the mood for, a half-remembered name —
-          and works across languages. The structure lives in the app, so you can
-          just write, and just ask.
+          Search runs on vector embeddings, so it understands a recipe the way
+          you&apos;d describe it - an ingredient you have, a dish you&apos;re in
+          the mood for, a half-remembered name - and works across languages. The
+          structure lives in the app, so you can just write, and just ask.
         </p>
       </FeatureClip>
 
@@ -132,29 +130,30 @@ export default function Page() {
         platform still: iOS, Android, web, and a shared link in a plain browser tab
       </figure> */}
       <FeatureClip
-        title="Shipping it"
+        title="More fatures"
         src={shareClip}
         label="Opening a recipe’s menu, choosing Share and copying its prepbook.app link"
       >
         <p>
-          A side project is a chance to own the whole product. Prepbook shipped
-          as a real one — App Store and Play Store, a free tier and a
-          subscription, 20 languages — plus a few things I care about:
+          Prepbook shipped as a real one — App Store and Play Store, a free tier
+          and a subscription, 20 languages — plus a few things I care about:
         </p>
         <ul>
-          <li>Offline first; it syncs when it can.</li>
+          <li>Import from a link, a video, or a photo of a cookbook page.</li>
+
           <li>
             Sharing as a link that opens anywhere, no app or account on the
             other end.{" "}
             <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
           </li>
-          <li>Import from a link, a video, or a photo of a cookbook page.</li>
           <li>
-            Light and dark mode and a choice of typefaces. I picked a few and
-            tuned one myself, iA Writer Quattro —{" "}
-            <Link href="/writing/font-edit/">here&apos;s how</Link>. A cookbook
-            should feel like something you chose.
+            Light and dark mode and a choice of typefaces. Including a{" "}
+            <Link href="/writing/font-edit/">
+              custom modified typeface created for this project
+            </Link>
+            .
           </li>
+          <li>Offline first; it syncs when it can.</li>
         </ul>
       </FeatureClip>
 
