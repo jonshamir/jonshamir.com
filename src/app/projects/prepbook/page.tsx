@@ -15,13 +15,11 @@ function FeatureClip({
   title,
   src,
   label,
-  caption,
   children
 }: {
   title: string;
   src: string;
   label: string;
-  caption: string;
   children: React.ReactNode;
 }) {
   return (
@@ -37,7 +35,6 @@ function FeatureClip({
           muted
           loop
         />
-        <figcaption>{caption}</figcaption>
       </figure>
       <div className={`flow ${styles.text}`}>{children}</div>
     </section>
@@ -83,7 +80,6 @@ export default function Page() {
         title="Recipes as documents"
         src={editClip}
         label="Typing “2.5 cloves garlic” at the end of an ingredient list; it becomes “2½ cloves garlic” with the amount in bold"
-        caption="Type an ingredient line the way you'd say it. Prepbook picks out the amount and unit, and tidies 2.5 into 2½."
       >
         <p>
           Most recipe apps split a recipe into fields — tidy for the data,
@@ -108,7 +104,6 @@ export default function Page() {
         title="Scaling"
         src={scaleClip}
         label="Tapping an amount opens the Scale Recipe dial; turning it rescales every ingredient in the list"
-        caption="Tap any amount and drag the dial. Every other ingredient follows in proportion."
       >
         <p>
           Because Prepbook knows where every amount sits in the text, you can
@@ -123,7 +118,6 @@ export default function Page() {
         title="Search"
         src={searchClip}
         label="Searching “Italian”: three title matches appear, then more Italian dishes such as Spaghetti all’Amatriciana and Stracciatella Soup"
-        caption="Title matches come back instantly; a moment later, embedding search adds dishes that are Italian without saying so."
       >
         <p>
           There are no tags or categories. Search runs on embeddings, so it
@@ -141,7 +135,6 @@ export default function Page() {
         title="Shipping it"
         src={shareClip}
         label="Opening a recipe’s menu, choosing Share and copying its prepbook.app link"
-        caption="Sharing makes a link that opens in any browser, with no app or account needed."
       >
         <p>
           A side project is a chance to own the whole product. Prepbook shipped
