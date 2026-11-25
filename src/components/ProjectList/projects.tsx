@@ -64,7 +64,7 @@ const projects: ProjectItem[] = [
   {
     slug: "prepbook",
     name: "Prepbook",
-    subtitle: "Text-first recipe manager",
+    subtitle: "Minimal recipe manager",
     icon: PrepbookIcon as FC,
     preview: prepbookPreview,
     previewSmall: prepbookPreviewSmall,

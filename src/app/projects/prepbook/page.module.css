@@ -2,3 +2,45 @@
   max-width: 22rem;
   border-radius: var(--rounding-small);
 }
+
+.feature {
+  --space: var(--space-xl);
+}
+
+.feature > * {
+  --space: initial;
+}
+
+@media (min-width: 72rem) {
+  .feature {
+    grid-column: full;
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--space-xl), 1fr)
+      [clip-start] minmax(0, calc(22rem + var(--space-lg)))
+      [narrow-start] var(--grid-width-narrow)
+      [narrow-end] minmax(var(--space-xl), 1fr)
+      [full-end];
+    grid-template-rows: auto 1fr;
+    column-gap: var(--grid-gap);
+    align-items: start;
+  }
+
+  .title {
+    grid-column: narrow;
+    grid-row: 1;
+  }
+
+  .figure {
+    grid-column: clip-start / narrow-start;
+    grid-row: 1 / span 2;
+    width: 100%;
+    margin-block-start: 0;
+    padding-inline-end: var(--space-lg);
+  }
+
+  .text {
+    grid-column: narrow;
+    grid-row: 2;
+  }
+}
