@@ -153,11 +153,11 @@ export default function Page() {
             </Link>
             .
           </li>
-          <li>Offline first; it syncs when it can.</li>
+          <li>Offline first, syncs across devices and platforms.</li>
         </ul>
       </FeatureClip>
 
-      <p>
+      <p className={styles.cta}>
         <ButtonLink
           href="https://prepbook.app"
           target="_blank"
