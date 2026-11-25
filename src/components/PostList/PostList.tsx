@@ -121,7 +121,7 @@ export function PostList({ wide = false }: { wide?: boolean }) {
         const date = new Date(post.date);
         const formattedDate = date.toLocaleDateString("en-US", {
           month: "short",
-          year: "2-digit"
+          year: "numeric"
         });
         return (
           <li key={post.slug} className={styles.item}>

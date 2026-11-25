@@ -59,8 +59,7 @@
 
 .date {
   white-space: nowrap;
-  min-width: 4em;
-  max-width: 5rem;
+  min-width: 5.5em;
 }
 
 /* Arrow follows the title and slides out from behind its trailing edge.
