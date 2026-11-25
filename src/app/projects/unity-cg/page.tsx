@@ -1,6 +1,6 @@
 "use client";
 
-import Earth from "../../lab/earth/EarthCanvas";
+import Earth from "../../writing/projection-mapping/EarthCanvas";
 
 export default function Page() {
   return (
