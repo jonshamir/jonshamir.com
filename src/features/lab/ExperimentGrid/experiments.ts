@@ -115,7 +115,7 @@ export const experiments: ExperimentItem[] = [
     caption: "Earth projections",
     span: 2,
     aspectRatio: "1 / 1",
-    href: "/lab/earth"
+    href: "/writing/projection-mapping"
   },
   {
     id: "moon",
