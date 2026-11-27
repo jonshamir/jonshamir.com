@@ -83,19 +83,19 @@ export default function Page() {
         label="Typing “2.5 cloves garlic” at the end of an ingredient list; it becomes “2½ cloves garlic” with the amount in bold"
       >
         <p>
-          Most recipe apps split a recipe into a bunch of separate fields - easy
-          for the machine, annoying for the human. In Prepbook the recipe is the
-          document: structure is read from the text, never asked for. The
-          parsing is layered: regular expressions and classic parsing where the
-          text is predictable, small purpose-trained neural networks, and an LLM
-          for the cases those can&apos;t resolve.
+          Most recipe apps split a recipe into separate fields, which is easy
+          for a computer but annoying for the person typing. In Prepbook you
+          just write, and the structure is read from the text. The parsing is
+          layered: regular expressions and classic parsing where the text is
+          predictable, small purpose-trained neural networks, and an LLM for the
+          cases those can&apos;t resolve.
         </p>
         <p>
-          The challange was creating a page that reads cleanly and is fully
-          editable in place, with no separate edit mode. The custom recipe
-          editor is built with amount chips, inline timers and ingredient links
-          inline with the text. It also supports recipe version history,
-          allowing users to experiment with the recipe and keep an organized
+          The hardest part was the editor. We wanted a page that reads like a
+          finished recipe and is fully editable in place, with no separate edit
+          mode. We built a custom editor where amount chips, timers and
+          ingredient links all sit inline with the text. It also keeps a version
+          history, so you can experiment with a recipe and keep an organized
           log.
         </p>
       </FeatureClip>
@@ -106,11 +106,10 @@ export default function Page() {
         label="Tapping an amount opens the Scale Recipe dial; turning it rescales every ingredient in the list"
       >
         <p>
-          Because Prepbook knows where every amount sits in the text, you can
-          just click an amount and the whole recipe scales in proportion. The
-          scaling is a mix of rules and LLMs, so it can handle the tricky cases
-          - &ldquo;a pinch&rdquo; or &ldquo;a few&rdquo; - and even scale across
-          units and languages.
+          Prepbook knows where every amount sits in the text, so you can click
+          any amount and scale the whole recipe in proportion. The scaling
+          control is inspired by vintage kitchen scales and takes any value from
+          zero to infinity.
         </p>
       </FeatureClip>
 
@@ -120,43 +119,46 @@ export default function Page() {
         label="Searching “Italian”: three title matches appear, then more Italian dishes such as Spaghetti all’Amatriciana and Stracciatella Soup"
       >
         <p>
-          Search runs on vector embeddings, so it understands a recipe the way
-          you&apos;d describe it - an ingredient you have, a dish you&apos;re in
-          the mood for, a half-remembered name - and works across languages. The
-          structure lives in the app, so you can just write, and just ask.
+          When working on the search feature for prepbook I wanted something
+          intuitive - searching for “Italian” should bring up gnocci, pasta and
+          pizza. Search runs on vector embeddings, so you can describe a recipe
+          the way you&apos;d remember it: an ingredient you have, a dish
+          you&apos;re in the mood for etc. It works across languages, with no
+          tags or categories to maintain.
+        </p>
+      </FeatureClip>
+
+      <FeatureClip
+        title="Sharing"
+        src={shareClip}
+        label="Opening a recipe’s menu, choosing Share and copying its prepbook.app link"
+      >
+        <p>
+          A recipe is shared as a link that opens anywhere, with no app or
+          account needed on the other end.{" "}
+          <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
         </p>
       </FeatureClip>
 
       {/* <figure className="grid-wide">
         platform still: iOS, Android, web, and a shared link in a plain browser tab
       </figure> */}
-      <FeatureClip
-        title="More fatures"
-        src={shareClip}
-        label="Opening a recipe’s menu, choosing Share and copying its prepbook.app link"
-      >
-        <p>
-          Prepbook shipped as a real one — App Store and Play Store, a free tier
-          and a subscription, 20 languages — plus a few things I care about:
-        </p>
-        <ul>
-          <li>Import from a link, a video, or a photo of a cookbook page.</li>
-
-          <li>
-            Sharing as a link that opens anywhere, no app or account on the
-            other end.{" "}
-            <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
-          </li>
-          <li>
-            Light and dark mode and a choice of typefaces. Including a{" "}
-            <Link href="/writing/font-edit/">
-              custom modified typeface created for this project
-            </Link>
-            .
-          </li>
-          <li>Offline first, syncs across devices and platforms.</li>
-        </ul>
-      </FeatureClip>
+      <h2>And the rest</h2>
+      <p>
+        Prepbook shipped as a full product: App Store and Play Store, a free
+        tier and a subscription, 20 languages. A few other things I cared about:
+      </p>
+      <ul>
+        <li>Import from a link, a video, or a photo of a cookbook page.</li>
+        <li>Offline first, with sync across devices and platforms.</li>
+        <li>
+          Light and dark mode and a choice of typefaces, including{" "}
+          <Link href="/writing/font-edit/">
+            one I modified for this project
+          </Link>
+          .
+        </li>
+      </ul>
 
       <p className={styles.cta}>
         <ButtonLink
