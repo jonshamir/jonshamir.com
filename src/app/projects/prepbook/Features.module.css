@@ -1,0 +1,129 @@
+.features {
+  --space: var(--space-xl);
+}
+
+.stage {
+  display: none;
+}
+
+.sections {
+  margin-block-start: 0;
+}
+
+.section {
+  --space: var(--space-xl);
+}
+
+.section > * {
+  --space: initial;
+}
+
+.arrowClip {
+  display: none;
+}
+
+.inlineClip {
+  align-items: flex-start;
+}
+
+.inlineVideo {
+  max-width: 22rem;
+  border-radius: var(--rounding-small);
+}
+
+@media (min-width: 72rem) {
+  .features {
+    --clip-width: min(
+      22rem,
+      (100svh - var(--nav-height) - 2 * var(--space-xl)) * 0.8
+    );
+
+    grid-column: full;
+    display: grid;
+    grid-template-columns:
+      [full-start] minmax(var(--space-xl), 1fr)
+      [clip-start] minmax(0, calc(22rem + var(--space-lg)))
+      [narrow-start] var(--grid-width-narrow)
+      [narrow-end] minmax(var(--space-xl), 1fr)
+      [full-end];
+    column-gap: var(--grid-gap);
+  }
+
+  .stage {
+    grid-column: clip-start / narrow-start;
+    grid-row: 1;
+    align-self: start;
+    position: sticky;
+    top: calc(var(--nav-height) + var(--space-xl));
+    display: flex;
+    justify-content: center;
+    padding-inline-end: var(--space-lg);
+  }
+
+  .frame {
+    display: grid;
+    width: min(100%, var(--clip-width));
+    aspect-ratio: 780 / 974;
+    border-radius: var(--rounding-small);
+    overflow: hidden;
+  }
+
+  .stageVideo {
+    grid-area: 1 / 1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+  }
+
+  .stageVideo[data-active] {
+    opacity: 1;
+  }
+
+  .sections {
+    grid-column: narrow;
+    grid-row: 1;
+  }
+
+  .section:last-child {
+    min-height: calc(var(--clip-width) * 974 / 780);
+  }
+
+  .inlineClip {
+    display: none;
+  }
+
+  .arrowClip {
+    display: inline-block;
+    width: 0;
+    white-space: nowrap;
+    clip-path: inset(-0.5em 0);
+    transition: width 300ms var(--ease-out-expo);
+  }
+
+  .arrowClip :global(.arrow) {
+    position: relative;
+    top: -0.08em;
+    transform: translateX(-100%);
+    transition: transform 300ms var(--ease-out-expo);
+  }
+
+  .heading[data-active] .arrowClip {
+    width: 1.2em;
+  }
+
+  .heading[data-active] .arrowClip :global(.arrow) {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrowClip,
+    .arrowClip :global(.arrow) {
+      transition: none;
+    }
+  }
+
+  .inlineClip + * {
+    margin-block-start: 0;
+  }
+}

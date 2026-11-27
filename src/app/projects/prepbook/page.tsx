@@ -5,14 +5,125 @@ import Link from "next/link";
 
 import { ButtonLink } from "../../../components/Button";
 import { Outlink } from "../../../components/Outlink";
-import heroImg from "./hero.jpg";
-import scalerImg from "./scaler.png";
+import editClip from "./clips/edit.mp4";
+import scaleClip from "./clips/scale.mp4";
+import searchClip from "./clips/search.mp4";
+import shareClip from "./clips/share.mp4";
+import { type Feature, Features } from "./Features";
+import { HeroScreenshot } from "./HeroScreenshot";
+import styles from "./page.module.css";
+import scaleImage from "./scale.webp";
+
+const features: Feature[] = [
+  {
+    id: "recipes-as-documents",
+    title: "Recipes as documents",
+    src: editClip,
+    label:
+      "Typing “2.5 cloves garlic” at the end of an ingredient list; it becomes “2½ cloves garlic” with the amount in bold",
+    content: (
+      <>
+        <p>
+          Most recipe apps split a recipe into separate fields, which is easy
+          for a computer but annoying for the person typing. In Prepbook you
+          just write, and the structure is read from the text. The parsing is
+          layered: regular expressions and classic parsing where the text is
+          predictable, small purpose-trained neural networks, and an LLM for the
+          cases those can&apos;t resolve.
+        </p>
+        <p>
+          The hardest part was the editor. We wanted a page that reads like a
+          finished recipe and is fully editable in place, with no separate edit
+          mode. We built a custom editor where amount chips, timers and
+          ingredient links all sit inline with the text. It also keeps a version
+          history, so you can experiment with a recipe and keep an organized
+          log.
+        </p>
+      </>
+    )
+  },
+  {
+    id: "scaling",
+    title: "Scaling",
+    src: scaleClip,
+    label:
+      "Tapping an amount opens the Scale Recipe dial; turning it rescales every ingredient in the list",
+    content: (
+      <>
+        <p>
+          Prepbook knows where every amount sits in the text, so you can pick
+          any ingredient and scale the whole recipe from it. Recipe calls for 3
+          eggs but you only have 2 left? Scale the eggs and everything else
+          follows in the same ratio, updating live in the text as you drag.
+        </p>
+        <p>
+          Other recipe apps usually show a slider or buttons - that are limited
+          or unintuitive. For Prepbook I designed a dial that inspired by
+          vintage kitchen scales: a red needle, a ring of ticks, and the amount
+          shown above it. Because a dial is circular it never runs out, you can
+          keep turning from zero up to any amount. Numbers snap as you drag, and
+          create haptic ticks on mobile devices.
+        </p>
+        <figure className={styles.scaleFigure}>
+          <Image
+            src={scaleImage}
+            alt="A vintage kitchen scale with a bowl of onions"
+            className={styles.scaleImage}
+          />
+        </figure>
+      </>
+    )
+  },
+  {
+    id: "sharing",
+    title: "Sharing",
+    src: shareClip,
+    label:
+      "Opening a recipe’s menu, choosing Share and copying its prepbook.app link",
+    content: (
+      <>
+        <p>
+          A recipe is shared as a link that opens anywhere, with no app or
+          account needed on the other end.{" "}
+          <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
+        </p>
+      </>
+    )
+  },
+  {
+    id: "search",
+    title: "Search",
+    src: searchClip,
+    label:
+      "Searching “Italian”: three title matches appear, then more Italian dishes such as Spaghetti all’Amatriciana and Stracciatella Soup",
+    content: (
+      <>
+        <p>
+          When working on the search feature for prepbook I wanted something
+          intuitive - searching for “Italian” should bring up gnocci, pasta and
+          pizza. Search runs on vector embeddings, so you can describe a recipe
+          the way you&apos;d remember it: an ingredient you have, a dish
+          you&apos;re in the mood for etc. It works across languages, with no
+          tags or categories to maintain.
+        </p>
+      </>
+    )
+  }
+];
 
 export default function Page() {
   return (
     <>
       <h1>Prepbook</h1>
-      <p className="description">Text-first recipe manager</p>
+      <p className="description">Minimal recipe manager</p>
+
+      <p>
+        Prepbook is a clean and minimal recipe manager built around text. A
+        recipe is a plain document: nothing to fill in, nothing to tag - it
+        reads the structure from what you write. It&apos;s available as a web
+        application, plus native iOS and Android apps.
+      </p>
+
       <p>
         <ButtonLink
           href="https://prepbook.app"
@@ -25,93 +136,40 @@ export default function Page() {
       </p>
 
       <figure className="grid-wide">
-        <Image src={heroImg} alt="A recipe in Prepbook" />
+        <HeroScreenshot />
       </figure>
 
       <p>
-        Prepbook is a recipe manager built around the text. A recipe is a plain
-        document: write it the way you&apos;d jot it down for a friend, and
-        Prepbook works out the ingredients, amounts and steps. Nothing to fill
-        in, nothing to tag.
-      </p>
-      <p>
-        I started it as a side project three years ago, after years of keeping
-        recipes split between Paprika and Google Docs — one had the structure,
-        the other had the writing. I designed the product and built the
-        interface, editor and apps: one React Native codebase on iOS, Android
-        and the web, in 20 languages.
+        Prepbook started as a side project in 2024. My recipes were split
+        between dedicated recipe apps and Google Docs, and I wanted the
+        simplicity of a text document with the features of a recipe app. I
+        designed the product and built it with my friend Jordan, using it to
+        organize our recipes along the way.
       </p>
 
-      <h2>Recipes as documents</h2>
-      {/* <figure className="grid-wide">
-        editor GIF: ingredient line → amount + ingredient; a step that says "the eggs" links back
-      </figure> */}
-      <p>
-        Most recipe apps split a recipe into fields — tidy for the data, awkward
-        for the writer. In Prepbook the recipe is the document: structure is
-        read from the text, never asked for. The parsing is layered: regular
-        expressions and classic parsing where the text is predictable, small
-        purpose-trained neural networks, and an LLM for the cases those
-        can&apos;t resolve.
-      </p>
-      <p>
-        The hard part was a page that reads cleanly and is fully editable in
-        place, with no separate edit mode. The editor is built on{" "}
-        <Outlink href="https://tiptap.dev">TipTap</Outlink>, with custom nodes —
-        amount chips, inline timers, ingredient links — mixed into the prose;
-        each has to behave like text under the cursor, selection, copy and undo.
-        Every version is kept, because a recipe changes a little every time you
-        cook it.
-      </p>
+      <Features features={features} />
 
-      <h2>Scaling</h2>
-      <figure>
-        <Image src={scalerImg} alt="Scaling a recipe in Prepbook" />
-      </figure>
-      <p>
-        Because Prepbook knows where every amount sits in the text, scaling
-        rewrites all of them, including the ones buried in the instructions. You
-        don&apos;t pick a multiplier — you change the number in front of you,
-        and the recipe follows.
-      </p>
-
-      <h2>Search</h2>
-      {/* <figure className="grid-wide">
-        search GIF: "something quick with leftover rice"
-      </figure> */}
-      <p>
-        There are no tags or categories. Search runs on embeddings, so it
-        understands a recipe the way you&apos;d describe it — an ingredient you
-        have, a dish you&apos;re in the mood for, a half-remembered name — and
-        works across languages. The structure lives in the app, so you can just
-        write, and just ask.
-      </p>
-
-      <h2>Shipping it</h2>
       {/* <figure className="grid-wide">
         platform still: iOS, Android, web, and a shared link in a plain browser tab
       </figure> */}
+      <h2>And the rest</h2>
       <p>
-        A side project is a chance to own the whole product. Prepbook shipped as
-        a real one — App Store and Play Store, a free tier and a subscription,
-        20 languages — plus a few things I care about:
+        Prepbook shipped as a full product: App Store and Play Store, a free
+        tier and a subscription, 20 languages. A few other things I cared about:
       </p>
       <ul>
-        <li>Offline first; it syncs when it can.</li>
-        <li>
-          Sharing as a link that opens anywhere, no app or account on the other
-          end. <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
-        </li>
         <li>Import from a link, a video, or a photo of a cookbook page.</li>
+        <li>Offline first, with sync across devices and platforms.</li>
         <li>
-          Light and dark mode and a choice of typefaces. I picked a few and
-          tuned one myself, iA Writer Quattro —{" "}
-          <Link href="/writing/font-edit/">here&apos;s how</Link>. A cookbook
-          should feel like something you chose.
+          Light and dark mode and a choice of typefaces, including{" "}
+          <Link href="/writing/font-edit/">
+            one I modified for this project
+          </Link>
+          .
         </li>
       </ul>
 
-      <p>
+      <p className={styles.cta}>
         <ButtonLink
           href="https://prepbook.app"
           target="_blank"
