@@ -29,7 +29,7 @@ const SHOTS: Record<Theme, Shots> = {
 };
 
 function ratio(image: StaticImageData) {
-  return `${image.width / image.height}`;
+  return `${image.width} / ${image.height}`;
 }
 
 function preload(device: Device) {
@@ -137,26 +137,25 @@ export function HeroScreenshot() {
   const shownDevice = shownOverride ?? viewportDevice;
   const manualDevice = shownDevice === viewportDevice ? null : shownDevice;
 
-  const frameStyle = {
+  const stackStyle = {
     "--desktop-ratio": ratio(SHOTS.dark.desktop)
   } as CSSProperties;
 
   return (
     <div className={styles.hero}>
-      <div className={styles.frame} style={frameStyle}>
-        <div
-          className={styles.stack}
-          data-device={manualDevice ?? undefined}
-          data-theme={themeOverride ?? undefined}
-        >
-          <Screenshot alt={ALT} shots={SHOTS.dark} device={manualDevice} />
-          <Screenshot
-            className={styles.lightShots}
-            alt=""
-            shots={SHOTS.light}
-            device={manualDevice}
-          />
-        </div>
+      <div
+        className={clsx(styles.stack, manualDevice === null && styles.native)}
+        data-device={manualDevice ?? undefined}
+        data-theme={themeOverride ?? undefined}
+        style={stackStyle}
+      >
+        <Screenshot alt={ALT} shots={SHOTS.dark} device={manualDevice} />
+        <Screenshot
+          className={styles.lightShots}
+          alt=""
+          shots={SHOTS.light}
+          device={manualDevice}
+        />
       </div>
       <DeviceSwitcher
         device={device}
