@@ -22,6 +22,10 @@
   display: none;
 }
 
+.inlineClip {
+  align-items: flex-start;
+}
+
 .inlineVideo {
   max-width: 22rem;
   border-radius: var(--rounding-small);

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 
 import { ButtonLink } from "../../../components/Button";
@@ -11,6 +12,7 @@ import shareClip from "./clips/share.mp4";
 import { type Feature, Features } from "./Features";
 import { HeroScreenshot } from "./HeroScreenshot";
 import styles from "./page.module.css";
+import scaleImage from "./scale.webp";
 
 const features: Feature[] = [
   {
@@ -54,6 +56,13 @@ const features: Feature[] = [
           control is inspired by vintage kitchen scales and takes any value from
           zero to infinity.
         </p>
+        <figure className={styles.scaleFigure}>
+          <Image
+            src={scaleImage}
+            alt="A vintage kitchen scale with a bowl of onions"
+            className={styles.scaleImage}
+          />
+        </figure>
       </>
     )
   },

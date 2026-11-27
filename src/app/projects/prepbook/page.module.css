@@ -1,3 +1,11 @@
 .cta {
   text-align: center;
 }
+
+.scaleFigure {
+  align-items: flex-start;
+}
+
+.scaleImage {
+  max-width: 12rem;
+}
