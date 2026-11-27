@@ -58,6 +58,22 @@ const features: Feature[] = [
     )
   },
   {
+    id: "sharing",
+    title: "Sharing",
+    src: shareClip,
+    label:
+      "Opening a recipe’s menu, choosing Share and copying its prepbook.app link",
+    content: (
+      <>
+        <p>
+          A recipe is shared as a link that opens anywhere, with no app or
+          account needed on the other end.{" "}
+          <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
+        </p>
+      </>
+    )
+  },
+  {
     id: "search",
     title: "Search",
     src: searchClip,
@@ -72,22 +88,6 @@ const features: Feature[] = [
           the way you&apos;d remember it: an ingredient you have, a dish
           you&apos;re in the mood for etc. It works across languages, with no
           tags or categories to maintain.
-        </p>
-      </>
-    )
-  },
-  {
-    id: "sharing",
-    title: "Sharing",
-    src: shareClip,
-    label:
-      "Opening a recipe’s menu, choosing Share and copying its prepbook.app link",
-    content: (
-      <>
-        <p>
-          A recipe is shared as a link that opens anywhere, with no app or
-          account needed on the other end.{" "}
-          <Outlink href="https://prepbook.app/s/fa3ad6b9">Try one</Outlink>
         </p>
       </>
     )
@@ -130,28 +130,27 @@ export default function Page() {
         organize our recipes along the way.
       </p>
 
-      <Features features={features}>
-        {/* <figure className="grid-wide">
-          platform still: iOS, Android, web, and a shared link in a plain browser tab
-        </figure> */}
-        <h2>And the rest</h2>
-        <p>
-          Prepbook shipped as a full product: App Store and Play Store, a free
-          tier and a subscription, 20 languages. A few other things I cared
-          about:
-        </p>
-        <ul>
-          <li>Import from a link, a video, or a photo of a cookbook page.</li>
-          <li>Offline first, with sync across devices and platforms.</li>
-          <li>
-            Light and dark mode and a choice of typefaces, including{" "}
-            <Link href="/writing/font-edit/">
-              one I modified for this project
-            </Link>
-            .
-          </li>
-        </ul>
-      </Features>
+      <Features features={features} />
+
+      {/* <figure className="grid-wide">
+        platform still: iOS, Android, web, and a shared link in a plain browser tab
+      </figure> */}
+      <h2>And the rest</h2>
+      <p>
+        Prepbook shipped as a full product: App Store and Play Store, a free
+        tier and a subscription, 20 languages. A few other things I cared about:
+      </p>
+      <ul>
+        <li>Import from a link, a video, or a photo of a cookbook page.</li>
+        <li>Offline first, with sync across devices and platforms.</li>
+        <li>
+          Light and dark mode and a choice of typefaces, including{" "}
+          <Link href="/writing/font-edit/">
+            one I modified for this project
+          </Link>
+          .
+        </li>
+      </ul>
 
       <p className={styles.cta}>
         <ButtonLink

@@ -13,13 +13,7 @@ export type Feature = {
   content: ReactNode;
 };
 
-export function Features({
-  features,
-  children
-}: {
-  features: Feature[];
-  children?: ReactNode;
-}) {
+export function Features({ features }: { features: Feature[] }) {
   const [active, setActive] = useState(0);
   const sectionRefs = useRef<(HTMLElement | null)[]>([]);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
@@ -114,9 +108,6 @@ export function Features({
             {feature.content}
           </section>
         ))}
-        {children && (
-          <section className={`flow ${styles.section}`}>{children}</section>
-        )}
       </div>
     </div>
   );

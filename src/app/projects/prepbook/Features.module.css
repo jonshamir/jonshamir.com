@@ -29,6 +29,11 @@
 
 @media (min-width: 72rem) {
   .features {
+    --clip-width: min(
+      22rem,
+      (100svh - var(--nav-height) - 2 * var(--space-xl)) * 0.8
+    );
+
     grid-column: full;
     display: grid;
     grid-template-columns:
@@ -53,11 +58,7 @@
 
   .frame {
     display: grid;
-    width: min(
-      100%,
-      22rem,
-      (100svh - var(--nav-height) - 2 * var(--space-xl)) * 0.8
-    );
+    width: min(100%, var(--clip-width));
     aspect-ratio: 780 / 974;
     border-radius: var(--rounding-small);
     overflow: hidden;
@@ -78,6 +79,10 @@
   .sections {
     grid-column: narrow;
     grid-row: 1;
+  }
+
+  .section:last-child {
+    min-height: calc(var(--clip-width) * 974 / 780);
   }
 
   .inlineClip {
