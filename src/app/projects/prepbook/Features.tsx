@@ -102,7 +102,15 @@ export function Features({
                 loop
               />
             </figure>
-            <h2>{feature.title}</h2>
+            <h2
+              className={styles.heading}
+              data-active={index === active || undefined}
+            >
+              <span className={styles.arrowClip} aria-hidden>
+                <span className="arrow">←</span>
+              </span>
+              {feature.title}
+            </h2>
             {feature.content}
           </section>
         ))}

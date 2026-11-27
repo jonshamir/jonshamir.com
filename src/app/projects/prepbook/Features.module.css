@@ -18,6 +18,10 @@
   --space: initial;
 }
 
+.arrowClip {
+  display: none;
+}
+
 .inlineVideo {
   max-width: 22rem;
   border-radius: var(--rounding-small);
@@ -78,6 +82,36 @@
 
   .inlineClip {
     display: none;
+  }
+
+  .arrowClip {
+    display: inline-block;
+    width: 0;
+    white-space: nowrap;
+    clip-path: inset(-0.5em 0);
+    transition: width 300ms var(--ease-out-expo);
+  }
+
+  .arrowClip :global(.arrow) {
+    position: relative;
+    top: -0.08em;
+    transform: translateX(-100%);
+    transition: transform 300ms var(--ease-out-expo);
+  }
+
+  .heading[data-active] .arrowClip {
+    width: 1.2em;
+  }
+
+  .heading[data-active] .arrowClip :global(.arrow) {
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrowClip,
+    .arrowClip :global(.arrow) {
+      transition: none;
+    }
   }
 
   .inlineClip + * {
