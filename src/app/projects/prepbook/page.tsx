@@ -24,7 +24,6 @@ function FeatureClip({
 }) {
   return (
     <section className={`flow ${styles.feature}`}>
-      <h2 className={styles.title}>{title}</h2>
       <figure className={styles.figure}>
         <video
           className={styles.clip}
@@ -36,6 +35,7 @@ function FeatureClip({
           loop
         />
       </figure>
+      <h2 className={styles.title}>{title}</h2>
       <div className={`flow ${styles.text}`}>{children}</div>
     </section>
   );

@@ -29,13 +29,13 @@
   .title {
     grid-column: narrow;
     grid-row: 1;
+    margin-block-start: 0;
   }
 
   .figure {
     grid-column: clip-start / narrow-start;
     grid-row: 1 / span 2;
     width: 100%;
-    margin-block-start: 0;
     padding-inline-end: var(--space-lg);
   }
 
