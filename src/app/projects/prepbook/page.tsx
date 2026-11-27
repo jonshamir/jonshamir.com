@@ -51,10 +51,18 @@ const features: Feature[] = [
     content: (
       <>
         <p>
-          Prepbook knows where every amount sits in the text, so you can click
-          any amount and scale the whole recipe in proportion. The scaling
-          control is inspired by vintage kitchen scales and takes any value from
-          zero to infinity.
+          Prepbook knows where every amount sits in the text, so you can pick
+          any ingredient and scale the whole recipe from it. Recipe calls for 3
+          eggs but you only have 2 left? Scale the eggs and everything else
+          follows in the same ratio, updating live in the text as you drag.
+        </p>
+        <p>
+          Other recipe apps usually show a slider or buttons - that are limited
+          or unintuitive. For Prepbook I designed a dial that inspired by
+          vintage kitchen scales: a red needle, a ring of ticks, and the amount
+          shown above it. Because a dial is circular it never runs out, you can
+          keep turning from zero up to any amount. Numbers snap as you drag, and
+          create haptic ticks on mobile devices.
         </p>
         <figure className={styles.scaleFigure}>
           <Image
