@@ -49,8 +49,9 @@ export default function Page() {
 
       <p>
         Prepbook is a clean and minimal recipe manager built around text. A
-        recipe is a plain document: nothing to fill in, nothing to tag. It is
-        available as a web application, plus native iOS and Android apps.
+        recipe is a plain document: nothing to fill in, nothing to tag - it
+        reads the structure from what you write. It&apos;s available as a web
+        application, plus native iOS and Android apps.
       </p>
 
       <p>
@@ -69,11 +70,11 @@ export default function Page() {
       </figure>
 
       <p>
-        Started as a side project years ago, after keeping recipes split between
-        dedicated apps and Google Docs, I wanted a solution that would combine
-        the simplicity of text with the features of a recipe app. I designed the
-        product and built it with my friend Jordan, using it to organize our
-        recipes along the way.
+        Prepbook started as a side project in 2024. My recipes were split
+        between dedicated recipe apps and Google Docs, and I wanted the
+        simplicity of a text document with the features of a recipe app. I
+        designed the product and built it with my friend Jordan, using it to
+        organize our recipes along the way.
       </p>
 
       <FeatureClip
